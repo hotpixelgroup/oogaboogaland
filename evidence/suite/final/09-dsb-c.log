@@ -1,0 +1,654 @@
+DSB STEP 49 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 51
+DSB STEP 94 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 94
+DSB STEP 136 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 179 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 179
+DSB STEP 221 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 222
+DSB STEP 264 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 265
+DSB STEP 307 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 308
+DSB STEP 350 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1253
+DSB STEP 1293 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1294
+DSB STEP 1337 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1337
+DSB STEP 1379 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1380
+DSB STEP 1422 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1423
+DSB STEP 1464 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1465
+DSB STEP 1507 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1507
+DSB STEP 1507 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1508
+DSB STEP 1508 __shoreline.advance(.3)
+DSB DONE 1547
+DSB STEP 1547 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1554
+CHECK PASS SVRN WebGL: svrn-door {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":35,"draws":17,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2,"interior":null,"roomVisible":false,"exteriorVisible":true}
+DSB STEP 1554 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1586
+CHECK PASS Review render health: svrn-door.png {"before":{"scene":"dsb","room":null,"frames":36,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":38,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1588 __shoreline.until(()=>__ooga.dsb.interiors.active?.room.id==="svrn-society"&&!__ooga.dsb.interiors.transitioning,2)
+DSB DONE 1806
+DSB STEP 1806 Object.keys(__ooga.dsb.interiors.active.room.reviews)
+DSB DONE 1809
+DSB STEP 1809 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-entrance"]);__shoreline.advance(.3)
+DSB DONE 1828
+DSB STEP 1828 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1831
+CHECK PASS SVRN WebGL: svrn-entrance {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":119,"draws":25,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1831 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1869
+CHECK PASS Review render health: svrn-entrance.png {"before":{"scene":"dsb","room":"svrn-society","frames":120,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":122,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1869 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-retail"]);__shoreline.advance(.3)
+DSB DONE 1886
+DSB STEP 1886 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1890
+CHECK PASS SVRN WebGL: svrn-retail {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":141,"draws":30,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1890 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1916
+CHECK PASS Review render health: svrn-retail.png {"before":{"scene":"dsb","room":"svrn-society","frames":141,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":143,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1916 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-collections"]);__shoreline.advance(.3)
+DSB DONE 1933
+DSB STEP 1933 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1937
+CHECK PASS SVRN WebGL: svrn-collections {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":162,"draws":34,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1937 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1966
+CHECK PASS Review render health: svrn-collections.png {"before":{"scene":"dsb","room":"svrn-society","frames":162,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":164,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1967 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-faith"]);__shoreline.advance(.3)
+DSB DONE 1983
+DSB STEP 1983 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1987
+CHECK PASS SVRN WebGL: svrn-faith {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":183,"draws":38,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1987 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2016
+CHECK PASS Review render health: svrn-faith.png {"before":{"scene":"dsb","room":"svrn-society","frames":183,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":185,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2016 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-hats"]);__shoreline.advance(.3)
+DSB DONE 2033
+DSB STEP 2034 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2036
+CHECK PASS SVRN WebGL: svrn-hats {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":204,"draws":42,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2036 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2067
+CHECK PASS Review render health: svrn-hats.png {"before":{"scene":"dsb","room":"svrn-society","frames":204,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":206,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2067 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-kiosk"]);__shoreline.advance(.3)
+DSB DONE 2086
+DSB STEP 2086 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2089
+CHECK PASS SVRN WebGL: svrn-kiosk {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":225,"draws":46,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2089 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2117
+CHECK PASS Review render health: svrn-kiosk.png {"before":{"scene":"dsb","room":"svrn-society","frames":225,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":227,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2117 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-lounge"]);__shoreline.advance(.3)
+DSB DONE 2135
+DSB STEP 2135 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2137
+CHECK PASS SVRN WebGL: svrn-lounge {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":246,"draws":50,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2138 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2167
+CHECK PASS Review render health: svrn-lounge.png {"before":{"scene":"dsb","room":"svrn-society","frames":246,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":248,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2167 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-wide"]);__shoreline.advance(.3)
+DSB DONE 2183
+DSB STEP 2183 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2186
+CHECK PASS SVRN WebGL: svrn-wide {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":267,"draws":54,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3,"timing":{"boot":320,"renderer":332,"ready":1079,"frame1":1079,"drawn":1170,"frame2":1264,"frame3":1283},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2186 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2216
+CHECK PASS Review render health: svrn-wide.png {"before":{"scene":"dsb","room":"svrn-society","frames":267,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":269,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+CHECK PASS dsb shoreline SVRN visual review: clean console 2.2s 
+DSB STEP 33 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 67
+DSB STEP 110 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 110
+DSB STEP 153 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 154
+DSB STEP 196 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 197
+DSB STEP 239 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 240
+DSB STEP 281 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 282
+DSB STEP 324 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 324
+DSB STEP 366 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1233
+DSB STEP 1275 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1278
+DSB STEP 1320 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1321
+DSB STEP 1364 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1365
+DSB STEP 1407 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1410
+DSB STEP 1452 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1453
+DSB STEP 1453 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1454
+DSB STEP 1454 (()=>{const V=__ooga.dsb.vacancies;return {count:V.properties.length,signs:V.group.children.length,ids:V.properties.map(p=>p.address.number),texts:V.p
+DSB DONE 1460
+CHECK PASS Vacancy browser: 35 registered signs are attached to the visible exterior {"count":35,"signs":35,"ids":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35],"texts":true,"visible":true}
+DSB STEP 1460 __ooga.pilot.goPreset("vac-overview");__shoreline.advance(.3)
+DSB DONE 1507
+DSB STEP 1507 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1514
+CHECK PASS Vacancy browser: vac-overview draws with healthy WebGL {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":34,"draws":16,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3.800000011920929,"timing":{"boot":322,"renderer":335,"ready":1121,"frame1":1122,"drawn":1212,"frame2":1239,"frame3":1257},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+DSB STEP 1514 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1543
+CHECK PASS Review render health: vac-overview.png {"before":{"scene":"dsb","room":null,"frames":35,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":37,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1543 __ooga.pilot.goPreset("vac-lower");__shoreline.advance(.3)
+DSB DONE 1590
+DSB STEP 1590 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1596
+CHECK PASS Vacancy browser: vac-lower draws with healthy WebGL {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":56,"draws":21,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3.800000011920929,"timing":{"boot":322,"renderer":335,"ready":1121,"frame1":1122,"drawn":1212,"frame2":1239,"frame3":1257},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+DSB STEP 1596 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1626
+CHECK PASS Review render health: vac-lower.png {"before":{"scene":"dsb","room":null,"frames":57,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":59,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1626 __ooga.pilot.goPreset("vac-central");__shoreline.advance(.3)
+DSB DONE 1669
+DSB STEP 1669 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1675
+CHECK PASS Vacancy browser: vac-central draws with healthy WebGL {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":78,"draws":26,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3.800000011920929,"timing":{"boot":322,"renderer":335,"ready":1121,"frame1":1122,"drawn":1212,"frame2":1239,"frame3":1257},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+DSB STEP 1675 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1710
+CHECK PASS Review render health: vac-central.png {"before":{"scene":"dsb","room":null,"frames":79,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":81,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1710 __ooga.pilot.goPreset("vac-upper");__shoreline.advance(.3)
+DSB DONE 1742
+DSB STEP 1742 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1747
+CHECK PASS Vacancy browser: vac-upper draws with healthy WebGL {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":100,"draws":31,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3.800000011920929,"timing":{"boot":322,"renderer":335,"ready":1121,"frame1":1122,"drawn":1212,"frame2":1239,"frame3":1257},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+DSB STEP 1748 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1776
+CHECK PASS Review render health: vac-upper.png {"before":{"scene":"dsb","room":null,"frames":101,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":103,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1776 __ooga.pilot.goPreset("vac-windmills");__shoreline.advance(.3)
+DSB DONE 1804
+DSB STEP 1804 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1809
+CHECK PASS Vacancy browser: vac-windmills draws with healthy WebGL {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":122,"draws":36,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":3.800000011920929,"timing":{"boot":322,"renderer":335,"ready":1121,"frame1":1122,"drawn":1212,"frame2":1239,"frame3":1257},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+DSB STEP 1809 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1843
+CHECK PASS Review render health: vac-windmills.png {"before":{"scene":"dsb","room":null,"frames":123,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":125,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+CHECK PASS dsb shoreline vacancy review: clean console 1.8s 
+DSB STEP 28 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 41
+DSB STEP 97 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 98
+DSB STEP 141 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 142
+DSB STEP 183 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 184
+DSB STEP 226 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 227
+DSB STEP 268 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 268
+DSB STEP 310 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 362 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1238
+DSB STEP 1280 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1281
+DSB STEP 1323 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1324
+DSB STEP 1366 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1369
+DSB STEP 1411 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1412
+DSB STEP 1453 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1455
+DSB STEP 1455 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1456
+DSB STEP 1456 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1458
+DSB STEP 1458 new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))
+DSB DONE 1486
+DSB STEP 1486 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1487
+CHECK PASS DSB shoreline browser: WebGL startup draws and advances without API errors or pixel readback {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":16,"draws":15,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5,"timing":{"boot":302,"renderer":314,"ready":1065,"frame1":1065,"drawn":1154,"frame2":1248,"frame3":1267},"initialized":true,"capacity":24,"nodes":136,"records":360,"textures":2}
+DSB STEP 1488 __shoreline.advance(.25)
+DSB DONE 1520
+DSB STEP 1520 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1525
+CHECK PASS DSB shoreline browser: startup retains fixed water resources and GPU record count {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":32,"draws":17,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5,"timing":{"boot":302,"renderer":314,"ready":1065,"frame1":1065,"drawn":1154,"frame2":1248,"frame3":1267},"initialized":true,"capacity":24,"nodes":136,"records":360,"textures":2}
+DSB STEP 1525 (()=>{const B=__ooga,D=B.dsb;return {kind:B.renderer.kind,impulses:D.waterInteraction.stats.capacity,height:D.avatar.bodyHeight,mean:D.water.geometry.
+DSB DONE 1529
+CHECK PASS DSB shoreline browser: shader compiles and approved water surface is retained {"kind":"webgl2","impulses":24,"height":1.3699260351582092,"mean":-0.3}
+DSB STEP 1531 (()=>{const W=__ooga.dsb.waterInteraction,start={...W.stats},seen={player:false,drawn:false,wakes:0,splashes:0,maxActive:0};let wakes=start.wakes,spla
+DSB DONE 3581
+DSB STEP 3585 ({stats:{...__ooga.dsb.waterInteraction.stats},z:__ooga.dsb.avatar.root.position.z,camera:__ooga.camera.position.y})
+DSB DONE 3590
+CHECK PASS DSB shoreline browser: keyboard reaches safe head depth with ripples and responsive surface camera {"deep":{"stats":{"capacity":24,"active":0,"player":0,"impacts":0,"emitted":15,"splashes":2,"wakes":5,"depth":1.1998785896242117,"immersion":0.8758710753939652,"speed":0.37280208827595906,"velocity":0,"tier":"low","swash":14,"contacts":12,"streaks":10},"z":87.51116678304123,"camera":0.29935841491470805},"moving":{"player":true,"drawn":true,"wakes":5,"splashes":2,"maxActive":5,"emitted":13}}
+CHECK PASS DSB shoreline browser: movement emits player impulses, wakes and shallow splashes within the fixed budget {"player":true,"drawn":true,"wakes":5,"splashes":2,"maxActive":5,"emitted":13}
+DSB STEP 3590 __shoreline.advance(30)
+DSB DONE 6077
+DSB STEP 6081 __ooga.dsb.waterInteraction.stats.depth===0&&__ooga.dsb.avatar.root.position.z<76
+DSB DONE 6082
+CHECK PASS DSB shoreline browser: reverse input returns to dry land 
+DSB STEP 6082 (()=>{const W=__ooga.dsb.waterInteraction;__shoreline.until(()=>W.stats.player===0,3);return {depth:W.stats.depth,player:W.stats.player,hidden:W.impul
+DSB DONE 6082
+CHECK PASS DSB shoreline browser: player ripples expire normally after returning to shore {"depth":0,"player":0,"hidden":true,"capacity":24}
+DSB STEP 6083 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 6084
+CHECK PASS DSB shoreline browser: playthrough retains WebGL2 with no API error, shader failure or context loss {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":3276,"draws":75,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5,"timing":{"boot":302,"renderer":314,"ready":1065,"frame1":1065,"drawn":1154,"frame2":1248,"frame3":1267},"initialized":true,"capacity":24,"nodes":136,"records":360,"textures":2}
+CHECK PASS dsb shoreline checkpoint wading: clean console 6.1s 
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 94 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 95
+DSB STEP 136 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 180
+DSB STEP 222 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 266
+DSB STEP 308 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 309
+DSB STEP 351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 399 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1281
+DSB STEP 1322 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1323
+DSB STEP 1365 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1366
+DSB STEP 1408 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1409
+DSB STEP 1451 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1452
+DSB STEP 1492 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1493
+DSB STEP 1493 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1499
+DSB STEP 1499 (()=>{const B=__ooga,D=B.dsb,W=D.waterInteraction,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},y
+DSB DONE 1703
+CHECK PASS DSB shoreline browser: noon has finite water and bounded waterfall impacts {"stats":{"capacity":24,"active":5,"player":0,"impacts":5,"emitted":10,"splashes":0,"wakes":0,"depth":0,"immersion":0,"speed":1,"velocity":0,"tier":"low","swash":14,"contacts":12,"streaks":10},"visible":true,"finite":true,"maxActive":5,"light":"clear","nodes":136}
+DSB STEP 1703 (()=>{const B=__ooga,D=B.dsb,W=D.waterInteraction,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},y
+DSB DONE 1864
+CHECK PASS DSB shoreline browser: golden has finite water and bounded waterfall impacts {"stats":{"capacity":24,"active":5,"player":0,"impacts":5,"emitted":15,"splashes":0,"wakes":0,"depth":0,"immersion":0,"speed":1,"velocity":0,"tier":"low","swash":14,"contacts":12,"streaks":10},"visible":true,"finite":true,"maxActive":5,"light":"clear","nodes":136}
+DSB STEP 1864 (()=>{const B=__ooga,D=B.dsb,W=D.waterInteraction,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},y
+DSB DONE 2021
+CHECK PASS DSB shoreline browser: night has finite water and bounded waterfall impacts {"stats":{"capacity":24,"active":5,"player":0,"impacts":5,"emitted":22,"splashes":0,"wakes":0,"depth":0,"immersion":0,"speed":1,"velocity":0,"tier":"low","swash":14,"contacts":12,"streaks":10},"visible":true,"finite":true,"maxActive":5,"light":"clear","nodes":136}
+DSB STEP 2021 (()=>{const B=__ooga,D=B.dsb,W=D.waterInteraction,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},y
+DSB DONE 2195
+CHECK PASS DSB shoreline browser: rain has finite water and bounded waterfall impacts {"stats":{"capacity":24,"active":5,"player":0,"impacts":5,"emitted":28,"splashes":0,"wakes":0,"depth":0,"immersion":0,"speed":1,"velocity":0,"tier":"low","swash":14,"contacts":12,"streaks":10},"visible":true,"finite":true,"maxActive":5,"light":"rain","nodes":136}
+DSB STEP 2195 (()=>{const B=__ooga,D=B.dsb,W=D.waterInteraction,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},y
+DSB DONE 2358
+CHECK PASS DSB shoreline browser: storm has finite water and bounded waterfall impacts {"stats":{"capacity":24,"active":5,"player":0,"impacts":5,"emitted":34,"splashes":0,"wakes":0,"depth":0,"immersion":0,"speed":1,"velocity":0,"tier":"low","swash":14,"contacts":12,"streaks":10},"visible":true,"finite":true,"maxActive":5,"light":"storm","nodes":136}
+DSB STEP 2358 (()=>{const D=__ooga.dsb,O=D.olympus,L=D.land,A=D.avatar;let blocked=0;for(let i=1;i<L.trail.length;i++){const a=L.trail[i-1],b=L.trail[i];if(!L.walka
+DSB DONE 2362
+CHECK PASS DSB shoreline browser: Sacred Way, both bridges, seven preserved venues plus SVRN and deep rear Olympus remain intact {"blocked":0,"bridges":2,"rear":-5,"milestones":["meme-factory","dsb-studio","maxis-club","without-rulers","proof-of-ink","big-bitcoin","stackchain-magazine","svrn-society"]}
+DSB STEP 2362 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 2370
+CHECK PASS DSB shoreline browser: playthrough retains WebGL2 with no API error, shader failure or context loss {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":620,"draws":29,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":2.800000011920929,"timing":{"boot":337,"renderer":350,"ready":1105,"frame1":1106,"drawn":1197,"frame2":1292,"frame3":1311},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+CHECK PASS dsb shoreline checkpoint weather: clean console 2.4s 
+DSB STEP 43 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 55
+DSB STEP 101 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 102
+DSB STEP 142 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 143
+DSB STEP 186 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 186
+DSB STEP 227 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 228
+DSB STEP 270 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 270
+DSB STEP 312 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 313
+DSB STEP 355 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1311
+DSB STEP 1353 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1356
+DSB STEP 1398 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1402
+DSB STEP 1443 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1444
+DSB STEP 1486 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1487
+DSB STEP 1529 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1534
+DSB STEP 1534 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1535
+DSB STEP 1535 (()=>{const B=__ooga,D=B.dsb,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},yaw:1.05,pitch:.4,dist
+DSB DONE 1774
+DSB STEP 1775 ({nodes:__ooga.dsb.waterInteraction.group.children.length,records:__ooga.renderer.stats.records})
+DSB DONE 1778
+DSB STEP 1779 (()=>{window.__oldWater=__ooga.dsb.waterInteraction;window.__oldEntrance=__ooga.dsb.entrance;
+      __ooga.go("bifrost",null,true);__shoreline.until((
+DSB DONE 2316
+DSB STEP 2467 __shoreline.until(()=>__ooga.dsb.entrance?.phase==="done"&&__ooga.dsb.exterior.visible&&!__ooga.transitioning)
+DSB DONE 2625
+DSB STEP 2631 __shoreline.advance(.25)
+DSB DONE 2661
+DSB STEP 2661 (()=>{const D=__ooga.dsb;return {cleared:__oldWater!==D.waterInteraction&&__oldWater.group.children.length===0&&__oldWater.stats.active===0&&(!__oldEn
+DSB DONE 2665
+CHECK PASS DSB shoreline browser: Portara scene trip 0 releases effects and creates a clean bounded visit {"tunnel":{"bifrost":"bifrost","phase":"tunnel","progress":0,"exterior":false,"textures":0},"seconds":24,"cleared":true,"phase":"done","progress":1,"exterior":true,"water":true,"active":true,"nodes":136,"capacity":24,"depth":0,"textures":2,"records":377}
+DSB STEP 2665 (()=>{window.__oldWater=__ooga.dsb.waterInteraction;window.__oldEntrance=__ooga.dsb.entrance;
+      __ooga.go("bifrost",null,true);__shoreline.until((
+DSB DONE 3048
+DSB STEP 3050 __shoreline.until(()=>__ooga.dsb.entrance?.phase==="done"&&__ooga.dsb.exterior.visible&&!__ooga.transitioning)
+DSB DONE 3189
+DSB STEP 3193 __shoreline.advance(.25)
+DSB DONE 3221
+DSB STEP 3221 (()=>{const D=__ooga.dsb;return {cleared:__oldWater!==D.waterInteraction&&__oldWater.group.children.length===0&&__oldWater.stats.active===0&&(!__oldEn
+DSB DONE 3224
+CHECK PASS DSB shoreline browser: Portara scene trip 1 releases effects and creates a clean bounded visit {"tunnel":{"bifrost":"bifrost","phase":"tunnel","progress":0,"exterior":false,"textures":0},"seconds":24,"cleared":true,"phase":"done","progress":1,"exterior":true,"water":true,"active":true,"nodes":136,"capacity":24,"depth":0,"textures":2,"records":377}
+CHECK PASS DSB shoreline browser: completed re-entry retains identical renderer records, water nodes and textures [{"tunnel":{"bifrost":"bifrost","phase":"tunnel","progress":0,"exterior":false,"textures":0},"seconds":24,"cleared":true,"phase":"done","progress":1,"exterior":true,"water":true,"active":true,"nodes":136,"capacity":24,"depth":0,"textures":2,"records":377},{"tunnel":{"bifrost":"bifrost","phase":"tunnel","progress":0,"exterior":false,"textures":0},"seconds":24,"cleared":true,"phase":"done","progress":1,"exterior":true,"water":true,"active":true,"nodes":136,"capacity":24,"depth":0,"textures":2,"records":377}]
+DSB STEP 3224 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 3231
+CHECK PASS DSB shoreline browser: playthrough retains WebGL2 with no API error, shader failure or context loss {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":3299,"draws":84,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":75.59999996423721,"timing":{"boot":333,"renderer":346,"ready":1133,"frame1":1134,"drawn":1223,"frame2":1322,"frame3":1340},"initialized":true,"capacity":24,"nodes":136,"records":377,"textures":2}
+CHECK PASS dsb shoreline checkpoint reentry: clean console 3.2s 
+DSB STEP 47 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 61
+DSB STEP 103 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 104
+DSB STEP 146 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 147
+DSB STEP 189 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 190
+DSB STEP 232 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 233
+DSB STEP 275 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 276
+DSB STEP 318 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 318
+DSB STEP 361 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1321
+DSB STEP 1362 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1363
+DSB STEP 1405 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1406
+DSB STEP 1447 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1453
+DSB STEP 1495 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1496
+DSB STEP 1538 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1539
+DSB STEP 1539 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1539
+DSB STEP 1539 __ooga.pilot.navigate({position:{x:-43,y:__ooga.dsb.land.groundAt(-43,38),z:38},yaw:Math.PI,pitch:.16,dist:5});__shoreline.advance(.1)
+DSB DONE 1556
+DSB STEP 1560 __shoreline.until(()=>__ooga.dsb.avatar.root.position.z>=57.6,20)
+DSB DONE 2043
+DSB STEP 2048 (()=>{const B=__ooga,D=B.dsb,A=D.avatar,p=A.root.position;return {x:p.x,z:p.z,feet:p.y-A.baseY,support:D.interiors.groundAt(p.x,p.z),depth:D.waterInte
+DSB DONE 2052
+CHECK PASS DSB pier browser -43: shore input reaches the deck end with dry footing above deep harbor water {"x":-43.01434472268799,"z":57.75041194416734,"feet":1.35,"support":1.35,"depth":0,"speed":1,"camera":3.1492370045389197,"bed":-5,"optics":5.449063378634619,"offEdge":false}
+DSB STEP 2053 __shoreline.until(()=>__ooga.dsb.avatar.root.position.z<38.2,20)
+DSB DONE 2324
+DSB STEP 2327 ({z:__ooga.dsb.avatar.root.position.z,depth:__ooga.dsb.waterInteraction.stats.depth})
+DSB DONE 2328
+CHECK PASS DSB pier browser -43: reverse input returns ashore {"z":34.58398006031448,"depth":0}
+DSB STEP 2328 __ooga.pilot.navigate({position:{x:-34,y:__ooga.dsb.land.groundAt(-34,38),z:38},yaw:Math.PI,pitch:.16,dist:5});__shoreline.advance(.1)
+DSB DONE 2342
+DSB STEP 2345 __shoreline.until(()=>__ooga.dsb.avatar.root.position.z>=57.6,20)
+DSB DONE 2611
+DSB STEP 2615 (()=>{const B=__ooga,D=B.dsb,A=D.avatar,p=A.root.position;return {x:p.x,z:p.z,feet:p.y-A.baseY,support:D.interiors.groundAt(p.x,p.z),depth:D.waterInte
+DSB DONE 2616
+CHECK PASS DSB pier browser -34: shore input reaches the deck end with dry footing above deep harbor water {"x":-34.01434472268799,"z":57.75041194416734,"feet":1.35,"support":1.35,"depth":0,"speed":1,"camera":3.1492370045389197,"bed":-5,"optics":5.588994223769011,"offEdge":false}
+DSB STEP 2616 __shoreline.until(()=>__ooga.dsb.avatar.root.position.z<38.2,20)
+DSB DONE 2870
+DSB STEP 2873 ({z:__ooga.dsb.avatar.root.position.z,depth:__ooga.dsb.waterInteraction.stats.depth})
+DSB DONE 2874
+CHECK PASS DSB pier browser -34: reverse input returns ashore {"z":34.58398006031448,"depth":0}
+DSB STEP 2874 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 2875
+CHECK PASS DSB pier browser: revised sea shader and supported harbor retain healthy WebGL and bounded effects {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":753,"draws":34,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":2.800000011920929,"timing":{"boot":337,"renderer":350,"ready":1139,"frame1":1140,"drawn":1231,"frame2":1332,"frame3":1351},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2}
+CHECK PASS dsb shoreline pier access: clean console 2.9s 
+DSB STEP 48 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 50
+DSB STEP 104 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 104
+DSB STEP 147 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 147
+DSB STEP 190 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 191
+DSB STEP 233 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 234
+DSB STEP 276 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 277
+DSB STEP 318 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 319
+DSB STEP 363 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1336
+DSB STEP 1377 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1378
+DSB STEP 1421 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1421
+DSB STEP 1463 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1464
+DSB STEP 1506 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1507
+DSB STEP 1549 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1555
+DSB STEP 1555 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1556
+DSB STEP 1556 (()=>{const B=__ooga,D=B.dsb,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},yaw:1.05,pitch:.4,dist
+DSB DONE 1593
+DSB STEP 1593 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1599
+DSB STEP 1599 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1621
+CHECK PASS Review render health: waterfall-noon.png {"before":{"scene":"dsb","room":null,"frames":31,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":360},"live":{"scene":"dsb","room":null,"frames":33,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":360}}
+DSB STEP 1621 (()=>{const B=__ooga,D=B.dsb,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},yaw:1.05,pitch:.4,dist
+DSB DONE 1653
+DSB STEP 1654 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1658
+DSB STEP 1658 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1687
+CHECK PASS Review render health: waterfall-golden.png {"before":{"scene":"dsb","room":null,"frames":50,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":360},"live":{"scene":"dsb","room":null,"frames":52,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":360}}
+DSB STEP 1688 (()=>{const B=__ooga,D=B.dsb,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},yaw:1.05,pitch:.4,dist
+DSB DONE 1719
+DSB STEP 1719 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1724
+DSB STEP 1724 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1754
+CHECK PASS Review render health: waterfall-night.png {"before":{"scene":"dsb","room":null,"frames":69,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":360},"live":{"scene":"dsb","room":null,"frames":71,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":360}}
+DSB STEP 1754 (()=>{const B=__ooga,D=B.dsb,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},yaw:1.05,pitch:.4,dist
+DSB DONE 1790
+DSB STEP 1790 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1795
+DSB STEP 1795 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1822
+CHECK PASS Review render health: waterfall-rain.png {"before":{"scene":"dsb","room":null,"frames":88,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":90,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1822 (()=>{const B=__ooga,D=B.dsb,f=D.olympus.impacts[0];B.pilot.navigate({position:{x:f.x+5,y:D.land.heightAt(f.x+5,f.z+3),z:f.z+3},yaw:1.05,pitch:.4,dist
+DSB DONE 1845
+DSB STEP 1845 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1849
+DSB STEP 1849 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1871
+CHECK PASS Review render health: waterfall-storm.png {"before":{"scene":"dsb","room":null,"frames":106,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":108,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+CHECK PASS dsb shoreline visual evidence: clean console 1.9s 
+DSB STEP 39 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 40
+DSB STEP 95 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 95
+DSB STEP 138 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 138
+DSB STEP 181 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 181
+DSB STEP 223 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 224
+DSB STEP 266 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 267
+DSB STEP 309 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 310
+DSB STEP 352 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1254
+DSB STEP 1296 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1300
+DSB STEP 1342 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1343
+DSB STEP 1384 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1385
+DSB STEP 1425 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1426
+DSB STEP 1467 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1469
+DSB STEP 1469 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1469
+DSB STEP 1470 (()=>{const B=__ooga,D=B.dsb;B.pilot.navigate({position:{x:20,y:D.land.groundAt(20,76),z:76},yaw:3.141592653589793,pitch:0.22,dist:9});B.daylight.read
+DSB DONE 1505
+DSB STEP 1506 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1511
+DSB STEP 1511 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1535
+CHECK PASS Review render health: coast-beach.png {"before":{"scene":"dsb","room":null,"frames":31,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":33,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1535 (()=>{const B=__ooga,D=B.dsb;B.pilot.navigate({position:{x:72,y:D.land.groundAt(72,45),z:45},yaw:-1.1,pitch:0.25,dist:16});B.daylight.read=()=>12;B.da
+DSB DONE 1569
+DSB STEP 1569 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1574
+DSB STEP 1574 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1601
+CHECK PASS Review render health: coast-rocks.png {"before":{"scene":"dsb","room":null,"frames":50,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":52,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1601 (()=>{const B=__ooga,D=B.dsb;B.pilot.navigate({position:{x:-39,y:D.land.groundAt(-39,42),z:42},yaw:0.5,pitch:0.42,dist:38});B.daylight.read=()=>12;B.d
+DSB DONE 1634
+DSB STEP 1634 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1640
+DSB STEP 1640 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1667
+CHECK PASS Review render health: coast-harbor.png {"before":{"scene":"dsb","room":null,"frames":69,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":71,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1667 (()=>{const B=__ooga,D=B.dsb;B.pilot.navigate({position:{x:-43,y:D.land.groundAt(-43,46),z:46},yaw:3.141592653589793,pitch:0.16,dist:5});B.daylight.re
+DSB DONE 1701
+DSB STEP 1701 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1706
+DSB STEP 1706 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1733
+CHECK PASS Review render health: coast-pier-west.png {"before":{"scene":"dsb","room":null,"frames":88,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":90,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1734 (()=>{const B=__ooga,D=B.dsb;B.pilot.navigate({position:{x:-34,y:D.land.groundAt(-34,46),z:46},yaw:3.141592653589793,pitch:0.16,dist:5});B.daylight.re
+DSB DONE 1757
+DSB STEP 1757 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1761
+DSB STEP 1761 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1783
+CHECK PASS Review render health: coast-pier-east.png {"before":{"scene":"dsb","room":null,"frames":106,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":108,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1783 (()=>{const B=__ooga,D=B.dsb;B.pilot.navigate({position:{x:-39,y:D.land.groundAt(-39,42),z:42},yaw:0.5,pitch:0.42,dist:38});B.daylight.read=()=>23;B.d
+DSB DONE 1807
+DSB STEP 1807 (() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl?.getExtension
+DSB DONE 1812
+DSB STEP 1812 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1851
+CHECK PASS Review render health: coast-harbor-night-rain.png {"before":{"scene":"dsb","room":null,"frames":125,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":362},"live":{"scene":"dsb","room":null,"frames":127,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":362}}
+CHECK PASS dsb shoreline coast visual evidence: clean console 1.9s 
+
+269/269 checks passed in 0.8 min

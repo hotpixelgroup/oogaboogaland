@@ -1,0 +1,810 @@
+DSB STEP 41 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 53
+DSB STEP 95 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 96
+DSB STEP 138 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 139
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 181
+DSB STEP 256 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 275
+DSB STEP 320 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 322
+DSB STEP 365 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 367
+DSB STEP 410 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 410
+DSB STEP 452 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 503 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 955
+DSB STEP 997 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 998
+DSB STEP 1040 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1045
+DSB STEP 1087 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1088
+DSB STEP 1130 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1131
+DSB STEP 1173 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1183
+DSB STEP 1183 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1184
+DSB STEP 1184 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1208
+DSB STEP 1211 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1447
+DSB STEP 1451 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1460
+DSB STEP 1460 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1461
+DSB STEP 1461 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1786
+DSB STEP 1787 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1810
+DSB STEP 1811 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1819
+DSB STEP 1819 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1820
+DSB STEP 1820 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 2171
+DSB STEP 2172 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2190
+DSB STEP 2191 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2514
+DSB STEP 2514 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 2518
+DSB STEP 2518 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 2535
+DSB STEP 2536 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2552
+DSB STEP 2553 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2559
+DSB STEP 2559 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 2560
+DSB STEP 2560 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 2575
+DSB STEP 2576 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2716
+DSB STEP 2717 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2724
+DSB STEP 2724 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 2724
+DSB STEP 2724 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 3476
+DSB STEP 3478 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3501
+DSB STEP 3502 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3510
+DSB STEP 3510 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 3511
+DSB STEP 3511 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 3524
+DSB STEP 3525 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3540
+DSB STEP 3540 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3989
+DSB STEP 3989 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 3991
+DSB STEP 3991 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 4005
+DSB STEP 4006 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4019
+DSB STEP 4038 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 4044
+DSB STEP 4044 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 4045
+CHECK PASS factory walking: W A S D walk the visitor's Ooga away, left, back and right on screen on the forge floor from two camera angles {"0 w":{"ok":true,"right":0,"fwd":4.65},"0 a":{"ok":true,"right":-3.87,"fwd":0},"0 s":{"ok":true,"right":0,"fwd":-3.87},"0 d":{"ok":true,"right":3.87,"fwd":0},"2.2 w":{"ok":true,"right":0,"fwd":3.87},"2.2 a":{"ok":true,"right":-4.65,"fwd":0},"2.2 s":{"ok":true,"right":-0.12,"fwd":-3.79},"2.2 d":{"ok":true,"right":2.5,"fwd":0.06}}
+DSB STEP 4045 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl"), F = BL.factoryModels;
+    if (B.crew.player !== a) B.pilot.possess(a);
+    B.pilot.n
+DSB DONE 6938
+CHECK PASS factory stair backs: jumping beneath the high end stops at the underside and walking toward the low end stops before entering the stairs, without lifting onto their treads {"ceiling":3.608888888888889,"peak":2.545309840309465,"z":16.060416666666566,"feet":0,"clear":true}
+DSB STEP 6939 (() => {
+    const B = __ooga, a = B.crew.player, F = BL.factoryModels, d = F.LAYOUT.rebalancer;
+    const key = (name, down) => window.dispatchEvent(
+DSB DONE 8073
+CHECK PASS factory rebalancer: walk onto and off the low drum; a shallow console overlap allows walking out while deeper movement stays blocked {"height":2.5,"onto":1.485416666666664,"peak":3.059999942779541,"off":2.5,"overlapped":true,"inwardBlocked":true,"escaped":0.5166666666666675,"clear":true,"grounded":true}
+CHECK PASS factory walking: clean console 8.1s 
+DSB STEP 8073 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl");
+    if (B.crew.player !== a) B.pilot.possess(a);
+    B.pilot.navigate({ position: { 
+DSB DONE 8083
+DSB STEP 8086 (() => ({ open: !document.querySelector(".greeter-menu").hidden,
+    choices: document.querySelectorAll(".greeter-choice").length, phase: __ooga.facto
+DSB DONE 8087
+DSB STEP 8087 __ooga.factory.greeter.state.selection
+DSB DONE 8088
+DSB STEP 8088 (() => ({ scene: __ooga.scene, hidden: document.querySelector(".greeter-menu").hidden }))()
+DSB DONE 8089
+DSB STEP 8090 (() => ({ phase: __ooga.factory.greeter.state.phase,
+    tour: __ooga.factory.greeter.state.tour, stop: !document.querySelector(".greeter-stop").hidde
+DSB DONE 8094
+DSB STEP 8094 (() => {
+    document.querySelector(".greeter-stop").click(); __ooga.advance(0.5, 1 / 60);
+    return { phase: __ooga.factory.greeter.state.phase, sce
+DSB DONE 8605
+CHECK PASS factory greeter: the act button opens four tours, arrows select, Escape closes the menu, and End tour returns Flink without leaving the cave {"near":{"label":"TALK TO FLINK","scene":"factory"},"menu":{"open":true,"choices":4,"phase":"menu"},"selected":1,"dismissed":{"scene":"factory","hidden":true},"started":{"phase":"walk","tour":"payments","stop":true},"ended":{"phase":"idle","scene":"factory"}}
+CHECK PASS factory greeter: clean console 8.6s 
+DSB STEP 8605 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl"), F = BL.factoryModels, rows = [];
+    if (B.crew.player !== a) B.pilot.possess(a);
+  
+DSB DONE 12659
+CHECK PASS factory ladders: both climbs hold at rest, cross the lip continuously, descend without reversal and walk away at the bottom; Space jumps off {"rows":[{"mounted":true,"paused":true,"hold":0,"maxStep":0.12916666666666643,"top":2.5,"upperSupport":2.5,"upperClear":true,"descending":true,"rose":false,"bottom":0,"walkedAway":2.3249999999999957,"active":false,"expectedTop":2.5,"expectedBottom":0},{"mounted":true,"paused":true,"hold":0,"maxStep":0.12916666666666643,"top":2.5,"upperSupport":2.5,"upperClear":true,"descending":true,"rose":false,"bottom":0,"walkedAway":2.3249999999999957,"active":false,"expectedTop":2.5,"expectedBottom":0},{"mounted":true,"paused":true,"hold":0,"maxStep":0.12916666666666998,"top":2.5,"upperSupport":2.5,"upperClear":true,"descending":true,"rose":false,"bottom":0,"walkedAway":2.3250000000000597,"active":false,"expectedTop":2.5,"expectedBottom":0},{"mounted":true,"paused":true,"hold":0,"maxStep":0.12916666666666998,"top":21.15,"upperSupport":21.149999618530273,"upperClear":true,"descending":true,"rose":false,"bottom":15.5,"walkedAway":1.4208333333333698,"active":false,"expectedTop":21.15,"expectedBottom":15.5}],"jumped":{"attached":true,"detached":true,"rising":true,"outward":0.4479514556254891}}
+CHECK PASS factory ladders: clean console 12.7s 
+DSB STEP 12659 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl"), rows = [];
+    if (B.crew.player !== a) B.pilot.possess(a);
+    const key = (name, c
+DSB DONE 17739
+CHECK PASS factory railings: empty or partly used rifles jump off four platforms, land clear on the floor below and keep walking; falling over a channel tank also leaves movement clear {"scene":"factory","rows":[{"name":"balcony","ammo":0,"jumped":true,"crossed":true,"airborne":true,"feet":0,"floor":0,"landedBelow":true,"grounded":true,"clear":true,"walked":1.9375000000000497},{"name":"line C","ammo":7,"jumped":true,"crossed":true,"airborne":true,"feet":0,"floor":0,"landedBelow":true,"grounded":true,"clear":true,"walked":1.9374999999999964},{"name":"gallery","ammo":0,"jumped":true,"crossed":true,"airborne":true,"feet":0,"floor":0,"landedBelow":true,"grounded":true,"clear":true,"walked":1.9374999999999964},{"name":"watchtower","ammo":7,"jumped":true,"crossed":true,"airborne":true,"feet":0,"floor":0,"landedBelow":true,"grounded":true,"clear":true,"walked":1.9374999999999964}],"tankLanding":{"feet":0,"floor":0,"grounded":true,"clear":true,"walked":1.9374999999999964}}
+CHECK PASS factory railing jumps: clean console 17.7s 
+DSB STEP 17740 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl");
+    if (B.crew.player !== a) B.pilot.possess(a);
+    B.crew.configureWeapon(a, 1); B
+DSB DONE 17759
+CHECK PASS factory weapons: 1 and 2 and both HUD buttons select melee and rifle weapons without leaving the factory {"scene":"factory","meleeKey":true,"rifleKey":true,"visible":true,"meleeButton":true,"rifleButton":true,"centered":true}
+CHECK PASS factory weapons: the crosshair clears inherited birdseye coordinates and returns to the screen centre {"scene":"factory","meleeKey":true,"rifleKey":true,"visible":true,"meleeButton":true,"rifleButton":true,"centered":true}
+DSB STEP 17759 (() => {
+    const B = __ooga, P = B.pilot, a = P.player, reticle = document.getElementById("weapon-reticle"), rows = [];
+    const key = () => {
+    
+DSB DONE 19465
+CHECK PASS factory views: X and the mode button share mainland carry/combat behavior; zoom crosses birdseye, shoulder and first person without changing the held weapon or ammo, and close views center the crosshair {"carryKey":true,"combatKey":true,"carryButton":true,"combatButton":true,"rows":[{"slot":1,"overhead":true,"shoulder":true,"first":true,"returned":true,"held":true,"ammo":true},{"slot":2,"overhead":true,"shoulder":true,"first":true,"returned":true,"held":true,"ammo":true}]}
+DSB STEP 19465 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl"), s = B.factory.scene, rows = [];
+    const hum = s.tunnels.map(t => t.hum), gateHum =
+DSB DONE 20498
+CHECK PASS factory banana impacts: actual rifle rounds create one bounded ripple on each of the four peer mirrors and on the exit shield [{"i":0,"fired":true,"hits":1,"active":1,"bounded":true},{"i":1,"fired":true,"hits":1,"active":1,"bounded":true},{"i":2,"fired":true,"hits":1,"active":1,"bounded":true},{"i":3,"fired":true,"hits":1,"active":1,"bounded":true},{"i":4,"fired":true,"hits":1,"active":1,"bounded":true}]
+CHECK PASS factory weapon selection: clean console 20.5s 
+DSB STEP 20498 (() => { const B = window.__ooga; const F = window.BL.factoryFeed, X = window.__ooga.factory, stamp = () => { const d = new Date(); d.setUTCSeconds(0,
+DSB DONE 20760
+CHECK PASS factory forward: a large forward's stream rides in along its line's conduit, surges the node and rides out along the other line's to light it; a failed one comes back along its own and sputters the line it was bound for {"sent":true,"big":{"inbound":10,"outbound":10,"backOnFrom":0,"onTo":10,"surged":true,"sputtered":false,"flashTo":0,"left":0},"failedSent":true,"failed":{"inbound":1,"outbound":0,"backOnFrom":1,"onTo":0,"surged":false,"sputtered":true,"flashTo":0,"left":0}}
+CHECK PASS factory forward: clean console 20.8s 
+DSB STEP 20760 (() => { const B = window.__ooga; const F = window.BL.factoryFeed, X = window.__ooga.factory, stamp = () => { const d = new Date(); d.setUTCSeconds(0,
+DSB DONE 22431
+CHECK PASS factory forge: a large channel's opening sends two carts up the chain's shaft that the forge takes with a gold flash each, and a close mints a coin on a cyan flash that rolls down the other shaft {"opened":true,"inDone":{"carts":2,"flashes":2,"rising":true,"waiting":0,"out":0},"closed":true,"minted":true,"rolled":true,"cyan":true,"sunk":true,"coinGone":true}
+CHECK PASS factory forge: clean console 22.4s 
+DSB STEP 22431 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl"), tunnels = B.factory.scene.tunnels, rows = [];
+    if (B.crew.player !== a) B.pilot.p
+DSB DONE 24476
+CHECK PASS factory peer portals: all four mirrors outline contact, cross at central and off-centre positions into clear space, preserve offsets and camera distance, continue walking without bounce and allow a return; an airborne crossing keeps its jump {"scene":"factory","rows":[{"i":0,"offset":0.35,"contacts":1,"start":{"across":0.34999999999999964,"along":0.5,"feet":0},"crossed":true,"before":{"across":0.34999999999999964,"along":0.5,"feet":0},"after":{"across":-0.34999999999999964,"along":0.5291659037272183,"feet":0},"cameraChange":0,"air":false,"clearExit":true,"exit":{"across":-0.34999999999999964,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":1,"offset":-0.35,"contacts":1,"start":{"across":-0.34999999999999964,"along":0.5,"feet":0},"crossed":true,"before":{"across":-0.34999999999999964,"along":0.5,"feet":0},"after":{"across":0.34999999999999964,"along":0.5291659037272183,"feet":0.07727777777777867},"cameraChange":0,"air":true,"clearExit":true,"exit":{"across":0.34999999999999964,"along":2.079165903727258,"feet":0.7922777777777785},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":2,"offset":0.35,"contacts":1,"start":{"across":0.35000000000000014,"along":0.5,"feet":0},"crossed":true,"before":{"across":0.35000000000000014,"along":0.5,"feet":0},"after":{"across":-0.35000000000000014,"along":0.5291659037272183,"feet":0},"cameraChange":0,"air":false,"clearExit":true,"exit":{"across":-0.3500000000000002,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":3,"offset":-0.35,"contacts":1,"start":{"across":-0.35000000000000014,"along":0.5,"feet":0},"crossed":true,"before":{"across":-0.35000000000000014,"along":0.5,"feet":0},"after":{"across":0.35000000000000014,"along":0.5291659037272183,"feet":0},"cameraChange":8.881784197001252e-16,"air":false,"clearExit":true,"exit":{"across":0.3500000000000002,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":0,"offset":1.35,"contacts":1,"start":{"across":1.3499999999999996,"along":0.5,"feet":0},"crossed":true,"before":{"across":1.3499999999999996,"along":0.5,"feet":0},"after":{"across":-1.3499999999999996,"along":0.5291659037272183,"feet":0},"cameraChange":0,"air":false,"clearExit":true,"exit":{"across":-1.3499999999999996,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":1,"offset":-1.35,"contacts":1,"start":{"across":-1.3499999999999996,"along":0.5,"feet":0},"crossed":true,"before":{"across":-1.3499999999999996,"along":0.5,"feet":0},"after":{"across":1.3499999999999996,"along":0.5291659037272183,"feet":0.07727777777777867},"cameraChange":0,"air":true,"clearExit":true,"exit":{"across":1.3499999999999996,"along":2.079165903727258,"feet":0.7922777777777785},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":2,"offset":1.35,"contacts":1,"start":{"across":1.35,"along":0.49999999999999994,"feet":0},"crossed":true,"before":{"across":1.35,"along":0.49999999999999994,"feet":0},"after":{"across":-1.35,"along":0.5291659037272182,"feet":0},"cameraChange":0,"air":false,"clearExit":true,"exit":{"across":-1.3500000000000003,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":3,"offset":-1.35,"contacts":1,"start":{"across":-1.35,"along":0.49999999999999994,"feet":0},"crossed":true,"before":{"across":-1.35,"along":0.49999999999999994,"feet":0},"after":{"across":1.35,"along":0.5291659037272182,"feet":0},"cameraChange":8.881784197001252e-16,"air":false,"clearExit":true,"exit":{"across":1.3500000000000003,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":0,"offset":-1.35,"contacts":1,"start":{"across":-1.3499999999999996,"along":0.5,"feet":0},"crossed":true,"before":{"across":-1.3499999999999996,"along":0.5,"feet":0},"after":{"across":1.3499999999999996,"along":0.5291659037272183,"feet":0},"cameraChange":0,"air":false,"clearExit":true,"exit":{"across":1.3499999999999996,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":1,"offset":1.35,"contacts":1,"start":{"across":1.3499999999999996,"along":0.5,"feet":0},"crossed":true,"before":{"across":1.3499999999999996,"along":0.5,"feet":0},"after":{"across":-1.3499999999999996,"along":0.5291659037272183,"feet":0.07727777777777867},"cameraChange":0,"air":true,"clearExit":true,"exit":{"across":-1.3499999999999996,"along":2.079165903727258,"feet":0.7922777777777785},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":2,"offset":-1.35,"contacts":1,"start":{"across":-1.35,"along":0.5000000000000001,"feet":0},"crossed":true,"before":{"across":-1.35,"along":0.5000000000000001,"feet":0},"after":{"across":1.35,"along":0.5291659037272184,"feet":0},"cameraChange":0,"air":false,"clearExit":true,"exit":{"across":1.3499999999999999,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true},{"i":3,"offset":1.35,"contacts":1,"start":{"across":1.35,"along":0.5000000000000001,"feet":0},"crossed":true,"before":{"across":1.35,"along":0.5000000000000001,"feet":0},"after":{"across":-1.35,"along":0.5291659037272184,"feet":0},"cameraChange":8.881784197001252e-16,"air":false,"clearExit":true,"exit":{"across":-1.3499999999999999,"along":2.079165903727258,"feet":0},"walkedOut":true,"stayedOut":true,"returned":true,"sameMode":true,"supported":true}]}
+CHECK PASS factory peer portals: clean console 24.5s 
+DSB STEP 24476 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 29206
+DSB STEP 29206 (() => { const B = window.__ooga; B.go("factory"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "factory"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 29453
+DSB STEP 29453 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 30301
+DSB STEP 30301 (() => { const B = window.__ooga; B.go("factory"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "factory"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 30557
+DSB STEP 30558 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-factory", sats: 2100, handle: "tester", message: "ooga", at: Date.n
+DSB DONE 30577
+CHECK PASS factory round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"factory","first":{"scene":"factory","records":138,"nodes":346,"targets":29,"dom":3612},"second":{"scene":"factory","records":138,"nodes":346,"targets":29,"dom":3612}}
+CHECK PASS factory round trip: clean console 30.6s 
+SLOW factory took 31.1 s against a 25 s budget
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 94 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 95
+DSB STEP 137 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 145
+DSB STEP 186 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 187
+DSB STEP 229 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 229
+DSB STEP 271 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 272
+DSB STEP 313 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 314
+DSB STEP 356 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 407 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4774
+DSB STEP 4816 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4837
+DSB STEP 4879 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4882
+DSB STEP 4923 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4923
+DSB STEP 4965 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4969
+DSB STEP 5010 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5020
+DSB STEP 5020 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 5069
+DSB STEP 5069 (() => {
+    let R = 0, who = ""; for (const cave of window.__ooga.cavemen.values()) if (cave.bodyRadius > R) { R = cave.bodyRadius; who = cave.traits
+DSB DONE 5500
+CHECK PASS factory floor: from the balcony the widest Ooga on the roster reaches both ends of every stair, every line's deck, each peer tunnel's shield, the switchboard, rebalancer and its operator lane, treasury, watchtower, landing, galleries and the forge {"who":"payals","radius":0.84,"missing":[],"cells":38938}
+CHECK PASS factory floor: clean console 5.5s 
+DSB STEP 5500 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), m = B.mouths.find((m) => m.id === "c2"), along = window.BL.factoryModels.SHIELD_Z
+DSB DONE 5539
+CHECK PASS factory entrance: flying above the shield stays on the island {"scene":"hub","transitioning":false,"height":19.99727777777778}
+DSB STEP 5539 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), slot = window.BL.caves.slots.find((s) => s.scene === "factory"), m = B.mouths.fin
+DSB DONE 5846
+DSB STEP 5846 (() => { const m = window.__mouth; return [-Math.sin(m.ry), -Math.cos(m.ry)]; })()
+DSB DONE 5869
+DSB STEP 5869 (() => { const c = window.__ooga.camera, fx = c.target.x - c.position.x, fz = c.target.z - c.position.z, l = Math.hypot(fx, fz), f = [fx / l, fz / l],
+DSB DONE 5869
+DSB STEP 5871 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 6763
+DSB STEP 6775 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 6844
+DSB STEP 6844 (() => { const B = window.__ooga; for (let i = 0; i < 240 && (B.transitioning || B.scene !== "factory"); i++) B.advance(1 / 30, 1 / 30); B.advance(0.3
+DSB DONE 6903
+DSB STEP 6903 (() => { const B = window.__ooga, e = window.BL.factoryModels.LAYOUT.entrance, rows = []; for (const [name, x, y] of [["beside", 10, e.y], ["below", 0
+DSB DONE 6929
+CHECK PASS factory entrance: positions beside, below and above the exit doorway stay in the factory [{"name":"beside","scene":"factory","transitioning":false},{"name":"below","scene":"factory","transitioning":false},{"name":"above","scene":"factory","transitioning":false}]
+DSB STEP 6929 (() => { const B = window.__ooga, a = B.crew.player, e = window.BL.factoryModels.LAYOUT.entrance; B.pilot.navigate({ position: { x: 0, y: e.y, z: e.z 
+DSB DONE 7155
+DSB STEP 7155 (() => { const c = window.__ooga.camera, fx = c.target.x - c.position.x, fz = c.target.z - c.position.z, l = Math.hypot(fx, fz), f = [fx / l, fz / l],
+DSB DONE 7158
+DSB STEP 7160 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 8416
+DSB STEP 8428 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 8576
+DSB STEP 8576 (() => { const B = window.__ooga, m = window.__mouth; for (let i = 0; i < 240 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30
+DSB DONE 8688
+CHECK PASS factory doorway: the selected rifle, rounds and spare magazines survive entry; a switch to melee and carry inside survives the return {"arrived":{"scene":"factory","ooga":"portlandhodl","rifle":true,"ammo":23,"spares":"7,11"},"back":{"scene":"hub","ooga":"portlandhodl","fromMouth":9.5,"melee":true,"ammo":17,"spares":"7,11","carry":true}}
+DSB STEP 8688 (() => { const B = window.__ooga; B.go("factory"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "factory"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 8952
+DSB STEP 8954 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 9917
+DSB STEP 9917 window.__ooga.scene
+DSB DONE 9922
+CHECK PASS factory entrance: walking through the 2 o'clock shield takes the same Ooga inside, walking back out past the balcony returns it to the mouth, and Escape leaves the factory {"arrived":{"scene":"factory","ooga":"portlandhodl","rifle":true,"ammo":23,"spares":"7,11"},"back":{"scene":"hub","ooga":"portlandhodl","fromMouth":9.5,"melee":true,"ammo":17,"spares":"7,11","carry":true},"escaped":"hub"}
+CHECK PASS factory entrance: clean console 9.9s 
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 90 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 91
+DSB STEP 132 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 134
+DSB STEP 176 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 177
+DSB STEP 218 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 219
+DSB STEP 261 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 262
+DSB STEP 302 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 303
+DSB STEP 345 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1027
+DSB STEP 1069 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1251
+DSB STEP 1293 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1451
+DSB STEP 1493 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1656
+DSB STEP 1656 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1864
+DSB STEP 1864 (() => { const B = window.__ooga, c = document.getElementById("scene"), t = document.createElement("canvas"); t.width = t.height = 8; const x = t.getC
+DSB DONE 2102
+CHECK PASS factory canvas2d: with WebGL2 unavailable the factory still boots and paints {"kind":"canvas2d","scene":"factory","colours":53}
+CHECK PASS factory canvas2d: clean console 2.1s 
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 102 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 102
+DSB STEP 143 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 143
+DSB STEP 185 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 186
+DSB STEP 228 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 229
+DSB STEP 271 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 272
+DSB STEP 313 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 369 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4299
+DSB STEP 4340 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4344
+DSB STEP 4385 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4389
+DSB STEP 4431 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4437
+DSB STEP 4480 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4487
+DSB STEP 4527 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4528
+DSB STEP 4528 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4602
+DSB STEP 4602 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), g = B.island.gate, z = g.z + 2; if (B.crew.player !== a) B.pilot.possess(a); B.pi
+DSB DONE 4973
+DSB STEP 4973 (() => { const B = __ooga, I = BL.bifrostIsle, sp = I.spot(B.island); window.dispatchEvent(new KeyboardEvent("keydown", { key: "w", code: "KeyW" })); 
+DSB DONE 5344
+DSB STEP 5344 (() => { const B = window.__ooga, I = window.BL.bifrostIsle, a = B.crew.player, p = a.root.position, g = B.island.gate, s = B.bifrost.site.arrival, sp
+DSB DONE 5348
+CHECK PASS bifrost entrance: from the pass stairs the roster's widest Ooga walks through the arch out onto the bridge's deck {"past":4.98,"onDeck":true,"feet":5.04,"deck":5.04}
+DSB STEP 5348 (() => { const B = window.__ooga, p = B.bifrost.site.portal, sx = Math.sin(p.ry), sz = Math.cos(p.ry), x = p.x + sx * 0.9, z = p.z + sz * 0.9; B.pilot
+DSB DONE 5451
+DSB STEP 5451 window.__portal
+DSB DONE 5454
+DSB STEP 5454 (() => { const c = window.__ooga.camera, fx = c.target.x - c.position.x, fz = c.target.z - c.position.z, l = Math.hypot(fx, fz), f = [fx / l, fz / l],
+DSB DONE 5455
+DSB STEP 5456 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 6211
+DSB STEP 6214 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 6221
+DSB STEP 6221 (() => { const B = window.__ooga; for (let i = 0; i < 240 && (B.transitioning || B.scene !== "bifrost"); i++) B.advance(1 / 30, 1 / 30); B.advance(0.3
+DSB DONE 6227
+CHECK PASS bifrost entrance: walking through the portal's field takes the same Ooga into the chamber, which has DSB Land's picture and the island's view back out {"scene":"bifrost","ooga":"portlandhodl","pictured":true,"outside":true}
+CHECK PASS bifrost entrance: clean console 6.2s 
+DSB STEP 6227 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 6333
+DSB STEP 6335 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6488
+DSB STEP 6489 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 6495
+DSB STEP 6495 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 6495
+DSB STEP 6495 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 6674
+DSB STEP 6804 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6830
+DSB STEP 6831 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 6837
+DSB STEP 6837 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 6837
+DSB STEP 6838 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 6940
+DSB STEP 6948 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7044
+DSB STEP 7047 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 7068
+DSB STEP 7068 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 7070
+DSB STEP 7070 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 7124
+DSB STEP 7125 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7273
+DSB STEP 7275 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 7280
+DSB STEP 7280 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 7281
+DSB STEP 7281 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 7365
+DSB STEP 7367 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7377
+DSB STEP 7377 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 7382
+DSB STEP 7382 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 7569
+DSB STEP 7569 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 7577
+DSB STEP 7578 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7585
+DSB STEP 7708 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 7712
+DSB STEP 7712 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 7712
+DSB STEP 7713 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 7721
+DSB STEP 7722 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7729
+DSB STEP 7869 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 7873
+DSB STEP 7873 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 7874
+DSB STEP 7874 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 7882
+DSB STEP 7995 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8003
+DSB STEP 8003 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 8006
+DSB STEP 8006 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 8007
+CHECK PASS bifrost walking: W A S D walk the visitor's Ooga away, left, back and right on screen in the hall from two camera angles {"0 w":{"ok":true,"right":0,"fwd":3.87},"0 a":{"ok":true,"right":-3.87,"fwd":0},"0 s":{"ok":true,"right":0,"fwd":-3.87},"0 d":{"ok":true,"right":4.26,"fwd":0},"2.2 w":{"ok":true,"right":0,"fwd":3.55},"2.2 a":{"ok":true,"right":-3.55,"fwd":0},"2.2 s":{"ok":true,"right":0,"fwd":-3.87},"2.2 d":{"ok":true,"right":3.87,"fwd":0}}
+CHECK PASS bifrost walking: clean console 8.0s 
+DSB STEP 8007 (() => { const B = window.__ooga, E = window.BL.bifrostModels.ENTRY; B.pilot.navigate({ position: { x: 0, y: 0, z: E.field - 2.2 }, target: { x: 0, y:
+DSB DONE 8014
+DSB STEP 8014 (() => { const c = window.__ooga.camera, fx = c.target.x - c.position.x, fz = c.target.z - c.position.z, l = Math.hypot(fx, fz), f = [fx / l, fz / l],
+DSB DONE 8093
+DSB STEP 8094 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 8789
+DSB STEP 8790 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 8919
+DSB STEP 8919 (() => { const B = window.__ooga; for (let i = 0; i < 240 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.advance(0.3, 1 
+DSB DONE 9018
+DSB STEP 9018 (() => { const B = window.__ooga; B.go("bifrost"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "bifrost"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 9126
+DSB STEP 9127 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 10116
+DSB STEP 10116 window.__ooga.scene
+DSB DONE 10127
+CHECK PASS bifrost exit: walking back out through the field returns the same Ooga to the bridge's end, and Escape leaves the chamber {"back":{"scene":"hub","ooga":"portlandhodl","fromArrival":0},"escaped":"hub"}
+CHECK PASS bifrost exit: clean console 10.1s 
+DSB STEP 10127 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10550
+DSB STEP 10550 (() => { const B = window.__ooga; B.go("bifrost"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "bifrost"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 10605
+DSB STEP 10605 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 11140
+DSB STEP 11141 (() => { const B = window.__ooga; B.go("bifrost"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "bifrost"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 11194
+DSB STEP 11194 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-bifrost", sats: 2100, handle: "tester", message: "ooga", at: Date.n
+DSB DONE 11205
+CHECK PASS bifrost round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"bifrost","first":{"scene":"bifrost","records":61,"nodes":171,"targets":6,"dom":3030},"second":{"scene":"bifrost","records":61,"nodes":171,"targets":6,"dom":3030}}
+CHECK PASS bifrost round trip: clean console 11.2s 
+DSB STEP 69 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 70
+DSB STEP 112 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 112
+DSB STEP 154 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 155
+DSB STEP 197 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 198
+DSB STEP 240 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 241
+DSB STEP 281 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 282
+DSB STEP 324 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 380 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 498
+DSB STEP 540 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 899
+DSB STEP 941 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 942
+DSB STEP 942 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 943
+DSB STEP 943 (() => { const B = window.__ooga, r = window.BL.bifrostModels.HALL.r - 2.8, w = B.bifrost.scene.windows.find((w) => w.row.scene === "dsb"), x = w.sn *
+DSB DONE 975
+DSB STEP 975 window.__dsbWindow
+DSB DONE 976
+DSB STEP 976 (() => { const c = window.__ooga.camera, fx = c.target.x - c.position.x, fz = c.target.z - c.position.z, l = Math.hypot(fx, fz), f = [fx / l, fz / l],
+DSB DONE 977
+DSB STEP 978 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 1732
+DSB STEP 1733 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1782
+DSB STEP 1782 (() => { const B = window.__ooga; for (let i = 0; i < 240 && (B.transitioning || B.scene !== "dsb"); i++) B.advance(1 / 30, 1 / 30); return { scene: B
+DSB DONE 1783
+DSB STEP 1783 (() => { window.dispatchEvent(new KeyboardEvent("keydown", { key: "w" })); BL.scenes.dsb.update(__ooga.audio.duration + 1, 1); window.dispatchEvent(ne
+DSB DONE 1787
+DSB STEP 1787 __ooga.dsb.gate.activate(0); if (typeof __gateClock === "number") { __gateClock += 2000; __ooga.dsb.gate.update(); }
+DSB DONE 1787
+DSB STEP 1787 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3833
+DSB STEP 3833 (() => {
+    const B = __ooga, d = B.dsb, root = d.gate.root;
+    BL.scene.updateWorld(root, root.parent ? root.parent.world : undefined);
+    const m
+DSB DONE 3843
+DSB STEP 3843 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4379
+DSB STEP 4379 (() => { const B = window.__ooga, d = B.scene === "bifrost" && B.bifrost, a = d && d.avatar, w = d && d.scene.windows.find((w) => w.row.scene === "dsb
+DSB DONE 4380
+CHECK PASS bifrost dsb round trip: walking through the DSB window takes the same Ooga into DSB Land, and DSB's gate home brings it back into the chamber, standing before the DSB window {"there":{"scene":"dsb","ooga":"portlandhodl"},"back":{"scene":"bifrost","ooga":"portlandhodl","along":-2.8,"across":0}}
+CHECK PASS bifrost dsb round trip: clean console 4.4s 
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 48
+DSB STEP 97 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 98
+DSB STEP 140 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 141
+DSB STEP 182 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 183
+DSB STEP 225 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 226
+DSB STEP 267 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 268
+DSB STEP 310 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 311
+DSB STEP 353 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 498
+DSB STEP 539 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 913
+DSB STEP 955 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 955
+DSB STEP 955 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 956
+DSB STEP 956 (() => { const B = window.__ooga, r = window.BL.bifrostModels.HALL.r - 1.6, w = B.bifrost.scene.windows.find((w) => w.row.scene === "poker"), x = w.sn
+DSB DONE 993
+DSB STEP 993 window.__pokerWindow
+DSB DONE 994
+DSB STEP 994 (() => { const c = window.__ooga.camera, fx = c.target.x - c.position.x, fz = c.target.z - c.position.z, l = Math.hypot(fx, fz), f = [fx / l, fz / l],
+DSB DONE 995
+DSB STEP 996 window.__ooga.advance(0.1, 1 / 60)
+DSB DONE 1009
+DSB STEP 1175 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1185
+DSB STEP 1187 (() => { const B = window.__ooga; let started = -1, arrived = -1;
+    for (let i = 0; i < 180 && arrived < 0; i++) { B.advance(1 / 60, 1 / 60); if (st
+DSB DONE 1379
+DSB STEP 1382 (() => { const B = window.__ooga; B.pilot.navigate({ position: { x: 0, y: 0, z: 31 }, target: { x: 0, y: 1, z: 35 }, yaw: Math.PI, pitch: 0.15, dist: 
+DSB DONE 1402
+DSB STEP 1403 window.__ooga.advance(2.5, 1 / 60)
+DSB DONE 1555
+DSB STEP 1557 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1569
+DSB STEP 1569 (() => { const B = window.__ooga; for (let i = 0; i < 60 && (B.transitioning || B.scene !== "bifrost"); i++) B.advance(1 / 30, 1 / 30); const d = B.sc
+DSB DONE 1570
+CHECK PASS bifrost poker round trip: walking through the poker window takes the same Ooga straight into the poker room, without the fade, and the room's mirror brings it back into the chamber, standing before that window {"there":{"scene":"poker","ooga":"portlandhodl","steps":1,"started":7},"back":{"scene":"bifrost","ooga":"portlandhodl","along":-2.8,"across":0}}
+CHECK PASS bifrost poker round trip: clean console 1.6s 
+DSB STEP 47 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 60
+DSB STEP 101 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 102
+DSB STEP 144 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 145
+DSB STEP 187 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 188
+DSB STEP 230 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 231
+DSB STEP 273 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 274
+DSB STEP 314 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 315
+DSB STEP 357 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4935
+DSB STEP 4977 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5424
+DSB STEP 5466 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5826
+DSB STEP 5826 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 7007
+DSB STEP 7007 (() => { const B = window.__ooga; B.pilot.goPreset("bifrost"); B.advance(1, 1 / 60); return { kind: B.renderer.kind, scene: B.scene, islet: !!B.bifros
+DSB DONE 23521
+DSB STEP 23521 (() => { const B = window.__ooga; B.go("bifrost"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "bifrost"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 27032
+DSB STEP 27032 (() => { const B = window.__ooga, c = document.getElementById("scene"), t = document.createElement("canvas"); t.width = t.height = 8; const x = t.getC
+DSB DONE 27131
+CHECK PASS bifrost canvas2d: with WebGL2 unavailable the island builds ₿IFRÖST's islet without its window into the chamber, and the chamber boots and paints {"hub":{"kind":"canvas2d","scene":"hub","islet":true,"window":false},"r":{"kind":"canvas2d","scene":"bifrost","colours":38}}
+CHECK PASS bifrost canvas2d: clean console 27.1s 
+SLOW bifrost took 27.6 s against a 25 s budget
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 115 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 115
+DSB STEP 157 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 157
+DSB STEP 198 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 198
+DSB STEP 241 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 241
+DSB STEP 283 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 284
+DSB STEP 326 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 381 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 697
+DSB STEP 738 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 739
+DSB STEP 781 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 782
+DSB STEP 824 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 825
+DSB STEP 867 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 868
+DSB STEP 909 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 910
+DSB STEP 952 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 953
+DSB STEP 953 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 954
+DSB STEP 954 window.__ooga.advance(2, 1 / 60)
+DSB DONE 1543
+DSB STEP 1799 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1805
+CHECK PASS factory phone: nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"play":[]}
+CHECK PASS factory phone: clean console 1.8s 
+DSB STEP 40 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 41
+DSB STEP 100 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 101
+DSB STEP 143 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 144
+DSB STEP 186 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 187
+DSB STEP 229 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 230
+DSB STEP 272 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 273
+DSB STEP 314 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 373 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 464
+DSB STEP 506 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 876
+DSB STEP 918 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 919
+DSB STEP 919 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 920
+DSB STEP 920 window.__ooga.advance(2, 1 / 60)
+DSB DONE 949
+DSB STEP 1199 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1204
+CHECK PASS bifrost phone: nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"play":[]}
+CHECK PASS bifrost phone: clean console 1.2s 
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 95 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 96
+DSB STEP 138 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 139
+DSB STEP 181 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 182
+DSB STEP 222 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 266
+DSB STEP 307 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 308
+DSB STEP 350 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4521
+DSB STEP 4563 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4571
+DSB STEP 4613 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4614
+DSB STEP 4655 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4658
+DSB STEP 4699 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4706
+DSB STEP 4748 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4756
+DSB STEP 4756 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4822
+DSB STEP 4829 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(document.getElementById("hint").t
+DSB DONE 5074
+DSB STEP 5074 __ooga.renderer.setQuality("low")
+DSB DONE 5078
+DSB STEP 5078 (() => {
+    const subtitles = ["(Waiting)", "(No Signal)", "(Signal: Live)", "(Catching Up)"];
+    const labels = subtitles.map(sub => BL.factoryMode
+DSB DONE 5098
+CHECK PASS soak: factory cycles: all four finite watchtower signal labels are cached before retention accounting {"variants":4,"distinct":4,"reused":true}
+DSB STEP 5098 (() => {
+    const node = __ooga.factory.node, feed = node.feed, subscribe = feed.subscribe;
+    window.__factoryLife = { node, subscriptions: 0 };
+  
+DSB DONE 5106
+DSB STEP 5106 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 5849
+DSB STEP 5849 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 6618
+DSB STEP 6618 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 7973
+DSB STEP 7973 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 7974
+DSB STEP 7974 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 8007
+DSB STEP 8009 window.__ooga.stats()
+DSB DONE 8011
+DSB STEP 24778 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 25396
+DSB STEP 25396 __factoryLife.subscriptions
+DSB DONE 25397
+DSB STEP 25397 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 26573
+DSB STEP 26573 __factoryLife.subscriptions
+DSB DONE 26577
+DSB STEP 26577 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 30406
+DSB STEP 30406 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 30417
+DSB STEP 30417 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 30573
+DSB STEP 30574 (() => {
+      const n = __ooga.factory.node;
+      return { same: n === __factoryLife.node, subscriptions: __factoryLife.subscriptions, lines: n.plac
+DSB DONE 30588
+DSB STEP 30588 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 31216
+DSB STEP 31216 __factoryLife.subscriptions
+DSB DONE 31217
+DSB STEP 31217 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 32021
+DSB STEP 32022 __factoryLife.subscriptions
+DSB DONE 32023
+DSB STEP 32023 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 35369
+DSB STEP 35370 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 35376
+DSB STEP 35376 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 35463
+DSB STEP 35464 (() => {
+      const n = __ooga.factory.node;
+      return { same: n === __factoryLife.node, subscriptions: __factoryLife.subscriptions, lines: n.plac
+DSB DONE 35480
+DSB STEP 35480 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 36136
+DSB STEP 36136 __factoryLife.subscriptions
+DSB DONE 36137
+DSB STEP 36137 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 36978
+DSB STEP 36978 __factoryLife.subscriptions
+DSB DONE 36979
+DSB STEP 36979 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 39890
+DSB STEP 39890 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 39906
+DSB STEP 39906 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 39992
+DSB STEP 39992 (() => {
+      const n = __ooga.factory.node;
+      return { same: n === __factoryLife.node, subscriptions: __factoryLife.subscriptions, lines: n.plac
+DSB DONE 40003
+DSB STEP 40003 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 40696
+DSB STEP 40696 __factoryLife.subscriptions
+DSB DONE 40696
+DSB STEP 40696 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 41555
+DSB STEP 41555 __factoryLife.subscriptions
+DSB DONE 41556
+DSB STEP 41556 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 44667
+DSB STEP 44668 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 44683
+DSB STEP 44683 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 44764
+DSB STEP 44764 (() => {
+      const n = __ooga.factory.node;
+      return { same: n === __factoryLife.node, subscriptions: __factoryLife.subscriptions, lines: n.plac
+DSB DONE 44775
+DSB STEP 44775 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 45403
+DSB STEP 45403 __factoryLife.subscriptions
+DSB DONE 45404
+DSB STEP 45404 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 46260
+DSB STEP 46261 __factoryLife.subscriptions
+DSB DONE 46263
+DSB STEP 46264 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 49498
+DSB STEP 49498 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 49499
+DSB STEP 49499 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 49576
+DSB STEP 49576 (() => {
+      const n = __ooga.factory.node;
+      return { same: n === __factoryLife.node, subscriptions: __factoryLife.subscriptions, lines: n.plac
+DSB DONE 49587
+DSB STEP 49587 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 50159
+DSB STEP 50159 __factoryLife.subscriptions
+DSB DONE 50160
+DSB STEP 50160 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 50993
+DSB STEP 50994 __factoryLife.subscriptions
+DSB DONE 50998
+DSB STEP 50998 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 53855
+DSB STEP 53856 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 53867
+DSB STEP 53867 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 53948
+DSB STEP 53948 (() => {
+      const n = __ooga.factory.node;
+      return { same: n === __factoryLife.node, subscriptions: __factoryLife.subscriptions, lines: n.plac
+DSB DONE 53949
+DSB STEP 53961 window.__ooga.stats()
+DSB DONE 54009
+CHECK PASS soak: factory cycles: one bounded node survives six round trips, the hall's subscription released, without retaining scene nodes, targets or DOM {"visits":[{"same":true,"subscriptions":1,"lines":14,"places":14,"hall":2,"away":0},{"same":true,"subscriptions":1,"lines":14,"places":14,"hall":2,"away":0},{"same":true,"subscriptions":1,"lines":14,"places":14,"hall":2,"away":0},{"same":true,"subscriptions":1,"lines":14,"places":14,"hall":2,"away":0},{"same":true,"subscriptions":1,"lines":14,"places":14,"hall":2,"away":0},{"same":true,"subscriptions":1,"lines":14,"places":14,"hall":2,"away":0}],"before":{"visibleNodes":2048,"allNodes":4412,"tweens":0,"targets":1228,"particles":0,"pool":0,"bubbles":0,"zzz":21,"damageNumbers":0,"crates":0,"built":0,"tomatoesThrown":0,"projectiles":0,"slots":302,"shown":1000,"rendered":194,"deliveries":0,"pendingDrops":0,"dropsStarted":0,"dropsLanded":0,"landedBananaValue":0,"dropPool":96,"dropRate":72,"spillPool":32,"spilling":0,"butterflies":6,"fireflies":0,"embers":3,"surfaceEmbers":0,"headquartersEmbers":3,"waterCubes":0,"waterQueued":0,"waterRipples":0,"breakablesProps":26,"breakablesBroken":0,"breakablesRewards":0,"breakablesRevealing":0,"rainDrops":0,"strikes":0,"remotePlayers":0,"reservedPlayers":0,"gl":{"waterTextures":0,"records":851,"active":839,"mirrorResources":4,"imageTextures":1,"rippleBodyTextures":0,"shadowResources":4,"shadowSize":512,"shadowPassCount":147,"shadowFinite":true,"shadowDraws":437,"shadowStatic":0,"shadowStaticRebuilds":11,"culled":1097,"drawn":37537,"suppressed":0,"rippleSurfaces":1,"rippleWaves":3},"dom":3604},"after":{"visibleNodes":2047,"allNodes":4412,"tweens":0,"targets":1228,"particles":0,"pool":0,"bubbles":0,"zzz":21,"damageNumbers":0,"crates":0,"built":0,"tomatoesThrown":0,"projectiles":0,"slots":302,"shown":1000,"rendered":194,"deliveries":0,"pendingDrops":0,"dropsStarted":0,"dropsLanded":0,"landedBananaValue":0,"dropPool":96,"dropRate":72,"spillPool":32,"spilling":0,"butterflies":8,"fireflies":0,"embers":4,"surfaceEmbers":0,"headquartersEmbers":4,"waterCubes":0,"waterQueued":0,"waterRipples":0,"breakablesProps":26,"breakablesBroken":0,"breakablesRewards":0,"breakablesRevealing":0,"rainDrops":0,"strikes":0,"remotePlayers":0,"reservedPlayers":0,"gl":{"waterTextures":0,"records":850,"active":838,"mirrorResources":4,"imageTextures":1,"rippleBodyTextures":0,"shadowResources":4,"shadowSize":512,"shadowPassCount":670,"shadowFinite":true,"shadowDraws":437,"shadowStatic":0,"shadowStaticRebuilds":43,"culled":1098,"drawn":37551,"suppressed":0,"rippleSurfaces":1,"rippleWaves":3},"dom":3604}}
+CHECK PASS soak: factory cycles: GPU records, listeners and retained heap remain bounded objects 356.46 -> 355.38 MB (used 235.54 -> 236.68 MB, code 15.55 -> 17.77 MB)
+CHECK PASS factory lifecycle: clean console 69.3s 
+SLOW factory took 69.7 s against a 25 s budget
+
+252/252 checks passed in 3.1 min

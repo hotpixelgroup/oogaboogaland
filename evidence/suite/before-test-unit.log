@@ -1,0 +1,20 @@
+
+> oogaboogaland@0.1.0 test:unit
+> node test/run.mjs unit
+
+Global tier only. Name scenes to test them too: npm test -- hub lab race drop orbit mine dsb factory bifrost poker arcade skee hoops shy claw hockey billiards darts pinball ride invaders snake pong stampede flap breaker dash stacker | full
+file:///Users/harrybeckwith/Documents/GitHub/oogaboogaland/untracked/pr173-push/test/run.mjs:9849
+  const signature=JSON.stringify(E.placements),buffers=E.fields.map(f=>f.node.instanceData),high=E.stats.visible,foam=E.fields.find(f=>f.kind==="foam");
+                       ^
+
+TypeError: Converting circular structure to JSON
+    --> starting at object with constructor 'Object'
+    |     property 'children' -> object with constructor 'Array'
+    |     index 0 -> object with constructor 'Object'
+    --- property 'parent' closes the circle
+    at JSON.stringify (<anonymous>)
+    at exteriorEnrichmentChecks (file:///Users/harrybeckwith/Documents/GitHub/oogaboogaland/untracked/pr173-push/test/run.mjs:9849:24)
+    at unitChecks (file:///Users/harrybeckwith/Documents/GitHub/oogaboogaland/untracked/pr173-push/test/run.mjs:10955:3)
+    at async file:///Users/harrybeckwith/Documents/GitHub/oogaboogaland/untracked/pr173-push/test/run.mjs:12632:11
+
+Node.js v24.21.0

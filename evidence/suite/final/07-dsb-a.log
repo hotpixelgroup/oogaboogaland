@@ -1,0 +1,527 @@
+DSB STEP 50 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 54
+DSB STEP 96 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 303 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4425
+DSB STEP 4467 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4477
+DSB STEP 4519 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4522
+DSB STEP 4562 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4572
+DSB STEP 4613 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4623
+DSB STEP 4623 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4820
+DSB STEP 4821 (() => {
+    const policy = document.querySelector('meta[http-equiv="Content-Security-Policy"]').content;
+    const sources = name => policy.split(";"
+DSB DONE 4826
+CHECK PASS dsb compatibility: built CSP preserves exactly the weather and DSB network permissions 
+DSB STEP 4827 (BL.caves.slots.find(s => s.id === "c10").status === "dark" && BL.caves.slots.find(s => s.id === "c10").scene === null) && !BL.caves.slots.some(s => s
+DSB DONE 4827
+CHECK PASS dsb registry: c10 stays sealed and DSB is internally addressable without a cave 
+DSB STEP 4827 __ooga.scene === "hub" && !__ooga.agent && !!BL.agent && !!BL.characters.get("rules-without-rulers") && Object.hasOwn(__ooga, "agent") && Object.hasOw
+DSB DONE 4835
+CHECK PASS dsb compatibility: hub keeps the Agent module without spawning a standalone gorilla 
+DSB STEP 4836 (() => {
+    const B = __ooga, cave = B.cavemen.get("rules-without-rulers");
+    cave.override = "working"; B.crew.refreshStates(true); B.pilot.posses
+DSB DONE 4850
+DSB STEP 4850 __ooga.pilot.player === __ooga.crew.player && __ooga.pilot.player.traits.name === "rules-without-rulers" && !!__ooga.pilot.player.weapon
+DSB DONE 5142
+CHECK PASS dsb compatibility: shared player and equipment initialize 
+DSB STEP 5142 (() => {
+    const B = __ooga, scene = BL.scenes.dsb, enter = scene.enter, name = B.pilot.player?.traits.name;
+    scene.enter = (ctx) => { scene.ente
+DSB DONE 6318
+DSB STEP 6318 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6350
+DSB STEP 6351 (() => { const a = __ooga.dsb.avatar, model = BL.models.caveman(BL.contributors.traitsFor("rules-without-rulers")); return a.traits.name === "rules-wi
+DSB DONE 6352
+CHECK PASS dsb compatibility: scene handoff rebuilds selected canonical Ooga without starting Zuzu 
+CHECK PASS dsb chat server: local provider is honest and origin restricted 
+CHECK PASS dsb chat server: schemas, streaming size and media type enforced 
+CHECK PASS dsb chat server: provider-neutral boundary and prompt excluded from build 
+CHECK PASS dsb chat server: invalid output and provider errors never leak 
+CHECK PASS dsb chat server: rate, timeout and concurrency limits 
+DSB STEP 6430 (async () => {
+    const saved = window.fetch, R = BL.dsbAgentRemote, context = {"playerName":"YellowBrokeIt","location":"arrival","mood":"content","f
+DSB DONE 6436
+CHECK PASS dsb chat: fixed HTTP transport rejects unsafe responses and defaults to mock 
+DSB STEP 6436 !__ooga.dsb.zuzu && !__ooga.dsb.conversation && !!BL.dsbAgent && !!BL.dsbConversation
+DSB DONE 6437
+CHECK PASS retained Zuzu components: replacement DSB deliberately has no live cat or conversation 
+DSB STEP 6437 (() => {
+  const B = __ooga, S = BL.scene, parent = S.createNode(), land = BL.dsbModels.build();
+  const targets = new Set(), changes = [];
+  const in
+DSB DONE 6445
+DSB STEP 6445 __zuzuFixture.prepare()
+DSB DONE 6445
+DSB STEP 6604 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 6605
+DSB STEP 6605 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6634
+DSB STEP 6634 (() => { const e = document.querySelector("#zuzu-component-talk"), r = e.getBoundingClientRect(), x = r.x + r.width / 2, y = r.y + r.height / 2; if (!
+DSB DONE 6635
+DSB STEP 6695 document.getElementById("zuzu-conversation").open && document.activeElement.id === "zuzu-message" && document.getElementById("zuzu-mode").textContent.
+DSB DONE 6696
+CHECK PASS retained Zuzu components: eligible agent Talk opens a focused mock panel and reports its callback 
+DSB STEP 6703 ({ x: __ooga.dsb.avatar.root.position.x, z: __ooga.dsb.avatar.root.position.z, shots: __ooga.dsb.avatar.weapon.shotsFired })
+DSB DONE 6703
+DSB STEP 6710 (() => { const B = __ooga; B.advance(0.5); return { x: B.dsb.avatar.root.position.x, z: B.dsb.avatar.root.position.z, shots: B.dsb.avatar.weapon.shots
+DSB DONE 6882
+CHECK PASS dsb chat: desktop free-form typing never moves or shoots {"x":-45,"z":-43,"shots":0,"text":"wvt Why is the moon round? Καλημέρα 🐈","trigger":false}
+DSB STEP 6899 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6935
+CHECK PASS dsb chat: Enter sends and receives validated mock text 
+DSB STEP 6935 __zuzuFixture.advance(3.2);
+DSB DONE 7580
+DSB STEP 7580 __zuzuFixture.agent.dialogue.includes("local mock reply")
+DSB DONE 7584
+CHECK PASS dsb chat: response reaches her physical world dialogue 
+DSB STEP 7584 (() => { const R = BL.dsbAgentRemote, context = __zuzuFixture.agent.conversationContext(), rows = Array.from({ length: 30 }, () => ({ role: "player", 
+DSB DONE 7590
+CHECK PASS dsb chat: response schema/HTML/size validation and context allowlist {"rejected":true,"bounded":true,"selected":"rules-without-rulers","private":true}
+DSB STEP 7591 document.getElementById("zuzu-message").value = "Free-form topic 0"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7592
+DSB STEP 7592 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7616
+DSB STEP 7616 document.getElementById("zuzu-message").value = "Free-form topic 1"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7618
+DSB STEP 7618 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7649
+DSB STEP 7649 document.getElementById("zuzu-message").value = "Free-form topic 2"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7650
+DSB STEP 7650 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7683
+DSB STEP 7683 document.getElementById("zuzu-message").value = "Free-form topic 3"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7685
+DSB STEP 7685 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7717
+DSB STEP 7717 document.getElementById("zuzu-message").value = "Free-form topic 4"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7719
+DSB STEP 7719 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7750
+DSB STEP 7750 document.getElementById("zuzu-message").value = "Free-form topic 5"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7751
+DSB STEP 7751 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7781
+DSB STEP 7782 document.getElementById("zuzu-message").value = "Free-form topic 6"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7783
+DSB STEP 7783 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7815
+DSB STEP 7815 document.getElementById("zuzu-message").value = "Free-form topic 7"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 7817
+DSB STEP 7817 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7850
+DSB STEP 7850 __zuzuFixture.conversation.history.length === 12 && document.getElementById("zuzu-history").children.length === 12
+DSB DONE 7851
+CHECK PASS dsb chat: history and DOM remain capped 
+DSB STEP 7851 __zuzuFixture.conversation.history.map(r => r.text).join("|")
+DSB DONE 7851
+DSB STEP 7851 document.getElementById("zuzu-message").value = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+DSB DONE 7852
+DSB STEP 7852 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 7884
+DSB STEP 7884 __zuzuFixture.conversation.history.map(r => r.text).join("|") === "Free-form topic 2|You've got my attention. Briefly. This is a local mock reply; my 
+DSB DONE 7884
+CHECK PASS dsb chat: overlong messages rejected before sending 
+DSB STEP 7887 !document.getElementById("zuzu-conversation").open && !__zuzuFixture.conversation.isOpen && __zuzuFixture.changes.at(-1) === false && __ooga.controls.
+DSB DONE 7888
+CHECK PASS retained Zuzu components: Escape closes the modal, reports its callback and leaves controls idle 
+DSB STEP 7888 (() => { const B = __ooga, p = B.dsb.avatar.root.position, x = p.x, z = p.z; window.dispatchEvent(new KeyboardEvent("keydown", { key: "w" })); B.advan
+DSB DONE 7929
+CHECK PASS retained Zuzu components: movement remains available after the modal closes 1.5499999999999545
+DSB STEP 7948 __zuzuFixture.prepare()
+DSB DONE 7955
+DSB STEP 7955 document.getElementById("zuzu-message").value = "";
+DSB DONE 7955
+DSB STEP 7956 (() => { const r = document.querySelector("#zuzu-component-talk").getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })(
+DSB DONE 7956
+DSB STEP 8021 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 8050
+DSB STEP 8050 (() => { const r = document.querySelector("#zuzu-message").getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })()
+DSB DONE 8051
+DSB STEP 8121 document.getElementById("zuzu-message").dispatchEvent(new CompositionEvent("compositionstart", { bubbles: true }));
+DSB DONE 8122
+DSB STEP 8123 !__zuzuFixture.conversation.busy && document.getElementById("zuzu-message").value.includes("こんにちは")
+DSB DONE 8123
+CHECK PASS dsb chat: composition Enter does not prematurely submit 
+DSB STEP 8123 document.getElementById("zuzu-message").dispatchEvent(new CompositionEvent("compositionend", { bubbles: true }));
+DSB DONE 8123
+DSB STEP 8123 (() => { const r = document.querySelector("#zuzu-send").getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })()
+DSB DONE 8124
+DSB STEP 8196 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 8232
+CHECK PASS dsb chat: touch Send handles Unicode text 
+DSB STEP 8236 (() => { const r = document.getElementById("zuzu-conversation").getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1 && r.top >= 0
+DSB DONE 8237
+CHECK PASS dsb chat: compact panel fits a reduced mobile viewport 
+DSB STEP 8237 (() => { const r = document.querySelector("#zuzu-close").getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })()
+DSB DONE 8237
+DSB STEP 8304 !__zuzuFixture.conversation.isOpen
+DSB DONE 8304
+CHECK PASS dsb chat: touch Close releases conversation 
+DSB STEP 8319 window.__zuzuTransport = { mode: "valid", body: null, finish: null }; window.__remoteFactory = BL.dsbAgentRemote.create; BL.dsbAgentRemote.create = ()
+DSB DONE 8321
+DSB STEP 8321 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 9594
+DSB STEP 9594 (() => {
+      const B=__ooga, actor=B.cavemen.get("rules-without-rulers");
+      actor.override="working"; B.crew.refreshStates(true); B.pilot.posses
+DSB DONE 9596
+CHECK PASS retained Zuzu components: remount selects the same canonical Ooga before entry {"name":"rules-without-rulers","canonical":true}
+DSB STEP 9596 (() => {
+    const B = __ooga, scene = BL.scenes.dsb, enter = scene.enter, name = B.pilot.player?.traits.name;
+    scene.enter = (ctx) => { scene.ente
+DSB DONE 10339
+DSB STEP 10340 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 10368
+DSB STEP 10368 __ooga.dsb.avatar.traits.name === "rules-without-rulers"
+DSB DONE 10369
+CHECK PASS retained Zuzu components: reentry preserves the selected Ooga 
+DSB STEP 10369 (() => {
+  const B = __ooga, S = BL.scene, parent = S.createNode(), land = BL.dsbModels.build();
+  const targets = new Set(), changes = [];
+  const in
+DSB DONE 10374
+DSB STEP 10374 __zuzuFixture.prepare()
+DSB DONE 10374
+DSB STEP 10375 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 10376
+DSB STEP 10376 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 10399
+DSB STEP 10399 (() => { const e = document.querySelector("#zuzu-component-talk"), r = e.getBoundingClientRect(), x = r.x + r.width / 2, y = r.y + r.height / 2; if (!
+DSB DONE 10400
+DSB STEP 10458 __zuzuFixture.conversation.history.length === 0 && __zuzuPrevious.disposed && __zuzuPrevious.agent.disposed && __zuzuPrevious.parent.children.length =
+DSB DONE 10458
+CHECK PASS retained Zuzu components: disposal releases the old model, targets, native button and history before remount 
+DSB STEP 10459 document.getElementById("zuzu-message").value = "Tell me about the moon"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 10459
+DSB STEP 10460 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 10484
+DSB STEP 10484 __zuzuFixture.advance(3.2); __zuzuFixture.conversation.history.at(-1).text.length > 160 && __zuzuFixture.agent.dialogue.length <= 160 && __zuzuTranspo
+DSB DONE 11138
+CHECK PASS dsb chat: protected-service interface accepts full text, with bounded world excerpt 
+DSB STEP 11138 __zuzuTransport.mode = "unavailable"
+DSB DONE 11142
+DSB STEP 11142 document.getElementById("zuzu-message").value = "Another normal question"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 11147
+DSB STEP 11147 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 11182
+DSB STEP 11183 __zuzuFixture.conversation.history.at(-1).source === "fallback" && !__zuzuFixture.conversation.busy && __zuzuFixture.agent.snapshot().active && docume
+DSB DONE 11183
+CHECK PASS dsb chat: deterministic fallback for unavailable 
+DSB STEP 11183 __zuzuTransport.mode = "timeout"
+DSB DONE 11184
+DSB STEP 11184 document.getElementById("zuzu-message").value = "Another normal question"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 11185
+DSB STEP 11185 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 11733
+DSB STEP 11733 __zuzuFixture.conversation.history.at(-1).source === "fallback" && !__zuzuFixture.conversation.busy && __zuzuFixture.agent.snapshot().active && docume
+DSB DONE 11733
+CHECK PASS dsb chat: deterministic fallback for timeout 
+DSB STEP 11734 __zuzuTransport.mode = "malformed"
+DSB DONE 11734
+DSB STEP 11734 document.getElementById("zuzu-message").value = "Another normal question"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 11736
+DSB STEP 11736 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 11766
+DSB STEP 11766 __zuzuFixture.conversation.history.at(-1).source === "fallback" && !__zuzuFixture.conversation.busy && __zuzuFixture.agent.snapshot().active && docume
+DSB DONE 11766
+CHECK PASS dsb chat: deterministic fallback for malformed 
+DSB STEP 11766 __zuzuTransport.mode = "html"
+DSB DONE 11767
+DSB STEP 11767 document.getElementById("zuzu-message").value = "Another normal question"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 11769
+DSB STEP 11769 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 11798
+DSB STEP 11798 __zuzuFixture.conversation.history.at(-1).source === "fallback" && !__zuzuFixture.conversation.busy && __zuzuFixture.agent.snapshot().active && docume
+DSB DONE 11799
+CHECK PASS dsb chat: deterministic fallback for html 
+DSB STEP 11799 __zuzuTransport.mode = "timeout"; document.getElementById("zuzu-message").value = "Cancel me"; document.getElementById("zuzu-form").requestSubmit();
+DSB DONE 11800
+DSB STEP 11801 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 11802
+DSB STEP 11802 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 11833
+DSB STEP 11833 (() => { const e = document.querySelector("#zuzu-close"), r = e.getBoundingClientRect(), x = r.x + r.width / 2, y = r.y + r.height / 2; if (!e.contain
+DSB DONE 11833
+DSB STEP 11889 (async () => { const c = __zuzuFixture.conversation, n = c.history.length; __zuzuTransport.finish(JSON.stringify({ version: 1, text: "Late reply" }));
+DSB DONE 11890
+CHECK PASS dsb chat: closing cancels pending work and rejects late replies 
+DSB STEP 11890 BL.dsbAgentRemote.create = __remoteFactory; __zuzuFixture.dispose();
+DSB DONE 11891
+DSB STEP 11891 !__ooga.dsb.zuzu && !__ooga.dsb.conversation && __zuzuFixture.disposed && __zuzuFixture.targets.size === 0 && !document.getElementById("zuzu-conversat
+DSB DONE 11891
+CHECK PASS retained Zuzu components: disposal leaves the replacement scene deferred 
+DSB STEP 11891 __ooga.dsb.gate.activate(0); if (typeof __gateClock === "number") { __gateClock += 2000; __ooga.dsb.gate.update(); }
+DSB DONE 11892
+DSB STEP 11892 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 13931
+DSB STEP 13931 (() => {
+    const B = __ooga, d = B.dsb, root = d.gate.root;
+    BL.scene.updateWorld(root, root.parent ? root.parent.world : undefined);
+    const m
+DSB DONE 13938
+DSB STEP 13938 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 14546
+DSB STEP 14546 ({scene:__ooga.scene,name:__ooga.bifrost?.avatar.traits.name})
+DSB DONE 14546
+CHECK PASS retained Zuzu components: real Portara return preserves the selected Ooga {"scene":"bifrost","name":"rules-without-rulers"}
+DSB STEP 14546 delete window.__zuzuFixture; delete window.__zuzuPrevious; delete window.__zuzuTransport; delete window.__remoteFactory
+DSB DONE 14547
+DSB STEP 14547 if (window.__remoteFactory) BL.dsbAgentRemote.create = __remoteFactory; window.__zuzuFixture?.dispose(); delete window.__zuzuFixture; delete window.__
+DSB DONE 14548
+CHECK PASS dsb zuzu conversation: clean console 14.5s 
+DSB STEP 98 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 307 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1118
+DSB STEP 1158 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1165
+DSB STEP 1206 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1206
+DSB STEP 1247 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1253
+DSB STEP 1295 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1296
+DSB STEP 1338 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1339
+DSB STEP 1339 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1339
+DSB STEP 1340 window.dispatchEvent(new KeyboardEvent("keydown", { key: "w" })); __ooga.advance(8, 0.1); window.dispatchEvent(new KeyboardEvent("keyup", { key: "w" }
+DSB DONE 2099
+DSB STEP 2099 __ooga.dsb.zuzu.snapshot()
+CHECK FAIL dsb zuzu agent TypeError: Cannot read properties of undefined (reading 'snapshot')
+    at <anonymous>:1:17
+FAIL dsb zuzu agent · TypeError: Cannot read properties of undefined (reading 'snapshot')
+    at <anonymous>:1:17
+DSB STEP 55 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 59
+DSB STEP 100 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 309 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1126
+DSB STEP 1168 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1173
+DSB STEP 1215 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1216
+DSB STEP 1258 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1259
+DSB STEP 1299 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1301
+DSB STEP 1343 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1344
+DSB STEP 1344 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1344
+DSB STEP 1346 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+CHECK FAIL dsb radio controls TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+FAIL dsb radio controls · TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 50
+DSB STEP 98 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 303 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1121
+DSB STEP 1164 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1167
+DSB STEP 1208 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1209
+DSB STEP 1251 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1255
+DSB STEP 1297 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1303
+DSB STEP 1346 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1346
+DSB STEP 1346 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1347
+DSB STEP 1347 !__ooga.dsb.data && __dsbFeedFixture.requests === 0 && __dsbFeedFixture.sockets === 0
+DSB DONE 1348
+CHECK PASS dsb automatic feeds: transit has no client or polling 
+DSB STEP 1348 (() => {
+    const c = BL.chain, subscribe = c.subscribe, start = c.start, dispose = c.dispose;
+    window.__sharedOwnership = { active: 0, total: 0, 
+DSB DONE 1348
+DSB STEP 1355 window.dispatchEvent(new KeyboardEvent("keydown", { key: "w" })); BL.scenes.dsb.update(__ooga.audio.duration + 1, 0); window.dispatchEvent(new Keyboar
+CHECK FAIL dsb automatic feeds TypeError: Cannot read properties of undefined (reading 'duration')
+    at <anonymous>:1:101
+FAIL dsb automatic feeds · TypeError: Cannot read properties of undefined (reading 'duration')
+    at <anonymous>:1:101
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 43
+DSB STEP 108 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 109
+DSB STEP 150 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 151
+DSB STEP 193 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 194
+DSB STEP 236 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 237
+DSB STEP 279 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 279
+DSB STEP 321 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 375 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1187
+DSB STEP 1228 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1235
+DSB STEP 1277 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1278
+DSB STEP 1320 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1321
+DSB STEP 1363 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1364
+DSB STEP 1406 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1407
+DSB STEP 1407 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1408
+DSB STEP 1408 (async () => {
+    const fetchOriginal = window.fetch, originalChain = BL.chain; let sockets = 0, stopped = 0, listener;
+    const socketOriginal = wi
+DSB DONE 1410
+CHECK PASS dsb feeds: shared readings drive the world and exit cancels late history {"connected":{"price":107,"height":900000,"backlog":0.2,"status":"Live BTC-USD · shared chain"},"off":true,"sockets":0,"stopped":2}
+DSB STEP 1410 (() => {
+    const original = AudioContext.prototype.createBufferSource;
+    window.__dsbSoundProbe = { original, starts: [], loops: [], context: null
+DSB DONE 1410
+DSB STEP 1412 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB STEP 1412 AudioContext.prototype.createBufferSource = __dsbSoundProbe.original; delete window.__dsbSoundProbe;
+DSB DONE 1413
+CHECK FAIL dsb feeds and audio TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+FAIL dsb feeds and audio · TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+DSB STEP 43 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 55
+DSB STEP 96 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 97
+DSB STEP 139 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 140
+DSB STEP 182 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 183
+DSB STEP 225 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 225
+DSB STEP 266 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 267
+DSB STEP 308 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 308
+DSB STEP 348 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1189
+DSB STEP 1231 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1236
+DSB STEP 1278 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1279
+DSB STEP 1322 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1323
+DSB STEP 1363 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1364
+DSB STEP 1406 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1408
+DSB STEP 1408 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1408
+DSB STEP 1412 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+CHECK FAIL dsb arrival camera TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+FAIL dsb arrival camera · TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+DSB STEP 50 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 55
+DSB STEP 104 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 304 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1118
+DSB STEP 1160 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1164
+DSB STEP 1206 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1207
+DSB STEP 1249 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1256
+DSB STEP 1298 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1304
+DSB STEP 1347 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1347
+DSB STEP 1347 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1348
+DSB STEP 1348 (() => {
+    const buffer = AudioContext.prototype.createBufferSource, oscillator = AudioContext.prototype.createOscillator;
+    const probe = window.
+DSB DONE 1354
+DSB STEP 1356 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB STEP 1357 AudioContext.prototype.createBufferSource = __ambientProbe.buffer; AudioContext.prototype.createOscillator = __ambientProbe.oscillator; delete window.
+DSB DONE 1357
+CHECK FAIL dsb ambience TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+FAIL dsb ambience · TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+DSB STEP 33 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 38
+DSB STEP 101 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 292 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4371
+DSB STEP 4413 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4427
+DSB STEP 4469 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4473
+DSB STEP 4514 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4523
+DSB STEP 4565 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4574
+DSB STEP 4574 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4773
+DSB STEP 4778 (() => {
+    const B = __ooga, c = B.cavemen.get("rules-without-rulers");
+    c.override = "working"; B.crew.refreshStates(true); B.pilot.possess(c);
+
+DSB DONE 4792
+DSB STEP 4793 (() => {
+    const B = __ooga, scene = BL.scenes.dsb, enter = scene.enter, name = B.pilot.player?.traits.name;
+    scene.enter = (ctx) => { scene.ente
+DSB DONE 6253
+DSB STEP 6254 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6288
+DSB STEP 6291 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+CHECK FAIL dsb shared player TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+FAIL dsb shared player · TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+
+236/243 checks passed in 0.9 min
+
+STOP · these failed in consecutive runs; do not try another fix, hand them to the maintainer with untracked/test-ledger.json:
+  dsb zuzu agent (4 runs since 2026-10-07T08:48:36.998Z)
+  dsb radio controls (4 runs since 2026-10-07T08:48:36.998Z)
+  dsb automatic feeds (4 runs since 2026-10-07T08:48:36.998Z)
+  dsb feeds and audio (4 runs since 2026-10-07T08:48:36.998Z)
+  dsb arrival camera (4 runs since 2026-10-07T08:48:36.998Z)
+  dsb ambience (4 runs since 2026-10-07T08:48:36.998Z)
+  dsb shared player (4 runs since 2026-10-07T08:48:36.998Z)

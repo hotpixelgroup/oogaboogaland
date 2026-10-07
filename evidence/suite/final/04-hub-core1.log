@@ -1,0 +1,185 @@
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 44
+DSB STEP 86 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 87
+DSB STEP 128 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 129
+DSB STEP 171 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 172
+DSB STEP 214 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 215
+DSB STEP 256 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 257
+DSB STEP 298 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 299
+DSB STEP 341 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4476
+DSB STEP 4517 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4530
+DSB STEP 4569 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4570
+DSB STEP 4611 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4620
+DSB STEP 4661 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4668
+DSB STEP 4710 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4711
+DSB STEP 4711 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4768
+DSB STEP 4769 (({ dt = 1 / 60 } = {}) => {
+    const B = window.__ooga, BL = window.BL, S = BL.scene, scene = BL.scenes.hub, rows = [];
+    const actors = [...B.cav
+DSB DONE 4925
+CHECK PASS work movement lab lanes: 20Hz outbound and returning characters keep to their actual facing-right side {"dt":0.05,"rows":[{"direction":1,"start":{"x":-1.344437126196946,"z":-3.095660481012622},"end":{"x":-8.133746837878903,"z":-12.603259990069828},"frames":87,"samples":66,"minimumRight":0.3371028308814261,"minimumFacingRight":0.33687601865685673,"laneError":0.012897169118573859,"maximumHop":0,"maximumStep":0.14000000000000035,"arrived":true},{"direction":-1,"start":{"x":-8.133746837878903,"z":-12.603259990069828},"end":{"x":-1.344437126196946,"z":-3.095660481012622},"frames":85,"samples":63,"minimumRight":0.338555067059894,"minimumFacingRight":0.3383129101712179,"laneError":0.011444932940105956,"maximumHop":0,"maximumStep":0.14000000000000026,"arrived":true}]}
+CHECK PASS work movement lab lanes 20Hz: clean console 4.9s 
+DSB STEP 4925 (() => { const B = window.__ooga, s0 = B.stats().dropsLanded, d0 = B.game.state.donations; B.demoTip(4000); B.advance(6, 1 / 30); const landed = B.sta
+DSB DONE 6720
+CHECK PASS hub donation: a 4000 sat donation is counted and lands its bananas on the pile {"ok":true,"landed":10}
+CHECK PASS hub donation: clean console 6.7s 
+DSB STEP 6720 2 / BL.pilot.WALK.speed
+DSB DONE 6725
+DSB STEP 6725 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 7815
+DSB STEP 7822 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 8072
+DSB STEP 8079 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 8238
+DSB STEP 8238 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 8362
+DSB STEP 8363 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 8823
+DSB STEP 8829 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 9140
+DSB STEP 9146 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 9304
+DSB STEP 9304 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 9309
+DSB STEP 9309 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 9794
+DSB STEP 9800 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 10067
+DSB STEP 10074 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 10246
+DSB STEP 10246 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 10252
+DSB STEP 10252 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 10721
+DSB STEP 10727 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 10989
+DSB STEP 10995 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 11176
+DSB STEP 11176 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 11182
+DSB STEP 11182 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 11567
+DSB STEP 11571 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 11883
+DSB STEP 11889 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 12066
+DSB STEP 12066 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 12071
+DSB STEP 12071 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 12436
+DSB STEP 12441 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 12716
+DSB STEP 12722 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 12871
+DSB STEP 12871 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 12877
+DSB STEP 12877 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 13221
+DSB STEP 13225 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 13481
+DSB STEP 13487 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 13645
+DSB STEP 13645 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 13651
+DSB STEP 13651 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 13959
+DSB STEP 13964 window.__ooga.advance(0.25806451612903225, 1 / 60)
+DSB DONE 14181
+DSB STEP 14187 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 14333
+DSB STEP 14333 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 14339
+DSB STEP 14339 (() => {
+    const B = __ooga, a = B.cavemen.get("portlandhodl"), P = B.pilot, rows = [];
+    const key = (type, key, code, location = 0, shiftKey = f
+DSB DONE 17401
+CHECK PASS hub running: Left Shift speeds up forward and sideways movement in carry and shoulder views, keeps possession, releases cleanly and survives a Right Shift keyup {"rows":[{"combat":false,"direction":"w","walk":{"distance":1.5499999999999972,"keptControl":true,"sprintReleased":true},"run":{"distance":2.3249999999999957,"keptControl":true,"sprintReleased":true}},{"combat":false,"direction":"a","walk":{"distance":1.5499999999999972,"keptControl":true,"sprintReleased":true},"run":{"distance":2.3249999999999957,"keptControl":true,"sprintReleased":true}},{"combat":true,"direction":"w","walk":{"distance":1.5499999999999972,"keptControl":true,"sprintReleased":true},"run":{"distance":2.3249999999999957,"keptControl":true,"sprintReleased":true}},{"combat":true,"direction":"a","walk":{"distance":1.5499999999999972,"keptControl":true,"sprintReleased":true},"run":{"distance":2.3249999999999957,"keptControl":true,"sprintReleased":true}}],"independent":true}
+DSB STEP 17401 window.__ooga.pilot.release(true)
+DSB DONE 17409
+DSB STEP 18233 window.__ooga.agent
+DSB DONE 18233
+CHECK PASS hub walking: W A S D walk an Ooga away, left, back and right on screen from two camera angles, and Right Shift+A does not restore the removed hub Agent {"ooga":{"0 w":{"ok":true,"right":0,"fwd":2.71},"0 a":{"ok":true,"right":-2.71,"fwd":0},"0 s":{"ok":true,"right":0,"fwd":-2.71},"0 d":{"ok":true,"right":2.71,"fwd":0},"2.2 w":{"ok":true,"right":0,"fwd":2.71},"2.2 a":{"ok":true,"right":-2.71,"fwd":0},"2.2 s":{"ok":true,"right":0,"fwd":-2.71},"2.2 d":{"ok":true,"right":2.71,"fwd":0}}}
+CHECK PASS hub walking: clean console 18.2s 
+DSB STEP 18234 (() => {
+    const B = __ooga, P = B.pilot, H = B.hud, a = B.cavemen.get("portlandhodl");
+    const map = document.getElementById("destination-hud"), 
+DSB DONE 21982
+CHECK PASS hub map: native and locked-cursor Lab clicks remain usable, the map cycles through Mirror, HQ, Basement, Mempool and Pile in every view, and possession is retained [{"mode":"detached","lab":true,"cursorDot":true,"mirror":true,"cycle":[true,true,true,true],"possession":true},{"mode":"carry","lab":true,"cursorDot":true,"mirror":true,"cycle":[true,true,true,true],"possession":true},{"mode":"combat","lab":true,"cursorDot":true,"mirror":true,"cycle":[true,true,true,true],"possession":true},{"mode":"first-person","lab":true,"cursorDot":true,"mirror":true,"cycle":[true,true,true,true],"possession":true}]
+CHECK PASS hub map: looking keeps the arrival label; actual travel clears its dot and shows HUB, and underground and sphere arrivals resolve to their broader areas {"looking":true,"departed":{"distance":7.7496306206734875,"label":"HUB","selected":null,"visible":true},"areas":[{"name":"underground","label":"HQ"},{"name":"basement","label":"B1"},{"name":"timechain","label":"SPHERE"}]}
+CHECK PASS hub map navigation: clean console 22.0s 
+DSB STEP 21983 (() => {
+    const B = __ooga, P = BL.poolModels, D = P.DIR, rows = [];
+    const key = (type, k) => window.dispatchEvent(new KeyboardEvent(type, { ke
+DSB DONE 43393
+CHECK PASS rainforest approach: Oogas walk onto the bridge and back without stopping or jumping, including the reported W-S Bitcoin combat position [{"across":-0.75,"replay":false,"top":33.12083333333349,"feet":6.0047784757081315,"bottom":25.887500000000006,"longest":0,"airborne":false},{"across":0,"replay":false,"top":33.12083333333349,"feet":6.0047784757081315,"bottom":25.887500000000006,"longest":0,"airborne":false},{"across":0.75,"replay":false,"top":33.1208333333335,"feet":6.0047784757081315,"bottom":25.88750000000001,"longest":0,"airborne":false},{"across":null,"replay":true,"top":33.05096444652952,"feet":6.0047784757081315,"bottom":25.96536331345095,"longest":0,"airborne":false}]
+CHECK PASS rainforest bridge: hanging vines end at the gateways instead of extending through the stair rock {"tails":0}
+CHECK PASS rainforest bridge steps: clean console 43.4s 
+SLOW hub took 43.9 s against a 25 s budget
+DSB STEP 43 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 56
+DSB STEP 99 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 100
+DSB STEP 140 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 141
+DSB STEP 183 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 183
+DSB STEP 225 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 226
+DSB STEP 268 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 268
+DSB STEP 311 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 311
+DSB STEP 353 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 354
+DSB STEP 396 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4767
+DSB STEP 4809 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4813
+DSB STEP 4856 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4857
+DSB STEP 4897 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4902
+DSB STEP 4943 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4952
+DSB STEP 4994 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5000
+DSB STEP 5000 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 5067
+DSB STEP 5067 (() => {
+    const B = __ooga, S = BL.scene, scene = BL.scenes.hub, dt = 1 / 20;
+    const update = scene.update; scene.update = () => {}; B.pilot.rel
+DSB DONE 15184
+CHECK PASS work movement cave trips: five workers retain path routes and finish repeated trips to lab, OBL and LF without stuck loops, jumps or relocation {"frames":2319,"rows":[{"name":"portlandhodl","outbound":[3,2,2],"returned":[2,2,2],"phase":"return","stall":0,"maximumStall":0.25,"maximumStep":0.14000000000000187,"missingRoutes":0,"resets":0,"jumps":0,"x":-7.821508491490134,"z":-11.722906094737617},{"name":"w-s-bitcoin","outbound":[2,2,2],"returned":[2,2,2],"phase":"outbound","stall":0,"maximumStall":0.49999999999999994,"maximumStep":0.14000000000000143,"missingRoutes":0,"resets":0,"jumps":0,"x":-2.380067207689862,"z":-6.6512320933454365},{"name":"bc1gui","outbound":[2,2,2],"returned":[2,2,2],"phase":"reload","stall":0,"maximumStall":0.8000000000000002,"maximumStep":0.14000000000000146,"missingRoutes":0,"resets":0,"jumps":0,"x":3.0332854529488222,"z":-3.0129684238794674},{"name":"DrNeski","outbound":[2,2,2],"returned":[2,2,2],"phase":"outbound","stall":0,"maximumStall":1.0000000000000002,"maximumStep":0.1400000000000016,"missingRoutes":0,"resets":0,"jumps":0,"x":-4.277728984301445,"z":-9.158678864671607},{"name":"2140data","outbound":[2,2,2],"returned":[2,2,2],"phase":"reload","stall":0,"maximumStall":1.6500000000000008,"maximumStep":0.14000000000000148,"missingRoutes":0,"resets":0,"jumps":0,"x":4.059009593030002,"z":-1.1587966759291761}],"sites":["oogaboogax/entropylab","oogaboogax/oogaboogaland","oogaboogax/lightningfoundry"]}
+DSB STEP 15184 (() => {
+    const island = { path: { version: 0, debug: { active: false, ringCenterRadius: 0 }, centerlines: [[{ x: 0, z: 0 }, { x: 0, z: 10 }]] }, s
+DSB DONE 15197
+CHECK PASS work movement cave trips: a displaced walker rejoins its lane around a post instead of cutting into it or reversing {"blocked":0,"backwards":0,"maximumStep":0.13999999999999999,"arrived":true}
+DSB STEP 15197 (() => {
+    const B = window.__ooga, scene = window.BL.scenes.hub, S = window.BL.scene;
+    const nav = B.headquarters.npcPaths, path = B.island.path
+DSB DONE 19236
+CHECK PASS work movement cave trips: every surface trail connects to the ring and completes in both directions, including LF and Mine above buried HQ ramps {"rows":[{"line":0,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.36567754595337,"connected":true,"arrived":true,"onPath":1,"error":0.3582157420478042,"laneError":0.016842294826259208,"laneSamples":235,"rightSamples":235,"frames":290,"deviation":null,"distance":0},{"line":0,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.36567754595337,"connected":true,"arrived":true,"onPath":0.9897610921501706,"error":0.35778821915073333,"laneError":0.009207730311326434,"laneSamples":239,"rightSamples":239,"frames":293,"deviation":null,"distance":0},{"line":1,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":15.533150135237818,"connected":true,"arrived":true,"onPath":1,"error":0.35835745315183787,"laneError":0.009894283602802478,"laneSamples":224,"rightSamples":224,"frames":278,"deviation":null,"distance":0},{"line":1,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":15.533150135237818,"connected":true,"arrived":true,"onPath":1,"error":0.36059102321410214,"laneError":0.010591023214102213,"laneSamples":221,"rightSamples":221,"frames":275,"deviation":null,"distance":0},{"line":2,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":15.490485306936314,"connected":true,"arrived":true,"onPath":1,"error":0.35802207451429674,"laneError":0.009478369387234564,"laneSamples":223,"rightSamples":223,"frames":277,"deviation":null,"distance":0},{"line":2,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":15.490485306936314,"connected":true,"arrived":true,"onPath":1,"error":0.36017619920769417,"laneError":0.010176199207694137,"laneSamples":221,"rightSamples":221,"frames":274,"deviation":null,"distance":0},{"line":3,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":15.314569387665792,"connected":true,"arrived":true,"onPath":1,"error":0.37106223372548347,"laneError":0.021062233725483548,"laneSamples":218,"rightSamples":218,"frames":273,"deviation":null,"distance":0},{"line":3,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":15.314569387665792,"connected":true,"arrived":true,"onPath":1,"error":0.3614546422114392,"laneError":0.018486165923007225,"laneSamples":219,"rightSamples":219,"frames":272,"deviation":null,"distance":0},{"line":4,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.60499660501936,"connected":true,"arrived":true,"onPath":1,"error":0.35838672667291394,"laneError":0.009911476364989735,"laneSamples":243,"rightSamples":243,"frames":297,"deviation":null,"distance":0},{"line":4,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.60499660501936,"connected":true,"arrived":true,"onPath":1,"error":0.3607280853052488,"laneError":0.010728085305248825,"laneSamples":240,"rightSamples":240,"frames":294,"deviation":null,"distance":0},{"line":5,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.56015466665486,"connected":true,"arrived":true,"onPath":1,"error":0.36019765377357416,"laneError":0.01838940378353915,"laneSamples":238,"rightSamples":238,"frames":293,"deviation":null,"distance":0},{"line":5,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.56015466665486,"connected":true,"arrived":true,"onPath":1,"error":0.3595705262484175,"laneError":0.012905440478723385,"laneSamples":242,"rightSamples":242,"frames":296,"deviation":null,"distance":0},{"line":6,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.655282875786337,"connected":true,"arrived":true,"onPath":1,"error":0.357814329055309,"laneError":0.009213676600070608,"laneSamples":244,"rightSamples":244,"frames":298,"deviation":null,"distance":9.456937025001033e-19},{"line":6,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.655282875786337,"connected":true,"arrived":true,"onPath":1,"error":0.359932701747252,"laneError":0.009932701747252082,"laneSamples":241,"rightSamples":241,"frames":295,"deviation":null,"distance":0},{"line":7,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.704455024429375,"connected":true,"arrived":true,"onPath":1,"error":0.35815417310637615,"laneError":0.009675384095398976,"laneSamples":245,"rightSamples":245,"frames":299,"deviation":null,"distance":1.537323543781021e-18},{"line":7,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":16.704455024429375,"connected":true,"arrived":true,"onPath":1,"error":0.36040227496354965,"laneError":0.010402274963549674,"laneSamples":242,"rightSamples":242,"frames":295,"deviation":null,"distance":0},{"line":8,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":10.092548077347185,"connected":true,"arrived":true,"onPath":1,"error":0.3688814401726923,"laneError":0.3510247787655606,"laneSamples":125,"rightSamples":123,"frames":180,"deviation":null,"distance":0},{"line":8,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":10.092548077347185,"connected":true,"arrived":true,"onPath":1,"error":0.35909918667593316,"laneError":0.3697990037809411,"laneSamples":130,"rightSamples":116,"frames":190,"deviation":null,"distance":6.938893903907228e-18},{"line":9,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":7.747346708362145,"connected":true,"arrived":true,"onPath":1,"error":0.3835778541761024,"laneError":0.22296164536434304,"laneSamples":85,"rightSamples":85,"frames":139,"deviation":null,"distance":1.734723475976807e-18},{"line":9,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":7.747346708362145,"connected":true,"arrived":true,"onPath":1,"error":0.3153198645952794,"laneError":0.2580252326838175,"laneSamples":90,"rightSamples":90,"frames":145,"deviation":null,"distance":3.469446951953614e-18},{"line":10,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":24.737706030195692,"connected":true,"arrived":true,"onPath":1,"error":0.35215571017771424,"laneError":0.2618318502455086,"laneSamples":391,"rightSamples":391,"frames":445,"deviation":null,"distance":0},{"line":10,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":24.737706030195692,"connected":true,"arrived":true,"onPath":1,"error":0.3926367778219586,"laneError":0.2667053296504499,"laneSamples":390,"rightSamples":390,"frames":444,"deviation":null,"distance":0},{"line":11,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":14.782623181206517,"connected":true,"arrived":true,"onPath":1,"error":0.3523749767140203,"laneError":0.012019927046232393,"laneSamples":210,"rightSamples":210,"frames":263,"deviation":null,"distance":0},{"line":11,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":14.782623181206517,"connected":true,"arrived":true,"onPath":1,"error":0.35123973893376337,"laneError":0.012352112589027853,"laneSamples":209,"rightSamples":209,"frames":264,"deviation":null,"distance":0},{"line":12,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":8,"connected":true,"arrived":true,"onPath":1,"error":0.3499999399459354,"laneError":0.010942651275967163,"laneSamples":90,"rightSamples":90,"frames":144,"deviation":null,"distance":0},{"line":12,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":8,"connected":true,"arrived":true,"onPath":1,"error":0.34999993994593537,"laneError":0.010942651275966497,"laneSamples":90,"rightSamples":90,"frames":144,"deviation":null,"distance":0},{"line":13,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":14.782623181206521,"connected":true,"arrived":true,"onPath":1,"error":0.3509297079804461,"laneError":0.00986435286257914,"laneSamples":210,"rightSamples":210,"frames":264,"deviation":null,"distance":0},{"line":13,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":14.782623181206521,"connected":true,"arrived":true,"onPath":1,"error":0.35128941846389067,"laneError":0.008033999586228524,"laneSamples":210,"rightSamples":210,"frames":263,"deviation":null,"distance":0},{"line":14,"direction":1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":7.999999999999997,"connected":true,"arrived":true,"onPath":1,"error":0.34999993994593287,"laneError":0.010942651275966608,"laneSamples":90,"rightSamples":90,"frames":144,"deviation":null,"distance":0},{"line":14,"direction":-1,"initialShoulder":{"phase":0,"originX":4.23032891621305,"originZ":-4.122018802118706,"forwardX":-0.20867096365115484,"forwardZ":0.9779859042587977},"pathLength":7.999999999999997,"connected":true,"arrived":true,"onPath":1,"error":0.34999993994593287,"laneError":0.010942651275966608,"laneSamples":90,"rightSamples":90,"frames":144,"deviation":null,"distance":0}],"lines":15,"nodes":1787,"capacity":4096}
+CHECK PASS work movement cave trips: clean console 19.2s 
+
+214/214 checks passed in 1.4 min

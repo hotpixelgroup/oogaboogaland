@@ -1,0 +1,920 @@
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 58
+DSB STEP 101 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 101
+DSB STEP 144 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 145
+DSB STEP 187 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 188
+DSB STEP 230 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 231
+DSB STEP 272 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 273
+DSB STEP 315 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 316
+DSB STEP 358 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 590
+DSB STEP 633 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 634
+DSB STEP 676 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 679
+DSB STEP 721 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 722
+DSB STEP 763 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 764
+DSB STEP 806 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 806
+DSB STEP 807 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 978
+DSB STEP 979 (() => {
+    const S = BL.scene, M = BL.models, results = [];
+    const canvas = document.createElement('canvas'); canvas.getContext('2d', { willReadF
+DSB DONE 992
+CHECK PASS canvas bounds: near and viewport crossings, visible children and every orthographic morph preserve exact pixels while skipping offscreen face reads [{"mix":0,"same":true,"optimizedReads":23,"referenceReads":29,"specialReads":[2,2,2,2,1]},{"mix":0.25,"same":true,"optimizedReads":23,"referenceReads":29,"specialReads":[2,2,2,2,1]},{"mix":0.5,"same":true,"optimizedReads":23,"referenceReads":29,"specialReads":[2,2,2,2,1]},{"mix":0.75,"same":true,"optimizedReads":23,"referenceReads":29,"specialReads":[2,2,2,2,1]},{"mix":1,"same":true,"optimizedReads":23,"referenceReads":29,"specialReads":[2,2,2,2,1]}]
+CHECK PASS canvas bounds: clean console 1.0s 
+DSB STEP 27 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 52
+DSB STEP 94 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 95
+DSB STEP 137 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 138
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 181
+DSB STEP 223 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 224
+DSB STEP 267 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 268
+DSB STEP 310 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 367 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 578
+DSB STEP 620 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 621
+DSB STEP 663 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 664
+DSB STEP 706 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 707
+DSB STEP 749 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 750
+DSB STEP 791 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 792
+DSB STEP 792 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 976
+DSB STEP 976 (() => { const B = window.__ooga, s0 = B.stats().dropsLanded, d0 = B.game.state.donations; B.demoTip(4000); B.advance(6, 1 / 30); const landed = B.sta
+DSB DONE 1179
+CHECK PASS lab donation: a 4000 sat donation is counted and lands its bananas on the pile {"ok":true,"landed":10}
+CHECK PASS lab donation: clean console 1.2s 
+DSB STEP 1180 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1298
+DSB STEP 1301 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1333
+DSB STEP 1334 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1349
+DSB STEP 1349 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1351
+DSB STEP 1351 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1389
+DSB STEP 1390 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1407
+DSB STEP 1409 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1419
+DSB STEP 1419 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1419
+DSB STEP 1420 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1465
+DSB STEP 1477 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1495
+DSB STEP 1497 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1508
+DSB STEP 1508 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1509
+DSB STEP 1509 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1562
+DSB STEP 1564 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1588
+DSB STEP 1589 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1600
+DSB STEP 1600 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1601
+DSB STEP 1601 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1621
+DSB STEP 1622 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1645
+DSB STEP 1688 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1699
+DSB STEP 1699 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1700
+DSB STEP 1700 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1720
+DSB STEP 1721 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1734
+DSB STEP 1735 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1744
+DSB STEP 1745 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1746
+DSB STEP 1746 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1767
+DSB STEP 1768 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1785
+DSB STEP 1785 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1797
+DSB STEP 1797 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1873
+DSB STEP 1873 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1895
+DSB STEP 1897 window.__ooga.advance(0.3, 1 / 60)
+DSB DONE 1911
+DSB STEP 1912 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1923
+DSB STEP 1923 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1924
+DSB STEP 1924 (() => {
+    const B = __ooga, a = B.crew.player;
+    B.pilot.navigate({ position: { x: 5, y: 0, z: 5 }, yaw: 0, pitch: 0.4, dist: 10 }); B.advance(0.
+DSB DONE 2076
+DSB STEP 2076 window.__ooga.pilot.release(true)
+DSB DONE 2079
+DSB STEP 2101 (() => { const B = window.__ooga, p = B.agent.root.position, x = p.x, z = p.z; B.advance(1, 1 / 60); return { driven: B.agent.driven, drift: +Math.hyp
+DSB DONE 2252
+DSB STEP 2252 (() => {
+    const B = __ooga, a = B.agent, rows = [];
+    const key = (type, key, code, location = 0, shiftKey = false) => window.dispatchEvent(new K
+DSB DONE 2370
+CHECK PASS lab running: Left Shift+A makes the gorilla strafe faster without releasing control [{"sprint":false,"distance":0.9220431929952394,"driven":true},{"sprint":true,"distance":1.4886535422285017,"driven":true}]
+DSB STEP 2370 (() => {
+    const B = __ooga, a = BL.scenes.lab.agent, view = BL.scenes.lab.agentView, rows = [];
+    const key = (type, key, code, location = 0, shi
+DSB DONE 3659
+CHECK PASS lab jump: Space immediately jumps while walking or galloping, a second press double jumps 50% higher than an Ooga, holding never repeats, and a third airborne press or release adds no impulse {"tapPeak":1.714285639896451,"rows":[{"sprint":false,"earlyAir":true,"stopped":0,"minHip":0.6881465023268759,"heldTravel":4.857524198843327,"landed":true,"repeated":false,"releaseAir":false},{"sprint":true,"earlyAir":true,"stopped":0,"minHip":0.688,"heldTravel":7.286286320000537,"landed":true,"repeated":false,"releaseAir":false}],"secondRise":0.09525736748910485,"thirdRise":0.09253514526688278,"secondLift":1.714285639896451,"doubleLanded":true,"blurAir":false,"driven":true,"oogaJump":{"accepted":true,"peak":1.135833333333336}}
+DSB STEP 3663 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"); B.pilot.possess(a); B.pilot.navigate({ position: { x: 5, y: 0, z: 5 }, yaw: 0, pi
+DSB DONE 3910
+CHECK PASS lab walking: W A S D walk an Ooga their way on screen, Right Shift+A summons a still Agent without leaving A held, and an Ooga taken after the Agent stands still {"ooga":{"0 w":{"ok":true,"right":0,"fwd":3.1},"0 a":{"ok":true,"right":-2.58,"fwd":0},"0 s":{"ok":true,"right":0,"fwd":-2.32},"0 d":{"ok":true,"right":2.58,"fwd":0},"2.2 w":{"ok":true,"right":0,"fwd":2.32},"2.2 a":{"ok":true,"right":-2.32,"fwd":0},"2.2 s":{"ok":true,"right":0,"fwd":-2.32},"2.2 d":{"ok":true,"right":2.32,"fwd":0}},"still":{"driven":true,"drift":0},"after":0}
+CHECK PASS lab walking: clean console 3.9s 
+DSB STEP 3916 window.__ooga.stats().dropsLanded
+DSB DONE 3918
+DSB STEP 3919 (() => { const B = window.__ooga; B.advance(4, 1 / 30); return B.stats().dropsLanded - 10; })()
+DSB DONE 4052
+DSB STEP 4052 (() => { const B = window.__ooga; B.pilot.possess(B.cavemen.get("portlandhodl")); B.advance(0.3, 1 / 60); })()
+DSB DONE 4090
+DSB STEP 4096 ({ scene: window.__ooga.scene, driving: !!window.__ooga.crew.player })
+DSB DONE 4097
+DSB STEP 4098 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 8648
+DSB STEP 8648 window.__ooga.scene
+DSB DONE 8654
+CHECK PASS lab keys: B lands 100 test bananas, the first Escape lets go of the Ooga and the second returns to the island {"landed":100,"first":{"scene":"lab","driving":false},"second":"hub"}
+CHECK PASS lab keys: clean console 8.7s 
+DSB STEP 8654 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9408
+DSB STEP 9408 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9574
+DSB STEP 9574 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10275
+DSB STEP 10275 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10376
+DSB STEP 10376 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-lab", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 10560
+CHECK PASS lab round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"lab","first":{"scene":"lab","records":316,"nodes":1841,"targets":277,"dom":3604},"second":{"scene":"lab","records":316,"nodes":1841,"targets":277,"dom":3604}}
+CHECK PASS lab round trip: clean console 10.6s 
+DSB STEP 73 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 74
+DSB STEP 116 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 117
+DSB STEP 159 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 159
+DSB STEP 201 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 201
+DSB STEP 244 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 244
+DSB STEP 286 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 286
+DSB STEP 327 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 328
+DSB STEP 370 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 584
+DSB STEP 626 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 647
+DSB STEP 689 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 690
+DSB STEP 732 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 733
+DSB STEP 775 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 776
+DSB STEP 818 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 820
+DSB STEP 860 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 861
+DSB STEP 862 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 862
+DSB STEP 862 ({ phase: window.__ooga.race.phase, card: !document.querySelector('[data-intro="race"]').hidden })
+DSB DONE 863
+DSB STEP 865 ({ phase: window.__ooga.race.phase, card: !document.querySelector('[data-intro="race"]').hidden })
+DSB DONE 865
+DSB STEP 1029 ({ phase: window.__ooga.race.phase, card: !document.querySelector('[data-intro="race"]').hidden })
+DSB DONE 1043
+DSB STEP 1043 window.__ooga.advance(3.6, 1 / 60)
+DSB DONE 1439
+DSB STEP 1439 ({ phase: window.__ooga.race.phase, card: !document.querySelector('[data-intro="race"]').hidden })
+DSB DONE 1443
+DSB STEP 1443 (() => { const B = window.__ooga, R = B.race; const ev = (t, k) => window.dispatchEvent(new KeyboardEvent(t, { key: k })); const out = {};
+  for (cons
+DSB DONE 6172
+CHECK PASS race start and steering: Enter closes the title card, Enter starts the countdown into the race, and A, D and the arrows steer left and right on screen {"fresh":{"phase":"garage","card":true},"closed":{"phase":"garage","card":false},"counting":{"phase":"countdown","card":false},"racing":{"phase":"racing","card":false},"px":{"none":0,"a":-205.5,"d":205.6,"ArrowLeft":-205.5,"ArrowRight":205.6}}
+CHECK PASS race start and steering: clean console 6.2s 
+DSB STEP 6172 window.__ooga.race.toGarage()
+DSB DONE 6179
+DSB STEP 6179 (() => { const B = window.__ooga, T = window.BL.raceTrack, out = {}; for (const def of T.TRACKS) { const t0 = performance.now(); document.querySelecto
+DSB DONE 6274
+CHECK PASS race tracks: bay builds fast into culled sectors with checkpoints clear of its gaps {"ms":30,"samples":453,"length":680,"sectors":16,"chunks":30,"checkpoints":8,"first":0,"gapNearCheck":false,"maxStep":0.68,"faces":51173,"placedFaces":391705,"bananas":38,"crates":10,"pads":3,"map":302,"grid":42,"gridHeight":true,"torches":0,"spectators":208,"records":98,"sky":true}
+CHECK PASS race tracks: gorge builds fast into culled sectors with checkpoints clear of its gaps {"ms":29,"samples":622,"length":933,"sectors":22,"chunks":60,"checkpoints":8,"first":0,"gapNearCheck":false,"maxStep":0.05,"faces":45780,"placedFaces":45780,"bananas":44,"crates":10,"pads":3,"map":416,"grid":42,"gridHeight":true,"torches":45,"spectators":96,"records":98,"sky":false}
+CHECK PASS race tracks: peak builds fast into culled sectors with checkpoints clear of its gaps {"ms":30,"samples":744,"length":1116,"sectors":27,"chunks":30,"checkpoints":8,"first":0,"gapNearCheck":false,"maxStep":0.78,"faces":75043,"placedFaces":75043,"bananas":46,"crates":8,"pads":3,"map":496,"grid":42,"gridHeight":true,"torches":17,"spectators":220,"records":98,"sky":true}
+CHECK PASS race tracks: the two outdoor tracks carry a sky and the gorge lights its torches {"bay":true,"gorge":[false,45],"peak":true}
+DSB STEP 6274 (() => { const B = window.__ooga, track = id => { document.querySelector('[data-track="' + id + '"]').click(); B.advance(1 / 60, 1 / 60); B.housekeep(
+DSB DONE 6553
+CHECK PASS race tracks: switching tracks releases the old track's GPU records {"before":{"records":176,"nodes":1810,"pool":32,"particles":0},"after":{"records":176,"nodes":1810,"pool":32,"particles":0}}
+CHECK PASS race tracks: clean console 6.6s 
+DSB STEP 6554 (() => {
+    const B = __ooga, gl = B.renderer.kind === "webgl2", rows = [], poses = [], originalTrack = B.race.selection.track, originalMount = B.rac
+DSB DONE 6751
+CHECK PASS race rigs: every rendered track keeps the unchanged global GPU record cap with the full cast and every CPU joint follows its mount {"gl":true,"rows":[{"id":"bay","records":176,"racers":42},{"id":"gorge","records":217,"racers":42},{"id":"peak","records":197,"racers":42},{"id":"bay","records":177,"racers":42}],"poses":[{"mount":"run","exact":true,"complete":true},{"mount":"dino","exact":true,"complete":true},{"mount":"kart","exact":true,"complete":true}],"ready":true,"failure":null}
+CHECK PASS race rig poses: clean console 6.8s 
+DSB STEP 6752 new Promise((resolve, reject) => {
+    const B = __ooga, canvas = document.getElementById("scene"), gl = canvas.getContext("webgl2"), ext = gl && gl.g
+DSB DONE 6951
+CHECK PASS race rigs: a real WebGL context loss rebuilds GPU records for the full cast within the unchanged cap while preserving CPU sources and joint palettes {"lost":true,"restored":true,"contextLost":false,"before":177,"records":167,"drawn":533,"ready":true,"failure":null,"framesBefore":1844,"framesAfter":1855,"racers":42,"buffers":332,"vaos":166,"identities":true,"exact":true,"voxelsFinite":true,"error":0}
+CHECK PASS race rig context restoration: clean console 7.0s 
+DSB STEP 6951 (() => { const B = window.__ooga; const ev = (t, k) => window.dispatchEvent(new KeyboardEvent(t, { key: k })); B.race.startRace(); B.advance(3.6, 1 / 
+DSB DONE 7484
+DSB STEP 7489 (() => { const B = window.__ooga, P = B.racers, pos = () => P.racers.map((r) => [r.x, r.z]); const a = pos(), t = P.raceTime, phase = B.race.phase, pa
+DSB DONE 7833
+DSB STEP 7839 (() => { const B = window.__ooga, p = B.racers.player, x = p.x, z = p.z, phase = B.race.phase; B.advance(0.5, 1 / 60); window.dispatchEvent(new Keyboa
+DSB DONE 8076
+CHECK PASS race pause: Escape pauses with the pause panel up and no racer or clock moving, and Escape again drives on {"held":{"phase":"paused","panel":true,"moved":0,"clock":0},"going":{"phase":"racing","moved":5.149999999999987}}
+CHECK PASS race pause: clean console 8.1s 
+DSB STEP 8077 (() => { const B = window.__ooga, R = B.race, T = window.BL.raceTrack.TRACKS, rounds = []; R.startCup(); for (let i = 0; i < T.length; i++) { if (i) R
+DSB DONE 17166
+CHECK PASS race playthrough: a whole cup under the autopilot: every racer finishes in order, the cup medal and every track's best are saved {"ok":true,"rounds":[{"track":"bay","all":true,"ranked":true},{"track":"gorge","all":true,"ranked":true},{"track":"peak","all":true,"ranked":true}],"you":6,"lo":12,"hi":42,"stored":null}
+CHECK PASS race playthrough: clean console 17.2s 
+DSB STEP 17166 (() => { const B = window.__ooga, R = B.race, btn = document.getElementById("garage-mirror"); R.toGarage(); const locked = btn.hidden; document.queryS
+DSB DONE 17224
+DSB STEP 17224 (() => { const B = window.__ooga, R = B.race; const ev = (t, k) => window.dispatchEvent(new KeyboardEvent(t, { key: k })); const out = {};
+  for (cons
+DSB DONE 20836
+CHECK PASS race mirror: the mirror button stays shut until a gold cup, then opens the mirrored track, where A and D still steer left and right on screen {"locked":true,"stayed":true,"shown":true,"mirror":true,"px":{"none":0,"a":-205.6,"d":205.4}}
+CHECK PASS race mirror: clean console 20.8s 
+DSB STEP 20836 (() => { const B = window.__ooga, R = B.race, P = B.racers; R.startRace(); P.start(); P.autopilot = true; R.simulate(300); P.autopilot = false; R.fini
+DSB DONE 23808
+CHECK PASS race again: Race again on the results counts down the same track with every racer back on the grid {"results":true,"phase":"countdown","same":true,"lap":1,"time":0,"finished":false,"onGrid":true,"hidden":true}
+CHECK PASS race again: clean console 23.8s 
+DSB STEP 23808 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 28031
+DSB STEP 28031 (() => { const B = window.__ooga; B.go("race"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "race"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 28218
+DSB STEP 28218 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 29002
+DSB STEP 29002 (() => { const B = window.__ooga; B.go("race"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "race"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 29230
+DSB STEP 29230 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-race", sats: 2100, handle: "tester", message: "ooga", at: Date.now(
+DSB DONE 29258
+CHECK PASS race round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"race","first":{"scene":"race","records":431,"nodes":1613,"targets":84,"dom":3853},"second":{"scene":"race","records":431,"nodes":1613,"targets":84,"dom":3853}}
+CHECK PASS race round trip: clean console 29.3s 
+SLOW race took 29.7 s against a 25 s budget
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 43
+DSB STEP 112 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 112
+DSB STEP 155 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 155
+DSB STEP 198 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 198
+DSB STEP 240 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 240
+DSB STEP 282 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 283
+DSB STEP 325 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 375 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1748
+DSB STEP 1790 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1791
+DSB STEP 1833 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1834
+DSB STEP 1874 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1875
+DSB STEP 1917 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1918
+DSB STEP 1959 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1960
+DSB STEP 1960 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1961
+DSB STEP 1961 ({ phase: window.__ooga.drop.phase, card: !document.querySelector('[data-intro="drop"]').hidden })
+DSB DONE 1961
+DSB STEP 1963 ({ phase: window.__ooga.drop.phase, card: !document.querySelector('[data-intro="drop"]').hidden })
+DSB DONE 1963
+DSB STEP 2124 ({ phase: window.__ooga.drop.phase, card: !document.querySelector('[data-intro="drop"]').hidden })
+DSB DONE 2126
+DSB STEP 2126 (() => { const B = window.__ooga; let t = 0; for (; t < 60 && !B.drop.jumpOpen; t += 0.25) B.advance(0.25, 1 / 60); return t; })()
+DSB DONE 3413
+DSB STEP 3418 ({ phase: window.__ooga.drop.phase, card: !document.querySelector('[data-intro="drop"]').hidden })
+DSB DONE 3419
+CHECK PASS drop start: Space closes the title card without taking off, Enter flies, and Space at the mark jumps {"fresh":{"phase":"board","card":true},"closed":{"phase":"board","card":false},"climb":{"phase":"climb","card":false},"mark":17.75,"air":{"phase":"air","card":false}}
+DSB STEP 3419 window.__ooga.advance(1, 1 / 60)
+DSB DONE 3495
+DSB STEP 3499 (() => { const B = window.__ooga; return { phase: B.drop.phase, diver: B.diver.state.phase, board: !document.getElementById("drop-board").hidden, scor
+DSB DONE 3500
+CHECK PASS drop start: Escape in the air returns to the board with nothing scored {"phase":"board","diver":"idle","board":true,"score":0,"best":null}
+CHECK PASS drop start: clean console 3.5s 
+DSB STEP 3500 (() => { const B = window.__ooga, D = B.drop; const ev = (t, k) => window.dispatchEvent(new KeyboardEvent(t, { key: k })); const out = {};
+  for (cons
+DSB DONE 4566
+DSB STEP 4566 (() => { const B = window.__ooga, D = B.drop; const ev = (t, k) => window.dispatchEvent(new KeyboardEvent(t, { key: k })); const out = {};
+  for (cons
+DSB DONE 5805
+CHECK PASS drop steering: A and Q go left and D and E go right on screen, in freefall and under the canopy {"free":{"none":0,"a":-121.7,"d":121.7,"q":-286.3,"e":286.3},"canopy":{"none":0,"a":-458.5,"d":458.5,"q":-232,"e":232}}
+CHECK PASS drop steering: clean console 5.8s 
+DSB STEP 5805 (() => { const B = window.__ooga, D = B.drop; D.jumpNow(); const T = B.course.target, d = B.diver.state, h = Math.atan2(T.x, T.z); B.diver.place(T.x -
+DSB DONE 5809
+CHECK PASS drop playthrough: a jump lands on the target, scores its own medal and is saved as the best {"ok":true,"phase":"results","result":{"score":450,"landing":"stand","medal":null}}
+CHECK PASS drop playthrough: clean console 5.8s 
+DSB STEP 5809 (() => { const B = window.__ooga, D = B.drop, best = B.game.state.drop.best && B.game.state.drop.best.score; D.jumpNow(); const R = B.course.rings[0],
+DSB DONE 6038
+CHECK PASS drop crash: a crash through a ring scores its rings with no accuracy and does not replace the best {"landing":"pancake","score":250,"accuracy":0,"improved":false,"best":450,"after":450}
+CHECK PASS drop crash: clean console 6.0s 
+DSB STEP 6038 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9085
+DSB STEP 9085 (() => { const B = window.__ooga; B.go("drop"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "drop"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 9264
+DSB STEP 9264 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10045
+DSB STEP 10045 (() => { const B = window.__ooga; B.go("drop"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "drop"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 10211
+DSB STEP 10212 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-drop", sats: 2100, handle: "tester", message: "ooga", at: Date.now(
+DSB DONE 10219
+CHECK PASS drop round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"drop","first":{"scene":"drop","records":56,"nodes":290,"targets":2,"dom":3784},"second":{"scene":"drop","records":56,"nodes":290,"targets":2,"dom":3784}}
+CHECK PASS drop round trip: clean console 10.2s 
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 47
+DSB STEP 89 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 90
+DSB STEP 132 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 133
+DSB STEP 176 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 176
+DSB STEP 218 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 219
+DSB STEP 261 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 262
+DSB STEP 304 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 304
+DSB STEP 346 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1758
+DSB STEP 1800 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1802
+DSB STEP 1842 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1843
+DSB STEP 1885 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1886
+DSB STEP 1928 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1929
+DSB STEP 1971 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1972
+DSB STEP 1972 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1972
+DSB STEP 1973 !document.querySelector('[data-intro="orbit"]').hidden
+DSB DONE 1973
+DSB STEP 1976 ({ card: !document.querySelector('[data-intro="orbit"]').hidden, phase: window.__ooga.orbit.phase })
+DSB DONE 1977
+DSB STEP 2129 (() => { const O = window.__ooga.orbit; return { phase: O.phase, strip: !document.getElementById("orbit-strip").hidden, build: document.getElementById
+DSB DONE 2132
+DSB STEP 2132 (() => { const O = window.__ooga.orbit; O.toBuild(); O.launch(); O.simulate(3.05); const ignite = O.phase; O.simulate(1.85); const gauge = O.gauge; O.
+DSB DONE 2154
+DSB STEP 2154 (() => { const O = window.__ooga.orbit, s = window.__ooga.flight.state; for (let t = 0; t < 120 && s.fuel[s.stage] > 0; t += 0.25) O.simulate(0.25); O
+DSB DONE 2181
+DSB STEP 2185 (() => { const O = window.__ooga.orbit, s = window.__ooga.flight.state, stage = s.stage; O.simulate(1); return { stage, burning: s.burning, debris: wi
+DSB DONE 2190
+CHECK PASS orbit flow: Space closes the title card without launching, then Space launches and saves the build, the clamps let go in the gold on the gauge, and Space drops a spent stage and lights the next {"card":true,"closed":{"card":false,"phase":"build"},"counting":{"phase":"count","strip":true,"build":true,"saved":true},"lifted":{"ignite":"ignite","gauge":0.7339743589743573,"phase":"ascent","alt":53.41803642259811,"burning":true,"score":200},"spent":{"stage":0,"burning":false,"center":"STAGE!"},"staged":{"stage":1,"burning":true,"debris":1}}
+DSB STEP 2190 (() => { const O = window.__ooga.orbit, F = window.__ooga.flight, s = F.state; for (let t = 0; t < 400 && O.phase === "ascent"; t += 0.25) { if (s.fue
+DSB DONE 2226
+DSB STEP 2229 (() => { const O = window.__ooga.orbit; O.simulate(0.2); return { pod: window.__ooga.flight.isPod(), mode: window.__ooga.flight.state.mode, walk: !doc
+DSB DONE 2230
+CHECK PASS orbit flow: the autopilot climbs to low orbit, which holds the rocket over the pad, and Space cuts the pod free for the spacewalk {"top":{"phase":"orbit","maxAlt":500.16528065327884,"score":1400,"mode":"ascent","walk":false},"free":{"pod":true,"mode":"free","walk":true}}
+DSB STEP 2232 (() => { const O = window.__ooga.orbit, E = O.eva, phase = O.phase; E.e = O.rock.e; E.u = O.rock.u; E.f = O.rock.f - O.rock.reach * 0.6; E.ve = E.vu =
+DSB DONE 2244
+CHECK PASS orbit flow: Space steps outside, at the rock Space measures it, the tether reels the Ooga home and it climbs back in with the mission done (the stage dropped in orbit counting too, and the air left paying a bonus) {"phase":"eva","near":"rock","measuring":true,"measured":true,"reeling":true,"after":"orbit","back":true,"air":36.18333333333355,"bonus":317,"score":2517}
+DSB STEP 2244 (() => { const O = window.__ooga.orbit; let t = 0; for (; t < 40 && window.__ooga.stats().debris > 0; t += 0.25) O.simulate(0.25); return { debris: wi
+DSB DONE 2272
+DSB STEP 2275 (() => { const O = window.__ooga.orbit, F = window.__ooga.flight, s = F.state, phase = O.phase; for (let t = 0; t < 200 && !F.chuteReady(); t += 0.1) 
+DSB DONE 2300
+DSB STEP 2303 window.__ooga.flight.state.chute
+DSB DONE 2304
+DSB STEP 2304 (() => { const O = window.__ooga.orbit; for (let t = 0; t < 200 && O.phase !== "results"; t += 0.25) O.simulate(0.25); })()
+DSB DONE 2327
+DSB STEP 2529 (() => { const O = window.__ooga.orbit, rows = [...document.querySelectorAll("#orbit-score li")].map((li) => [li.children[0].textContent, li.children[
+DSB DONE 2534
+DSB STEP 2534 JSON.parse(localStorage.getItem("oogaboogaland.v1")).orbit.best
+DSB DONE 2535
+CHECK PASS orbit flow: Space lets go, the pod falls shield first, Space opens the chute once it is ready and it lands softly {"cleared":{"debris":0,"t":22},"falling":{"phase":"descent","ready":true,"alt":134.70003999468054,"peakHeat":0.005746592538460277},"chute":"open","result":{"score":4839,"medal":"gold","improved":true,"landing":"island","orbit":true,"failure":null,"dist":64.10285980858006,"peakHeat":0.01728415428535459,"maxAlt":501.27496764539}}
+CHECK PASS orbit flow: the flight log shows the total big with its medal and new best, the rows add up to it, and the best is saved {"log":{"phase":"results","shown":true,"rows":[["Clamps","PERFECT · 200"],["Highest","501 · space 300"],["Stages dropped","3 × 100 · 1.5 fuel dropped unburnt"],["Low orbit","reached · 1000 · 33.3s from the clamps · fast 347"],["Thrift","510 bananas · 180"],["Spacewalk","rock 32 bananas long · 700 · air 317"],["Coming home","peak heat 2% · 795"],["Landing","island · 700"],["Time","1:32.55"]],"points":4839,"final":4839,"best":"NEW BEST","medal":"GOLD","summary":"Up to low orbit and home.","result":{"score":4839,"medal":"gold","improved":true,"landing":"island","orbit":true,"failure":null,"dist":64.10285980858006,"peakHeat":0.01728415428535459,"maxAlt":501.27496764539},"exit":"Exit Game"},"stored":{"score":4839,"orbit":true,"landing":"island"}}
+DSB STEP 2535 document.querySelector('#orbit-results [data-action="orbit-again"]').click()
+DSB DONE 2537
+DSB STEP 2739 (() => { const O = window.__ooga.orbit; return { phase: O.phase, score: O.score, results: document.getElementById("orbit-results").hidden, debris: win
+DSB DONE 2740
+CHECK PASS orbit flow: Fly again counts down the same rocket from a clean pad {"phase":"count","score":0,"results":true,"debris":0}
+DSB STEP 2740 (() => { const saved = JSON.parse(localStorage.getItem("oogaboogaland.v1")); saved.orbit.best = { score: 900, orbit: true, landing: "land" }; saved.or
+DSB DONE 2740
+DSB STEP 2747 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 2763
+DSB STEP 2866 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 2866
+DSB STEP 2968 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 2968
+DSB STEP 3070 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 4425
+DSB STEP 4425 (() => { const B = window.__ooga; return { best: B.game.state.orbit.best, stack: B.orbit.stack.join(), medal: document.getElementById("orbit-medal").h
+DSB DONE 4438
+DSB STEP 4438 (() => { const saved = JSON.parse(localStorage.getItem("oogaboogaland.v1")); saved.orbit.best = { score: "x", orbit: true, landing: "pad" }; localStor
+DSB DONE 4441
+DSB STEP 4446 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 4460
+DSB STEP 4562 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 4563
+DSB STEP 4663 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 4664
+DSB STEP 4766 (() => { try { return !!(window.__ooga.orbit && window.__ooga.renderedFrames > 0); } catch { return false; } })()
+DSB DONE 6183
+DSB STEP 6183 window.__ooga.game.state.orbit.best
+DSB DONE 6195
+CHECK PASS orbit flow: a far-land best and the known parts of a stored build survive a reload, a malformed best is dropped {"kept":{"best":{"score":900,"orbit":true,"landing":"land"},"stack":"pot,leafshield,gourdpod","medal":true},"dropped":null}
+DSB STEP 6195 document.querySelector('[data-scene="orbit"] [data-action="orbit-launch"]').click()
+DSB DONE 6199
+DSB STEP 6199 (() => { const O = window.__ooga.orbit; O.simulate(3.05 + 2.8); O.simulate(3.2); })()
+DSB DONE 6212
+DSB STEP 6212 document.querySelector('#orbit-results [data-action="leave"]').click()
+DSB DONE 6213
+DSB STEP 6213 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 9522
+DSB STEP 9523 ({ scene: window.__ooga.scene, hidden: document.getElementById("orbit").hidden })
+DSB DONE 9530
+CHECK PASS orbit flow: Exit Game on the flight log returns to the island with the Orbit HUD hidden {"scene":"hub","hidden":true}
+CHECK PASS orbit flow: clean console 9.5s 
+DSB STEP 9535 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9576
+DSB STEP 9618 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9618
+DSB STEP 9661 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9661
+DSB STEP 9703 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9704
+DSB STEP 9745 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9746
+DSB STEP 9788 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9789
+DSB STEP 9831 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 9888 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 11245
+DSB STEP 11288 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 11288
+DSB STEP 11330 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 11332
+DSB STEP 11373 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 11374
+DSB STEP 11415 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 11417
+DSB STEP 11458 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 11459
+DSB STEP 11459 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 11460
+DSB STEP 11462 (() => { const B = window.__ooga, O = B.orbit, F = () => B.flight, s = () => B.flight.state;
+const hold = (k, t) => { window.dispatchEvent(new Keyboar
+DSB DONE 13711
+CHECK PASS orbit steering: every key moves its way on screen on the climb (A D lean, W S throttle), falling home (W A S D tip the shield, Q E spin), under the chute (A D) and on the spacewalk (W S in and out, A D, Q E down and up) {"ascent d":21.25,"ascent a":-20.86,"ascent w":0.27,"ascent s":-0.27,"shield w":[0,71.05],"shield a":[-80.6,2.17],"shield s":[3.17,-83.17],"shield d":[75.53,-16.51],"spin q":0.42,"spin e":-0.51,"chute none":0,"chute a":-2.22,"chute d":1.37,"walk w":[0.73,0,0.12],"walk a":[0,-0.74,0],"walk s":[-0.73,0,-0.12],"walk d":[0,0.74,0],"walk q":[-0.03,0,-0.74],"walk e":[0.03,0,0.74]}
+CHECK PASS orbit steering: clean console 13.7s 
+DSB STEP 13711 (() => { const B = window.__ooga, O = B.orbit; O.toBuild(); O.setStack(window.BL.rocketParts.PRESETS[1].stack); O.launch(); O.simulate(3.05); O.simula
+DSB DONE 13748
+CHECK PASS orbit missed: a rocket that drops its stages still burning and falls back names the missed orbit and the wasted fuel first {"phase":"results","orbit":false,"landing":"pad","summary":"Short of low orbit (53 of 500): 3.7 fuel went down with a stage still burning. Wait for STAGE! before dropping one. It came down on the pad, at least."}
+CHECK PASS orbit missed: clean console 13.7s 
+DSB STEP 13748 (() => { const B = window.__ooga, O = B.orbit; O.toBuild(); O.launch(); O.simulate(3.05); O.simulate(1.85); O.releaseClamps(); O.simulate(2); const fl
+DSB DONE 13760
+DSB STEP 13771 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 17025
+DSB STEP 17025 window.__ooga.scene
+DSB DONE 17028
+CHECK PASS orbit escape: Escape in the climb drops back to the builder with the flight cleared, and Escape there leaves for the island {"flying":"ascent","phase":"build","builder":true,"flight":null,"scene":"hub"}
+CHECK PASS orbit escape: clean console 17.0s 
+DSB STEP 17028 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 17775
+DSB STEP 17775 (() => { const B = window.__ooga; B.go("orbit"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "orbit"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 17989
+DSB STEP 17989 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 18674
+DSB STEP 18675 (() => { const B = window.__ooga; B.go("orbit"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "orbit"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 18892
+DSB STEP 18892 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-orbit", sats: 2100, handle: "tester", message: "ooga", at: Date.now
+DSB DONE 18899
+CHECK PASS orbit round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"orbit","first":{"scene":"orbit","records":35,"nodes":166,"targets":10,"dom":3827},"second":{"scene":"orbit","records":35,"nodes":166,"targets":10,"dom":3827}}
+CHECK PASS orbit round trip: clean console 18.9s 
+DSB STEP 76 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 82
+DSB STEP 123 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 124
+DSB STEP 166 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 167
+DSB STEP 209 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 210
+DSB STEP 252 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 253
+DSB STEP 296 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 296
+DSB STEP 337 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 338
+DSB STEP 380 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 615
+DSB STEP 658 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 658
+DSB STEP 701 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 701
+DSB STEP 742 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 743
+DSB STEP 783 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 784
+DSB STEP 826 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 827
+DSB STEP 828 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 828
+DSB STEP 828 (() => { const sim = window.BL.mineSim.create({ seed: 7 }); sim.simulate(1); window.BL.mineSim.save(sim, ""); })()
+DSB DONE 830
+DSB STEP 834 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 848
+DSB STEP 889 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 890
+DSB STEP 932 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 932
+DSB STEP 974 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 975
+DSB STEP 1017 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1018
+DSB STEP 1060 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1061
+DSB STEP 1103 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1104
+DSB STEP 1146 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1357
+DSB STEP 1399 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1400
+DSB STEP 1442 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1443
+DSB STEP 1483 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1484
+DSB STEP 1526 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1527
+DSB STEP 1569 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1570
+DSB STEP 1570 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1571
+DSB STEP 1571 (() => { const M = window.__ooga.mine; if (M.phase !== "run") M.start(); M.setBananas(1e5); let n = 0; while (n < 8 && M.buy("m1", -1)) n++; M.simulat
+DSB DONE 1625
+DSB STEP 1625 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 5930
+DSB STEP 5930 (() => { const raw = localStorage.getItem("oogaboogaland.mine"), s = raw && JSON.parse(raw).state; return s && { time: s.time, mined: s.minedSats, uni
+DSB DONE 6001
+DSB STEP 6006 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6112
+DSB STEP 6153 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6154
+DSB STEP 6196 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6196
+DSB STEP 6239 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6240
+DSB STEP 6281 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6282
+DSB STEP 6324 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6324
+DSB STEP 6367 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 6424 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6577
+DSB STEP 6619 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6620
+DSB STEP 6662 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6662
+DSB STEP 6705 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6705
+DSB STEP 6748 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6748
+DSB STEP 6790 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6791
+DSB STEP 6833 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 6834
+DSB STEP 6834 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 6834
+DSB STEP 6834 (() => { const s = window.__ooga.mine.state; return { phase: window.__ooga.mine.phase, time: s.time, mined: s.minedSats, unit: JSON.stringify(Array.fr
+DSB DONE 6835
+CHECK PASS mine save: a run left mid-way is saved and a reload resumes it where it stood {"bought":8,"saved":{"time":121.5,"mined":1883686},"resumed":{"phase":"run","time":121.75,"mined":1883686}}
+DSB STEP 6835 (() => { const B = window.__ooga, M = B.mine, s = M.state; M.sim.end(); M.simulate(0.25); const shown = +document.getElementById("mine-final-score").t
+DSB DONE 6839
+CHECK PASS mine playthrough: the resumed run finishes to its results with the score shown, kept as the best and its save cleared {"ok":true,"phase":"results","mined":1883686,"shown":1,"score":1}
+CHECK PASS mine save and finish: clean console 6.8s 
+DSB STEP 6839 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10972
+DSB STEP 10972 (() => { const B = window.__ooga; B.go("mine"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "mine"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 11145
+DSB STEP 11145 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 11936
+DSB STEP 11936 (() => { const B = window.__ooga; B.go("mine"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "mine"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 12029
+DSB STEP 12029 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-mine", sats: 2100, handle: "tester", message: "ooga", at: Date.now(
+DSB DONE 12034
+CHECK PASS mine round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"mine","first":{"scene":"mine","records":47,"nodes":400,"targets":126,"dom":3818},"second":{"scene":"mine","records":47,"nodes":400,"targets":126,"dom":3818}}
+CHECK PASS mine round trip: clean console 12.0s 
+DSB STEP 12040 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12302
+DSB STEP 12342 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12346
+DSB STEP 12388 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12389
+DSB STEP 12430 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12431
+DSB STEP 12473 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12474
+DSB STEP 12515 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12516
+DSB STEP 12558 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12559
+DSB STEP 12601 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12601
+DSB STEP 12644 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12834
+DSB STEP 12876 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12877
+DSB STEP 12919 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12920
+DSB STEP 12961 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 12962
+DSB STEP 13004 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13005
+DSB STEP 13047 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13048
+DSB STEP 13048 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 13048
+DSB STEP 13050 window.__ooga.advance(0.5)
+DSB DONE 13055
+DSB STEP 13055 ({ phase: window.__ooga.mine.phase, time: window.__ooga.mine.state.time })
+DSB DONE 13056
+DSB STEP 13201 window.__ooga.advance(0.5)
+DSB DONE 13209
+DSB STEP 13209 ({ phase: window.__ooga.mine.phase, time: window.__ooga.mine.state.time })
+DSB DONE 13210
+DSB STEP 13210 (() => { const B = window.__ooga, M = B.mine, C = B.camera, out = {};
+    const hold = (k, t) => { window.dispatchEvent(new KeyboardEvent("keydown", {
+DSB DONE 13539
+CHECK PASS mine controls: Space leaves the intro alone and Enter starts the run; W walks away from the camera, S toward it, A and D left and right on screen, and Q and E turn the view left and right {"spaced":{"phase":"intro","time":0},"started":{"phase":"run","time":0.5},"walk":{"w":{"away":2.05,"px":0},"s":{"away":-2.05,"px":0},"a":{"away":0,"px":-358},"d":{"away":0,"px":358},"q":512,"e":-514}}
+DSB STEP 13539 (() => { const B = window.__ooga, s = B.mine.state, key = () => window.dispatchEvent(new KeyboardEvent("keydown", { key: "p" })); let t = s.time; B.ad
+DSB DONE 13994
+CHECK PASS mine controls: P pauses the operation with its button pressed, and P again runs it on {"running":1,"frozen":0,"shown":"true","resumed":1}
+DSB STEP 13994 (() => { const B = window.__ooga, M = B.mine, s = M.state; M.setBananas(1e5); M.buy("m1", -1); M.select("unit", Array.from(s.unit).findIndex((v) => v 
+DSB DONE 14192
+DSB STEP 14194 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 18819
+DSB STEP 18820 ({ scene: window.__ooga.scene, saved: !!localStorage.getItem("oogaboogaland.mine") })
+DSB DONE 18823
+CHECK PASS mine controls: Escape closes a card, then pauses, then leaves for the island with the run saved {"opened":true,"first":{"card":false,"paused":false},"second":{"paused":true,"scene":"mine"},"left":{"scene":"hub","saved":true}}
+CHECK PASS mine controls: clean console 18.8s 
+DSB STEP 33 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 87 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 87
+DSB STEP 128 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 129
+DSB STEP 171 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 172
+DSB STEP 214 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 215
+DSB STEP 258 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 259
+DSB STEP 301 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 302
+DSB STEP 344 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 390 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 611
+DSB STEP 654 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 655
+DSB STEP 696 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 697
+DSB STEP 739 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 740
+DSB STEP 782 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 783
+DSB STEP 825 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 825
+DSB STEP 826 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 995
+DSB STEP 996 window.__ooga.advance(2, 1 / 60)
+DSB DONE 1096
+DSB STEP 1349 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1353
+CHECK PASS lab phone: nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"play":[]}
+CHECK PASS lab phone: clean console 1.4s 
+DSB STEP 28 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 30
+DSB STEP 71 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 71
+DSB STEP 113 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 116
+DSB STEP 158 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 159
+DSB STEP 201 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 202
+DSB STEP 244 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 245
+DSB STEP 287 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 288
+DSB STEP 329 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 557
+DSB STEP 601 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 618
+DSB STEP 660 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 661
+DSB STEP 702 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 703
+DSB STEP 746 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 747
+DSB STEP 789 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 791
+DSB STEP 833 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 834
+DSB STEP 834 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 834
+DSB STEP 834 (() => { const lines = [...document.querySelectorAll('[data-intro]:not([hidden]) [data-coarse], #mine-intro:not([hidden]) [data-coarse]')]; return { c
+DSB DONE 835
+DSB STEP 835 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 839
+DSB STEP 840 (() => { const g = document.querySelector('[data-intro]:not([hidden]) .game-intro-go, #mine-intro:not([hidden]) .game-intro-go'); if (!g) return null;
+DSB DONE 840
+DSB STEP 1155 document.querySelector('[data-intro="race"]').hidden
+DSB DONE 1156
+DSB STEP 1156 window.__ooga.race.startRace()
+DSB DONE 1159
+DSB STEP 1159 window.__ooga.advance(2, 1 / 60)
+DSB DONE 1287
+DSB STEP 1538 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1542
+CHECK PASS race phone: the title card reads in touch words and its go button starts the game, then nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"card":{"touch":{"coarse":true,"lines":2,"touchWording":true},"bad":[],"closed":true},"play":[]}
+CHECK PASS race phone: clean console 1.5s 
+DSB STEP 36 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 37
+DSB STEP 79 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 79
+DSB STEP 121 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 123
+DSB STEP 165 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 165
+DSB STEP 206 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 207
+DSB STEP 249 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 250
+DSB STEP 290 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 291
+DSB STEP 332 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1791
+DSB STEP 1832 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1833
+DSB STEP 1873 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1874
+DSB STEP 1916 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1917
+DSB STEP 1959 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1959
+DSB STEP 2001 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2002
+DSB STEP 2044 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2045
+DSB STEP 2045 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 2045
+DSB STEP 2045 (() => { const lines = [...document.querySelectorAll('[data-intro]:not([hidden]) [data-coarse], #mine-intro:not([hidden]) [data-coarse]')]; return { c
+DSB DONE 2046
+DSB STEP 2046 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 2049
+DSB STEP 2049 (() => { const g = document.querySelector('[data-intro]:not([hidden]) .game-intro-go, #mine-intro:not([hidden]) .game-intro-go'); if (!g) return null;
+DSB DONE 2050
+DSB STEP 2353 document.querySelector('[data-intro="drop"]').hidden
+DSB DONE 2355
+DSB STEP 2355 window.__ooga.drop.start()
+DSB DONE 2357
+DSB STEP 2358 window.__ooga.advance(2, 1 / 60)
+DSB DONE 2450
+DSB STEP 2701 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 2705
+CHECK PASS drop phone: the title card reads in touch words and its go button starts the game, then nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"card":{"touch":{"coarse":true,"lines":2,"touchWording":true},"bad":[],"closed":true},"play":[]}
+CHECK PASS drop phone: clean console 2.7s 
+DSB STEP 41 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 42
+DSB STEP 88 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 89
+DSB STEP 131 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 132
+DSB STEP 174 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 175
+DSB STEP 217 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 218
+DSB STEP 260 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 261
+DSB STEP 301 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 302
+DSB STEP 344 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1771
+DSB STEP 1811 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1813
+DSB STEP 1855 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1856
+DSB STEP 1898 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1898
+DSB STEP 1940 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1941
+DSB STEP 1983 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1984
+DSB STEP 1984 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1984
+DSB STEP 1985 (() => { const lines = [...document.querySelectorAll('[data-intro]:not([hidden]) [data-coarse], #mine-intro:not([hidden]) [data-coarse]')]; return { c
+DSB DONE 1985
+DSB STEP 1985 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1989
+DSB STEP 1989 (() => { const g = document.querySelector('[data-intro]:not([hidden]) .game-intro-go, #mine-intro:not([hidden]) .game-intro-go'); if (!g) return null;
+DSB DONE 1990
+DSB STEP 2300 document.querySelector('[data-intro="orbit"]').hidden
+DSB DONE 2302
+DSB STEP 2302 window.__ooga.orbit.launch()
+DSB DONE 2304
+DSB STEP 2304 window.__ooga.advance(2, 1 / 60)
+DSB DONE 2323
+DSB STEP 2574 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 2578
+CHECK PASS orbit phone: the title card reads in touch words and its go button starts the game, then nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"card":{"touch":{"coarse":true,"lines":3,"touchWording":true},"bad":[],"closed":true},"play":[]}
+CHECK PASS orbit phone: clean console 2.6s 
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 47
+DSB STEP 87 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 89
+DSB STEP 131 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 136
+DSB STEP 178 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 179
+DSB STEP 221 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 222
+DSB STEP 264 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 265
+DSB STEP 305 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 306
+DSB STEP 347 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 393 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 603
+DSB STEP 646 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 647
+DSB STEP 687 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 688
+DSB STEP 730 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 731
+DSB STEP 773 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 773
+DSB STEP 815 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 816
+DSB STEP 816 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 816
+DSB STEP 816 (() => { const lines = [...document.querySelectorAll('[data-intro]:not([hidden]) [data-coarse], #mine-intro:not([hidden]) [data-coarse]')]; return { c
+DSB DONE 817
+DSB STEP 817 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 821
+DSB STEP 821 (() => { const g = document.querySelector('[data-intro]:not([hidden]) .game-intro-go, #mine-intro:not([hidden]) .game-intro-go'); if (!g) return null;
+DSB DONE 822
+DSB STEP 1166 document.querySelector('#mine-intro').hidden
+DSB DONE 1167
+DSB STEP 1167 window.__ooga.advance(2, 1 / 60)
+DSB DONE 1187
+DSB STEP 1439 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1444
+CHECK PASS mine phone: the title card reads in touch words and its go button starts the game, then nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"card":{"touch":{"coarse":true,"lines":2,"touchWording":true},"bad":[],"closed":true},"play":[]}
+CHECK PASS mine phone: clean console 1.4s 
+
+278/278 checks passed in 2.1 min

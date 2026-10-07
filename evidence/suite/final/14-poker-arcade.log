@@ -1,0 +1,398 @@
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 43
+DSB STEP 84 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 86
+DSB STEP 128 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 129
+DSB STEP 171 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 172
+DSB STEP 214 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 215
+DSB STEP 257 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 258
+DSB STEP 300 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 301
+DSB STEP 343 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 840
+DSB STEP 883 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 884
+DSB STEP 926 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 929
+DSB STEP 970 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 971
+DSB STEP 1011 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1012
+DSB STEP 1053 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1054
+DSB STEP 1054 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1055
+DSB STEP 1055 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1098
+DSB STEP 1100 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1299
+DSB STEP 1300 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1324
+DSB STEP 1324 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1328
+DSB STEP 1328 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1573
+DSB STEP 1575 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1663
+DSB STEP 1665 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1905
+DSB STEP 1905 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1907
+DSB STEP 1907 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 2103
+DSB STEP 2104 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2253
+DSB STEP 2255 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2468
+DSB STEP 2468 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 2470
+DSB STEP 2470 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 2659
+DSB STEP 2660 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2811
+DSB STEP 2812 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3023
+DSB STEP 3023 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 3025
+DSB STEP 3025 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 3200
+DSB STEP 3202 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3359
+DSB STEP 3360 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3375
+DSB STEP 3375 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 3376
+DSB STEP 3376 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 3524
+DSB STEP 3637 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3668
+DSB STEP 3670 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3681
+DSB STEP 3681 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 3681
+DSB STEP 3681 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 3829
+DSB STEP 3830 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4016
+DSB STEP 4017 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 4142
+DSB STEP 4143 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 4144
+DSB STEP 4144 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 4317
+DSB STEP 4318 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4404
+DSB STEP 4405 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 4535
+DSB STEP 4535 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 4537
+CHECK PASS arcade walking: W A S D walk the visitor's Ooga away, left, back and right on screen on the hall floor from two camera angles {"0 w":{"ok":true,"right":0,"fwd":4.13},"0 a":{"ok":true,"right":-4.65,"fwd":0},"0 s":{"ok":true,"right":0,"fwd":-4.65},"0 d":{"ok":true,"right":4.07,"fwd":0},"2.2 w":{"ok":true,"right":0,"fwd":4.65},"2.2 a":{"ok":true,"right":-3.87,"fwd":0},"2.2 s":{"ok":true,"right":0,"fwd":-3.87},"2.2 d":{"ok":true,"right":4.13,"fwd":0}}
+CHECK PASS arcade walking: clean console 4.5s 
+DSB STEP 4537 (() => { const B = window.__ooga, st = B.arcade.stations.find((s) => s.kind === "machine" && s.game.kind === "skee"), p = B.pilot.player.root.position
+DSB DONE 4553
+DSB STEP 4555 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 5115
+DSB STEP 5117 window.__ooga.advance(0.1, 1 / 60)
+DSB DONE 5121
+DSB STEP 5122 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 5665
+DSB STEP 5666 (() => { const B = window.__ooga, st = B.arcade.stations.find((s) => s.kind === "machine" && s.game.kind === "skee"), p = B.pilot.player; return { sce
+DSB DONE 5666
+CHECK PASS arcade machine: Space at the skee-ball machine opens skee-ball, and Escape brings the same Ooga back to the machine {"opened":true,"back":{"scene":"arcade","who":"portlandhodl","off":0}}
+CHECK PASS arcade machine: clean console 5.7s 
+DSB STEP 5667 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), s = window.BL.arcadeModels.CABINETS[0].play; if (B.crew.player !== a) B.pilot.pos
+DSB DONE 5695
+DSB STEP 5701 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6250
+DSB STEP 6250 (() => { const go = document.querySelector('[data-intro="race"] [data-action="intro-go"]'); if (go && go.offsetParent) go.click(); document.querySelec
+DSB DONE 6251
+DSB STEP 6251 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6800
+DSB STEP 6800 (() => { const B = window.__ooga, p = B.pilot.player, s = window.BL.arcadeModels.CABINETS[0].play; return { scene: B.scene, who: p && p.traits.name, o
+DSB DONE 6800
+DSB STEP 6802 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 11408
+DSB STEP 11408 (() => { const B = window.__ooga, p = B.pilot.player; return { scene: B.scene, who: p && p.traits.name }; })()
+DSB DONE 11409
+CHECK PASS arcade play: Space at the Rally cabinet starts Ooga Rally, leaving the race returns the same Ooga to that cabinet, and Escape takes them out to the island {"played":true,"back":{"scene":"arcade","who":"portlandhodl","off":0},"out":{"scene":"hub","who":"portlandhodl"}}
+CHECK PASS arcade play: clean console 11.4s 
+DSB STEP 11409 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 12195
+DSB STEP 12195 (() => { const B = window.__ooga; B.go("arcade"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "arcade"); i++) B.advance(1 / 30, 1 / 30)
+DSB DONE 12501
+DSB STEP 12501 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 13219
+DSB STEP 13219 (() => { const B = window.__ooga; B.go("arcade"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "arcade"); i++) B.advance(1 / 30, 1 / 30)
+DSB DONE 13455
+DSB STEP 13455 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-arcade", sats: 2100, handle: "tester", message: "ooga", at: Date.no
+DSB DONE 13499
+CHECK PASS arcade round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"arcade","first":{"scene":"arcade","records":390,"nodes":1158,"targets":48,"dom":3602},"second":{"scene":"arcade","records":389,"nodes":1158,"targets":48,"dom":3602}}
+CHECK PASS arcade round trip: clean console 13.5s 
+DSB STEP 35 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 97 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 97
+DSB STEP 139 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 140
+DSB STEP 181 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 182
+DSB STEP 224 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 225
+DSB STEP 267 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 268
+DSB STEP 309 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 363 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 486
+DSB STEP 528 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 530
+DSB STEP 573 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 574
+DSB STEP 616 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 616
+DSB STEP 658 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 658
+DSB STEP 699 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 700
+DSB STEP 700 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 700
+DSB STEP 700 document.querySelector('[data-intro="poker"] .game-intro-go').click()
+DSB DONE 701
+DSB STEP 701 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 732
+DSB STEP 735 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 750
+DSB STEP 750 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 756
+DSB STEP 756 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 757
+DSB STEP 757 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 767
+DSB STEP 767 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 777
+DSB STEP 1044 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1051
+DSB STEP 1051 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1147
+DSB STEP 1148 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1160
+DSB STEP 1161 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 1172
+DSB STEP 1173 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1178
+DSB STEP 1178 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1178
+DSB STEP 1178 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1188
+DSB STEP 1425 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 1440
+DSB STEP 1441 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1447
+DSB STEP 1447 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1447
+DSB STEP 1447 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1461
+DSB STEP 1635 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 1648
+DSB STEP 1649 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1654
+DSB STEP 1654 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1654
+DSB STEP 1654 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1665
+DSB STEP 1666 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 1773
+DSB STEP 1904 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1911
+DSB STEP 1911 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 1911
+DSB STEP 1911 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 1923
+DSB STEP 2094 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 2103
+DSB STEP 2109 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2114
+DSB STEP 2114 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 2114
+DSB STEP 2114 (() => { const B = window.__ooga; let body;
+      const a = B.cavemen.get("portlandhodl"); if (B.crew.player !== a) B.pilot.possess(a); B.pilot.naviga
+DSB DONE 2124
+DSB STEP 2333 window.__ooga.advance(0.45, 1 / 60)
+DSB DONE 2345
+DSB STEP 2348 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2353
+DSB STEP 2353 (() => { const q = window.__walk, p = q.body.position, dx = p.x - q.x0, dz = p.z - q.z0; return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz *
+DSB DONE 2353
+CHECK PASS poker walking: spectators move with WASD from two camera angles {"0 w":{"ok":true,"right":0,"fwd":3.62},"0 a":{"ok":true,"right":-3.49,"fwd":0},"0 s":{"ok":true,"right":0,"fwd":-3.49},"0 d":{"ok":true,"right":4.26,"fwd":0},"1.5 w":{"ok":true,"right":0,"fwd":3.49},"1.5 a":{"ok":true,"right":-3.49,"fwd":0},"1.5 s":{"ok":true,"right":0,"fwd":-3.62},"1.5 d":{"ok":true,"right":3.49,"fwd":0}}
+DSB STEP 2353 (() => {
+    const B = __ooga, P = BL.scenes.poker.debug.poker, click = a => document.querySelector('[data-poker-action="' + a + '"]').click();
+    co
+DSB DONE 4872
+CHECK PASS poker local play: ten suited dealers, 90 chairs, nine-player settlement, table ten playable and private snapshots {"count":10,"seats":true,"dealers":true,"privateCards":true,"phase":"showdown","total":9000,"shown":"Hand complete","tableTen":1,"standing":true}
+CHECK PASS poker floor and play: clean console 4.9s 
+DSB STEP 4872 (() => {
+      const P = BL.scenes.poker.debug.poker;
+      if (P.session.live) throw new Error("Poker round trip needs a local session");
+      const
+DSB DONE 4878
+DSB STEP 4878 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9628
+DSB STEP 9628 (() => { const B = window.__ooga; B.go("poker"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "poker"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 9762
+DSB STEP 9762 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10571
+DSB STEP 10571 (() => { const B = window.__ooga; B.go("poker"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "poker"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 10759
+DSB STEP 10760 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-poker", sats: 2100, handle: "tester", message: "ooga", at: Date.now
+DSB DONE 10896
+CHECK PASS poker round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"poker","first":{"scene":"poker","records":122,"nodes":1120,"targets":17,"dom":5325},"second":{"scene":"poker","records":122,"nodes":1120,"targets":17,"dom":5325}}
+DSB STEP 10896 (() => {
+        const P = BL.scenes.poker.debug.poker;
+        return { paused: P.session.paused, local: !P.session.live, versions: P.session.tables.
+DSB DONE 10897
+CHECK PASS poker round trip: both visits compare the same paused local hand and table {"before":{"paused":false,"versions":[49,0,0,0,0,0,0,0,0,5],"title":"Table 10"},"after":{"paused":true,"local":true,"versions":[49,0,0,0,0,0,0,0,0,5],"title":"Table 10"}}
+DSB STEP 10897 (() => {
+        const P = BL.scenes.poker.debug?.poker;
+        if (P && !P.session.live && P.session.paused !== false) P.action("pause");
+      })()
+DSB DONE 10898
+CHECK PASS poker round trip: clean console 10.9s 
+DSB STEP 64 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 65
+DSB STEP 107 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 107
+DSB STEP 150 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 150
+DSB STEP 191 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 192
+DSB STEP 234 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 235
+DSB STEP 277 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 278
+DSB STEP 320 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 368 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 581
+DSB STEP 623 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 650
+DSB STEP 692 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 699
+DSB STEP 741 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 744
+DSB STEP 786 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 789
+DSB STEP 831 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 834
+DSB STEP 834 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 890
+DSB STEP 890 document.querySelector('[data-intro="poker"] .game-intro-go').click()
+DSB DONE 941
+DSB STEP 941 (() => { const P = BL.scenes.poker.debug.poker; P.action("join"); P.action("bots"); P.action("start"); __ooga.advance(1); return { kind: __ooga.render
+DSB DONE 3600
+CHECK PASS poker fallback: stone tables and a playable hand on Canvas 2D {"kind":"canvas2d","phase":"preflop","nodes":409}
+CHECK PASS poker canvas2d: clean console 3.6s 
+DSB STEP 38 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 51
+DSB STEP 92 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 93
+DSB STEP 135 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 136
+DSB STEP 177 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 178
+DSB STEP 219 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 220
+DSB STEP 262 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 262
+DSB STEP 305 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 305
+DSB STEP 347 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 514
+DSB STEP 555 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 558
+DSB STEP 600 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 601
+DSB STEP 643 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 644
+DSB STEP 686 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 687
+DSB STEP 729 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 730
+DSB STEP 730 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 730
+DSB STEP 730 (() => { const lines = [...document.querySelectorAll('[data-intro]:not([hidden]) [data-coarse], #mine-intro:not([hidden]) [data-coarse]')]; return { c
+DSB DONE 731
+DSB STEP 731 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 735
+DSB STEP 735 (() => { const g = document.querySelector('[data-intro]:not([hidden]) .game-intro-go, #mine-intro:not([hidden]) .game-intro-go'); if (!g) return null;
+DSB DONE 736
+DSB STEP 933 document.querySelector('[data-intro="poker"]').hidden
+DSB DONE 934
+DSB STEP 934 window.__ooga.advance(2, 1 / 60)
+DSB DONE 986
+DSB STEP 1238 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1242
+CHECK PASS poker phone: the title card reads in touch words and its go button starts the game, then nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"card":{"touch":{"coarse":true,"lines":1,"touchWording":true},"bad":[],"closed":true},"play":[]}
+CHECK PASS poker phone: clean console 1.2s 
+DSB STEP 1242 (() => { const P = BL.scenes.poker.debug.poker; document.querySelector('[data-poker-action="quick"]').click(); const panel = document.querySelector('[
+DSB DONE 1266
+CHECK PASS poker phone: nine seat choices and two private cards fit the panel {"fits":true,"seats":9,"cards":2}
+CHECK PASS poker phone actions: clean console 1.3s 
+DSB STEP 40 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 41
+DSB STEP 97 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 98
+DSB STEP 140 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 141
+DSB STEP 184 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 184
+DSB STEP 225 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 226
+DSB STEP 268 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 269
+DSB STEP 311 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 312
+DSB STEP 353 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 856
+DSB STEP 899 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 900
+DSB STEP 942 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 943
+DSB STEP 985 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 986
+DSB STEP 1025 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1026
+DSB STEP 1068 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1069
+DSB STEP 1069 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1070
+DSB STEP 1070 window.__ooga.advance(2, 1 / 60)
+DSB DONE 1198
+DSB STEP 1450 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 1455
+CHECK PASS arcade phone: nothing is clipped, wrapped by accident or off screen, and every control is under a thumb {"play":[]}
+CHECK PASS arcade phone: clean console 1.5s 
+
+219/219 checks passed in 0.9 min

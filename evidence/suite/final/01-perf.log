@@ -1,0 +1,77 @@
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 48
+DSB STEP 90 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 91
+DSB STEP 132 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 133
+DSB STEP 176 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 176
+DSB STEP 217 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 218
+DSB STEP 259 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 260
+DSB STEP 300 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 300
+DSB STEP 343 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4528
+DSB STEP 4570 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4579
+DSB STEP 4620 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4629
+DSB STEP 4671 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4678
+DSB STEP 4720 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4728
+DSB STEP 4769 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4776
+DSB STEP 4818 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4827
+DSB STEP 4869 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4876
+DSB STEP 4918 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4927
+DSB STEP 4969 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4970
+DSB STEP 5012 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5016
+DSB STEP 5057 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5058
+DSB STEP 5100 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5105
+DSB STEP 5145 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5149
+DSB STEP 5190 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5193
+DSB STEP 5233 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5234
+DSB STEP 5276 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5282
+DSB STEP 5324 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5331
+DSB STEP 5373 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5376
+DSB STEP 5418 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5419
+DSB STEP 5462 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5462
+DSB STEP 5463 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 5463
+DSB STEP 5465 (async () => {
+      const B = window.__ooga, actor = B.cavemen.get("portlandhodl");
+      B.renderer.setQuality("high");
+      if (B.crew.player !== 
+DSB DONE 10849
+CHECK PASS wall movement performance: ordinary movement stays responsive at a high-density desktop size {"fps":57.21234351327646,"p95":16.80000000000109,"max":33.400000000000546,"worst":{"gap":22.100000023841858,"at":999.7999999999993,"updateMs":1.800000011920929,"renderMs":2.699999988079071,"overlayMs":6.300000011920929,"donated":false},"outlined":0,"samples":287,"travel":3.4851750000000337,"donated":false,"particles":0,"quality":"high"}
+DSB STEP 10849 (async () => {
+      const B = window.__ooga, actor = B.cavemen.get("portlandhodl");
+      B.renderer.setQuality("high");
+      if (B.crew.player !== 
+DSB DONE 16058
+CHECK FAIL wall movement performance: moving behind cave walls during a donation stays responsive at a high-density desktop size {"fps":33.68949844510007,"p95":50,"max":50.100000000000364,"worst":{"gap":43.59999996423721,"at":1566.5999999999985,"updateMs":8.399999976158142,"renderMs":5.700000047683716,"overlayMs":29.299999952316284,"donated":true},"outlined":169,"samples":169,"travel":3.4851750000000123,"donated":true,"particles":26,"quality":"low"}
+CHECK PASS wall movement performance: clean console 16.1s 
+FAIL wall movement performance: moving behind cave walls during a donation stays responsive at a high-density desktop size · {"fps":33.68949844510007,"p95":50,"max":50.100000000000364,"worst":{"gap":43.59999996423721,"at":1566.5999999999985,"updateMs":8.399999976158142,"renderMs":5.700000047683716,"overlayMs":29.299999952316284,"donated":true},"outlined":169,"samples":169,"travel":3.4851750000000123,"donated":true,"particles":26,"quality":"low"}
+
+2/3 checks passed in 0.3 min
+
+STOP · these failed this run and the last; do not try another fix, hand them to the maintainer with untracked/test-ledger.json:
+  wall movement performance: moving behind cave walls during a donation stays responsive at a high-density desktop size (2 runs since 2026-10-07T08:20:54.762Z)

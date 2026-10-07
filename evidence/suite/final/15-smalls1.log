@@ -1,0 +1,4039 @@
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 86 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 87
+DSB STEP 128 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 129
+DSB STEP 171 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 172
+DSB STEP 214 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 215
+DSB STEP 257 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 258
+DSB STEP 299 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 300
+DSB STEP 342 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 603
+DSB STEP 644 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 644
+DSB STEP 686 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 687
+DSB STEP 729 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 730
+DSB STEP 771 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 772
+DSB STEP 815 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 816
+DSB STEP 816 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 816
+DSB STEP 817 window.__ooga.game.state.arcade.tickets
+DSB DONE 817
+DSB STEP 819 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1101
+DSB STEP 1101 window.__ooga.carnival.phase
+DSB DONE 1102
+DSB STEP 1102 window.__ooga.carnival.status
+DSB DONE 1591
+DSB STEP 1596 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1604
+DSB STEP 1605 window.__ooga.carnival.phase
+DSB DONE 1605
+DSB STEP 1605 window.__ooga.carnival.status
+DSB DONE 1606
+DSB STEP 1607 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1614
+DSB STEP 1614 window.__ooga.carnival.phase
+DSB DONE 1629
+DSB STEP 1629 window.__ooga.carnival.status
+DSB DONE 1629
+DSB STEP 1631 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1641
+DSB STEP 1641 window.__ooga.carnival.phase
+DSB DONE 1642
+DSB STEP 1642 window.__ooga.carnival.status
+DSB DONE 1642
+DSB STEP 1643 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1652
+DSB STEP 1652 window.__ooga.carnival.phase
+DSB DONE 1827
+DSB STEP 1828 window.__ooga.carnival.status
+DSB DONE 1828
+DSB STEP 1830 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1838
+DSB STEP 1838 window.__ooga.carnival.phase
+DSB DONE 1839
+DSB STEP 1839 window.__ooga.carnival.status
+DSB DONE 1839
+DSB STEP 1840 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1849
+DSB STEP 1849 window.__ooga.carnival.phase
+DSB DONE 2018
+DSB STEP 2018 window.__ooga.carnival.status
+DSB DONE 2019
+DSB STEP 2020 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2028
+DSB STEP 2028 window.__ooga.carnival.phase
+DSB DONE 2029
+DSB STEP 2029 window.__ooga.carnival.status
+DSB DONE 2030
+DSB STEP 2031 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2039
+DSB STEP 2039 window.__ooga.carnival.phase
+DSB DONE 2039
+DSB STEP 2039 window.__ooga.carnival.status
+DSB DONE 2040
+DSB STEP 2041 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2197
+DSB STEP 2197 window.__ooga.carnival.phase
+DSB DONE 2220
+DSB STEP 2220 window.__ooga.carnival.status
+DSB DONE 2220
+DSB STEP 2221 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2228
+DSB STEP 2228 window.__ooga.carnival.phase
+DSB DONE 2228
+DSB STEP 2228 window.__ooga.carnival.status
+DSB DONE 2228
+DSB STEP 2229 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2298
+DSB STEP 2298 window.__ooga.carnival.phase
+DSB DONE 2337
+DSB STEP 2337 window.__ooga.carnival.status
+DSB DONE 2337
+DSB STEP 2339 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2347
+DSB STEP 2347 window.__ooga.carnival.phase
+DSB DONE 2347
+DSB STEP 2347 window.__ooga.carnival.status
+DSB DONE 2348
+DSB STEP 2348 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2488
+DSB STEP 2488 window.__ooga.carnival.phase
+DSB DONE 2524
+DSB STEP 2524 window.__ooga.carnival.status
+DSB DONE 2525
+DSB STEP 2526 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2533
+DSB STEP 2533 window.__ooga.carnival.phase
+DSB DONE 2533
+DSB STEP 2533 window.__ooga.carnival.status
+DSB DONE 2533
+DSB STEP 2534 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2679
+DSB STEP 2679 window.__ooga.carnival.phase
+DSB DONE 2714
+DSB STEP 2714 window.__ooga.carnival.status
+DSB DONE 2714
+DSB STEP 2715 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2723
+DSB STEP 2723 window.__ooga.carnival.phase
+DSB DONE 2723
+DSB STEP 2723 window.__ooga.carnival.status
+DSB DONE 2723
+DSB STEP 2724 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2864
+DSB STEP 2864 window.__ooga.carnival.phase
+DSB DONE 2904
+DSB STEP 2904 window.__ooga.carnival.status
+DSB DONE 2905
+DSB STEP 2906 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2913
+DSB STEP 2913 window.__ooga.carnival.phase
+DSB DONE 2913
+DSB STEP 2913 window.__ooga.carnival.status
+DSB DONE 2914
+DSB STEP 2915 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3047
+DSB STEP 3047 window.__ooga.carnival.phase
+DSB DONE 3084
+DSB STEP 3084 window.__ooga.carnival.status
+DSB DONE 3085
+DSB STEP 3086 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3094
+DSB STEP 3094 window.__ooga.carnival.phase
+DSB DONE 3094
+DSB STEP 3094 window.__ooga.carnival.status
+DSB DONE 3094
+DSB STEP 3095 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3233
+DSB STEP 3233 window.__ooga.carnival.phase
+DSB DONE 3272
+DSB STEP 3272 window.__ooga.carnival.status
+DSB DONE 3273
+DSB STEP 3274 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3281
+DSB STEP 3281 window.__ooga.carnival.phase
+DSB DONE 3282
+DSB STEP 3282 window.__ooga.carnival.status
+DSB DONE 3282
+DSB STEP 3283 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3412
+DSB STEP 3412 window.__ooga.carnival.phase
+DSB DONE 3451
+DSB STEP 3451 window.__ooga.carnival.status
+DSB DONE 3452
+DSB STEP 3453 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3461
+DSB STEP 3461 window.__ooga.carnival.phase
+DSB DONE 3461
+DSB STEP 3461 window.__ooga.carnival.status
+DSB DONE 3462
+DSB STEP 3463 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3591
+DSB STEP 3591 window.__ooga.carnival.phase
+DSB DONE 3630
+DSB STEP 3630 window.__ooga.carnival.status
+DSB DONE 3631
+DSB STEP 3632 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3639
+DSB STEP 3639 window.__ooga.carnival.phase
+DSB DONE 3640
+DSB STEP 3640 window.__ooga.carnival.status
+DSB DONE 3640
+DSB STEP 3641 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3770
+DSB STEP 3770 window.__ooga.carnival.phase
+DSB DONE 3810
+DSB STEP 3810 window.__ooga.carnival.status
+DSB DONE 3810
+DSB STEP 3811 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3818
+DSB STEP 3818 window.__ooga.carnival.phase
+DSB DONE 3819
+DSB STEP 3819 window.__ooga.carnival.status
+DSB DONE 3819
+DSB STEP 3820 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3950
+DSB STEP 3950 window.__ooga.carnival.phase
+DSB DONE 3990
+DSB STEP 3990 window.__ooga.carnival.status
+DSB DONE 3990
+DSB STEP 3991 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3998
+DSB STEP 3998 window.__ooga.carnival.phase
+DSB DONE 3998
+DSB STEP 3998 window.__ooga.carnival.status
+DSB DONE 3998
+DSB STEP 3999 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4130
+DSB STEP 4130 window.__ooga.carnival.phase
+DSB DONE 4169
+DSB STEP 4169 window.__ooga.carnival.status
+DSB DONE 4170
+DSB STEP 4171 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4178
+DSB STEP 4178 window.__ooga.carnival.phase
+DSB DONE 4179
+DSB STEP 4179 window.__ooga.carnival.status
+DSB DONE 4179
+DSB STEP 4181 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4306
+DSB STEP 4306 window.__ooga.carnival.phase
+DSB DONE 4348
+DSB STEP 4348 window.__ooga.carnival.status
+DSB DONE 4349
+DSB STEP 4350 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4357
+DSB STEP 4357 window.__ooga.carnival.phase
+DSB DONE 4357
+DSB STEP 4357 window.__ooga.carnival.status
+DSB DONE 4358
+DSB STEP 4359 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4486
+DSB STEP 4486 window.__ooga.carnival.phase
+DSB DONE 4524
+DSB STEP 4524 window.__ooga.carnival.status
+DSB DONE 4524
+DSB STEP 4525 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4533
+DSB STEP 4533 window.__ooga.carnival.phase
+DSB DONE 4534
+DSB STEP 4534 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 4865
+DSB STEP 4865 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["skee"], tickets:
+DSB DONE 4867
+CHECK PASS skee playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":150,"best":150,"tickets":9,"paid":9,"shown":true,"before":0}
+CHECK PASS skee playthrough: clean console 4.9s 
+DSB STEP 4867 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9236
+DSB STEP 9236 (() => { const B = window.__ooga; B.go("skee"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "skee"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 9452
+DSB STEP 9452 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10222
+DSB STEP 10222 (() => { const B = window.__ooga; B.go("skee"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "skee"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 10471
+DSB STEP 10471 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-skee", sats: 2100, handle: "tester", message: "ooga", at: Date.now(
+DSB DONE 10478
+CHECK PASS skee round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"skee","first":{"scene":"skee","records":92,"nodes":249,"targets":0,"dom":3602},"second":{"scene":"skee","records":92,"nodes":249,"targets":0,"dom":3602}}
+CHECK PASS skee round trip: clean console 10.5s 
+DSB STEP 29 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 30
+DSB STEP 81 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 82
+DSB STEP 124 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 125
+DSB STEP 166 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 166
+DSB STEP 209 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 209
+DSB STEP 252 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 252
+DSB STEP 293 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 294
+DSB STEP 336 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 590
+DSB STEP 633 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 633
+DSB STEP 675 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 676
+DSB STEP 718 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 719
+DSB STEP 761 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 762
+DSB STEP 804 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 805
+DSB STEP 847 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 848
+DSB STEP 848 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 848
+DSB STEP 848 window.__ooga.game.state.arcade.tickets
+DSB DONE 849
+DSB STEP 851 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1039
+DSB STEP 1039 window.__ooga.carnival.phase
+DSB DONE 1040
+DSB STEP 1040 window.__ooga.carnival.status
+DSB DONE 1452
+DSB STEP 1454 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1458
+DSB STEP 1458 window.__ooga.carnival.phase
+DSB DONE 1458
+DSB STEP 1458 window.__ooga.carnival.status
+DSB DONE 1459
+DSB STEP 1460 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1463
+DSB STEP 1463 window.__ooga.carnival.phase
+DSB DONE 1471
+DSB STEP 1471 window.__ooga.carnival.status
+DSB DONE 1471
+DSB STEP 1472 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1476
+DSB STEP 1476 window.__ooga.carnival.phase
+DSB DONE 1477
+DSB STEP 1477 window.__ooga.carnival.status
+DSB DONE 1478
+DSB STEP 1478 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1482
+DSB STEP 1482 window.__ooga.carnival.phase
+DSB DONE 1483
+DSB STEP 1483 window.__ooga.carnival.status
+DSB DONE 1483
+DSB STEP 1485 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1488
+DSB STEP 1488 window.__ooga.carnival.phase
+DSB DONE 1562
+DSB STEP 1562 window.__ooga.carnival.status
+DSB DONE 1563
+DSB STEP 1564 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1567
+DSB STEP 1568 window.__ooga.carnival.phase
+DSB DONE 1568
+DSB STEP 1568 window.__ooga.carnival.status
+DSB DONE 1568
+DSB STEP 1569 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1572
+DSB STEP 1572 window.__ooga.carnival.phase
+DSB DONE 1625
+DSB STEP 1625 window.__ooga.carnival.status
+DSB DONE 1626
+DSB STEP 1627 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1630
+DSB STEP 1630 window.__ooga.carnival.phase
+DSB DONE 1631
+DSB STEP 1631 window.__ooga.carnival.status
+DSB DONE 1631
+DSB STEP 1632 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1636
+DSB STEP 1636 window.__ooga.carnival.phase
+DSB DONE 1636
+DSB STEP 1636 window.__ooga.carnival.status
+DSB DONE 1636
+DSB STEP 1637 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1640
+DSB STEP 1640 window.__ooga.carnival.phase
+DSB DONE 1688
+DSB STEP 1688 window.__ooga.carnival.status
+DSB DONE 1689
+DSB STEP 1690 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1693
+DSB STEP 1693 window.__ooga.carnival.phase
+DSB DONE 1693
+DSB STEP 1693 window.__ooga.carnival.status
+DSB DONE 1693
+DSB STEP 1693 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1695
+DSB STEP 1696 window.__ooga.carnival.phase
+DSB DONE 1781
+DSB STEP 1781 window.__ooga.carnival.status
+DSB DONE 1782
+DSB STEP 1782 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1785
+DSB STEP 1785 window.__ooga.carnival.phase
+DSB DONE 1785
+DSB STEP 1785 window.__ooga.carnival.status
+DSB DONE 1786
+DSB STEP 1787 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1790
+DSB STEP 1790 window.__ooga.carnival.phase
+DSB DONE 1835
+DSB STEP 1835 window.__ooga.carnival.status
+DSB DONE 1836
+DSB STEP 1837 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1840
+DSB STEP 1840 window.__ooga.carnival.phase
+DSB DONE 1841
+DSB STEP 1841 window.__ooga.carnival.status
+DSB DONE 1841
+DSB STEP 1842 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1845
+DSB STEP 1845 window.__ooga.carnival.phase
+DSB DONE 1894
+DSB STEP 1894 window.__ooga.carnival.status
+DSB DONE 1895
+DSB STEP 1896 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1899
+DSB STEP 1899 window.__ooga.carnival.phase
+DSB DONE 1900
+DSB STEP 1900 window.__ooga.carnival.status
+DSB DONE 1901
+DSB STEP 1901 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1904
+DSB STEP 1904 window.__ooga.carnival.phase
+DSB DONE 1952
+DSB STEP 1952 window.__ooga.carnival.status
+DSB DONE 1953
+DSB STEP 1954 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1957
+DSB STEP 1957 window.__ooga.carnival.phase
+DSB DONE 1957
+DSB STEP 1957 window.__ooga.carnival.status
+DSB DONE 1958
+DSB STEP 1959 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 1962
+DSB STEP 1962 window.__ooga.carnival.phase
+DSB DONE 2010
+DSB STEP 2011 window.__ooga.carnival.status
+DSB DONE 2011
+DSB STEP 2013 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2015
+DSB STEP 2015 window.__ooga.carnival.phase
+DSB DONE 2016
+DSB STEP 2016 window.__ooga.carnival.status
+DSB DONE 2016
+DSB STEP 2016 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2019
+DSB STEP 2019 window.__ooga.carnival.phase
+DSB DONE 2070
+DSB STEP 2070 window.__ooga.carnival.status
+DSB DONE 2071
+DSB STEP 2072 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2075
+DSB STEP 2075 window.__ooga.carnival.phase
+DSB DONE 2075
+DSB STEP 2075 window.__ooga.carnival.status
+DSB DONE 2076
+DSB STEP 2077 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2079
+DSB STEP 2079 window.__ooga.carnival.phase
+DSB DONE 2129
+DSB STEP 2129 window.__ooga.carnival.status
+DSB DONE 2130
+DSB STEP 2131 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2133
+DSB STEP 2133 window.__ooga.carnival.phase
+DSB DONE 2133
+DSB STEP 2133 window.__ooga.carnival.status
+DSB DONE 2134
+DSB STEP 2135 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2137
+DSB STEP 2137 window.__ooga.carnival.phase
+DSB DONE 2190
+DSB STEP 2190 window.__ooga.carnival.status
+DSB DONE 2190
+DSB STEP 2191 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2194
+DSB STEP 2194 window.__ooga.carnival.phase
+DSB DONE 2195
+DSB STEP 2195 window.__ooga.carnival.status
+DSB DONE 2195
+DSB STEP 2196 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2199
+DSB STEP 2199 window.__ooga.carnival.phase
+DSB DONE 2199
+DSB STEP 2199 window.__ooga.carnival.status
+DSB DONE 2200
+DSB STEP 2200 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2203
+DSB STEP 2203 window.__ooga.carnival.phase
+DSB DONE 2254
+DSB STEP 2254 window.__ooga.carnival.status
+DSB DONE 2254
+DSB STEP 2254 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2257
+DSB STEP 2257 window.__ooga.carnival.phase
+DSB DONE 2257
+DSB STEP 2257 window.__ooga.carnival.status
+DSB DONE 2258
+DSB STEP 2258 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2261
+DSB STEP 2261 window.__ooga.carnival.phase
+DSB DONE 2342
+DSB STEP 2342 window.__ooga.carnival.status
+DSB DONE 2342
+DSB STEP 2344 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2347
+DSB STEP 2347 window.__ooga.carnival.phase
+DSB DONE 2348
+DSB STEP 2348 window.__ooga.carnival.status
+DSB DONE 2348
+DSB STEP 2349 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2351
+DSB STEP 2351 window.__ooga.carnival.phase
+DSB DONE 2402
+DSB STEP 2402 window.__ooga.carnival.status
+DSB DONE 2403
+DSB STEP 2404 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2407
+DSB STEP 2407 window.__ooga.carnival.phase
+DSB DONE 2408
+DSB STEP 2408 window.__ooga.carnival.status
+DSB DONE 2408
+DSB STEP 2409 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2412
+DSB STEP 2412 window.__ooga.carnival.phase
+DSB DONE 2460
+DSB STEP 2460 window.__ooga.carnival.status
+DSB DONE 2461
+DSB STEP 2462 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2465
+DSB STEP 2465 window.__ooga.carnival.phase
+DSB DONE 2466
+DSB STEP 2466 window.__ooga.carnival.status
+DSB DONE 2466
+DSB STEP 2467 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2470
+DSB STEP 2470 window.__ooga.carnival.phase
+DSB DONE 2520
+DSB STEP 2520 window.__ooga.carnival.status
+DSB DONE 2521
+DSB STEP 2521 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2524
+DSB STEP 2524 window.__ooga.carnival.phase
+DSB DONE 2525
+DSB STEP 2525 window.__ooga.carnival.status
+DSB DONE 2525
+DSB STEP 2525 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2528
+DSB STEP 2528 window.__ooga.carnival.phase
+DSB DONE 2579
+DSB STEP 2579 window.__ooga.carnival.status
+DSB DONE 2580
+DSB STEP 2580 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2583
+DSB STEP 2583 window.__ooga.carnival.phase
+DSB DONE 2583
+DSB STEP 2583 window.__ooga.carnival.status
+DSB DONE 2584
+DSB STEP 2585 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2588
+DSB STEP 2588 window.__ooga.carnival.phase
+DSB DONE 2639
+DSB STEP 2639 window.__ooga.carnival.status
+DSB DONE 2640
+DSB STEP 2641 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2644
+DSB STEP 2644 window.__ooga.carnival.phase
+DSB DONE 2645
+DSB STEP 2645 window.__ooga.carnival.status
+DSB DONE 2646
+DSB STEP 2647 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2649
+DSB STEP 2649 window.__ooga.carnival.phase
+DSB DONE 2650
+DSB STEP 2650 window.__ooga.carnival.status
+DSB DONE 2650
+DSB STEP 2651 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2653
+DSB STEP 2653 window.__ooga.carnival.phase
+DSB DONE 2703
+DSB STEP 2703 window.__ooga.carnival.status
+DSB DONE 2704
+DSB STEP 2705 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2708
+DSB STEP 2708 window.__ooga.carnival.phase
+DSB DONE 2708
+DSB STEP 2708 window.__ooga.carnival.status
+DSB DONE 2708
+DSB STEP 2709 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2712
+DSB STEP 2712 window.__ooga.carnival.phase
+DSB DONE 2794
+DSB STEP 2795 window.__ooga.carnival.status
+DSB DONE 2795
+DSB STEP 2796 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2799
+DSB STEP 2799 window.__ooga.carnival.phase
+DSB DONE 2799
+DSB STEP 2800 window.__ooga.carnival.status
+DSB DONE 2800
+DSB STEP 2800 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2803
+DSB STEP 2803 window.__ooga.carnival.phase
+DSB DONE 2841
+DSB STEP 2841 window.__ooga.carnival.status
+DSB DONE 2842
+DSB STEP 2842 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2845
+DSB STEP 2845 window.__ooga.carnival.phase
+DSB DONE 2845
+DSB STEP 2845 window.__ooga.carnival.status
+DSB DONE 2846
+DSB STEP 2847 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2849
+DSB STEP 2849 window.__ooga.carnival.phase
+DSB DONE 2850
+DSB STEP 2850 window.__ooga.carnival.status
+DSB DONE 2850
+DSB STEP 2851 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2853
+DSB STEP 2853 window.__ooga.carnival.phase
+DSB DONE 2933
+DSB STEP 2933 window.__ooga.carnival.status
+DSB DONE 2934
+DSB STEP 2935 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2938
+DSB STEP 2938 window.__ooga.carnival.phase
+DSB DONE 2938
+DSB STEP 2938 window.__ooga.carnival.status
+DSB DONE 2939
+DSB STEP 2940 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2942
+DSB STEP 2942 window.__ooga.carnival.phase
+DSB DONE 2982
+DSB STEP 2982 window.__ooga.carnival.status
+DSB DONE 2983
+DSB STEP 2984 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2987
+DSB STEP 2987 window.__ooga.carnival.phase
+DSB DONE 2988
+DSB STEP 2988 window.__ooga.carnival.status
+DSB DONE 2988
+DSB STEP 2989 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 2992
+DSB STEP 2992 window.__ooga.carnival.phase
+DSB DONE 3040
+DSB STEP 3040 window.__ooga.carnival.status
+DSB DONE 3041
+DSB STEP 3042 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3044
+DSB STEP 3044 window.__ooga.carnival.phase
+DSB DONE 3045
+DSB STEP 3045 window.__ooga.carnival.status
+DSB DONE 3046
+DSB STEP 3046 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3048
+DSB STEP 3048 window.__ooga.carnival.phase
+DSB DONE 3049
+DSB STEP 3049 window.__ooga.carnival.status
+DSB DONE 3049
+DSB STEP 3050 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3052
+DSB STEP 3052 window.__ooga.carnival.phase
+DSB DONE 3100
+DSB STEP 3100 window.__ooga.carnival.status
+DSB DONE 3100
+DSB STEP 3102 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3104
+DSB STEP 3105 window.__ooga.carnival.phase
+DSB DONE 3105
+DSB STEP 3105 window.__ooga.carnival.status
+DSB DONE 3105
+DSB STEP 3106 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3109
+DSB STEP 3109 window.__ooga.carnival.phase
+DSB DONE 3191
+DSB STEP 3191 window.__ooga.carnival.status
+DSB DONE 3192
+DSB STEP 3193 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3196
+DSB STEP 3196 window.__ooga.carnival.phase
+DSB DONE 3197
+DSB STEP 3197 window.__ooga.carnival.status
+DSB DONE 3197
+DSB STEP 3198 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3200
+DSB STEP 3200 window.__ooga.carnival.phase
+DSB DONE 3201
+DSB STEP 3201 window.__ooga.carnival.status
+DSB DONE 3201
+DSB STEP 3201 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3203
+DSB STEP 3203 window.__ooga.carnival.phase
+DSB DONE 3241
+DSB STEP 3241 window.__ooga.carnival.status
+DSB DONE 3242
+DSB STEP 3243 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3246
+DSB STEP 3246 window.__ooga.carnival.phase
+DSB DONE 3246
+DSB STEP 3246 window.__ooga.carnival.status
+DSB DONE 3246
+DSB STEP 3247 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3249
+DSB STEP 3249 window.__ooga.carnival.phase
+DSB DONE 3250
+DSB STEP 3250 window.__ooga.carnival.status
+DSB DONE 3250
+DSB STEP 3251 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3254
+DSB STEP 3254 window.__ooga.carnival.phase
+DSB DONE 3349
+DSB STEP 3349 window.__ooga.carnival.status
+DSB DONE 3350
+DSB STEP 3351 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3354
+DSB STEP 3354 window.__ooga.carnival.phase
+DSB DONE 3355
+DSB STEP 3355 window.__ooga.carnival.status
+DSB DONE 3355
+DSB STEP 3356 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3359
+DSB STEP 3359 window.__ooga.carnival.phase
+DSB DONE 3406
+DSB STEP 3406 window.__ooga.carnival.status
+DSB DONE 3407
+DSB STEP 3408 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3411
+DSB STEP 3411 window.__ooga.carnival.phase
+DSB DONE 3412
+DSB STEP 3412 window.__ooga.carnival.status
+DSB DONE 3412
+DSB STEP 3413 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3416
+DSB STEP 3416 window.__ooga.carnival.phase
+DSB DONE 3417
+DSB STEP 3417 window.__ooga.carnival.status
+DSB DONE 3417
+DSB STEP 3417 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3419
+DSB STEP 3419 window.__ooga.carnival.phase
+DSB DONE 3489
+DSB STEP 3489 window.__ooga.carnival.status
+DSB DONE 3490
+DSB STEP 3490 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3493
+DSB STEP 3493 window.__ooga.carnival.phase
+DSB DONE 3493
+DSB STEP 3494 window.__ooga.carnival.status
+DSB DONE 3494
+DSB STEP 3495 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3497
+DSB STEP 3498 window.__ooga.carnival.phase
+DSB DONE 3498
+DSB STEP 3498 window.__ooga.carnival.status
+DSB DONE 3498
+DSB STEP 3499 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3501
+DSB STEP 3501 window.__ooga.carnival.phase
+DSB DONE 3574
+DSB STEP 3574 window.__ooga.carnival.status
+DSB DONE 3575
+DSB STEP 3575 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3577
+DSB STEP 3577 window.__ooga.carnival.phase
+DSB DONE 3578
+DSB STEP 3578 window.__ooga.carnival.status
+DSB DONE 3578
+DSB STEP 3579 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3581
+DSB STEP 3581 window.__ooga.carnival.phase
+DSB DONE 3582
+DSB STEP 3582 window.__ooga.carnival.status
+DSB DONE 3582
+DSB STEP 3583 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3585
+DSB STEP 3585 window.__ooga.carnival.phase
+DSB DONE 3658
+DSB STEP 3658 window.__ooga.carnival.status
+DSB DONE 3659
+DSB STEP 3660 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3663
+DSB STEP 3664 window.__ooga.carnival.phase
+DSB DONE 3664
+DSB STEP 3664 window.__ooga.carnival.status
+DSB DONE 3664
+DSB STEP 3665 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3668
+DSB STEP 3668 window.__ooga.carnival.phase
+DSB DONE 3720
+DSB STEP 3720 window.__ooga.carnival.status
+DSB DONE 3720
+DSB STEP 3721 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3724
+DSB STEP 3724 window.__ooga.carnival.phase
+DSB DONE 3724
+DSB STEP 3724 window.__ooga.carnival.status
+DSB DONE 3725
+DSB STEP 3725 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3727
+DSB STEP 3727 window.__ooga.carnival.phase
+DSB DONE 3775
+DSB STEP 3775 window.__ooga.carnival.status
+DSB DONE 3776
+DSB STEP 3777 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3780
+DSB STEP 3780 window.__ooga.carnival.phase
+DSB DONE 3781
+DSB STEP 3781 window.__ooga.carnival.status
+DSB DONE 3781
+DSB STEP 3782 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3785
+DSB STEP 3785 window.__ooga.carnival.phase
+DSB DONE 3835
+DSB STEP 3835 window.__ooga.carnival.status
+DSB DONE 3836
+DSB STEP 3836 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3839
+DSB STEP 3839 window.__ooga.carnival.phase
+DSB DONE 3839
+DSB STEP 3839 window.__ooga.carnival.status
+DSB DONE 3840
+DSB STEP 3841 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3843
+DSB STEP 3843 window.__ooga.carnival.phase
+DSB DONE 3889
+DSB STEP 3890 window.__ooga.carnival.status
+DSB DONE 3890
+DSB STEP 3891 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3894
+DSB STEP 3894 window.__ooga.carnival.phase
+DSB DONE 3895
+DSB STEP 3895 window.__ooga.carnival.status
+DSB DONE 3895
+DSB STEP 3896 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 3899
+DSB STEP 3899 window.__ooga.carnival.phase
+DSB DONE 3900
+DSB STEP 3900 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 3913
+DSB STEP 3913 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["hoops"], tickets
+DSB DONE 3951
+CHECK PASS hoops playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":0,"best":0,"tickets":0,"paid":0,"shown":true,"before":0}
+CHECK PASS hoops playthrough: clean console 4.0s 
+DSB STEP 3951 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 8351
+DSB STEP 8351 (() => { const B = window.__ooga; B.go("hoops"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hoops"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 8560
+DSB STEP 8560 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9358
+DSB STEP 9358 (() => { const B = window.__ooga; B.go("hoops"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hoops"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 9611
+DSB STEP 9611 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hoops", sats: 2100, handle: "tester", message: "ooga", at: Date.now
+DSB DONE 9618
+CHECK PASS hoops round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hoops","first":{"scene":"hoops","records":91,"nodes":232,"targets":0,"dom":3602},"second":{"scene":"hoops","records":91,"nodes":232,"targets":0,"dom":3602}}
+CHECK PASS hoops round trip: clean console 9.6s 
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 47
+DSB STEP 86 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 87
+DSB STEP 128 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 134
+DSB STEP 175 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 176
+DSB STEP 216 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 217
+DSB STEP 259 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 260
+DSB STEP 301 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 302
+DSB STEP 344 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 389 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 622
+DSB STEP 663 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 664
+DSB STEP 705 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 705
+DSB STEP 747 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 749
+DSB STEP 790 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 791
+DSB STEP 833 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 835
+DSB STEP 835 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 836
+DSB STEP 836 window.__ooga.game.state.arcade.tickets
+DSB DONE 836
+DSB STEP 838 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1025
+DSB STEP 1025 window.__ooga.carnival.phase
+DSB DONE 1026
+DSB STEP 1026 window.__ooga.carnival.status
+DSB DONE 1316
+DSB STEP 1318 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1330
+DSB STEP 1330 window.__ooga.carnival.phase
+DSB DONE 1331
+DSB STEP 1331 window.__ooga.carnival.status
+DSB DONE 1331
+DSB STEP 1332 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1343
+DSB STEP 1343 window.__ooga.carnival.phase
+DSB DONE 1513
+DSB STEP 1513 window.__ooga.carnival.status
+DSB DONE 1514
+DSB STEP 1516 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1527
+DSB STEP 1527 window.__ooga.carnival.phase
+DSB DONE 1527
+DSB STEP 1528 window.__ooga.carnival.status
+DSB DONE 1528
+DSB STEP 1530 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1539
+DSB STEP 1539 window.__ooga.carnival.phase
+DSB DONE 1739
+DSB STEP 1739 window.__ooga.carnival.status
+DSB DONE 1739
+DSB STEP 1741 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1750
+DSB STEP 1750 window.__ooga.carnival.phase
+DSB DONE 1751
+DSB STEP 1751 window.__ooga.carnival.status
+DSB DONE 1751
+DSB STEP 1752 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1762
+DSB STEP 1762 window.__ooga.carnival.phase
+DSB DONE 1762
+DSB STEP 1762 window.__ooga.carnival.status
+DSB DONE 1763
+DSB STEP 1764 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1946
+DSB STEP 1947 window.__ooga.carnival.phase
+DSB DONE 1975
+DSB STEP 1975 window.__ooga.carnival.status
+DSB DONE 1975
+DSB STEP 1976 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 1987
+DSB STEP 1987 window.__ooga.carnival.phase
+DSB DONE 1987
+DSB STEP 1987 window.__ooga.carnival.status
+DSB DONE 1988
+DSB STEP 1989 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2060
+DSB STEP 2061 window.__ooga.carnival.phase
+DSB DONE 2185
+DSB STEP 2185 window.__ooga.carnival.status
+DSB DONE 2186
+DSB STEP 2187 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2194
+DSB STEP 2194 window.__ooga.carnival.phase
+DSB DONE 2194
+DSB STEP 2194 window.__ooga.carnival.status
+DSB DONE 2195
+DSB STEP 2195 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2271
+DSB STEP 2271 window.__ooga.carnival.phase
+DSB DONE 2394
+DSB STEP 2394 window.__ooga.carnival.status
+DSB DONE 2394
+DSB STEP 2395 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2404
+DSB STEP 2404 window.__ooga.carnival.phase
+DSB DONE 2405
+DSB STEP 2405 window.__ooga.carnival.status
+DSB DONE 2405
+DSB STEP 2406 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2486
+DSB STEP 2486 window.__ooga.carnival.phase
+DSB DONE 2612
+DSB STEP 2612 window.__ooga.carnival.status
+DSB DONE 2613
+DSB STEP 2614 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2623
+DSB STEP 2623 window.__ooga.carnival.phase
+DSB DONE 2623
+DSB STEP 2623 window.__ooga.carnival.status
+DSB DONE 2624
+DSB STEP 2625 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2699
+DSB STEP 2699 window.__ooga.carnival.phase
+DSB DONE 2826
+DSB STEP 2827 window.__ooga.carnival.status
+DSB DONE 2827
+DSB STEP 2828 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2838
+DSB STEP 2838 window.__ooga.carnival.phase
+DSB DONE 2838
+DSB STEP 2838 window.__ooga.carnival.status
+DSB DONE 2839
+DSB STEP 2839 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 2914
+DSB STEP 2914 window.__ooga.carnival.phase
+DSB DONE 3044
+DSB STEP 3044 window.__ooga.carnival.status
+DSB DONE 3044
+DSB STEP 3046 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3054
+DSB STEP 3054 window.__ooga.carnival.phase
+DSB DONE 3054
+DSB STEP 3054 window.__ooga.carnival.status
+DSB DONE 3055
+DSB STEP 3056 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3127
+DSB STEP 3128 window.__ooga.carnival.phase
+DSB DONE 3247
+DSB STEP 3247 window.__ooga.carnival.status
+DSB DONE 3248
+DSB STEP 3249 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3258
+DSB STEP 3258 window.__ooga.carnival.phase
+DSB DONE 3259
+DSB STEP 3259 window.__ooga.carnival.status
+DSB DONE 3259
+DSB STEP 3260 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3331
+DSB STEP 3331 window.__ooga.carnival.phase
+DSB DONE 3454
+DSB STEP 3455 window.__ooga.carnival.status
+DSB DONE 3455
+DSB STEP 3456 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3466
+DSB STEP 3466 window.__ooga.carnival.phase
+DSB DONE 3466
+DSB STEP 3466 window.__ooga.carnival.status
+DSB DONE 3467
+DSB STEP 3468 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3537
+DSB STEP 3537 window.__ooga.carnival.phase
+DSB DONE 3661
+DSB STEP 3662 window.__ooga.carnival.status
+DSB DONE 3662
+DSB STEP 3664 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3675
+DSB STEP 3675 window.__ooga.carnival.phase
+DSB DONE 3676
+DSB STEP 3676 window.__ooga.carnival.status
+DSB DONE 3676
+DSB STEP 3677 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3748
+DSB STEP 3749 window.__ooga.carnival.phase
+DSB DONE 3866
+DSB STEP 3867 window.__ooga.carnival.status
+DSB DONE 3867
+DSB STEP 3868 window.__ooga.advance(0.7, 1 / 60)
+DSB DONE 3879
+DSB STEP 3879 window.__ooga.carnival.phase
+DSB DONE 3880
+DSB STEP 3880 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 4158
+DSB STEP 4158 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["shy"], tickets: 
+DSB DONE 4170
+CHECK PASS shy playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":10,"best":10,"tickets":4,"paid":4,"shown":true,"before":0}
+CHECK PASS shy playthrough: clean console 4.2s 
+DSB STEP 4170 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 8565
+DSB STEP 8565 (() => { const B = window.__ooga; B.go("shy"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "shy"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 8796
+DSB STEP 8796 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9578
+DSB STEP 9578 (() => { const B = window.__ooga; B.go("shy"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "shy"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9806
+DSB STEP 9807 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-shy", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 9813
+CHECK PASS shy round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"shy","first":{"scene":"shy","records":90,"nodes":212,"targets":0,"dom":3602},"second":{"scene":"shy","records":90,"nodes":212,"targets":0,"dom":3602}}
+CHECK PASS shy round trip: clean console 9.8s 
+DSB STEP 41 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 43
+DSB STEP 90 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 91
+DSB STEP 131 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 132
+DSB STEP 174 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 175
+DSB STEP 217 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 218
+DSB STEP 260 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 261
+DSB STEP 303 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 303
+DSB STEP 345 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 609
+DSB STEP 651 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 651
+DSB STEP 693 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 694
+DSB STEP 736 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 737
+DSB STEP 779 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 780
+DSB STEP 822 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 823
+DSB STEP 823 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 824
+DSB STEP 824 window.__ooga.game.state.arcade.tickets
+DSB DONE 824
+DSB STEP 826 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1019
+DSB STEP 1019 window.__ooga.carnival.phase
+DSB DONE 1020
+DSB STEP 1020 window.__ooga.carnival.status
+DSB DONE 1308
+DSB STEP 1310 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1320
+DSB STEP 1320 window.__ooga.carnival.phase
+DSB DONE 1321
+DSB STEP 1321 window.__ooga.carnival.status
+DSB DONE 1322
+DSB STEP 1323 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1333
+DSB STEP 1333 window.__ooga.carnival.phase
+DSB DONE 1333
+DSB STEP 1333 window.__ooga.carnival.status
+DSB DONE 1334
+DSB STEP 1335 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1343
+DSB STEP 1343 window.__ooga.carnival.phase
+DSB DONE 1521
+DSB STEP 1521 window.__ooga.carnival.status
+DSB DONE 1521
+DSB STEP 1522 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1531
+DSB STEP 1531 window.__ooga.carnival.phase
+DSB DONE 1532
+DSB STEP 1532 window.__ooga.carnival.status
+DSB DONE 1532
+DSB STEP 1533 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1543
+DSB STEP 1543 window.__ooga.carnival.phase
+DSB DONE 1675
+DSB STEP 1675 window.__ooga.carnival.status
+DSB DONE 1675
+DSB STEP 1677 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1686
+DSB STEP 1686 window.__ooga.carnival.phase
+DSB DONE 1686
+DSB STEP 1686 window.__ooga.carnival.status
+DSB DONE 1687
+DSB STEP 1688 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1697
+DSB STEP 1697 window.__ooga.carnival.phase
+DSB DONE 1977
+DSB STEP 1977 window.__ooga.carnival.status
+DSB DONE 1978
+DSB STEP 1980 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 1989
+DSB STEP 1989 window.__ooga.carnival.phase
+DSB DONE 1990
+DSB STEP 1990 window.__ooga.carnival.status
+DSB DONE 1991
+DSB STEP 1992 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2001
+DSB STEP 2001 window.__ooga.carnival.phase
+DSB DONE 2001
+DSB STEP 2001 window.__ooga.carnival.status
+DSB DONE 2002
+DSB STEP 2003 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2011
+DSB STEP 2011 window.__ooga.carnival.phase
+DSB DONE 2174
+DSB STEP 2174 window.__ooga.carnival.status
+DSB DONE 2174
+DSB STEP 2175 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2182
+DSB STEP 2183 window.__ooga.carnival.phase
+DSB DONE 2183
+DSB STEP 2183 window.__ooga.carnival.status
+DSB DONE 2183
+DSB STEP 2184 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2190
+DSB STEP 2190 window.__ooga.carnival.phase
+DSB DONE 2330
+DSB STEP 2330 window.__ooga.carnival.status
+DSB DONE 2331
+DSB STEP 2332 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2341
+DSB STEP 2341 window.__ooga.carnival.phase
+DSB DONE 2341
+DSB STEP 2341 window.__ooga.carnival.status
+DSB DONE 2342
+DSB STEP 2343 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2350
+DSB STEP 2350 window.__ooga.carnival.phase
+DSB DONE 2632
+DSB STEP 2632 window.__ooga.carnival.status
+DSB DONE 2633
+DSB STEP 2634 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2643
+DSB STEP 2643 window.__ooga.carnival.phase
+DSB DONE 2644
+DSB STEP 2644 window.__ooga.carnival.status
+DSB DONE 2644
+DSB STEP 2645 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2655
+DSB STEP 2655 window.__ooga.carnival.phase
+DSB DONE 2655
+DSB STEP 2655 window.__ooga.carnival.status
+DSB DONE 2656
+DSB STEP 2657 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2664
+DSB STEP 2664 window.__ooga.carnival.phase
+DSB DONE 2665
+DSB STEP 2665 window.__ooga.carnival.status
+DSB DONE 2665
+DSB STEP 2666 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 2810
+DSB STEP 2810 window.__ooga.carnival.phase
+DSB DONE 3068
+DSB STEP 3068 window.__ooga.carnival.status
+DSB DONE 3068
+DSB STEP 3070 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3079
+DSB STEP 3079 window.__ooga.carnival.phase
+DSB DONE 3080
+DSB STEP 3080 window.__ooga.carnival.status
+DSB DONE 3081
+DSB STEP 3082 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3092
+DSB STEP 3092 window.__ooga.carnival.phase
+DSB DONE 3093
+DSB STEP 3093 window.__ooga.carnival.status
+DSB DONE 3093
+DSB STEP 3094 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3103
+DSB STEP 3103 window.__ooga.carnival.phase
+DSB DONE 3103
+DSB STEP 3103 window.__ooga.carnival.status
+DSB DONE 3104
+DSB STEP 3105 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3182
+DSB STEP 3182 window.__ooga.carnival.phase
+DSB DONE 3431
+DSB STEP 3431 window.__ooga.carnival.status
+DSB DONE 3432
+DSB STEP 3434 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3444
+DSB STEP 3444 window.__ooga.carnival.phase
+DSB DONE 3445
+DSB STEP 3445 window.__ooga.carnival.status
+DSB DONE 3446
+DSB STEP 3447 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3456
+DSB STEP 3456 window.__ooga.carnival.phase
+DSB DONE 3456
+DSB STEP 3456 window.__ooga.carnival.status
+DSB DONE 3457
+DSB STEP 3458 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3467
+DSB STEP 3467 window.__ooga.carnival.phase
+DSB DONE 3468
+DSB STEP 3468 window.__ooga.carnival.status
+DSB DONE 3468
+DSB STEP 3469 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3544
+DSB STEP 3544 window.__ooga.carnival.phase
+DSB DONE 3781
+DSB STEP 3781 window.__ooga.carnival.status
+DSB DONE 3781
+DSB STEP 3783 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3792
+DSB STEP 3792 window.__ooga.carnival.phase
+DSB DONE 3792
+DSB STEP 3792 window.__ooga.carnival.status
+DSB DONE 3793
+DSB STEP 3794 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3803
+DSB STEP 3803 window.__ooga.carnival.phase
+DSB DONE 3803
+DSB STEP 3803 window.__ooga.carnival.status
+DSB DONE 3804
+DSB STEP 3805 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3814
+DSB STEP 3814 window.__ooga.carnival.phase
+DSB DONE 3814
+DSB STEP 3814 window.__ooga.carnival.status
+DSB DONE 3815
+DSB STEP 3816 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 3898
+DSB STEP 3898 window.__ooga.carnival.phase
+DSB DONE 4145
+DSB STEP 4145 window.__ooga.carnival.status
+DSB DONE 4145
+DSB STEP 4146 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4157
+DSB STEP 4157 window.__ooga.carnival.phase
+DSB DONE 4158
+DSB STEP 4158 window.__ooga.carnival.status
+DSB DONE 4158
+DSB STEP 4159 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4168
+DSB STEP 4168 window.__ooga.carnival.phase
+DSB DONE 4169
+DSB STEP 4169 window.__ooga.carnival.status
+DSB DONE 4169
+DSB STEP 4170 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4178
+DSB STEP 4178 window.__ooga.carnival.phase
+DSB DONE 4273
+DSB STEP 4273 window.__ooga.carnival.status
+DSB DONE 4274
+DSB STEP 4274 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4283
+DSB STEP 4283 window.__ooga.carnival.phase
+DSB DONE 4284
+DSB STEP 4284 window.__ooga.carnival.status
+DSB DONE 4284
+DSB STEP 4285 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4293
+DSB STEP 4293 window.__ooga.carnival.phase
+DSB DONE 4421
+DSB STEP 4421 window.__ooga.carnival.status
+DSB DONE 4422
+DSB STEP 4423 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4432
+DSB STEP 4432 window.__ooga.carnival.phase
+DSB DONE 4432
+DSB STEP 4433 window.__ooga.carnival.status
+DSB DONE 4433
+DSB STEP 4434 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4441
+DSB STEP 4441 window.__ooga.carnival.phase
+DSB DONE 4595
+DSB STEP 4595 window.__ooga.carnival.status
+DSB DONE 4596
+DSB STEP 4597 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4605
+DSB STEP 4605 window.__ooga.carnival.phase
+DSB DONE 4605
+DSB STEP 4605 window.__ooga.carnival.status
+DSB DONE 4606
+DSB STEP 4607 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4619
+DSB STEP 4619 window.__ooga.carnival.phase
+DSB DONE 4881
+DSB STEP 4881 window.__ooga.carnival.status
+DSB DONE 4882
+DSB STEP 4883 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4894
+DSB STEP 4894 window.__ooga.carnival.phase
+DSB DONE 4894
+DSB STEP 4894 window.__ooga.carnival.status
+DSB DONE 4895
+DSB STEP 4896 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4906
+DSB STEP 4906 window.__ooga.carnival.phase
+DSB DONE 4906
+DSB STEP 4906 window.__ooga.carnival.status
+DSB DONE 4907
+DSB STEP 4908 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4985
+DSB STEP 4985 window.__ooga.carnival.phase
+DSB DONE 4985
+DSB STEP 4985 window.__ooga.carnival.status
+DSB DONE 4986
+DSB STEP 4987 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 5051
+DSB STEP 5052 window.__ooga.carnival.phase
+DSB DONE 5230
+DSB STEP 5230 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 5254
+DSB STEP 5254 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["claw"], tickets:
+DSB DONE 5255
+CHECK PASS claw playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":51,"best":51,"tickets":7,"paid":7,"shown":true,"before":0}
+CHECK PASS claw playthrough: clean console 5.3s 
+DSB STEP 5256 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 9626
+DSB STEP 9626 (() => { const B = window.__ooga; B.go("claw"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "claw"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 9838
+DSB STEP 9838 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10618
+DSB STEP 10619 (() => { const B = window.__ooga; B.go("claw"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "claw"); i++) B.advance(1 / 30, 1 / 30); B.
+DSB DONE 10852
+DSB STEP 10852 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-claw", sats: 2100, handle: "tester", message: "ooga", at: Date.now(
+DSB DONE 10860
+CHECK PASS claw round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"claw","first":{"scene":"claw","records":100,"nodes":252,"targets":0,"dom":3602},"second":{"scene":"claw","records":100,"nodes":252,"targets":0,"dom":3602}}
+CHECK PASS claw round trip: clean console 10.9s 
+DSB STEP 41 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 42
+DSB STEP 83 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 83
+DSB STEP 126 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 128
+DSB STEP 170 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 171
+DSB STEP 213 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 214
+DSB STEP 256 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 256
+DSB STEP 298 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 299
+DSB STEP 341 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 616
+DSB STEP 656 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 656
+DSB STEP 698 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 700
+DSB STEP 741 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 742
+DSB STEP 784 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 785
+DSB STEP 826 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 827
+DSB STEP 827 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 828
+DSB STEP 828 window.__ooga.game.state.arcade.tickets
+DSB DONE 828
+DSB STEP 830 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1098
+DSB STEP 1098 window.__ooga.carnival.phase
+DSB DONE 1100
+DSB STEP 1100 window.__ooga.carnival.status
+DSB DONE 1360
+DSB STEP 1361 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1370
+DSB STEP 1370 window.__ooga.carnival.phase
+DSB DONE 1371
+DSB STEP 1371 window.__ooga.carnival.status
+DSB DONE 1371
+DSB STEP 1372 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1379
+DSB STEP 1380 window.__ooga.carnival.phase
+DSB DONE 1380
+DSB STEP 1380 window.__ooga.carnival.status
+DSB DONE 1381
+DSB STEP 1382 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1388
+DSB STEP 1388 window.__ooga.carnival.phase
+DSB DONE 1602
+DSB STEP 1602 window.__ooga.carnival.status
+DSB DONE 1603
+DSB STEP 1604 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1610
+DSB STEP 1610 window.__ooga.carnival.phase
+DSB DONE 1611
+DSB STEP 1611 window.__ooga.carnival.status
+DSB DONE 1611
+DSB STEP 1612 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1618
+DSB STEP 1618 window.__ooga.carnival.phase
+DSB DONE 1711
+DSB STEP 1711 window.__ooga.carnival.status
+DSB DONE 1712
+DSB STEP 1713 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1719
+DSB STEP 1719 window.__ooga.carnival.phase
+DSB DONE 1720
+DSB STEP 1720 window.__ooga.carnival.status
+DSB DONE 1720
+DSB STEP 1721 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1729
+DSB STEP 1729 window.__ooga.carnival.phase
+DSB DONE 2030
+DSB STEP 2030 window.__ooga.carnival.status
+DSB DONE 2031
+DSB STEP 2033 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2042
+DSB STEP 2042 window.__ooga.carnival.phase
+DSB DONE 2043
+DSB STEP 2043 window.__ooga.carnival.status
+DSB DONE 2043
+DSB STEP 2044 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2053
+DSB STEP 2053 window.__ooga.carnival.phase
+DSB DONE 2216
+DSB STEP 2216 window.__ooga.carnival.status
+DSB DONE 2217
+DSB STEP 2218 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2225
+DSB STEP 2225 window.__ooga.carnival.phase
+DSB DONE 2225
+DSB STEP 2225 window.__ooga.carnival.status
+DSB DONE 2226
+DSB STEP 2227 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2234
+DSB STEP 2234 window.__ooga.carnival.phase
+DSB DONE 2396
+DSB STEP 2396 window.__ooga.carnival.status
+DSB DONE 2396
+DSB STEP 2398 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2406
+DSB STEP 2406 window.__ooga.carnival.phase
+DSB DONE 2407
+DSB STEP 2407 window.__ooga.carnival.status
+DSB DONE 2407
+DSB STEP 2408 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2416
+DSB STEP 2416 window.__ooga.carnival.phase
+DSB DONE 2416
+DSB STEP 2416 window.__ooga.carnival.status
+DSB DONE 2417
+DSB STEP 2418 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2425
+DSB STEP 2425 window.__ooga.carnival.phase
+DSB DONE 2425
+DSB STEP 2425 window.__ooga.carnival.status
+DSB DONE 2426
+DSB STEP 2426 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2572
+DSB STEP 2572 window.__ooga.carnival.phase
+DSB DONE 2810
+DSB STEP 2810 window.__ooga.carnival.status
+DSB DONE 2811
+DSB STEP 2813 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2821
+DSB STEP 2821 window.__ooga.carnival.phase
+DSB DONE 2822
+DSB STEP 2822 window.__ooga.carnival.status
+DSB DONE 2823
+DSB STEP 2824 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2832
+DSB STEP 2832 window.__ooga.carnival.phase
+DSB DONE 2832
+DSB STEP 2832 window.__ooga.carnival.status
+DSB DONE 2832
+DSB STEP 2834 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2842
+DSB STEP 2842 window.__ooga.carnival.phase
+DSB DONE 2842
+DSB STEP 2842 window.__ooga.carnival.status
+DSB DONE 2843
+DSB STEP 2844 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2929
+DSB STEP 2929 window.__ooga.carnival.phase
+DSB DONE 3152
+DSB STEP 3152 window.__ooga.carnival.status
+DSB DONE 3154
+DSB STEP 3155 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3163
+DSB STEP 3163 window.__ooga.carnival.phase
+DSB DONE 3164
+DSB STEP 3164 window.__ooga.carnival.status
+DSB DONE 3164
+DSB STEP 3165 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3173
+DSB STEP 3173 window.__ooga.carnival.phase
+DSB DONE 3273
+DSB STEP 3273 window.__ooga.carnival.status
+DSB DONE 3274
+DSB STEP 3275 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3282
+DSB STEP 3282 window.__ooga.carnival.phase
+DSB DONE 3283
+DSB STEP 3283 window.__ooga.carnival.status
+DSB DONE 3283
+DSB STEP 3284 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3292
+DSB STEP 3292 window.__ooga.carnival.phase
+DSB DONE 3292
+DSB STEP 3292 window.__ooga.carnival.status
+DSB DONE 3292
+DSB STEP 3293 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3300
+DSB STEP 3300 window.__ooga.carnival.phase
+DSB DONE 3583
+DSB STEP 3583 window.__ooga.carnival.status
+DSB DONE 3584
+DSB STEP 3585 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3594
+DSB STEP 3594 window.__ooga.carnival.phase
+DSB DONE 3595
+DSB STEP 3595 window.__ooga.carnival.status
+DSB DONE 3595
+DSB STEP 3596 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3604
+DSB STEP 3604 window.__ooga.carnival.phase
+DSB DONE 3702
+DSB STEP 3702 window.__ooga.carnival.status
+DSB DONE 3703
+DSB STEP 3704 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3711
+DSB STEP 3711 window.__ooga.carnival.phase
+DSB DONE 3711
+DSB STEP 3711 window.__ooga.carnival.status
+DSB DONE 3712
+DSB STEP 3713 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3720
+DSB STEP 3720 window.__ooga.carnival.phase
+DSB DONE 3874
+DSB STEP 3874 window.__ooga.carnival.status
+DSB DONE 3875
+DSB STEP 3876 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3884
+DSB STEP 3884 window.__ooga.carnival.phase
+DSB DONE 3885
+DSB STEP 3885 window.__ooga.carnival.status
+DSB DONE 3885
+DSB STEP 3886 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3894
+DSB STEP 3894 window.__ooga.carnival.phase
+DSB DONE 3894
+DSB STEP 3894 window.__ooga.carnival.status
+DSB DONE 3894
+DSB STEP 3895 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3902
+DSB STEP 3902 window.__ooga.carnival.phase
+DSB DONE 4054
+DSB STEP 4054 window.__ooga.carnival.status
+DSB DONE 4055
+DSB STEP 4056 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4063
+DSB STEP 4063 window.__ooga.carnival.phase
+DSB DONE 4063
+DSB STEP 4063 window.__ooga.carnival.status
+DSB DONE 4064
+DSB STEP 4064 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4070
+DSB STEP 4070 window.__ooga.carnival.phase
+DSB DONE 4300
+DSB STEP 4300 window.__ooga.carnival.status
+DSB DONE 4301
+DSB STEP 4302 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4310
+DSB STEP 4310 window.__ooga.carnival.phase
+DSB DONE 4311
+DSB STEP 4311 window.__ooga.carnival.status
+DSB DONE 4311
+DSB STEP 4312 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4320
+DSB STEP 4320 window.__ooga.carnival.phase
+DSB DONE 4472
+DSB STEP 4472 window.__ooga.carnival.status
+DSB DONE 4472
+DSB STEP 4473 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4481
+DSB STEP 4481 window.__ooga.carnival.phase
+DSB DONE 4482
+DSB STEP 4482 window.__ooga.carnival.status
+DSB DONE 4482
+DSB STEP 4483 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4490
+DSB STEP 4490 window.__ooga.carnival.phase
+DSB DONE 4491
+DSB STEP 4491 window.__ooga.carnival.status
+DSB DONE 4491
+DSB STEP 4492 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4499
+DSB STEP 4500 window.__ooga.carnival.phase
+DSB DONE 4654
+DSB STEP 4654 window.__ooga.carnival.status
+DSB DONE 4654
+DSB STEP 4655 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4663
+DSB STEP 4663 window.__ooga.carnival.phase
+DSB DONE 4663
+DSB STEP 4663 window.__ooga.carnival.status
+DSB DONE 4663
+DSB STEP 4664 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4671
+DSB STEP 4671 window.__ooga.carnival.phase
+DSB DONE 4672
+DSB STEP 4672 window.__ooga.carnival.status
+DSB DONE 4672
+DSB STEP 4673 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4710
+DSB STEP 4710 window.__ooga.carnival.phase
+DSB DONE 4964
+DSB STEP 4964 window.__ooga.carnival.status
+DSB DONE 4966
+DSB STEP 4967 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4974
+DSB STEP 4974 window.__ooga.carnival.phase
+DSB DONE 4975
+DSB STEP 4975 window.__ooga.carnival.status
+DSB DONE 4975
+DSB STEP 4976 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4984
+DSB STEP 4984 window.__ooga.carnival.phase
+DSB DONE 5117
+DSB STEP 5117 window.__ooga.carnival.status
+DSB DONE 5118
+DSB STEP 5119 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5128
+DSB STEP 5129 window.__ooga.carnival.phase
+DSB DONE 5129
+DSB STEP 5129 window.__ooga.carnival.status
+DSB DONE 5130
+DSB STEP 5130 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5138
+DSB STEP 5138 window.__ooga.carnival.phase
+DSB DONE 5266
+DSB STEP 5266 window.__ooga.carnival.status
+DSB DONE 5266
+DSB STEP 5267 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5275
+DSB STEP 5275 window.__ooga.carnival.phase
+DSB DONE 5276
+DSB STEP 5276 window.__ooga.carnival.status
+DSB DONE 5276
+DSB STEP 5277 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5284
+DSB STEP 5284 window.__ooga.carnival.phase
+DSB DONE 5413
+DSB STEP 5413 window.__ooga.carnival.status
+DSB DONE 5413
+DSB STEP 5415 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5423
+DSB STEP 5423 window.__ooga.carnival.phase
+DSB DONE 5424
+DSB STEP 5424 window.__ooga.carnival.status
+DSB DONE 5424
+DSB STEP 5425 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5433
+DSB STEP 5433 window.__ooga.carnival.phase
+DSB DONE 5564
+DSB STEP 5564 window.__ooga.carnival.status
+DSB DONE 5565
+DSB STEP 5566 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5574
+DSB STEP 5574 window.__ooga.carnival.phase
+DSB DONE 5575
+DSB STEP 5575 window.__ooga.carnival.status
+DSB DONE 5575
+DSB STEP 5576 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5584
+DSB STEP 5584 window.__ooga.carnival.phase
+DSB DONE 5711
+DSB STEP 5711 window.__ooga.carnival.status
+DSB DONE 5712
+DSB STEP 5713 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5721
+DSB STEP 5721 window.__ooga.carnival.phase
+DSB DONE 5721
+DSB STEP 5721 window.__ooga.carnival.status
+DSB DONE 5721
+DSB STEP 5722 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5728
+DSB STEP 5728 window.__ooga.carnival.phase
+DSB DONE 5728
+DSB STEP 5728 window.__ooga.carnival.status
+DSB DONE 5729
+DSB STEP 5730 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5737
+DSB STEP 5737 window.__ooga.carnival.phase
+DSB DONE 5881
+DSB STEP 5881 window.__ooga.carnival.status
+DSB DONE 5881
+DSB STEP 5883 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5889
+DSB STEP 5889 window.__ooga.carnival.phase
+DSB DONE 5890
+DSB STEP 5890 window.__ooga.carnival.status
+DSB DONE 5890
+DSB STEP 5891 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5898
+DSB STEP 5899 window.__ooga.carnival.phase
+DSB DONE 6086
+DSB STEP 6086 window.__ooga.carnival.status
+DSB DONE 6087
+DSB STEP 6088 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6096
+DSB STEP 6096 window.__ooga.carnival.phase
+DSB DONE 6097
+DSB STEP 6097 window.__ooga.carnival.status
+DSB DONE 6097
+DSB STEP 6098 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6106
+DSB STEP 6106 window.__ooga.carnival.phase
+DSB DONE 6106
+DSB STEP 6106 window.__ooga.carnival.status
+DSB DONE 6106
+DSB STEP 6107 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6114
+DSB STEP 6114 window.__ooga.carnival.phase
+DSB DONE 6241
+DSB STEP 6241 window.__ooga.carnival.status
+DSB DONE 6242
+DSB STEP 6243 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6251
+DSB STEP 6251 window.__ooga.carnival.phase
+DSB DONE 6251
+DSB STEP 6251 window.__ooga.carnival.status
+DSB DONE 6252
+DSB STEP 6253 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6259
+DSB STEP 6259 window.__ooga.carnival.phase
+DSB DONE 6260
+DSB STEP 6260 window.__ooga.carnival.status
+DSB DONE 6260
+DSB STEP 6261 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6267
+DSB STEP 6267 window.__ooga.carnival.phase
+DSB DONE 6464
+DSB STEP 6464 window.__ooga.carnival.status
+DSB DONE 6464
+DSB STEP 6466 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6473
+DSB STEP 6473 window.__ooga.carnival.phase
+DSB DONE 6474
+DSB STEP 6474 window.__ooga.carnival.status
+DSB DONE 6474
+DSB STEP 6475 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6481
+DSB STEP 6481 window.__ooga.carnival.phase
+DSB DONE 6679
+DSB STEP 6679 window.__ooga.carnival.status
+DSB DONE 6680
+DSB STEP 6681 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6689
+DSB STEP 6689 window.__ooga.carnival.phase
+DSB DONE 6689
+DSB STEP 6689 window.__ooga.carnival.status
+DSB DONE 6690
+DSB STEP 6691 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6697
+DSB STEP 6698 window.__ooga.carnival.phase
+DSB DONE 6698
+DSB STEP 6698 window.__ooga.carnival.status
+DSB DONE 6698
+DSB STEP 6699 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6706
+DSB STEP 6706 window.__ooga.carnival.phase
+DSB DONE 6707
+DSB STEP 6707 window.__ooga.carnival.status
+DSB DONE 6707
+DSB STEP 6708 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6824
+DSB STEP 6824 window.__ooga.carnival.phase
+DSB DONE 6975
+DSB STEP 6975 window.__ooga.carnival.status
+DSB DONE 6975
+DSB STEP 6976 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6986
+DSB STEP 6986 window.__ooga.carnival.phase
+DSB DONE 6986
+DSB STEP 6986 window.__ooga.carnival.status
+DSB DONE 6987
+DSB STEP 6988 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6997
+DSB STEP 6997 window.__ooga.carnival.phase
+DSB DONE 6998
+DSB STEP 6998 window.__ooga.carnival.status
+DSB DONE 6999
+DSB STEP 7000 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7007
+DSB STEP 7007 window.__ooga.carnival.phase
+DSB DONE 7008
+DSB STEP 7008 window.__ooga.carnival.status
+DSB DONE 7008
+DSB STEP 7009 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7118
+DSB STEP 7118 window.__ooga.carnival.phase
+DSB DONE 7269
+DSB STEP 7269 window.__ooga.carnival.status
+DSB DONE 7270
+DSB STEP 7271 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7279
+DSB STEP 7279 window.__ooga.carnival.phase
+DSB DONE 7280
+DSB STEP 7280 window.__ooga.carnival.status
+DSB DONE 7280
+DSB STEP 7282 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7289
+DSB STEP 7289 window.__ooga.carnival.phase
+DSB DONE 7289
+DSB STEP 7289 window.__ooga.carnival.status
+DSB DONE 7290
+DSB STEP 7291 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7298
+DSB STEP 7298 window.__ooga.carnival.phase
+DSB DONE 7426
+DSB STEP 7426 window.__ooga.carnival.status
+DSB DONE 7427
+DSB STEP 7428 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7436
+DSB STEP 7436 window.__ooga.carnival.phase
+DSB DONE 7437
+DSB STEP 7437 window.__ooga.carnival.status
+DSB DONE 7437
+DSB STEP 7438 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7446
+DSB STEP 7446 window.__ooga.carnival.phase
+DSB DONE 7446
+DSB STEP 7446 window.__ooga.carnival.status
+DSB DONE 7446
+DSB STEP 7447 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7454
+DSB STEP 7454 window.__ooga.carnival.phase
+DSB DONE 7661
+DSB STEP 7661 window.__ooga.carnival.status
+DSB DONE 7662
+DSB STEP 7663 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7670
+DSB STEP 7670 window.__ooga.carnival.phase
+DSB DONE 7670
+DSB STEP 7670 window.__ooga.carnival.status
+DSB DONE 7671
+DSB STEP 7671 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7679
+DSB STEP 7679 window.__ooga.carnival.phase
+DSB DONE 7679
+DSB STEP 7679 window.__ooga.carnival.status
+DSB DONE 7679
+DSB STEP 7680 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7687
+DSB STEP 7687 window.__ooga.carnival.phase
+DSB DONE 7868
+DSB STEP 7868 window.__ooga.carnival.status
+DSB DONE 7869
+DSB STEP 7870 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7877
+DSB STEP 7878 window.__ooga.carnival.phase
+DSB DONE 7878
+DSB STEP 7878 window.__ooga.carnival.status
+DSB DONE 7878
+DSB STEP 7879 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7886
+DSB STEP 7886 window.__ooga.carnival.phase
+DSB DONE 8086
+DSB STEP 8086 window.__ooga.carnival.status
+DSB DONE 8087
+DSB STEP 8088 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8096
+DSB STEP 8096 window.__ooga.carnival.phase
+DSB DONE 8096
+DSB STEP 8096 window.__ooga.carnival.status
+DSB DONE 8097
+DSB STEP 8097 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8105
+DSB STEP 8105 window.__ooga.carnival.phase
+DSB DONE 8231
+DSB STEP 8231 window.__ooga.carnival.status
+DSB DONE 8232
+DSB STEP 8233 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8241
+DSB STEP 8241 window.__ooga.carnival.phase
+DSB DONE 8241
+DSB STEP 8241 window.__ooga.carnival.status
+DSB DONE 8242
+DSB STEP 8242 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8249
+DSB STEP 8249 window.__ooga.carnival.phase
+DSB DONE 8381
+DSB STEP 8381 window.__ooga.carnival.status
+DSB DONE 8382
+DSB STEP 8383 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8390
+DSB STEP 8390 window.__ooga.carnival.phase
+DSB DONE 8391
+DSB STEP 8391 window.__ooga.carnival.status
+DSB DONE 8391
+DSB STEP 8392 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8400
+DSB STEP 8400 window.__ooga.carnival.phase
+DSB DONE 8534
+DSB STEP 8534 window.__ooga.carnival.status
+DSB DONE 8535
+DSB STEP 8536 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8544
+DSB STEP 8544 window.__ooga.carnival.phase
+DSB DONE 8544
+DSB STEP 8544 window.__ooga.carnival.status
+DSB DONE 8545
+DSB STEP 8545 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8553
+DSB STEP 8553 window.__ooga.carnival.phase
+DSB DONE 8679
+DSB STEP 8679 window.__ooga.carnival.status
+DSB DONE 8680
+DSB STEP 8681 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8689
+DSB STEP 8689 window.__ooga.carnival.phase
+DSB DONE 8690
+DSB STEP 8690 window.__ooga.carnival.status
+DSB DONE 8690
+DSB STEP 8691 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8698
+DSB STEP 8698 window.__ooga.carnival.phase
+DSB DONE 8831
+DSB STEP 8831 window.__ooga.carnival.status
+DSB DONE 8833
+DSB STEP 8834 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8841
+DSB STEP 8841 window.__ooga.carnival.phase
+DSB DONE 8842
+DSB STEP 8842 window.__ooga.carnival.status
+DSB DONE 8842
+DSB STEP 8843 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8850
+DSB STEP 8850 window.__ooga.carnival.phase
+DSB DONE 8980
+DSB STEP 8980 window.__ooga.carnival.status
+DSB DONE 8981
+DSB STEP 8982 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8989
+DSB STEP 8990 window.__ooga.carnival.phase
+DSB DONE 8990
+DSB STEP 8990 window.__ooga.carnival.status
+DSB DONE 8990
+DSB STEP 8991 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8999
+DSB STEP 8999 window.__ooga.carnival.phase
+DSB DONE 9132
+DSB STEP 9132 window.__ooga.carnival.status
+DSB DONE 9133
+DSB STEP 9134 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9144
+DSB STEP 9144 window.__ooga.carnival.phase
+DSB DONE 9145
+DSB STEP 9145 window.__ooga.carnival.status
+DSB DONE 9145
+DSB STEP 9146 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9155
+DSB STEP 9155 window.__ooga.carnival.phase
+DSB DONE 9280
+DSB STEP 9280 window.__ooga.carnival.status
+DSB DONE 9281
+DSB STEP 9282 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9291
+DSB STEP 9291 window.__ooga.carnival.phase
+DSB DONE 9291
+DSB STEP 9291 window.__ooga.carnival.status
+DSB DONE 9292
+DSB STEP 9292 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9301
+DSB STEP 9301 window.__ooga.carnival.phase
+DSB DONE 9432
+DSB STEP 9432 window.__ooga.carnival.status
+DSB DONE 9433
+DSB STEP 9434 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9442
+DSB STEP 9442 window.__ooga.carnival.phase
+DSB DONE 9442
+DSB STEP 9442 window.__ooga.carnival.status
+DSB DONE 9443
+DSB STEP 9444 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9450
+DSB STEP 9450 window.__ooga.carnival.phase
+DSB DONE 9579
+DSB STEP 9579 window.__ooga.carnival.status
+DSB DONE 9581
+DSB STEP 9584 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9593
+DSB STEP 9593 window.__ooga.carnival.phase
+DSB DONE 9593
+DSB STEP 9593 window.__ooga.carnival.status
+DSB DONE 9593
+DSB STEP 9594 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9601
+DSB STEP 9601 window.__ooga.carnival.phase
+DSB DONE 9733
+DSB STEP 9733 window.__ooga.carnival.status
+DSB DONE 9736
+DSB STEP 9736 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9743
+DSB STEP 9743 window.__ooga.carnival.phase
+DSB DONE 9744
+DSB STEP 9744 window.__ooga.carnival.status
+DSB DONE 9744
+DSB STEP 9745 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9751
+DSB STEP 9751 window.__ooga.carnival.phase
+DSB DONE 9880
+DSB STEP 9880 window.__ooga.carnival.status
+DSB DONE 9880
+DSB STEP 9881 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9888
+DSB STEP 9888 window.__ooga.carnival.phase
+DSB DONE 9889
+DSB STEP 9889 window.__ooga.carnival.status
+DSB DONE 9889
+DSB STEP 9890 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9896
+DSB STEP 9896 window.__ooga.carnival.phase
+DSB DONE 10030
+DSB STEP 10030 window.__ooga.carnival.status
+DSB DONE 10031
+DSB STEP 10032 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10039
+DSB STEP 10040 window.__ooga.carnival.phase
+DSB DONE 10040
+DSB STEP 10040 window.__ooga.carnival.status
+DSB DONE 10040
+DSB STEP 10041 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10048
+DSB STEP 10048 window.__ooga.carnival.phase
+DSB DONE 10180
+DSB STEP 10181 window.__ooga.carnival.status
+DSB DONE 10181
+DSB STEP 10183 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10191
+DSB STEP 10191 window.__ooga.carnival.phase
+DSB DONE 10191
+DSB STEP 10191 window.__ooga.carnival.status
+DSB DONE 10192
+DSB STEP 10192 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10199
+DSB STEP 10199 window.__ooga.carnival.phase
+DSB DONE 10331
+DSB STEP 10331 window.__ooga.carnival.status
+DSB DONE 10332
+DSB STEP 10333 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10340
+DSB STEP 10341 window.__ooga.carnival.phase
+DSB DONE 10341
+DSB STEP 10341 window.__ooga.carnival.status
+DSB DONE 10341
+DSB STEP 10342 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10349
+DSB STEP 10349 window.__ooga.carnival.phase
+DSB DONE 10482
+DSB STEP 10482 window.__ooga.carnival.status
+DSB DONE 10483
+DSB STEP 10484 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10491
+DSB STEP 10491 window.__ooga.carnival.phase
+DSB DONE 10492
+DSB STEP 10492 window.__ooga.carnival.status
+DSB DONE 10492
+DSB STEP 10493 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10499
+DSB STEP 10499 window.__ooga.carnival.phase
+DSB DONE 10633
+DSB STEP 10633 window.__ooga.carnival.status
+DSB DONE 10633
+DSB STEP 10634 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10642
+DSB STEP 10642 window.__ooga.carnival.phase
+DSB DONE 10642
+DSB STEP 10642 window.__ooga.carnival.status
+DSB DONE 10643
+DSB STEP 10643 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10650
+DSB STEP 10650 window.__ooga.carnival.phase
+DSB DONE 10784
+DSB STEP 10784 window.__ooga.carnival.status
+DSB DONE 10785
+DSB STEP 10786 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10793
+DSB STEP 10793 window.__ooga.carnival.phase
+DSB DONE 10794
+DSB STEP 10794 window.__ooga.carnival.status
+DSB DONE 10794
+DSB STEP 10795 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10802
+DSB STEP 10802 window.__ooga.carnival.phase
+DSB DONE 10930
+DSB STEP 10930 window.__ooga.carnival.status
+DSB DONE 10931
+DSB STEP 10933 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10940
+DSB STEP 10940 window.__ooga.carnival.phase
+DSB DONE 10940
+DSB STEP 10940 window.__ooga.carnival.status
+DSB DONE 10941
+DSB STEP 10941 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 10948
+DSB STEP 10948 window.__ooga.carnival.phase
+DSB DONE 11083
+DSB STEP 11083 window.__ooga.carnival.status
+DSB DONE 11084
+DSB STEP 11085 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11093
+DSB STEP 11093 window.__ooga.carnival.phase
+DSB DONE 11093
+DSB STEP 11093 window.__ooga.carnival.status
+DSB DONE 11093
+DSB STEP 11094 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11101
+DSB STEP 11101 window.__ooga.carnival.phase
+DSB DONE 11230
+DSB STEP 11230 window.__ooga.carnival.status
+DSB DONE 11230
+DSB STEP 11232 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11240
+DSB STEP 11240 window.__ooga.carnival.phase
+DSB DONE 11241
+DSB STEP 11241 window.__ooga.carnival.status
+DSB DONE 11241
+DSB STEP 11242 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11248
+DSB STEP 11248 window.__ooga.carnival.phase
+DSB DONE 11382
+DSB STEP 11382 window.__ooga.carnival.status
+DSB DONE 11382
+DSB STEP 11383 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11391
+DSB STEP 11391 window.__ooga.carnival.phase
+DSB DONE 11391
+DSB STEP 11391 window.__ooga.carnival.status
+DSB DONE 11392
+DSB STEP 11392 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11399
+DSB STEP 11399 window.__ooga.carnival.phase
+DSB DONE 11530
+DSB STEP 11530 window.__ooga.carnival.status
+DSB DONE 11531
+DSB STEP 11533 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11539
+DSB STEP 11540 window.__ooga.carnival.phase
+DSB DONE 11540
+DSB STEP 11540 window.__ooga.carnival.status
+DSB DONE 11540
+DSB STEP 11541 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11548
+DSB STEP 11548 window.__ooga.carnival.phase
+DSB DONE 11682
+DSB STEP 11682 window.__ooga.carnival.status
+DSB DONE 11683
+DSB STEP 11684 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11691
+DSB STEP 11691 window.__ooga.carnival.phase
+DSB DONE 11692
+DSB STEP 11692 window.__ooga.carnival.status
+DSB DONE 11692
+DSB STEP 11693 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11699
+DSB STEP 11700 window.__ooga.carnival.phase
+DSB DONE 11830
+DSB STEP 11830 window.__ooga.carnival.status
+DSB DONE 11831
+DSB STEP 11832 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11839
+DSB STEP 11839 window.__ooga.carnival.phase
+DSB DONE 11839
+DSB STEP 11839 window.__ooga.carnival.status
+DSB DONE 11840
+DSB STEP 11841 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11847
+DSB STEP 11847 window.__ooga.carnival.phase
+DSB DONE 11981
+DSB STEP 11981 window.__ooga.carnival.status
+DSB DONE 11981
+DSB STEP 11983 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11989
+DSB STEP 11989 window.__ooga.carnival.phase
+DSB DONE 11990
+DSB STEP 11990 window.__ooga.carnival.status
+DSB DONE 11990
+DSB STEP 11991 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 11997
+DSB STEP 11997 window.__ooga.carnival.phase
+DSB DONE 12132
+DSB STEP 12132 window.__ooga.carnival.status
+DSB DONE 12133
+DSB STEP 12134 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12141
+DSB STEP 12141 window.__ooga.carnival.phase
+DSB DONE 12141
+DSB STEP 12141 window.__ooga.carnival.status
+DSB DONE 12141
+DSB STEP 12142 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12148
+DSB STEP 12148 window.__ooga.carnival.phase
+DSB DONE 12278
+DSB STEP 12279 window.__ooga.carnival.status
+DSB DONE 12279
+DSB STEP 12280 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12287
+DSB STEP 12287 window.__ooga.carnival.phase
+DSB DONE 12288
+DSB STEP 12288 window.__ooga.carnival.status
+DSB DONE 12288
+DSB STEP 12289 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12295
+DSB STEP 12295 window.__ooga.carnival.phase
+DSB DONE 12296
+DSB STEP 12296 window.__ooga.carnival.status
+DSB DONE 12296
+DSB STEP 12297 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12302
+DSB STEP 12302 window.__ooga.carnival.phase
+DSB DONE 12434
+DSB STEP 12434 window.__ooga.carnival.status
+DSB DONE 12435
+DSB STEP 12435 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12442
+DSB STEP 12442 window.__ooga.carnival.phase
+DSB DONE 12442
+DSB STEP 12442 window.__ooga.carnival.status
+DSB DONE 12443
+DSB STEP 12443 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12449
+DSB STEP 12450 window.__ooga.carnival.phase
+DSB DONE 12649
+DSB STEP 12649 window.__ooga.carnival.status
+DSB DONE 12650
+DSB STEP 12651 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12661
+DSB STEP 12661 window.__ooga.carnival.phase
+DSB DONE 12662
+DSB STEP 12662 window.__ooga.carnival.status
+DSB DONE 12662
+DSB STEP 12663 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12670
+DSB STEP 12670 window.__ooga.carnival.phase
+DSB DONE 12797
+DSB STEP 12797 window.__ooga.carnival.status
+DSB DONE 12798
+DSB STEP 12799 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12806
+DSB STEP 12807 window.__ooga.carnival.phase
+DSB DONE 12807
+DSB STEP 12807 window.__ooga.carnival.status
+DSB DONE 12807
+DSB STEP 12808 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12815
+DSB STEP 12815 window.__ooga.carnival.phase
+DSB DONE 12945
+DSB STEP 12945 window.__ooga.carnival.status
+DSB DONE 12946
+DSB STEP 12947 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12954
+DSB STEP 12954 window.__ooga.carnival.phase
+DSB DONE 12954
+DSB STEP 12954 window.__ooga.carnival.status
+DSB DONE 12955
+DSB STEP 12956 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12962
+DSB STEP 12962 window.__ooga.carnival.phase
+DSB DONE 12962
+DSB STEP 12962 window.__ooga.carnival.status
+DSB DONE 12963
+DSB STEP 12963 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 12970
+DSB STEP 12970 window.__ooga.carnival.phase
+DSB DONE 13162
+DSB STEP 13162 window.__ooga.carnival.status
+DSB DONE 13162
+DSB STEP 13163 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13170
+DSB STEP 13170 window.__ooga.carnival.phase
+DSB DONE 13170
+DSB STEP 13170 window.__ooga.carnival.status
+DSB DONE 13171
+DSB STEP 13171 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13177
+DSB STEP 13177 window.__ooga.carnival.phase
+DSB DONE 13177
+DSB STEP 13178 window.__ooga.carnival.status
+DSB DONE 13178
+DSB STEP 13179 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13184
+DSB STEP 13184 window.__ooga.carnival.phase
+DSB DONE 13322
+DSB STEP 13322 window.__ooga.carnival.status
+DSB DONE 13322
+DSB STEP 13323 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13330
+DSB STEP 13330 window.__ooga.carnival.phase
+DSB DONE 13330
+DSB STEP 13330 window.__ooga.carnival.status
+DSB DONE 13330
+DSB STEP 13331 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13338
+DSB STEP 13338 window.__ooga.carnival.phase
+DSB DONE 13536
+DSB STEP 13536 window.__ooga.carnival.status
+DSB DONE 13537
+DSB STEP 13538 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13545
+DSB STEP 13545 window.__ooga.carnival.phase
+DSB DONE 13546
+DSB STEP 13546 window.__ooga.carnival.status
+DSB DONE 13546
+DSB STEP 13547 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13553
+DSB STEP 13553 window.__ooga.carnival.phase
+DSB DONE 13685
+DSB STEP 13685 window.__ooga.carnival.status
+DSB DONE 13686
+DSB STEP 13687 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13695
+DSB STEP 13695 window.__ooga.carnival.phase
+DSB DONE 13695
+DSB STEP 13695 window.__ooga.carnival.status
+DSB DONE 13695
+DSB STEP 13696 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13703
+DSB STEP 13703 window.__ooga.carnival.phase
+DSB DONE 13832
+DSB STEP 13832 window.__ooga.carnival.status
+DSB DONE 13833
+DSB STEP 13834 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13842
+DSB STEP 13842 window.__ooga.carnival.phase
+DSB DONE 13843
+DSB STEP 13843 window.__ooga.carnival.status
+DSB DONE 13843
+DSB STEP 13844 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13850
+DSB STEP 13850 window.__ooga.carnival.phase
+DSB DONE 13979
+DSB STEP 13979 window.__ooga.carnival.status
+DSB DONE 13980
+DSB STEP 13981 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13987
+DSB STEP 13987 window.__ooga.carnival.phase
+DSB DONE 13988
+DSB STEP 13988 window.__ooga.carnival.status
+DSB DONE 13988
+DSB STEP 13989 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 13995
+DSB STEP 13995 window.__ooga.carnival.phase
+DSB DONE 14132
+DSB STEP 14132 window.__ooga.carnival.status
+DSB DONE 14133
+DSB STEP 14134 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14140
+DSB STEP 14140 window.__ooga.carnival.phase
+DSB DONE 14140
+DSB STEP 14140 window.__ooga.carnival.status
+DSB DONE 14141
+DSB STEP 14142 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14147
+DSB STEP 14147 window.__ooga.carnival.phase
+DSB DONE 14280
+DSB STEP 14280 window.__ooga.carnival.status
+DSB DONE 14281
+DSB STEP 14282 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14289
+DSB STEP 14289 window.__ooga.carnival.phase
+DSB DONE 14289
+DSB STEP 14289 window.__ooga.carnival.status
+DSB DONE 14289
+DSB STEP 14291 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14297
+DSB STEP 14297 window.__ooga.carnival.phase
+DSB DONE 14297
+DSB STEP 14297 window.__ooga.carnival.status
+DSB DONE 14298
+DSB STEP 14299 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14304
+DSB STEP 14304 window.__ooga.carnival.phase
+DSB DONE 14305
+DSB STEP 14305 window.__ooga.carnival.status
+DSB DONE 14305
+DSB STEP 14306 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14424
+DSB STEP 14424 window.__ooga.carnival.phase
+DSB DONE 14440
+DSB STEP 14440 window.__ooga.carnival.status
+DSB DONE 14440
+DSB STEP 14441 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14447
+DSB STEP 14447 window.__ooga.carnival.phase
+DSB DONE 14447
+DSB STEP 14447 window.__ooga.carnival.status
+DSB DONE 14448
+DSB STEP 14448 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14454
+DSB STEP 14454 window.__ooga.carnival.phase
+DSB DONE 14577
+DSB STEP 14577 window.__ooga.carnival.status
+DSB DONE 14578
+DSB STEP 14579 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14584
+DSB STEP 14584 window.__ooga.carnival.phase
+DSB DONE 14585
+DSB STEP 14585 window.__ooga.carnival.status
+DSB DONE 14585
+DSB STEP 14586 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14592
+DSB STEP 14592 window.__ooga.carnival.phase
+DSB DONE 14592
+DSB STEP 14592 window.__ooga.carnival.status
+DSB DONE 14593
+DSB STEP 14594 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14658
+DSB STEP 14658 window.__ooga.carnival.phase
+DSB DONE 14934
+DSB STEP 14934 window.__ooga.carnival.status
+DSB DONE 14934
+DSB STEP 14936 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14942
+DSB STEP 14942 window.__ooga.carnival.phase
+DSB DONE 14943
+DSB STEP 14943 window.__ooga.carnival.status
+DSB DONE 14944
+DSB STEP 14945 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 14951
+DSB STEP 14951 window.__ooga.carnival.phase
+DSB DONE 15082
+DSB STEP 15082 window.__ooga.carnival.status
+DSB DONE 15083
+DSB STEP 15084 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15091
+DSB STEP 15091 window.__ooga.carnival.phase
+DSB DONE 15092
+DSB STEP 15092 window.__ooga.carnival.status
+DSB DONE 15092
+DSB STEP 15093 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15099
+DSB STEP 15099 window.__ooga.carnival.phase
+DSB DONE 15230
+DSB STEP 15230 window.__ooga.carnival.status
+DSB DONE 15230
+DSB STEP 15231 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15237
+DSB STEP 15237 window.__ooga.carnival.phase
+DSB DONE 15238
+DSB STEP 15238 window.__ooga.carnival.status
+DSB DONE 15238
+DSB STEP 15239 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15245
+DSB STEP 15245 window.__ooga.carnival.phase
+DSB DONE 15245
+DSB STEP 15245 window.__ooga.carnival.status
+DSB DONE 15246
+DSB STEP 15247 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15253
+DSB STEP 15253 window.__ooga.carnival.phase
+DSB DONE 15382
+DSB STEP 15383 window.__ooga.carnival.status
+DSB DONE 15383
+DSB STEP 15384 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15390
+DSB STEP 15390 window.__ooga.carnival.phase
+DSB DONE 15391
+DSB STEP 15391 window.__ooga.carnival.status
+DSB DONE 15391
+DSB STEP 15392 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15397
+DSB STEP 15397 window.__ooga.carnival.phase
+DSB DONE 15600
+DSB STEP 15600 window.__ooga.carnival.status
+DSB DONE 15600
+DSB STEP 15601 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15608
+DSB STEP 15608 window.__ooga.carnival.phase
+DSB DONE 15608
+DSB STEP 15609 window.__ooga.carnival.status
+DSB DONE 15609
+DSB STEP 15610 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15615
+DSB STEP 15615 window.__ooga.carnival.phase
+DSB DONE 15750
+DSB STEP 15750 window.__ooga.carnival.status
+DSB DONE 15751
+DSB STEP 15752 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15759
+DSB STEP 15759 window.__ooga.carnival.phase
+DSB DONE 15759
+DSB STEP 15759 window.__ooga.carnival.status
+DSB DONE 15760
+DSB STEP 15760 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15766
+DSB STEP 15766 window.__ooga.carnival.phase
+DSB DONE 15897
+DSB STEP 15897 window.__ooga.carnival.status
+DSB DONE 15898
+DSB STEP 15899 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15906
+DSB STEP 15906 window.__ooga.carnival.phase
+DSB DONE 15907
+DSB STEP 15907 window.__ooga.carnival.status
+DSB DONE 15907
+DSB STEP 15908 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 15915
+DSB STEP 15915 window.__ooga.carnival.phase
+DSB DONE 16043
+DSB STEP 16043 window.__ooga.carnival.status
+DSB DONE 16044
+DSB STEP 16045 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16052
+DSB STEP 16052 window.__ooga.carnival.phase
+DSB DONE 16053
+DSB STEP 16053 window.__ooga.carnival.status
+DSB DONE 16053
+DSB STEP 16054 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16060
+DSB STEP 16060 window.__ooga.carnival.phase
+DSB DONE 16060
+DSB STEP 16060 window.__ooga.carnival.status
+DSB DONE 16061
+DSB STEP 16061 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16068
+DSB STEP 16068 window.__ooga.carnival.phase
+DSB DONE 16200
+DSB STEP 16200 window.__ooga.carnival.status
+DSB DONE 16200
+DSB STEP 16201 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16208
+DSB STEP 16208 window.__ooga.carnival.phase
+DSB DONE 16209
+DSB STEP 16209 window.__ooga.carnival.status
+DSB DONE 16209
+DSB STEP 16210 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16216
+DSB STEP 16216 window.__ooga.carnival.phase
+DSB DONE 16411
+DSB STEP 16411 window.__ooga.carnival.status
+DSB DONE 16412
+DSB STEP 16413 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16421
+DSB STEP 16421 window.__ooga.carnival.phase
+DSB DONE 16422
+DSB STEP 16422 window.__ooga.carnival.status
+DSB DONE 16422
+DSB STEP 16423 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16430
+DSB STEP 16430 window.__ooga.carnival.phase
+DSB DONE 16430
+DSB STEP 16430 window.__ooga.carnival.status
+DSB DONE 16431
+DSB STEP 16432 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16439
+DSB STEP 16439 window.__ooga.carnival.phase
+DSB DONE 16439
+DSB STEP 16439 window.__ooga.carnival.status
+DSB DONE 16439
+DSB STEP 16440 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16557
+DSB STEP 16557 window.__ooga.carnival.phase
+DSB DONE 16703
+DSB STEP 16703 window.__ooga.carnival.status
+DSB DONE 16704
+DSB STEP 16704 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16711
+DSB STEP 16711 window.__ooga.carnival.phase
+DSB DONE 16712
+DSB STEP 16712 window.__ooga.carnival.status
+DSB DONE 16712
+DSB STEP 16713 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16720
+DSB STEP 16720 window.__ooga.carnival.phase
+DSB DONE 16855
+DSB STEP 16855 window.__ooga.carnival.status
+DSB DONE 16856
+DSB STEP 16857 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16864
+DSB STEP 16864 window.__ooga.carnival.phase
+DSB DONE 16865
+DSB STEP 16865 window.__ooga.carnival.status
+DSB DONE 16866
+DSB STEP 16867 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16873
+DSB STEP 16873 window.__ooga.carnival.phase
+DSB DONE 16874
+DSB STEP 16874 window.__ooga.carnival.status
+DSB DONE 16874
+DSB STEP 16875 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 16882
+DSB STEP 16882 window.__ooga.carnival.phase
+DSB DONE 17012
+DSB STEP 17012 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 17077
+DSB STEP 17078 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["hockey"], ticket
+DSB DONE 17079
+CHECK PASS hockey playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":10,"best":10,"tickets":2,"paid":2,"shown":true,"before":0}
+CHECK PASS hockey playthrough: clean console 17.1s 
+DSB STEP 17079 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 21544
+DSB STEP 21545 (() => { const B = window.__ooga; B.go("hockey"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hockey"); i++) B.advance(1 / 30, 1 / 30)
+DSB DONE 21756
+DSB STEP 21756 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 22584
+DSB STEP 22584 (() => { const B = window.__ooga; B.go("hockey"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hockey"); i++) B.advance(1 / 30, 1 / 30)
+DSB DONE 22818
+DSB STEP 22818 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hockey", sats: 2100, handle: "tester", message: "ooga", at: Date.no
+DSB DONE 22825
+CHECK PASS hockey round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hockey","first":{"scene":"hockey","records":96,"nodes":249,"targets":0,"dom":3602},"second":{"scene":"hockey","records":96,"nodes":249,"targets":0,"dom":3602}}
+CHECK PASS hockey round trip: clean console 22.8s 
+DSB STEP 82 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 83
+DSB STEP 125 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 125
+DSB STEP 168 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 168
+DSB STEP 209 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 210
+DSB STEP 253 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 253
+DSB STEP 296 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 296
+DSB STEP 337 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 602
+DSB STEP 644 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 645
+DSB STEP 686 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 688
+DSB STEP 729 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 730
+DSB STEP 772 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 772
+DSB STEP 814 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 815
+DSB STEP 857 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 858
+DSB STEP 858 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 858
+DSB STEP 858 window.__ooga.game.state.arcade.tickets
+DSB DONE 859
+DSB STEP 860 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1066
+DSB STEP 1066 window.__ooga.carnival.phase
+DSB DONE 1067
+DSB STEP 1067 window.__ooga.carnival.status
+DSB DONE 1308
+DSB STEP 1309 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1319
+DSB STEP 1319 window.__ooga.carnival.phase
+DSB DONE 1319
+DSB STEP 1319 window.__ooga.carnival.status
+DSB DONE 1320
+DSB STEP 1322 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1331
+DSB STEP 1331 window.__ooga.carnival.phase
+DSB DONE 1331
+DSB STEP 1331 window.__ooga.carnival.status
+DSB DONE 1332
+DSB STEP 1332 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1494
+DSB STEP 1494 window.__ooga.carnival.phase
+DSB DONE 1534
+DSB STEP 1534 window.__ooga.carnival.status
+DSB DONE 1534
+DSB STEP 1535 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1543
+DSB STEP 1543 window.__ooga.carnival.phase
+DSB DONE 1543
+DSB STEP 1543 window.__ooga.carnival.status
+DSB DONE 1543
+DSB STEP 1544 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1612
+DSB STEP 1612 window.__ooga.carnival.phase
+DSB DONE 1761
+DSB STEP 1762 window.__ooga.carnival.status
+DSB DONE 1762
+DSB STEP 1763 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1772
+DSB STEP 1772 window.__ooga.carnival.phase
+DSB DONE 1773
+DSB STEP 1773 window.__ooga.carnival.status
+DSB DONE 1773
+DSB STEP 1774 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 1839
+DSB STEP 1839 window.__ooga.carnival.phase
+DSB DONE 1993
+DSB STEP 1993 window.__ooga.carnival.status
+DSB DONE 1994
+DSB STEP 1995 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2003
+DSB STEP 2004 window.__ooga.carnival.phase
+DSB DONE 2004
+DSB STEP 2004 window.__ooga.carnival.status
+DSB DONE 2005
+DSB STEP 2006 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2065
+DSB STEP 2065 window.__ooga.carnival.phase
+DSB DONE 2217
+DSB STEP 2217 window.__ooga.carnival.status
+DSB DONE 2217
+DSB STEP 2218 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2226
+DSB STEP 2226 window.__ooga.carnival.phase
+DSB DONE 2227
+DSB STEP 2227 window.__ooga.carnival.status
+DSB DONE 2227
+DSB STEP 2228 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2291
+DSB STEP 2292 window.__ooga.carnival.phase
+DSB DONE 2444
+DSB STEP 2444 window.__ooga.carnival.status
+DSB DONE 2445
+DSB STEP 2446 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2454
+DSB STEP 2455 window.__ooga.carnival.phase
+DSB DONE 2455
+DSB STEP 2455 window.__ooga.carnival.status
+DSB DONE 2455
+DSB STEP 2456 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2516
+DSB STEP 2517 window.__ooga.carnival.phase
+DSB DONE 2669
+DSB STEP 2669 window.__ooga.carnival.status
+DSB DONE 2670
+DSB STEP 2670 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2681
+DSB STEP 2681 window.__ooga.carnival.phase
+DSB DONE 2682
+DSB STEP 2682 window.__ooga.carnival.status
+DSB DONE 2682
+DSB STEP 2683 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2748
+DSB STEP 2748 window.__ooga.carnival.phase
+DSB DONE 2897
+DSB STEP 2898 window.__ooga.carnival.status
+DSB DONE 2898
+DSB STEP 2899 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2914
+DSB STEP 2914 window.__ooga.carnival.phase
+DSB DONE 2914
+DSB STEP 2914 window.__ooga.carnival.status
+DSB DONE 2915
+DSB STEP 2916 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 2973
+DSB STEP 2973 window.__ooga.carnival.phase
+DSB DONE 2976
+DSB STEP 2976 window.__ooga.carnival.status
+DSB DONE 2976
+DSB STEP 2977 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3207
+DSB STEP 3207 window.__ooga.carnival.phase
+DSB DONE 3208
+DSB STEP 3208 window.__ooga.carnival.status
+DSB DONE 3209
+DSB STEP 3210 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3303
+DSB STEP 3303 window.__ooga.carnival.phase
+DSB DONE 3304
+DSB STEP 3304 window.__ooga.carnival.status
+DSB DONE 3304
+DSB STEP 3305 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3425
+DSB STEP 3425 window.__ooga.carnival.phase
+DSB DONE 3426
+DSB STEP 3426 window.__ooga.carnival.status
+DSB DONE 3426
+DSB STEP 3427 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3522
+DSB STEP 3522 window.__ooga.carnival.phase
+DSB DONE 3523
+DSB STEP 3523 window.__ooga.carnival.status
+DSB DONE 3523
+DSB STEP 3524 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3647
+DSB STEP 3648 window.__ooga.carnival.phase
+DSB DONE 3649
+DSB STEP 3649 window.__ooga.carnival.status
+DSB DONE 3649
+DSB STEP 3650 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3745
+DSB STEP 3745 window.__ooga.carnival.phase
+DSB DONE 3745
+DSB STEP 3745 window.__ooga.carnival.status
+DSB DONE 3746
+DSB STEP 3747 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3853
+DSB STEP 3853 window.__ooga.carnival.phase
+DSB DONE 3854
+DSB STEP 3854 window.__ooga.carnival.status
+DSB DONE 3854
+DSB STEP 3855 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 3973
+DSB STEP 3973 window.__ooga.carnival.phase
+DSB DONE 3974
+DSB STEP 3974 window.__ooga.carnival.status
+DSB DONE 3974
+DSB STEP 3975 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4072
+DSB STEP 4072 window.__ooga.carnival.phase
+DSB DONE 4072
+DSB STEP 4072 window.__ooga.carnival.status
+DSB DONE 4073
+DSB STEP 4074 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4196
+DSB STEP 4196 window.__ooga.carnival.phase
+DSB DONE 4197
+DSB STEP 4197 window.__ooga.carnival.status
+DSB DONE 4198
+DSB STEP 4199 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4294
+DSB STEP 4294 window.__ooga.carnival.phase
+DSB DONE 4295
+DSB STEP 4295 window.__ooga.carnival.status
+DSB DONE 4295
+DSB STEP 4296 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4402
+DSB STEP 4402 window.__ooga.carnival.phase
+DSB DONE 4402
+DSB STEP 4402 window.__ooga.carnival.status
+DSB DONE 4403
+DSB STEP 4404 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4522
+DSB STEP 4522 window.__ooga.carnival.phase
+DSB DONE 4523
+DSB STEP 4523 window.__ooga.carnival.status
+DSB DONE 4524
+DSB STEP 4525 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4621
+DSB STEP 4621 window.__ooga.carnival.phase
+DSB DONE 4621
+DSB STEP 4621 window.__ooga.carnival.status
+DSB DONE 4622
+DSB STEP 4623 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4741
+DSB STEP 4741 window.__ooga.carnival.phase
+DSB DONE 4742
+DSB STEP 4742 window.__ooga.carnival.status
+DSB DONE 4742
+DSB STEP 4743 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4840
+DSB STEP 4840 window.__ooga.carnival.phase
+DSB DONE 4841
+DSB STEP 4841 window.__ooga.carnival.status
+DSB DONE 4841
+DSB STEP 4843 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 4956
+DSB STEP 4956 window.__ooga.carnival.phase
+DSB DONE 4958
+DSB STEP 4958 window.__ooga.carnival.status
+DSB DONE 4958
+DSB STEP 4959 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5005
+DSB STEP 5005 window.__ooga.carnival.phase
+DSB DONE 5005
+DSB STEP 5005 window.__ooga.carnival.status
+DSB DONE 5005
+DSB STEP 5006 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5101
+DSB STEP 5101 window.__ooga.carnival.phase
+DSB DONE 5101
+DSB STEP 5101 window.__ooga.carnival.status
+DSB DONE 5102
+DSB STEP 5103 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5244
+DSB STEP 5244 window.__ooga.carnival.phase
+DSB DONE 5245
+DSB STEP 5245 window.__ooga.carnival.status
+DSB DONE 5246
+DSB STEP 5247 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5293
+DSB STEP 5293 window.__ooga.carnival.phase
+DSB DONE 5294
+DSB STEP 5294 window.__ooga.carnival.status
+DSB DONE 5294
+DSB STEP 5295 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5388
+DSB STEP 5388 window.__ooga.carnival.phase
+DSB DONE 5389
+DSB STEP 5389 window.__ooga.carnival.status
+DSB DONE 5390
+DSB STEP 5391 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5533
+DSB STEP 5533 window.__ooga.carnival.phase
+DSB DONE 5534
+DSB STEP 5534 window.__ooga.carnival.status
+DSB DONE 5535
+DSB STEP 5536 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5581
+DSB STEP 5581 window.__ooga.carnival.phase
+DSB DONE 5581
+DSB STEP 5581 window.__ooga.carnival.status
+DSB DONE 5582
+DSB STEP 5583 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5729
+DSB STEP 5729 window.__ooga.carnival.phase
+DSB DONE 5730
+DSB STEP 5730 window.__ooga.carnival.status
+DSB DONE 5730
+DSB STEP 5731 window.__ooga.advance(0.8, 1 / 60)
+DSB DONE 5827
+DSB STEP 5827 window.__ooga.carnival.phase
+DSB DONE 5828
+DSB STEP 5828 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 5971
+DSB STEP 5971 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["billiards"], tic
+DSB DONE 5973
+CHECK PASS billiards playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":10,"best":10,"tickets":2,"paid":2,"shown":true,"before":0}
+CHECK PASS billiards playthrough: clean console 6.0s 
+DSB STEP 5973 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10345
+DSB STEP 10345 (() => { const B = window.__ooga; B.go("billiards"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "billiards"); i++) B.advance(1 / 30, 1
+DSB DONE 10556
+DSB STEP 10556 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 11332
+DSB STEP 11332 (() => { const B = window.__ooga; B.go("billiards"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "billiards"); i++) B.advance(1 / 30, 1
+DSB DONE 11562
+DSB STEP 11562 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-billiards", sats: 2100, handle: "tester", message: "ooga", at: Date
+DSB DONE 11569
+CHECK PASS billiards round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"billiards","first":{"scene":"billiards","records":98,"nodes":297,"targets":0,"dom":3602},"second":{"scene":"billiards","records":98,"nodes":297,"targets":0,"dom":3602}}
+CHECK PASS billiards round trip: clean console 11.6s 
+DSB STEP 43 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 44
+DSB STEP 91 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 92
+DSB STEP 134 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 135
+DSB STEP 177 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 178
+DSB STEP 220 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 221
+DSB STEP 263 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 263
+DSB STEP 305 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 306
+DSB STEP 348 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 605
+DSB STEP 647 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 648
+DSB STEP 690 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 691
+DSB STEP 732 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 733
+DSB STEP 775 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 776
+DSB STEP 818 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 819
+DSB STEP 819 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 820
+DSB STEP 820 window.__ooga.game.state.arcade.tickets
+DSB DONE 820
+DSB STEP 822 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1007
+DSB STEP 1007 window.__ooga.carnival.phase
+DSB DONE 1432
+DSB STEP 1432 window.__ooga.carnival.status
+DSB DONE 1433
+DSB STEP 1435 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1443
+DSB STEP 1443 window.__ooga.carnival.phase
+DSB DONE 1444
+DSB STEP 1444 window.__ooga.carnival.status
+DSB DONE 1446
+DSB STEP 1447 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1457
+DSB STEP 1457 window.__ooga.carnival.phase
+DSB DONE 1458
+DSB STEP 1458 window.__ooga.carnival.status
+DSB DONE 1459
+DSB STEP 1460 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1467
+DSB STEP 1467 window.__ooga.carnival.phase
+DSB DONE 1576
+DSB STEP 1577 window.__ooga.carnival.status
+DSB DONE 1577
+DSB STEP 1578 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1587
+DSB STEP 1587 window.__ooga.carnival.phase
+DSB DONE 1588
+DSB STEP 1588 window.__ooga.carnival.status
+DSB DONE 1588
+DSB STEP 1590 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1597
+DSB STEP 1597 window.__ooga.carnival.phase
+DSB DONE 1598
+DSB STEP 1598 window.__ooga.carnival.status
+DSB DONE 1598
+DSB STEP 1599 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1606
+DSB STEP 1606 window.__ooga.carnival.phase
+DSB DONE 1607
+DSB STEP 1607 window.__ooga.carnival.status
+DSB DONE 1607
+DSB STEP 1608 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1615
+DSB STEP 1615 window.__ooga.carnival.phase
+DSB DONE 1858
+DSB STEP 1858 window.__ooga.carnival.status
+DSB DONE 1859
+DSB STEP 1860 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1867
+DSB STEP 1868 window.__ooga.carnival.phase
+DSB DONE 1868
+DSB STEP 1868 window.__ooga.carnival.status
+DSB DONE 1869
+DSB STEP 1870 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1876
+DSB STEP 1876 window.__ooga.carnival.phase
+DSB DONE 1877
+DSB STEP 1877 window.__ooga.carnival.status
+DSB DONE 1877
+DSB STEP 1879 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1884
+DSB STEP 1885 window.__ooga.carnival.phase
+DSB DONE 1885
+DSB STEP 1885 window.__ooga.carnival.status
+DSB DONE 1885
+DSB STEP 1886 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1892
+DSB STEP 1892 window.__ooga.carnival.phase
+DSB DONE 2147
+DSB STEP 2147 window.__ooga.carnival.status
+DSB DONE 2148
+DSB STEP 2149 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2154
+DSB STEP 2154 window.__ooga.carnival.phase
+DSB DONE 2154
+DSB STEP 2154 window.__ooga.carnival.status
+DSB DONE 2155
+DSB STEP 2155 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2161
+DSB STEP 2161 window.__ooga.carnival.phase
+DSB DONE 2242
+DSB STEP 2243 window.__ooga.carnival.status
+DSB DONE 2243
+DSB STEP 2245 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2251
+DSB STEP 2251 window.__ooga.carnival.phase
+DSB DONE 2251
+DSB STEP 2251 window.__ooga.carnival.status
+DSB DONE 2252
+DSB STEP 2252 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2259
+DSB STEP 2259 window.__ooga.carnival.phase
+DSB DONE 2259
+DSB STEP 2259 window.__ooga.carnival.status
+DSB DONE 2260
+DSB STEP 2260 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2265
+DSB STEP 2265 window.__ooga.carnival.phase
+DSB DONE 2395
+DSB STEP 2395 window.__ooga.carnival.status
+DSB DONE 2396
+DSB STEP 2397 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2403
+DSB STEP 2403 window.__ooga.carnival.phase
+DSB DONE 2404
+DSB STEP 2404 window.__ooga.carnival.status
+DSB DONE 2404
+DSB STEP 2405 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2410
+DSB STEP 2410 window.__ooga.carnival.phase
+DSB DONE 2484
+DSB STEP 2484 window.__ooga.carnival.status
+DSB DONE 2485
+DSB STEP 2486 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2491
+DSB STEP 2491 window.__ooga.carnival.phase
+DSB DONE 2492
+DSB STEP 2492 window.__ooga.carnival.status
+DSB DONE 2492
+DSB STEP 2493 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2498
+DSB STEP 2498 window.__ooga.carnival.phase
+DSB DONE 2739
+DSB STEP 2739 window.__ooga.carnival.status
+DSB DONE 2740
+DSB STEP 2741 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2747
+DSB STEP 2747 window.__ooga.carnival.phase
+DSB DONE 2748
+DSB STEP 2748 window.__ooga.carnival.status
+DSB DONE 2749
+DSB STEP 2750 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2757
+DSB STEP 2757 window.__ooga.carnival.phase
+DSB DONE 2757
+DSB STEP 2757 window.__ooga.carnival.status
+DSB DONE 2758
+DSB STEP 2758 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2765
+DSB STEP 2765 window.__ooga.carnival.phase
+DSB DONE 2890
+DSB STEP 2890 window.__ooga.carnival.status
+DSB DONE 2890
+DSB STEP 2891 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2898
+DSB STEP 2898 window.__ooga.carnival.phase
+DSB DONE 2899
+DSB STEP 2899 window.__ooga.carnival.status
+DSB DONE 2899
+DSB STEP 2900 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2906
+DSB STEP 2906 window.__ooga.carnival.phase
+DSB DONE 2978
+DSB STEP 2978 window.__ooga.carnival.status
+DSB DONE 2979
+DSB STEP 2980 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2987
+DSB STEP 2987 window.__ooga.carnival.phase
+DSB DONE 2987
+DSB STEP 2987 window.__ooga.carnival.status
+DSB DONE 2988
+DSB STEP 2988 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2994
+DSB STEP 2994 window.__ooga.carnival.phase
+DSB DONE 3221
+DSB STEP 3221 window.__ooga.carnival.status
+DSB DONE 3221
+DSB STEP 3223 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3230
+DSB STEP 3230 window.__ooga.carnival.phase
+DSB DONE 3231
+DSB STEP 3231 window.__ooga.carnival.status
+DSB DONE 3231
+DSB STEP 3232 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3239
+DSB STEP 3239 window.__ooga.carnival.phase
+DSB DONE 3240
+DSB STEP 3240 window.__ooga.carnival.status
+DSB DONE 3240
+DSB STEP 3241 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3246
+DSB STEP 3246 window.__ooga.carnival.phase
+DSB DONE 3363
+DSB STEP 3363 window.__ooga.carnival.status
+DSB DONE 3364
+DSB STEP 3365 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3371
+DSB STEP 3371 window.__ooga.carnival.phase
+DSB DONE 3371
+DSB STEP 3372 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 3414
+DSB STEP 3414 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["darts"], tickets
+DSB DONE 3448
+CHECK PASS darts playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":116,"best":116,"tickets":12,"paid":12,"shown":true,"before":0}
+CHECK PASS darts playthrough: clean console 3.4s 
+DSB STEP 3448 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 7798
+DSB STEP 7798 (() => { const B = window.__ooga; B.go("darts"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "darts"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 8037
+DSB STEP 8037 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 8832
+DSB STEP 8832 (() => { const B = window.__ooga; B.go("darts"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "darts"); i++) B.advance(1 / 30, 1 / 30); 
+DSB DONE 9075
+DSB STEP 9075 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-darts", sats: 2100, handle: "tester", message: "ooga", at: Date.now
+DSB DONE 9082
+CHECK PASS darts round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"darts","first":{"scene":"darts","records":91,"nodes":228,"targets":0,"dom":3602},"second":{"scene":"darts","records":91,"nodes":228,"targets":0,"dom":3602}}
+CHECK PASS darts round trip: clean console 9.1s 
+DSB STEP 38 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 39
+DSB STEP 93 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 94
+DSB STEP 134 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 135
+DSB STEP 177 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 177
+DSB STEP 220 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 220
+DSB STEP 262 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 263
+DSB STEP 305 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 306
+DSB STEP 348 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 602
+DSB STEP 645 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 645
+DSB STEP 686 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 687
+DSB STEP 729 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 730
+DSB STEP 772 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 773
+DSB STEP 815 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 816
+DSB STEP 816 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 816
+DSB STEP 817 window.__ooga.game.state.arcade.tickets
+DSB DONE 817
+DSB STEP 819 window.__ooga.advance(3.5, 1 / 60)
+DSB DONE 1003
+DSB STEP 1003 window.__ooga.carnival.phase
+DSB DONE 1005
+DSB STEP 1005 window.__ooga.carnival.status
+DSB DONE 1005
+DSB STEP 1475 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1483
+DSB STEP 1483 window.__ooga.carnival.phase
+DSB DONE 1484
+DSB STEP 1484 window.__ooga.carnival.status
+DSB DONE 1485
+DSB STEP 1487 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1499
+DSB STEP 1499 window.__ooga.carnival.phase
+DSB DONE 1500
+DSB STEP 1500 window.__ooga.carnival.status
+DSB DONE 1501
+DSB STEP 1502 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1511
+DSB STEP 1511 window.__ooga.carnival.phase
+DSB DONE 1511
+DSB STEP 1511 window.__ooga.carnival.status
+DSB DONE 1512
+DSB STEP 1514 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1523
+DSB STEP 1523 window.__ooga.carnival.phase
+DSB DONE 1523
+DSB STEP 1524 window.__ooga.carnival.status
+DSB DONE 1524
+DSB STEP 1525 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1533
+DSB STEP 1533 window.__ooga.carnival.phase
+DSB DONE 1756
+DSB STEP 1756 window.__ooga.carnival.status
+DSB DONE 1758
+DSB STEP 1759 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1766
+DSB STEP 1766 window.__ooga.carnival.phase
+DSB DONE 1767
+DSB STEP 1767 window.__ooga.carnival.status
+DSB DONE 1767
+DSB STEP 1768 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1775
+DSB STEP 1775 window.__ooga.carnival.phase
+DSB DONE 1775
+DSB STEP 1775 window.__ooga.carnival.status
+DSB DONE 1776
+DSB STEP 1777 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1783
+DSB STEP 1783 window.__ooga.carnival.phase
+DSB DONE 1866
+DSB STEP 1866 window.__ooga.carnival.status
+DSB DONE 1866
+DSB STEP 1867 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1874
+DSB STEP 1874 window.__ooga.carnival.phase
+DSB DONE 1875
+DSB STEP 1875 window.__ooga.carnival.status
+DSB DONE 1875
+DSB STEP 1876 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1882
+DSB STEP 1882 window.__ooga.carnival.phase
+DSB DONE 1952
+DSB STEP 1952 window.__ooga.carnival.status
+DSB DONE 1953
+DSB STEP 1954 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1960
+DSB STEP 1960 window.__ooga.carnival.phase
+DSB DONE 1961
+DSB STEP 1961 window.__ooga.carnival.status
+DSB DONE 1961
+DSB STEP 1962 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 1967
+DSB STEP 1968 window.__ooga.carnival.phase
+DSB DONE 2208
+DSB STEP 2208 window.__ooga.carnival.status
+DSB DONE 2209
+DSB STEP 2210 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2216
+DSB STEP 2216 window.__ooga.carnival.phase
+DSB DONE 2216
+DSB STEP 2216 window.__ooga.carnival.status
+DSB DONE 2217
+DSB STEP 2218 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2223
+DSB STEP 2223 window.__ooga.carnival.phase
+DSB DONE 2223
+DSB STEP 2223 window.__ooga.carnival.status
+DSB DONE 2224
+DSB STEP 2224 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2232
+DSB STEP 2233 window.__ooga.carnival.phase
+DSB DONE 2358
+DSB STEP 2358 window.__ooga.carnival.status
+DSB DONE 2359
+DSB STEP 2360 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2368
+DSB STEP 2368 window.__ooga.carnival.phase
+DSB DONE 2369
+DSB STEP 2369 window.__ooga.carnival.status
+DSB DONE 2369
+DSB STEP 2370 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2377
+DSB STEP 2377 window.__ooga.carnival.phase
+DSB DONE 2446
+DSB STEP 2446 window.__ooga.carnival.status
+DSB DONE 2447
+DSB STEP 2448 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2454
+DSB STEP 2454 window.__ooga.carnival.phase
+DSB DONE 2455
+DSB STEP 2455 window.__ooga.carnival.status
+DSB DONE 2455
+DSB STEP 2456 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2461
+DSB STEP 2461 window.__ooga.carnival.phase
+DSB DONE 2705
+DSB STEP 2705 window.__ooga.carnival.status
+DSB DONE 2706
+DSB STEP 2707 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2716
+DSB STEP 2716 window.__ooga.carnival.phase
+DSB DONE 2716
+DSB STEP 2716 window.__ooga.carnival.status
+DSB DONE 2717
+DSB STEP 2718 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2727
+DSB STEP 2727 window.__ooga.carnival.phase
+DSB DONE 2728
+DSB STEP 2728 window.__ooga.carnival.status
+DSB DONE 2728
+DSB STEP 2729 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2736
+DSB STEP 2736 window.__ooga.carnival.phase
+DSB DONE 2737
+DSB STEP 2737 window.__ooga.carnival.status
+DSB DONE 2737
+DSB STEP 2738 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 2743
+DSB STEP 2743 window.__ooga.carnival.phase
+DSB DONE 3027
+DSB STEP 3027 window.__ooga.carnival.status
+DSB DONE 3028
+DSB STEP 3029 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3036
+DSB STEP 3036 window.__ooga.carnival.phase
+DSB DONE 3037
+DSB STEP 3037 window.__ooga.carnival.status
+DSB DONE 3038
+DSB STEP 3039 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3045
+DSB STEP 3045 window.__ooga.carnival.phase
+DSB DONE 3046
+DSB STEP 3046 window.__ooga.carnival.status
+DSB DONE 3047
+DSB STEP 3048 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3054
+DSB STEP 3054 window.__ooga.carnival.phase
+DSB DONE 3054
+DSB STEP 3054 window.__ooga.carnival.status
+DSB DONE 3055
+DSB STEP 3055 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3062
+DSB STEP 3062 window.__ooga.carnival.phase
+DSB DONE 3252
+DSB STEP 3252 window.__ooga.carnival.status
+DSB DONE 3253
+DSB STEP 3254 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3260
+DSB STEP 3261 window.__ooga.carnival.phase
+DSB DONE 3261
+DSB STEP 3261 window.__ooga.carnival.status
+DSB DONE 3261
+DSB STEP 3262 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3270
+DSB STEP 3270 window.__ooga.carnival.phase
+DSB DONE 3270
+DSB STEP 3270 window.__ooga.carnival.status
+DSB DONE 3270
+DSB STEP 3271 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3277
+DSB STEP 3277 window.__ooga.carnival.phase
+DSB DONE 3395
+DSB STEP 3395 window.__ooga.carnival.status
+DSB DONE 3396
+DSB STEP 3397 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3404
+DSB STEP 3404 window.__ooga.carnival.phase
+DSB DONE 3405
+DSB STEP 3405 window.__ooga.carnival.status
+DSB DONE 3405
+DSB STEP 3406 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3412
+DSB STEP 3412 window.__ooga.carnival.phase
+DSB DONE 3480
+DSB STEP 3480 window.__ooga.carnival.status
+DSB DONE 3481
+DSB STEP 3481 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3487
+DSB STEP 3487 window.__ooga.carnival.phase
+DSB DONE 3488
+DSB STEP 3488 window.__ooga.carnival.status
+DSB DONE 3488
+DSB STEP 3489 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3494
+DSB STEP 3494 window.__ooga.carnival.phase
+DSB DONE 3723
+DSB STEP 3723 window.__ooga.carnival.status
+DSB DONE 3724
+DSB STEP 3725 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3732
+DSB STEP 3732 window.__ooga.carnival.phase
+DSB DONE 3733
+DSB STEP 3733 window.__ooga.carnival.status
+DSB DONE 3733
+DSB STEP 3734 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3741
+DSB STEP 3741 window.__ooga.carnival.phase
+DSB DONE 3742
+DSB STEP 3742 window.__ooga.carnival.status
+DSB DONE 3742
+DSB STEP 3743 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3749
+DSB STEP 3749 window.__ooga.carnival.phase
+DSB DONE 3866
+DSB STEP 3866 window.__ooga.carnival.status
+DSB DONE 3866
+DSB STEP 3867 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3874
+DSB STEP 3874 window.__ooga.carnival.phase
+DSB DONE 3874
+DSB STEP 3874 window.__ooga.carnival.status
+DSB DONE 3874
+DSB STEP 3875 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3881
+DSB STEP 3881 window.__ooga.carnival.phase
+DSB DONE 3951
+DSB STEP 3951 window.__ooga.carnival.status
+DSB DONE 3951
+DSB STEP 3952 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3958
+DSB STEP 3958 window.__ooga.carnival.phase
+DSB DONE 3959
+DSB STEP 3959 window.__ooga.carnival.status
+DSB DONE 3959
+DSB STEP 3960 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 3965
+DSB STEP 3965 window.__ooga.carnival.phase
+DSB DONE 4193
+DSB STEP 4193 window.__ooga.carnival.status
+DSB DONE 4193
+DSB STEP 4195 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4203
+DSB STEP 4203 window.__ooga.carnival.phase
+DSB DONE 4204
+DSB STEP 4204 window.__ooga.carnival.status
+DSB DONE 4204
+DSB STEP 4205 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4212
+DSB STEP 4212 window.__ooga.carnival.phase
+DSB DONE 4213
+DSB STEP 4213 window.__ooga.carnival.status
+DSB DONE 4213
+DSB STEP 4214 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4221
+DSB STEP 4221 window.__ooga.carnival.phase
+DSB DONE 4222
+DSB STEP 4222 window.__ooga.carnival.status
+DSB DONE 4222
+DSB STEP 4223 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4230
+DSB STEP 4230 window.__ooga.carnival.phase
+DSB DONE 4506
+DSB STEP 4506 window.__ooga.carnival.status
+DSB DONE 4507
+DSB STEP 4508 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4516
+DSB STEP 4516 window.__ooga.carnival.phase
+DSB DONE 4517
+DSB STEP 4517 window.__ooga.carnival.status
+DSB DONE 4517
+DSB STEP 4518 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4525
+DSB STEP 4525 window.__ooga.carnival.phase
+DSB DONE 4526
+DSB STEP 4526 window.__ooga.carnival.status
+DSB DONE 4526
+DSB STEP 4527 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4534
+DSB STEP 4534 window.__ooga.carnival.phase
+DSB DONE 4610
+DSB STEP 4610 window.__ooga.carnival.status
+DSB DONE 4610
+DSB STEP 4611 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4617
+DSB STEP 4617 window.__ooga.carnival.phase
+DSB DONE 4617
+DSB STEP 4617 window.__ooga.carnival.status
+DSB DONE 4618
+DSB STEP 4619 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4624
+DSB STEP 4624 window.__ooga.carnival.phase
+DSB DONE 4693
+DSB STEP 4693 window.__ooga.carnival.status
+DSB DONE 4694
+DSB STEP 4695 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4701
+DSB STEP 4701 window.__ooga.carnival.phase
+DSB DONE 4701
+DSB STEP 4701 window.__ooga.carnival.status
+DSB DONE 4701
+DSB STEP 4702 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4707
+DSB STEP 4707 window.__ooga.carnival.phase
+DSB DONE 4934
+DSB STEP 4934 window.__ooga.carnival.status
+DSB DONE 4935
+DSB STEP 4936 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4944
+DSB STEP 4944 window.__ooga.carnival.phase
+DSB DONE 4946
+DSB STEP 4946 window.__ooga.carnival.status
+DSB DONE 4946
+DSB STEP 4947 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4955
+DSB STEP 4955 window.__ooga.carnival.phase
+DSB DONE 4955
+DSB STEP 4955 window.__ooga.carnival.status
+DSB DONE 4956
+DSB STEP 4957 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 4963
+DSB STEP 4963 window.__ooga.carnival.phase
+DSB DONE 5059
+DSB STEP 5059 window.__ooga.carnival.status
+DSB DONE 5060
+DSB STEP 5061 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5068
+DSB STEP 5068 window.__ooga.carnival.phase
+DSB DONE 5068
+DSB STEP 5068 window.__ooga.carnival.status
+DSB DONE 5069
+DSB STEP 5070 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5076
+DSB STEP 5076 window.__ooga.carnival.phase
+DSB DONE 5226
+DSB STEP 5227 window.__ooga.carnival.status
+DSB DONE 5228
+DSB STEP 5228 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5237
+DSB STEP 5237 window.__ooga.carnival.phase
+DSB DONE 5238
+DSB STEP 5238 window.__ooga.carnival.status
+DSB DONE 5239
+DSB STEP 5240 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5245
+DSB STEP 5245 window.__ooga.carnival.phase
+DSB DONE 5246
+DSB STEP 5246 window.__ooga.carnival.status
+DSB DONE 5246
+DSB STEP 5247 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5254
+DSB STEP 5254 window.__ooga.carnival.phase
+DSB DONE 5254
+DSB STEP 5254 window.__ooga.carnival.status
+DSB DONE 5255
+DSB STEP 5255 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5262
+DSB STEP 5262 window.__ooga.carnival.phase
+DSB DONE 5468
+DSB STEP 5468 window.__ooga.carnival.status
+DSB DONE 5469
+DSB STEP 5470 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5479
+DSB STEP 5479 window.__ooga.carnival.phase
+DSB DONE 5480
+DSB STEP 5480 window.__ooga.carnival.status
+DSB DONE 5481
+DSB STEP 5482 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5490
+DSB STEP 5490 window.__ooga.carnival.phase
+DSB DONE 5490
+DSB STEP 5490 window.__ooga.carnival.status
+DSB DONE 5491
+DSB STEP 5492 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5499
+DSB STEP 5499 window.__ooga.carnival.phase
+DSB DONE 5588
+DSB STEP 5588 window.__ooga.carnival.status
+DSB DONE 5588
+DSB STEP 5590 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5596
+DSB STEP 5596 window.__ooga.carnival.phase
+DSB DONE 5597
+DSB STEP 5597 window.__ooga.carnival.status
+DSB DONE 5597
+DSB STEP 5598 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5604
+DSB STEP 5604 window.__ooga.carnival.phase
+DSB DONE 5758
+DSB STEP 5758 window.__ooga.carnival.status
+DSB DONE 5758
+DSB STEP 5759 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5766
+DSB STEP 5766 window.__ooga.carnival.phase
+DSB DONE 5767
+DSB STEP 5767 window.__ooga.carnival.status
+DSB DONE 5767
+DSB STEP 5768 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5774
+DSB STEP 5775 window.__ooga.carnival.phase
+DSB DONE 5775
+DSB STEP 5775 window.__ooga.carnival.status
+DSB DONE 5775
+DSB STEP 5776 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5782
+DSB STEP 5782 window.__ooga.carnival.phase
+DSB DONE 5930
+DSB STEP 5930 window.__ooga.carnival.status
+DSB DONE 5930
+DSB STEP 5931 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5938
+DSB STEP 5938 window.__ooga.carnival.phase
+DSB DONE 5939
+DSB STEP 5939 window.__ooga.carnival.status
+DSB DONE 5939
+DSB STEP 5940 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 5946
+DSB STEP 5946 window.__ooga.carnival.phase
+DSB DONE 6048
+DSB STEP 6048 window.__ooga.carnival.status
+DSB DONE 6049
+DSB STEP 6050 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6058
+DSB STEP 6058 window.__ooga.carnival.phase
+DSB DONE 6058
+DSB STEP 6059 window.__ooga.carnival.status
+DSB DONE 6059
+DSB STEP 6060 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6069
+DSB STEP 6069 window.__ooga.carnival.phase
+DSB DONE 6164
+DSB STEP 6165 window.__ooga.carnival.status
+DSB DONE 6166
+DSB STEP 6167 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6177
+DSB STEP 6177 window.__ooga.carnival.phase
+DSB DONE 6179
+DSB STEP 6179 window.__ooga.carnival.status
+DSB DONE 6179
+DSB STEP 6180 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6188
+DSB STEP 6188 window.__ooga.carnival.phase
+DSB DONE 6188
+DSB STEP 6188 window.__ooga.carnival.status
+DSB DONE 6189
+DSB STEP 6189 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6196
+DSB STEP 6196 window.__ooga.carnival.phase
+DSB DONE 6288
+DSB STEP 6288 window.__ooga.carnival.status
+DSB DONE 6289
+DSB STEP 6290 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6296
+DSB STEP 6296 window.__ooga.carnival.phase
+DSB DONE 6297
+DSB STEP 6297 window.__ooga.carnival.status
+DSB DONE 6297
+DSB STEP 6298 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6304
+DSB STEP 6304 window.__ooga.carnival.phase
+DSB DONE 6458
+DSB STEP 6458 window.__ooga.carnival.status
+DSB DONE 6459
+DSB STEP 6460 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6468
+DSB STEP 6468 window.__ooga.carnival.phase
+DSB DONE 6469
+DSB STEP 6469 window.__ooga.carnival.status
+DSB DONE 6469
+DSB STEP 6470 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6478
+DSB STEP 6478 window.__ooga.carnival.phase
+DSB DONE 6478
+DSB STEP 6478 window.__ooga.carnival.status
+DSB DONE 6479
+DSB STEP 6480 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6486
+DSB STEP 6487 window.__ooga.carnival.phase
+DSB DONE 6487
+DSB STEP 6487 window.__ooga.carnival.status
+DSB DONE 6487
+DSB STEP 6488 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6494
+DSB STEP 6494 window.__ooga.carnival.phase
+DSB DONE 6696
+DSB STEP 6696 window.__ooga.carnival.status
+DSB DONE 6696
+DSB STEP 6698 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6704
+DSB STEP 6704 window.__ooga.carnival.phase
+DSB DONE 6705
+DSB STEP 6705 window.__ooga.carnival.status
+DSB DONE 6705
+DSB STEP 6706 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6714
+DSB STEP 6714 window.__ooga.carnival.phase
+DSB DONE 6812
+DSB STEP 6812 window.__ooga.carnival.status
+DSB DONE 6813
+DSB STEP 6814 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6821
+DSB STEP 6821 window.__ooga.carnival.phase
+DSB DONE 6822
+DSB STEP 6822 window.__ooga.carnival.status
+DSB DONE 6822
+DSB STEP 6823 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6830
+DSB STEP 6830 window.__ooga.carnival.phase
+DSB DONE 6830
+DSB STEP 6830 window.__ooga.carnival.status
+DSB DONE 6831
+DSB STEP 6832 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6838
+DSB STEP 6838 window.__ooga.carnival.phase
+DSB DONE 6838
+DSB STEP 6838 window.__ooga.carnival.status
+DSB DONE 6839
+DSB STEP 6839 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 6845
+DSB STEP 6845 window.__ooga.carnival.phase
+DSB DONE 7039
+DSB STEP 7039 window.__ooga.carnival.status
+DSB DONE 7040
+DSB STEP 7041 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7047
+DSB STEP 7048 window.__ooga.carnival.phase
+DSB DONE 7048
+DSB STEP 7048 window.__ooga.carnival.status
+DSB DONE 7049
+DSB STEP 7050 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7056
+DSB STEP 7056 window.__ooga.carnival.phase
+DSB DONE 7056
+DSB STEP 7056 window.__ooga.carnival.status
+DSB DONE 7057
+DSB STEP 7058 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7064
+DSB STEP 7064 window.__ooga.carnival.phase
+DSB DONE 7161
+DSB STEP 7161 window.__ooga.carnival.status
+DSB DONE 7161
+DSB STEP 7162 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7169
+DSB STEP 7169 window.__ooga.carnival.phase
+DSB DONE 7170
+DSB STEP 7170 window.__ooga.carnival.status
+DSB DONE 7170
+DSB STEP 7171 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7177
+DSB STEP 7177 window.__ooga.carnival.phase
+DSB DONE 7177
+DSB STEP 7178 window.__ooga.carnival.status
+DSB DONE 7178
+DSB STEP 7179 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7184
+DSB STEP 7184 window.__ooga.carnival.phase
+DSB DONE 7388
+DSB STEP 7388 window.__ooga.carnival.status
+DSB DONE 7388
+DSB STEP 7389 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7397
+DSB STEP 7398 window.__ooga.carnival.phase
+DSB DONE 7398
+DSB STEP 7398 window.__ooga.carnival.status
+DSB DONE 7399
+DSB STEP 7399 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7406
+DSB STEP 7407 window.__ooga.carnival.phase
+DSB DONE 7407
+DSB STEP 7407 window.__ooga.carnival.status
+DSB DONE 7407
+DSB STEP 7408 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7415
+DSB STEP 7415 window.__ooga.carnival.phase
+DSB DONE 7559
+DSB STEP 7559 window.__ooga.carnival.status
+DSB DONE 7560
+DSB STEP 7561 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7568
+DSB STEP 7568 window.__ooga.carnival.phase
+DSB DONE 7569
+DSB STEP 7569 window.__ooga.carnival.status
+DSB DONE 7569
+DSB STEP 7570 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7577
+DSB STEP 7577 window.__ooga.carnival.phase
+DSB DONE 7577
+DSB STEP 7577 window.__ooga.carnival.status
+DSB DONE 7578
+DSB STEP 7578 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7584
+DSB STEP 7584 window.__ooga.carnival.phase
+DSB DONE 7733
+DSB STEP 7733 window.__ooga.carnival.status
+DSB DONE 7734
+DSB STEP 7735 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7743
+DSB STEP 7743 window.__ooga.carnival.phase
+DSB DONE 7744
+DSB STEP 7744 window.__ooga.carnival.status
+DSB DONE 7744
+DSB STEP 7745 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7752
+DSB STEP 7752 window.__ooga.carnival.phase
+DSB DONE 7753
+DSB STEP 7753 window.__ooga.carnival.status
+DSB DONE 7753
+DSB STEP 7754 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7760
+DSB STEP 7760 window.__ooga.carnival.phase
+DSB DONE 7858
+DSB STEP 7858 window.__ooga.carnival.status
+DSB DONE 7859
+DSB STEP 7860 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7868
+DSB STEP 7868 window.__ooga.carnival.phase
+DSB DONE 7868
+DSB STEP 7868 window.__ooga.carnival.status
+DSB DONE 7869
+DSB STEP 7870 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7876
+DSB STEP 7876 window.__ooga.carnival.phase
+DSB DONE 7876
+DSB STEP 7876 window.__ooga.carnival.status
+DSB DONE 7876
+DSB STEP 7877 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 7882
+DSB STEP 7882 window.__ooga.carnival.phase
+DSB DONE 8082
+DSB STEP 8082 window.__ooga.carnival.status
+DSB DONE 8084
+DSB STEP 8085 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8092
+DSB STEP 8092 window.__ooga.carnival.phase
+DSB DONE 8092
+DSB STEP 8092 window.__ooga.carnival.status
+DSB DONE 8093
+DSB STEP 8093 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8100
+DSB STEP 8100 window.__ooga.carnival.phase
+DSB DONE 8201
+DSB STEP 8201 window.__ooga.carnival.status
+DSB DONE 8202
+DSB STEP 8203 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8211
+DSB STEP 8211 window.__ooga.carnival.phase
+DSB DONE 8212
+DSB STEP 8212 window.__ooga.carnival.status
+DSB DONE 8213
+DSB STEP 8214 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8221
+DSB STEP 8221 window.__ooga.carnival.phase
+DSB DONE 8221
+DSB STEP 8221 window.__ooga.carnival.status
+DSB DONE 8221
+DSB STEP 8222 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8228
+DSB STEP 8229 window.__ooga.carnival.phase
+DSB DONE 8324
+DSB STEP 8324 window.__ooga.carnival.status
+DSB DONE 8325
+DSB STEP 8326 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8332
+DSB STEP 8332 window.__ooga.carnival.phase
+DSB DONE 8332
+DSB STEP 8332 window.__ooga.carnival.status
+DSB DONE 8333
+DSB STEP 8334 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8339
+DSB STEP 8339 window.__ooga.carnival.phase
+DSB DONE 8340
+DSB STEP 8340 window.__ooga.carnival.status
+DSB DONE 8340
+DSB STEP 8341 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8346
+DSB STEP 8346 window.__ooga.carnival.phase
+DSB DONE 8496
+DSB STEP 8496 window.__ooga.carnival.status
+DSB DONE 8497
+DSB STEP 8498 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8505
+DSB STEP 8505 window.__ooga.carnival.phase
+DSB DONE 8505
+DSB STEP 8505 window.__ooga.carnival.status
+DSB DONE 8506
+DSB STEP 8506 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8512
+DSB STEP 8512 window.__ooga.carnival.phase
+DSB DONE 8666
+DSB STEP 8666 window.__ooga.carnival.status
+DSB DONE 8667
+DSB STEP 8668 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8675
+DSB STEP 8675 window.__ooga.carnival.phase
+DSB DONE 8676
+DSB STEP 8676 window.__ooga.carnival.status
+DSB DONE 8676
+DSB STEP 8677 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8683
+DSB STEP 8683 window.__ooga.carnival.phase
+DSB DONE 8784
+DSB STEP 8784 window.__ooga.carnival.status
+DSB DONE 8784
+DSB STEP 8785 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8792
+DSB STEP 8792 window.__ooga.carnival.phase
+DSB DONE 8793
+DSB STEP 8793 window.__ooga.carnival.status
+DSB DONE 8793
+DSB STEP 8794 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8800
+DSB STEP 8800 window.__ooga.carnival.phase
+DSB DONE 8901
+DSB STEP 8901 window.__ooga.carnival.status
+DSB DONE 8902
+DSB STEP 8903 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8910
+DSB STEP 8910 window.__ooga.carnival.phase
+DSB DONE 8910
+DSB STEP 8910 window.__ooga.carnival.status
+DSB DONE 8911
+DSB STEP 8912 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8919
+DSB STEP 8919 window.__ooga.carnival.phase
+DSB DONE 8919
+DSB STEP 8919 window.__ooga.carnival.status
+DSB DONE 8920
+DSB STEP 8920 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 8929
+DSB STEP 8929 window.__ooga.carnival.phase
+DSB DONE 9072
+DSB STEP 9073 window.__ooga.carnival.status
+DSB DONE 9073
+DSB STEP 9074 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9082
+DSB STEP 9082 window.__ooga.carnival.phase
+DSB DONE 9083
+DSB STEP 9083 window.__ooga.carnival.status
+DSB DONE 9084
+DSB STEP 9084 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9091
+DSB STEP 9091 window.__ooga.carnival.phase
+DSB DONE 9092
+DSB STEP 9092 window.__ooga.carnival.status
+DSB DONE 9092
+DSB STEP 9093 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9098
+DSB STEP 9098 window.__ooga.carnival.phase
+DSB DONE 9249
+DSB STEP 9249 window.__ooga.carnival.status
+DSB DONE 9250
+DSB STEP 9251 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9258
+DSB STEP 9258 window.__ooga.carnival.phase
+DSB DONE 9259
+DSB STEP 9259 window.__ooga.carnival.status
+DSB DONE 9260
+DSB STEP 9261 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9268
+DSB STEP 9268 window.__ooga.carnival.phase
+DSB DONE 9365
+DSB STEP 9366 window.__ooga.carnival.status
+DSB DONE 9366
+DSB STEP 9367 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9372
+DSB STEP 9372 window.__ooga.carnival.phase
+DSB DONE 9373
+DSB STEP 9373 window.__ooga.carnival.status
+DSB DONE 9373
+DSB STEP 9374 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9379
+DSB STEP 9379 window.__ooga.carnival.phase
+DSB DONE 9480
+DSB STEP 9480 window.__ooga.carnival.status
+DSB DONE 9481
+DSB STEP 9482 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9488
+DSB STEP 9488 window.__ooga.carnival.phase
+DSB DONE 9488
+DSB STEP 9488 window.__ooga.carnival.status
+DSB DONE 9488
+DSB STEP 9489 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9495
+DSB STEP 9495 window.__ooga.carnival.phase
+DSB DONE 9596
+DSB STEP 9596 window.__ooga.carnival.status
+DSB DONE 9596
+DSB STEP 9597 window.__ooga.advance(0.5, 1 / 60)
+DSB DONE 9604
+DSB STEP 9604 window.__ooga.carnival.phase
+DSB DONE 9604
+DSB STEP 9604 window.__ooga.advance(1.5, 1 / 60)
+DSB DONE 9621
+DSB STEP 9621 (() => { const B = window.__ooga, a = B.game.state.arcade; return { phase: B.carnival.phase, score: B.carnival.status.score, best: a["pinball"], ticke
+DSB DONE 9715
+CHECK PASS pinball playthrough: the game reaches its results card, and its best and tickets are saved, paid once {"phase":"results","score":21200,"best":21200,"tickets":8,"paid":8,"shown":true,"before":0}
+CHECK PASS pinball playthrough: clean console 9.7s 
+DSB STEP 9715 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 14110
+DSB STEP 14110 (() => { const B = window.__ooga; B.go("pinball"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "pinball"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 14321
+DSB STEP 14322 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 15118
+DSB STEP 15118 (() => { const B = window.__ooga; B.go("pinball"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "pinball"); i++) B.advance(1 / 30, 1 / 3
+DSB DONE 15380
+DSB STEP 15380 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-pinball", sats: 2100, handle: "tester", message: "ooga", at: Date.n
+DSB DONE 15388
+CHECK PASS pinball round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"pinball","first":{"scene":"pinball","records":93,"nodes":231,"targets":0,"dom":3602},"second":{"scene":"pinball","records":93,"nodes":231,"targets":0,"dom":3602}}
+CHECK PASS pinball round trip: clean console 15.4s 
+
+229/229 checks passed in 2.1 min

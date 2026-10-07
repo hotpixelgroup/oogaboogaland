@@ -1,0 +1,496 @@
+DSB STEP 36 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 42
+DSB STEP 84 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 300 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4459
+DSB STEP 4501 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4512
+DSB STEP 4554 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4555
+DSB STEP 4597 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4603
+DSB STEP 4645 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4652
+DSB STEP 4694 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4702
+DSB STEP 4702 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4851
+DSB STEP 4851 (() => {
+      const B = __ooga, cave = B.cavemen.get("YellowBrokeIt");
+      cave.override = "working"; B.crew.refreshStates(true); B.pilot.possess(c
+DSB DONE 5363
+DSB STEP 5363 (() => {
+    const B = __ooga, scene = BL.scenes.dsb, enter = scene.enter, name = B.pilot.player?.traits.name;
+    scene.enter = (ctx) => { scene.ente
+DSB DONE 6520
+DSB STEP 6521 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 6547
+DSB STEP 6549 (() => {
+      const a = __ooga.dsb.avatar, canonical = BL.models.caveman(BL.contributors.traitsFor("YellowBrokeIt"));
+      return { name: a.traits.n
+DSB DONE 6549
+CHECK PASS dsb character: YellowBrokeIt enters with the canonical model {"name":"YellowBrokeIt","rebuilt":true,"canonical":true}
+DSB STEP 6552 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 21562
+DSB STEP 21562 __ooga.go("hub"); __ooga.advance(0.6)
+DSB DONE 22451
+DSB STEP 22451 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 22484
+DSB STEP 22484 ({ name: __ooga.pilot.player?.traits.name, rebuilt: __ooga.pilot.player?.root !== __dsbPreviousRoot })
+DSB DONE 22489
+CHECK FAIL dsb character: YellowBrokeIt returns possessed {"rebuilt":true}
+DSB STEP 22489 delete window.__dsbPreviousRoot
+DSB DONE 22490
+DSB STEP 22490 (() => {
+      const B = __ooga, cave = B.cavemen.get("rules-without-rulers");
+      cave.override = "working"; B.crew.refreshStates(true); B.pilot.po
+DSB DONE 23011
+DSB STEP 23011 (() => {
+    const B = __ooga, scene = BL.scenes.dsb, enter = scene.enter, name = B.pilot.player?.traits.name;
+    scene.enter = (ctx) => { scene.ente
+DSB DONE 23817
+DSB STEP 23817 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 23847
+DSB STEP 23848 (() => {
+      const a = __ooga.dsb.avatar, canonical = BL.models.caveman(BL.contributors.traitsFor("rules-without-rulers"));
+      return { name: a.t
+DSB DONE 23849
+CHECK PASS dsb character: rules-without-rulers enters with the canonical model {"name":"rules-without-rulers","rebuilt":true,"canonical":true}
+DSB STEP 23850 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 38862
+DSB STEP 38863 __ooga.go("hub"); __ooga.advance(0.6)
+DSB DONE 39646
+DSB STEP 39646 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 39674
+DSB STEP 39674 ({ name: __ooga.pilot.player?.traits.name, rebuilt: __ooga.pilot.player?.root !== __dsbPreviousRoot })
+DSB DONE 39683
+CHECK FAIL dsb character: rules-without-rulers returns possessed {"rebuilt":true}
+DSB STEP 39683 delete window.__dsbPreviousRoot
+DSB DONE 39684
+CHECK PASS dsb character continuity: clean console 39.7s 
+FAIL dsb character: YellowBrokeIt returns possessed · {"rebuilt":true}
+FAIL dsb character: rules-without-rulers returns possessed · {"rebuilt":true}
+SLOW dsb took 40.3 s against a 25 s budget
+DSB STEP 94 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 314 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1136
+DSB STEP 1179 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1180
+DSB STEP 1221 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1226
+DSB STEP 1268 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1270
+DSB STEP 1312 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1312
+DSB STEP 1355 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1359
+DSB STEP 1359 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1360
+DSB STEP 1360 (() => { const p = document.getElementById("dsb-panel").getBoundingClientRect(), j = document.getElementById("joy-move").getBoundingClientRect(); retu
+DSB DONE 1360
+CHECK PASS dsb phone: entrance fits and leaves the movement stick usable {"width":390,"height":844,"left":0,"right":0,"bottom":0,"stick":true,"overlap":false}
+DSB STEP 1361 (() => { const r = document.getElementById("dsb-start-audio").getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })()
+DSB DONE 1361
+DSB STEP 1425 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+CHECK FAIL dsb phone TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+FAIL dsb phone · TypeError: Cannot read properties of undefined (reading 'ready')
+    at tick (<anonymous>:1:163)
+    at <anonymous>:1:344
+    at new Promise (<anonymous>)
+    at <anonymous>:1:1
+DSB STEP 52 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 53
+DSB STEP 105 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 106
+DSB STEP 146 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 147
+DSB STEP 189 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 190
+DSB STEP 232 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 233
+DSB STEP 275 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 276
+DSB STEP 317 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 318
+DSB STEP 360 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1280
+DSB STEP 1322 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1324
+DSB STEP 1366 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1370
+DSB STEP 1411 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1412
+DSB STEP 1453 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1455
+DSB STEP 1497 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1503
+DSB STEP 1545 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1546
+DSB STEP 1588 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1589
+DSB STEP 1631 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1636
+DSB STEP 1677 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1678
+DSB STEP 1720 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1721
+DSB STEP 1763 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1770
+DSB STEP 1810 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1811
+DSB STEP 1853 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1854
+DSB STEP 1896 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1903
+DSB STEP 1945 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1946
+DSB STEP 1987 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1987
+DSB STEP 2030 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2030
+DSB STEP 2072 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2073
+DSB STEP 2115 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2121
+DSB STEP 2163 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2170
+DSB STEP 2212 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2213
+DSB STEP 2213 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 2213
+DSB STEP 2214 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2264
+DSB STEP 2422 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2464
+DSB STEP 2464 (()=>{const D=__ooga.dsb,I=D.interiors,V=D.vacancies.resolve(7);window.__svrnAvatar=D.avatar;return {id:I.active?.room.id,text:V.text,occupied:V.addre
+DSB DONE 2470
+CHECK PASS SVRN browser: real VAC 7 door enters its occupied room and suppresses exterior weather/audio {"id":"svrn-society","text":"SVRN Society","occupied":"occupied","exterior":false,"drops":0,"master":0,"radio":{"distance":62.46701160955846,"target":0,"level":0,"sources":1},"weather":false}
+DSB STEP 2470 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-kiosk"])
+DSB DONE 2473
+DSB STEP 2473 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2506
+DSB STEP 2526 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2555
+DSB STEP 2555 __ooga.dsb.svrnMenu.isOpen&&__ooga.dsb.svrnMenu.stats.route==="home"&&document.querySelector(".svrn-menu").classList.contains("dsb-menu-engaged")
+DSB DONE 2559
+CHECK PASS SVRN browser: physical kiosk approach opens the shared contextual Home catalog 
+DSB STEP 2564 new Promise(resolve=>{const p=document.querySelector(".svrn-menu"),start=performance.now();const tick=()=>{const v=visualViewport,s=p.style,ready=Math
+DSB DONE 2583
+DSB STEP 2583 (()=>{const p=document.querySelector(".svrn-menu"),r=p.getBoundingClientRect(),v=visualViewport,s=getComputedStyle(p);p.scrollTop=10;const scrolls=p.s
+DSB DONE 2584
+CHECK PASS SVRN browser 1440x900: centered, safe margins, internal scroll and isolated controls {"cx":0,"cy":0,"margins":[270,12,270,12],"scrolls":true,"width":true,"overflow":"auto","body":"hidden","isolated":true}
+DSB STEP 2584 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2620
+CHECK PASS Review render health: svrn-menu-1440.png {"before":{"scene":"dsb","room":"svrn-society","frames":67,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":412},"live":{"scene":"dsb","room":"svrn-society","frames":69,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":412}}
+DSB STEP 2628 new Promise(resolve=>{const p=document.querySelector(".svrn-menu"),start=performance.now();const tick=()=>{const v=visualViewport,s=p.style,ready=Math
+DSB DONE 2635
+DSB STEP 2635 (()=>{const p=document.querySelector(".svrn-menu"),r=p.getBoundingClientRect(),v=visualViewport,s=getComputedStyle(p);p.scrollTop=10;const scrolls=p.s
+DSB DONE 2636
+CHECK PASS SVRN browser 390x844: centered, safe margins, internal scroll and isolated controls {"cx":0,"cy":0,"margins":[12,12,12,12],"scrolls":true,"width":true,"overflow":"auto","body":"hidden","isolated":true}
+DSB STEP 2636 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2667
+CHECK PASS Review render health: svrn-menu-390.png {"before":{"scene":"dsb","room":"svrn-society","frames":70,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":412},"live":{"scene":"dsb","room":"svrn-society","frames":72,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":412}}
+DSB STEP 2673 new Promise(resolve=>{const p=document.querySelector(".svrn-menu"),start=performance.now();const tick=()=>{const v=visualViewport,s=p.style,ready=Math
+DSB DONE 2685
+DSB STEP 2686 (()=>{const p=document.querySelector(".svrn-menu"),r=p.getBoundingClientRect(),v=visualViewport,s=getComputedStyle(p);p.scrollTop=10;const scrolls=p.s
+DSB DONE 2687
+CHECK PASS SVRN browser 844x390: centered, safe margins, internal scroll and isolated controls {"cx":0,"cy":0,"margins":[12,12,12,12],"scrolls":true,"width":true,"overflow":"auto","body":"hidden","isolated":true}
+DSB STEP 2688 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2717
+CHECK PASS Review render health: svrn-menu-844.png {"before":{"scene":"dsb","room":"svrn-society","frames":73,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":412},"live":{"scene":"dsb","room":"svrn-society","frames":75,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":412}}
+DSB STEP 2718 ({...__ooga.dsb.avatar.root.position})
+DSB DONE 2718
+DSB STEP 2719 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2744
+DSB STEP 2745 ({...__ooga.dsb.avatar.root.position})
+DSB DONE 2746
+CHECK PASS SVRN browser: held movement cannot move the player behind the catalog 
+DSB STEP 2746 (()=>{const D=__ooga.dsb,M=D.svrnMenu,p=document.querySelector(".svrn-menu");let okay=true;for(const page of BL.svrnData.pages){p.querySelector(`[data
+DSB DONE 2748
+CHECK PASS SVRN browser: all sixteen catalog routes use safe official links with no transaction/account forms {"okay":true,"forms":0}
+DSB STEP 2754 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2780
+DSB STEP 2781 (()=>{const B=__ooga,R=B.dsb.interiors.active.room,s=R.seats[0];B.pilot.navigate({position:{...s.walkAt,y:0},yaw:s.viewYaw,pitch:.12,dist:3});return s
+DSB DONE 2783
+DSB STEP 2784 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2812
+DSB STEP 2817 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2847
+DSB STEP 2847 __ooga.dsb.avatar.camp.seat===__ooga.dsb.interiors.active.room.seats[0]
+DSB DONE 2849
+CHECK PASS SVRN browser: shared seat interaction locks the lounge pose 
+DSB STEP 2853 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2879
+DSB STEP 2879 !__ooga.dsb.avatar.camp.seat&&Math.abs(__ooga.dsb.avatar.root.position.y-__ooga.dsb.avatar.baseY)<.01
+DSB DONE 2881
+CHECK PASS SVRN browser: shared stand interaction restores the floor 
+DSB STEP 2881 (()=>{const I=__ooga.dsb.interiors,R=I.active.room;let nodes=0;const visit=n=>{nodes++;n.children.forEach(visit);};visit(R.root);return {nodes,rooms:I
+DSB DONE 2883
+DSB STEP 2884 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.exit,yaw:Math.PI,pitch:.12,dist:3})
+DSB DONE 2884
+DSB STEP 2884 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2910
+DSB STEP 2913 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2954
+DSB STEP 2954 (()=>{const D=__ooga.dsb,e=D.interiors.registry.get("svrn-society").entry,p=D.avatar.root.position;return !D.interiors.active&&D.exterior.visible&&D.a
+DSB DONE 2959
+DSB STEP 2964 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3006
+DSB STEP 3006 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.exit,yaw:Math.PI,pitch:.12,dist:3})
+DSB DONE 3009
+DSB STEP 3009 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3038
+DSB STEP 3043 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3086
+DSB STEP 3087 (()=>{const D=__ooga.dsb,e=D.interiors.registry.get("svrn-society").entry,p=D.avatar.root.position;return !D.interiors.active&&D.exterior.visible&&D.a
+DSB DONE 3091
+DSB STEP 3096 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3132
+DSB STEP 3132 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.exit,yaw:Math.PI,pitch:.12,dist:3})
+DSB DONE 3135
+DSB STEP 3135 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3164
+DSB STEP 3170 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3216
+DSB STEP 3216 (()=>{const D=__ooga.dsb,e=D.interiors.registry.get("svrn-society").entry,p=D.avatar.root.position;return !D.interiors.active&&D.exterior.visible&&D.a
+DSB DONE 3221
+DSB STEP 3225 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3257
+DSB STEP 3257 (()=>{const I=__ooga.dsb.interiors,R=I.active.room;let nodes=0;const visit=n=>{nodes++;n.children.forEach(visit);};visit(R.root);return {nodes,rooms:I
+DSB DONE 3260
+CHECK PASS SVRN browser: three real door round trips preserve VAC 7 and bounded room/input/menu/audio resources {"base":{"nodes":828,"rooms":1,"targets":8,"contexts":1,"panels":1},"after":{"nodes":828,"rooms":1,"targets":8,"contexts":1,"panels":1}}
+DSB STEP 3260 __ooga.dsb.svrnMenu.open();window.__oldSvrn=__ooga.dsb.svrnMenu;window.__oldSvrnI=__ooga.dsb.interiors;__ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 3662
+DSB STEP 3662 __oldSvrn.stats.disposed&&!document.querySelector(".svrn-menu")&&__oldSvrnI.rooms.size===0&&__oldSvrnI.audio.stats.contexts===0&&BL.dsbMenuShell.count
+DSB DONE 3671
+CHECK PASS SVRN browser: scene departure removes kiosk/menu handlers, cached room and audio context 
+CHECK PASS dsb SVRN checkpoint: clean console 3.7s 
+DSB STEP 71 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 72
+DSB STEP 114 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 115
+DSB STEP 157 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 158
+DSB STEP 200 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 201
+DSB STEP 243 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 243
+DSB STEP 285 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 286
+DSB STEP 329 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 384 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1272
+DSB STEP 1315 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1318
+DSB STEP 1360 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1361
+DSB STEP 1402 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1402
+DSB STEP 1444 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1445
+DSB STEP 1487 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1488
+DSB STEP 1488 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1488
+DSB STEP 1489 __shoreline.advance(.3)
+DSB DONE 1532
+DSB STEP 1532 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1538
+CHECK PASS SVRN WebGL: svrn-door {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":33,"draws":15,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":361,"textures":2,"interior":null,"roomVisible":false,"exteriorVisible":true}
+DSB STEP 1539 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1568
+CHECK PASS Review render health: svrn-door.png {"before":{"scene":"dsb","room":null,"frames":34,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361},"live":{"scene":"dsb","room":null,"frames":36,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":361}}
+DSB STEP 1571 __shoreline.until(()=>__ooga.dsb.interiors.active?.room.id==="svrn-society"&&!__ooga.dsb.interiors.transitioning,2)
+DSB DONE 1799
+DSB STEP 1799 Object.keys(__ooga.dsb.interiors.active.room.reviews)
+DSB DONE 1803
+DSB STEP 1803 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-entrance"]);__shoreline.advance(.3)
+DSB DONE 1822
+DSB STEP 1822 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1826
+CHECK PASS SVRN WebGL: svrn-entrance {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":117,"draws":23,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1827 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1849
+CHECK PASS Review render health: svrn-entrance.png {"before":{"scene":"dsb","room":"svrn-society","frames":117,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":119,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1849 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-retail"]);__shoreline.advance(.3)
+DSB DONE 1866
+DSB STEP 1867 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1870
+CHECK PASS SVRN WebGL: svrn-retail {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":138,"draws":27,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1870 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1897
+CHECK PASS Review render health: svrn-retail.png {"before":{"scene":"dsb","room":"svrn-society","frames":138,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":140,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1897 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-collections"]);__shoreline.advance(.3)
+DSB DONE 1913
+DSB STEP 1913 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1917
+CHECK PASS SVRN WebGL: svrn-collections {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":159,"draws":31,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1917 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1947
+CHECK PASS Review render health: svrn-collections.png {"before":{"scene":"dsb","room":"svrn-society","frames":159,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":161,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1947 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-faith"]);__shoreline.advance(.3)
+DSB DONE 1963
+DSB STEP 1963 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 1967
+CHECK PASS SVRN WebGL: svrn-faith {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":180,"draws":35,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 1967 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1998
+CHECK PASS Review render health: svrn-faith.png {"before":{"scene":"dsb","room":"svrn-society","frames":180,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":182,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 1998 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-hats"]);__shoreline.advance(.3)
+DSB DONE 2014
+DSB STEP 2014 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2017
+CHECK PASS SVRN WebGL: svrn-hats {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":201,"draws":39,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2017 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2048
+CHECK PASS Review render health: svrn-hats.png {"before":{"scene":"dsb","room":"svrn-society","frames":201,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":203,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2048 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-kiosk"]);__shoreline.advance(.3)
+DSB DONE 2066
+DSB STEP 2066 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2070
+CHECK PASS SVRN WebGL: svrn-kiosk {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":222,"draws":43,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2070 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2099
+CHECK PASS Review render health: svrn-kiosk.png {"before":{"scene":"dsb","room":"svrn-society","frames":222,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":224,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2099 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-lounge"]);__shoreline.advance(.3)
+DSB DONE 2115
+DSB STEP 2115 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2118
+CHECK PASS SVRN WebGL: svrn-lounge {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":243,"draws":47,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2118 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2149
+CHECK PASS Review render health: svrn-lounge.png {"before":{"scene":"dsb","room":"svrn-society","frames":243,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":245,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+DSB STEP 2149 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["svrn-wide"]);__shoreline.advance(.3)
+DSB DONE 2165
+DSB STEP 2165 (()=>{const s=(() => {
+  const B=window.__ooga,D=B?.dsb,P=window.__shoreline,gl=document.getElementById("scene")?.getContext("webgl2");
+  const ext=gl
+DSB DONE 2168
+CHECK PASS SVRN WebGL: svrn-wide {"scene":"dsb","kind":"webgl2","ready":true,"failure":"","frames":264,"draws":51,"curtain":false,"lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","readbacks":0,"readbackMs":0,"maxRenderMs":5.099999964237213,"timing":{"boot":324,"renderer":335,"ready":1095,"frame1":1096,"drawn":1184,"frame2":1283,"frame3":1300},"initialized":true,"capacity":24,"nodes":136,"records":411,"textures":0,"interior":"svrn-society","roomVisible":true,"exteriorVisible":false}
+DSB STEP 2168 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2199
+CHECK PASS Review render health: svrn-wide.png {"before":{"scene":"dsb","room":"svrn-society","frames":264,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411},"live":{"scene":"dsb","room":"svrn-society","frames":266,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":411}}
+CHECK PASS dsb shoreline SVRN visual review: clean console 2.2s 
+DSB STEP 40 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 53
+DSB STEP 93 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 94
+DSB STEP 136 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 179 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 179
+DSB STEP 221 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 222
+DSB STEP 264 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 265
+DSB STEP 304 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 305
+DSB STEP 347 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4564
+DSB STEP 4606 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4610
+DSB STEP 4653 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4654
+DSB STEP 4696 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4702
+DSB STEP 4744 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4751
+DSB STEP 4793 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4801
+DSB STEP 4801 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4867
+DSB STEP 4868 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(document.getElementById("hint").t
+DSB DONE 5115
+DSB STEP 5115 window.__ooga.renderer.setQuality("low")
+DSB DONE 5122
+DSB STEP 5122 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 6346
+DSB STEP 6346 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 7901
+DSB STEP 7901 new Promise((resolve) => { const B = window.__ooga; const t0 = performance.now(); const tick = () => { const ok = !!(window.BL.scene.tweenCount() === 
+DSB DONE 7906
+DSB STEP 7906 new Promise((resolve) => { const B = window.__ooga; const start = B.renderedFrames; const t0 = performance.now(); const tick = () => { if (B.renderedF
+DSB DONE 7933
+DSB STEP 7941 window.__ooga.stats()
+DSB DONE 7953
+DSB STEP 26666 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 28709
+DSB STEP 28709 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 33873
+DSB STEP 33873 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 35248
+DSB STEP 35248 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 38335
+DSB STEP 38335 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 39563
+DSB STEP 39563 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 42838
+DSB STEP 42839 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 43921
+DSB STEP 43921 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 47294
+DSB STEP 47294 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 48272
+DSB STEP 48273 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 51914
+DSB STEP 51914 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 52933
+DSB STEP 52933 new Promise((resolve, reject) => { const B = window.__ooga; const T = window.BL.scene.tweenCount; const t0 = performance.now(); let last = t0, request
+DSB DONE 56435
+DSB STEP 56442 window.__ooga.stats()
+DSB DONE 56460
+CHECK PASS soak: dsb cycles: six round trips retain node, target, tween and DOM counts {"before":{"visibleNodes":2071,"allNodes":4412,"tweens":0,"targets":1228,"particles":0,"pool":0,"bubbles":1,"zzz":21,"damageNumbers":0,"crates":0,"built":0,"tomatoesThrown":0,"projectiles":0,"slots":302,"shown":1000,"rendered":194,"deliveries":0,"pendingDrops":0,"dropsStarted":0,"dropsLanded":0,"landedBananaValue":0,"dropPool":96,"dropRate":72,"spillPool":32,"spilling":0,"butterflies":8,"fireflies":0,"embers":4,"surfaceEmbers":0,"headquartersEmbers":4,"waterCubes":0,"waterQueued":0,"waterRipples":0,"breakablesProps":26,"breakablesBroken":0,"breakablesRewards":0,"breakablesRevealing":0,"rainDrops":0,"strikes":0,"remotePlayers":0,"reservedPlayers":0,"gl":{"waterTextures":0,"records":844,"active":844,"mirrorResources":4,"imageTextures":1,"rippleBodyTextures":0,"shadowResources":4,"shadowSize":512,"shadowPassCount":101,"shadowFinite":true,"shadowDraws":443,"shadowStatic":0,"shadowStaticRebuilds":8,"culled":1017,"drawn":37617,"suppressed":0,"rippleSurfaces":1,"rippleWaves":3},"dom":3604},"after":{"visibleNodes":2071,"allNodes":4412,"tweens":0,"targets":1228,"particles":0,"pool":0,"bubbles":1,"zzz":21,"damageNumbers":0,"crates":0,"built":0,"tomatoesThrown":0,"projectiles":0,"slots":302,"shown":1000,"rendered":194,"deliveries":0,"pendingDrops":0,"dropsStarted":0,"dropsLanded":0,"landedBananaValue":0,"dropPool":96,"dropRate":72,"spillPool":32,"spilling":0,"butterflies":6,"fireflies":0,"embers":3,"surfaceEmbers":0,"headquartersEmbers":3,"waterCubes":0,"waterQueued":0,"waterRipples":0,"breakablesProps":26,"breakablesBroken":0,"breakablesRewards":0,"breakablesRevealing":0,"rainDrops":0,"strikes":0,"remotePlayers":0,"reservedPlayers":0,"gl":{"waterTextures":0,"records":844,"active":844,"mirrorResources":4,"imageTextures":1,"rippleBodyTextures":0,"shadowResources":4,"shadowSize":512,"shadowPassCount":265,"shadowFinite":true,"shadowDraws":443,"shadowStatic":0,"shadowStaticRebuilds":21,"culled":1017,"drawn":37633,"suppressed":0,"rippleSurfaces":1,"rippleWaves":3},"dom":3604}}
+CHECK PASS soak: dsb cycles: GPU records, listeners and heap remain bounded objects 379.94 -> 378.44 MB (used 257.43 -> 259.09 MB, code 16.59 -> 19.01 MB)
+CHECK PASS dsb lifecycle: clean console 71.7s 
+SLOW dsb took 72.1 s against a 25 s budget
+
+238/241 checks passed in 2.4 min
+
+STOP · these failed in consecutive runs; do not try another fix, hand them to the maintainer with untracked/test-ledger.json:
+  dsb character: YellowBrokeIt returns possessed (4 runs since 2026-10-07T08:59:23.720Z)
+  dsb character: rules-without-rulers returns possessed (4 runs since 2026-10-07T08:59:23.720Z)
+  dsb phone (4 runs since 2026-10-07T08:59:23.720Z)

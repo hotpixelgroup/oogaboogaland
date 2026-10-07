@@ -1,0 +1,2058 @@
+DSB STEP 38 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 40
+DSB STEP 82 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 83
+DSB STEP 125 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 126
+DSB STEP 169 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 169
+DSB STEP 211 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 212
+DSB STEP 254 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 255
+DSB STEP 295 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 296
+DSB STEP 338 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1250
+DSB STEP 1292 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1298
+DSB STEP 1340 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1341
+DSB STEP 1383 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1384
+DSB STEP 1426 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1434
+DSB STEP 1476 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1477
+DSB STEP 1477 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1484
+DSB STEP 1486 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1678
+DSB STEP 1678 (()=>{const B=__ooga,D=B.dsb,I=D.interiors,S=D.weather.shared.state;window.__interiorCheck={avatar:D.avatar,land:D.land,nature:D.nature,water:D.water,
+DSB DONE 1688
+CHECK PASS DSB interior: Space at the exterior door enters, gates weather and starts one workshop graph {"active":true,"exterior":false,"drops":0,"master":0,"feet":0,"camera":{"x":0.6506963142603636,"y":1.9813208519616932,"z":20.25},"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"},"label":"Exit Meme Factory House"}
+DSB STEP 1689 ({...__ooga.dsb.avatar.root.position})
+DSB DONE 1692
+DSB STEP 1696 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1728
+DSB STEP 1732 (()=>{const D=__ooga.dsb,I=D.interiors,p=D.avatar.root.position;return {p:{...p},floor:I.groundAt(p.x,p.z),wall:I.walkable(0,18,0,23,0,2,D.avatar),cou
+DSB DONE 1736
+CHECK PASS DSB interior: held movement works on the floor and swept collision blocks walls, tables and counter {"p":{"x":4.778649999999994,"y":0.33890433034393935,"z":18.5},"floor":0,"wall":false,"counter":false,"table":false}
+DSB STEP 1736 (()=>{const B=__ooga,I=B.dsb.interiors;B.pilot.navigate({position:I.active.room.spawn,yaw:0,pitch:.22,dist:3});B.dsb.weather.setMode("rain");B.dayligh
+DSB DONE 2122
+DSB STEP 2122 ({same:BL.scenes.dsb.renderOpts===__interiorCheck.indoor,exterior:__ooga.dsb.weather.state.exterior,drops:__ooga.dsb.weather.shared.state.drops,night:
+DSB DONE 2125
+DSB STEP 2125 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2129
+DSB STEP 2196 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2245
+DSB STEP 2245 (()=>{const B=__ooga,D=B.dsb,I=D.interiors,p=D.avatar.root.position,e=I.registry.get("meme-factory").entry;return {active:!!I.active,same:D.avatar===_
+DSB DONE 2269
+CHECK PASS DSB interior: touch exit restores the same player/building and current night rain, not entry weather {"isolation":{"same":true,"exterior":false,"drops":0,"night":0},"exit":{"active":false,"same":true,"distance":0,"floor":0,"cameraClear":true,"weather":"rain","night":0,"lamps":1,"drops":510,"master":0.30000001192092896,"audio":{"active":false,"connected":false,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 2269 __ooga.daylight.read=__interiorCheck.read
+DSB DONE 2270
+DSB STEP 2270 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 2301
+DSB STEP 2301 (()=>{const B=__ooga,I=B.dsb.interiors;let nodes=0;const geometries=new Set();const visit=n=>{nodes++;if(n.geometry)geometries.add(n.geometry);for(con
+DSB DONE 2302
+DSB STEP 2304 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2305
+DSB STEP 2385 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2422
+DSB STEP 2422 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2428
+DSB STEP 2497 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2549
+DSB STEP 2549 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2564
+DSB STEP 2634 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2668
+DSB STEP 2668 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2675
+DSB STEP 2747 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2794
+DSB STEP 2794 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2810
+DSB STEP 2883 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2917
+DSB STEP 2917 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2924
+DSB STEP 2997 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3044
+DSB STEP 3044 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3058
+DSB STEP 3132 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3167
+DSB STEP 3167 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3173
+DSB STEP 3246 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3289
+DSB STEP 3289 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3298
+DSB STEP 3365 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3398
+DSB STEP 3399 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3403
+DSB STEP 3478 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3521
+DSB STEP 3521 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3529
+DSB STEP 3597 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3629
+DSB STEP 3629 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3634
+DSB STEP 3713 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3755
+DSB STEP 3755 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3764
+DSB STEP 3832 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3864
+DSB STEP 3864 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3869
+DSB STEP 3946 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3990
+DSB STEP 3990 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3998
+DSB STEP 4064 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4096
+DSB STEP 4096 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4101
+DSB STEP 4180 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4223
+DSB STEP 4223 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4232
+DSB STEP 4299 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4330
+DSB STEP 4330 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4335
+DSB STEP 4412 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4454
+DSB STEP 4454 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4497
+DSB STEP 4497 (()=>{const B=__ooga,I=B.dsb.interiors;let nodes=0;const geometries=new Set();const visit=n=>{nodes++;if(n.geometry)geometries.add(n.geometry);for(con
+DSB DONE 4498
+CHECK PASS DSB interior: ten complete door cycles retain bounded nodes, geometry, handlers and audio sources {"cycles":10,"base":{"nodes":3400,"geometries":468,"rooms":1,"targets":7,"audio":3,"contexts":1,"radioSources":1,"radioStarts":1,"records":455,"room":null,"lights":0,"textures":2,"remotes":0},"end":{"nodes":3400,"geometries":468,"rooms":1,"targets":7,"audio":3,"contexts":1,"radioSources":1,"radioStarts":1,"records":455,"room":null,"lights":0,"textures":2,"remotes":0},"listeners":13,"listenersEnd":13}
+DSB STEP 4499 window.__interiorCheck.old=__ooga.dsb.interiors;__ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 4888
+DSB STEP 4888 ({rooms:__interiorCheck.old.rooms.size,audio:__interiorCheck.old.audio.stats.contexts,fresh:__ooga.dsb.interiors.rooms.size,visible:__ooga.dsb.exterio
+DSB DONE 4897
+CHECK PASS DSB interior: scene departure releases the room and its AudioContext {"rooms":0,"audio":0,"fresh":0,"visible":true}
+DSB STEP 4897 delete window.__interiorCheck
+DSB DONE 4903
+CHECK PASS DSB interior: runtime console remains clean 
+CHECK PASS dsb interior checkpoint: clean console 4.9s 
+DSB STEP 53 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 55
+DSB STEP 97 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 98
+DSB STEP 140 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 141
+DSB STEP 183 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 184
+DSB STEP 226 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 227
+DSB STEP 268 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 269
+DSB STEP 311 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 312
+DSB STEP 353 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1298
+DSB STEP 1338 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1346
+DSB STEP 1388 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1389
+DSB STEP 1431 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1438
+DSB STEP 1480 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1481
+DSB STEP 1521 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1522
+DSB STEP 1522 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1523
+DSB STEP 1525 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1717
+DSB STEP 1717 (()=>{const B=__ooga,D=B.dsb,I=D.interiors,S=D.weather.shared.state;window.__interiorCheck={avatar:D.avatar,land:D.land,nature:D.nature,water:D.water,
+DSB DONE 1729
+CHECK PASS DSB interior: Space at the exterior door enters, gates weather and starts one workshop graph {"active":true,"exterior":false,"drops":0,"master":0,"feet":0,"camera":{"x":0.6506963142603636,"y":1.9813208519616932,"z":20.25},"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"},"label":"Exit Meme Factory House"}
+DSB STEP 1729 ({...__ooga.dsb.avatar.root.position})
+DSB DONE 1734
+DSB STEP 1735 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1767
+DSB STEP 1771 (()=>{const D=__ooga.dsb,I=D.interiors,p=D.avatar.root.position;return {p:{...p},floor:I.groundAt(p.x,p.z),wall:I.walkable(0,18,0,23,0,2,D.avatar),cou
+DSB DONE 1774
+CHECK PASS DSB interior: held movement works on the floor and swept collision blocks walls, tables and counter {"p":{"x":4.908074999999994,"y":0.33890433034393935,"z":18.5},"floor":0,"wall":false,"counter":false,"table":false}
+DSB STEP 1775 (()=>{const B=__ooga,I=B.dsb.interiors;B.pilot.navigate({position:I.active.room.spawn,yaw:0,pitch:.22,dist:3});B.dsb.weather.setMode("rain");B.dayligh
+DSB DONE 2108
+DSB STEP 2108 ({same:BL.scenes.dsb.renderOpts===__interiorCheck.indoor,exterior:__ooga.dsb.weather.state.exterior,drops:__ooga.dsb.weather.shared.state.drops,night:
+DSB DONE 2111
+DSB STEP 2111 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2112
+DSB STEP 2183 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2229
+DSB STEP 2229 (()=>{const B=__ooga,D=B.dsb,I=D.interiors,p=D.avatar.root.position,e=I.registry.get("meme-factory").entry;return {active:!!I.active,same:D.avatar===_
+DSB DONE 2243
+CHECK PASS DSB interior: touch exit restores the same player/building and current night rain, not entry weather {"isolation":{"same":true,"exterior":false,"drops":0,"night":0},"exit":{"active":false,"same":true,"distance":0,"floor":0,"cameraClear":true,"weather":"rain","night":0,"lamps":1,"drops":334,"master":0.30000001192092896,"audio":{"active":false,"connected":false,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 2243 __ooga.daylight.read=__interiorCheck.read
+DSB DONE 2243
+DSB STEP 2243 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 2270
+DSB STEP 2270 (()=>{const B=__ooga,I=B.dsb.interiors;let nodes=0;const geometries=new Set();const visit=n=>{nodes++;if(n.geometry)geometries.add(n.geometry);for(con
+DSB DONE 2271
+DSB STEP 2273 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2273
+DSB STEP 2354 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2386
+DSB STEP 2386 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2392
+DSB STEP 2469 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2513
+DSB STEP 2513 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2525
+DSB STEP 2603 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2635
+DSB STEP 2635 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2641
+DSB STEP 2718 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2761
+DSB STEP 2761 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2773
+DSB STEP 2854 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2889
+DSB STEP 2889 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 2894
+DSB STEP 2968 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3013
+DSB STEP 3013 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3024
+DSB STEP 3103 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3135
+DSB STEP 3135 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3140
+DSB STEP 3218 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3264
+DSB STEP 3264 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3273
+DSB STEP 3351 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3384
+DSB STEP 3384 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3389
+DSB STEP 3467 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3511
+DSB STEP 3512 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3520
+DSB STEP 3603 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3635
+DSB STEP 3635 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3640
+DSB STEP 3719 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3761
+DSB STEP 3761 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3770
+DSB STEP 3836 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3868
+DSB STEP 3868 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 3873
+DSB STEP 3951 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3995
+DSB STEP 3995 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4004
+DSB STEP 4086 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4118
+DSB STEP 4118 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4123
+DSB STEP 4202 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4246
+DSB STEP 4246 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4255
+DSB STEP 4336 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4368
+DSB STEP 4368 (()=>{const e=document.getElementById("dsb-context"),r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2,visible:!e.hidden};})()
+DSB DONE 4373
+DSB STEP 4451 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4494
+DSB STEP 4494 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4534
+DSB STEP 4534 (()=>{const B=__ooga,I=B.dsb.interiors;let nodes=0;const geometries=new Set();const visit=n=>{nodes++;if(n.geometry)geometries.add(n.geometry);for(con
+DSB DONE 4535
+CHECK PASS DSB interior: ten complete door cycles retain bounded nodes, geometry, handlers and audio sources {"cycles":10,"base":{"nodes":3379,"geometries":467,"rooms":1,"targets":7,"audio":3,"contexts":1,"radioSources":1,"radioStarts":1,"records":454,"room":null,"lights":0,"textures":2,"remotes":0},"end":{"nodes":3379,"geometries":467,"rooms":1,"targets":7,"audio":3,"contexts":1,"radioSources":1,"radioStarts":1,"records":454,"room":null,"lights":0,"textures":2,"remotes":0},"listeners":13,"listenersEnd":13}
+DSB STEP 4536 window.__interiorCheck.old=__ooga.dsb.interiors;__ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 4920
+DSB STEP 4920 ({rooms:__interiorCheck.old.rooms.size,audio:__interiorCheck.old.audio.stats.contexts,fresh:__ooga.dsb.interiors.rooms.size,visible:__ooga.dsb.exterio
+DSB DONE 4929
+CHECK PASS DSB interior: scene departure releases the room and its AudioContext {"rooms":0,"audio":0,"fresh":0,"visible":true}
+DSB STEP 4929 delete window.__interiorCheck
+DSB DONE 4935
+CHECK PASS DSB interior: runtime console remains clean 
+CHECK PASS dsb interior checkpoint: clean console 4.9s 
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 87 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 88
+DSB STEP 130 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 179 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 180
+DSB STEP 222 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 263 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 264
+DSB STEP 305 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 306
+DSB STEP 348 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 391 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1312
+DSB STEP 1352 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1363
+DSB STEP 1407 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1408
+DSB STEP 1450 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1450
+DSB STEP 1492 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1497
+DSB STEP 1539 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1540
+DSB STEP 1540 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1540
+DSB STEP 1540 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1564
+DSB STEP 1571 document.querySelectorAll(".dsb-menu-shade").length
+DSB DONE 1571
+DSB STEP 1571 (()=>{const B=__ooga,D=B.dsb,I=D.interiors;if(I.active){I.request(I.active.room.exit);I.update(.4);}I.review("meme-factory",true);I.update(.4);const R
+DSB DONE 1573
+DSB STEP 1573 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1595
+DSB STEP 1595 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["meme-entrance"])
+DSB DONE 1597
+DSB STEP 1597 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1621
+DSB STEP 1621 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1645
+CHECK PASS Review render health: meme-entrance.png {"before":{"scene":"dsb","room":"meme-factory","frames":18,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":20,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1645 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["meme-laser"])
+DSB DONE 1646
+DSB STEP 1646 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1667
+DSB STEP 1667 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1696
+CHECK PASS Review render health: meme-laser.png {"before":{"scene":"dsb","room":"meme-factory","frames":21,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":23,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1696 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["meme-contributors"])
+DSB DONE 1697
+DSB STEP 1697 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1718
+DSB STEP 1718 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1747
+CHECK PASS Review render health: meme-contributors.png {"before":{"scene":"dsb","room":"meme-factory","frames":24,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":26,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1747 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["meme-production"])
+DSB DONE 1748
+DSB STEP 1748 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1770
+DSB STEP 1770 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1798
+CHECK PASS Review render health: meme-production.png {"before":{"scene":"dsb","room":"meme-factory","frames":27,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":29,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1798 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["meme-recording"])
+DSB DONE 1798
+DSB STEP 1798 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1823
+DSB STEP 1823 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1848
+CHECK PASS Review render health: meme-recording.png {"before":{"scene":"dsb","room":"meme-factory","frames":30,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":32,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1848 __ooga.pilot.navigate(__ooga.dsb.interiors.active.room.reviews["meme-archive"])
+DSB DONE 1849
+DSB STEP 1850 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1876
+DSB STEP 1876 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1897
+CHECK PASS Review render health: meme-archive.png {"before":{"scene":"dsb","room":"meme-factory","frames":33,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":35,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1897 __ooga.pilot.navigate({position:{x:-8,y:0,z:-9.7},yaw:0,pitch:.12,dist:3})
+DSB DONE 1898
+DSB STEP 1898 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1924
+DSB STEP 1928 __ooga.dsb.openVenue()
+DSB DONE 1941
+DSB STEP 1941 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1964
+DSB STEP 1964 (()=>{const D=__ooga.dsb,m=D["memeMenu"],p=document.querySelector(".meme-menu")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRect
+DSB DONE 1969
+CHECK PASS DSB menus meme-factory 1440x900: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"laser","stats":{"active":true,"route":"laser","open":true,"panels":1,"disposed":false},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 1969 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 1997
+CHECK PASS Review render health: meme-factory-menu-1440.png {"before":{"scene":"dsb","room":"meme-factory","frames":39,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":41,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 1997 __ooga.dsb["memeMenu"].close()
+DSB DONE 1998
+DSB STEP 1998 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2020
+DSB STEP 2020 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2024
+CHECK PASS DSB menus meme-factory 1440x900: close restores control layer 
+DSB STEP 2031 __ooga.dsb.openVenue()
+DSB DONE 2047
+DSB STEP 2047 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2074
+DSB STEP 2074 (()=>{const D=__ooga.dsb,m=D["memeMenu"],p=document.querySelector(".meme-menu")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRect
+DSB DONE 2077
+CHECK PASS DSB menus meme-factory 390x844: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"laser","stats":{"active":true,"route":"laser","open":true,"panels":1,"disposed":false},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2077 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2114
+CHECK PASS Review render health: meme-factory-menu-390.png {"before":{"scene":"dsb","room":"meme-factory","frames":46,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":48,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 2114 __ooga.dsb["memeMenu"].close()
+DSB DONE 2115
+DSB STEP 2115 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2137
+DSB STEP 2137 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2141
+CHECK PASS DSB menus meme-factory 390x844: close restores control layer 
+DSB STEP 2146 __ooga.dsb.openVenue()
+DSB DONE 2151
+DSB STEP 2151 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2173
+DSB STEP 2174 (()=>{const D=__ooga.dsb,m=D["memeMenu"],p=document.querySelector(".meme-menu")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRect
+DSB DONE 2181
+CHECK PASS DSB menus meme-factory 844x390: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"laser","stats":{"active":true,"route":"laser","open":true,"panels":1,"disposed":false},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2181 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2212
+CHECK PASS Review render health: meme-factory-menu-844.png {"before":{"scene":"dsb","room":"meme-factory","frames":51,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450},"live":{"scene":"dsb","room":"meme-factory","frames":53,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":450}}
+DSB STEP 2212 __ooga.dsb["memeMenu"].close()
+DSB DONE 2213
+DSB STEP 2213 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2236
+DSB STEP 2236 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2240
+CHECK PASS DSB menus meme-factory 844x390: close restores control layer 
+DSB STEP 2240 (()=>{const D=__ooga.dsb,I=D.interiors;I.request(I.active.room.exit);I.update(.4);I.review("meme-factory",true);I.update(.4);D.openVenue();})()
+DSB DONE 2246
+DSB STEP 2246 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2271
+DSB STEP 2271 (()=>{const s=__ooga.dsb["memeMenu"].stats;return (s.route||s.section||s.category)==="home";})()
+DSB DONE 2273
+CHECK PASS DSB menus meme-factory: exit and fresh entrance discard stale route 
+DSB STEP 2273 __ooga.dsb["memeMenu"].close()
+DSB DONE 2274
+DSB STEP 2274 (()=>{const B=__ooga,D=B.dsb,I=D.interiors;if(I.active){I.request(I.active.room.exit);I.update(.4);}I.review("without-rulers",true);I.update(.4);const
+DSB DONE 2280
+DSB STEP 2280 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2312
+DSB STEP 2320 __ooga.dsb.openVenue()
+DSB DONE 2331
+DSB STEP 2331 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2357
+DSB STEP 2357 (()=>{const D=__ooga.dsb,m=D["shopMenu"],p=document.querySelector("#rulers-catalog")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClien
+DSB DONE 2360
+CHECK PASS DSB menus without-rulers 1440x900: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"hoodies","stats":{"active":true,"opened":true,"disposed":false,"section":"hoodies","collection":"","products":14,"panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2360 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2397
+CHECK PASS Review render health: without-rulers-menu-1440.png {"before":{"scene":"dsb","room":"without-rulers","frames":62,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":546},"live":{"scene":"dsb","room":"without-rulers","frames":64,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":546}}
+DSB STEP 2397 __ooga.dsb["shopMenu"].close()
+DSB DONE 2400
+DSB STEP 2400 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2422
+DSB STEP 2422 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2424
+CHECK PASS DSB menus without-rulers 1440x900: close restores control layer 
+DSB STEP 2431 __ooga.dsb.openVenue()
+DSB DONE 2443
+DSB STEP 2443 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2467
+DSB STEP 2467 (()=>{const D=__ooga.dsb,m=D["shopMenu"],p=document.querySelector("#rulers-catalog")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClien
+DSB DONE 2470
+CHECK PASS DSB menus without-rulers 390x844: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"hoodies","stats":{"active":true,"opened":true,"disposed":false,"section":"hoodies","collection":"","products":14,"panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2470 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2496
+CHECK PASS Review render health: without-rulers-menu-390.png {"before":{"scene":"dsb","room":"without-rulers","frames":68,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":546},"live":{"scene":"dsb","room":"without-rulers","frames":70,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":546}}
+DSB STEP 2497 __ooga.dsb["shopMenu"].close()
+DSB DONE 2499
+DSB STEP 2500 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2523
+DSB STEP 2523 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2526
+CHECK PASS DSB menus without-rulers 390x844: close restores control layer 
+DSB STEP 2533 __ooga.dsb.openVenue()
+DSB DONE 2538
+DSB STEP 2538 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2562
+DSB STEP 2562 (()=>{const D=__ooga.dsb,m=D["shopMenu"],p=document.querySelector("#rulers-catalog")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClien
+DSB DONE 2569
+CHECK PASS DSB menus without-rulers 844x390: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"hoodies","stats":{"active":true,"opened":true,"disposed":false,"section":"hoodies","collection":"","products":14,"panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2569 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2597
+CHECK PASS Review render health: without-rulers-menu-844.png {"before":{"scene":"dsb","room":"without-rulers","frames":74,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":546},"live":{"scene":"dsb","room":"without-rulers","frames":76,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":546}}
+DSB STEP 2597 __ooga.dsb["shopMenu"].close()
+DSB DONE 2600
+DSB STEP 2600 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2621
+DSB STEP 2621 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2624
+CHECK PASS DSB menus without-rulers 844x390: close restores control layer 
+DSB STEP 2624 (()=>{const D=__ooga.dsb,I=D.interiors;I.request(I.active.room.exit);I.update(.4);I.review("without-rulers",true);I.update(.4);D.openVenue();})()
+DSB DONE 2630
+DSB STEP 2630 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2654
+DSB STEP 2654 (()=>{const s=__ooga.dsb["shopMenu"].stats;return (s.route||s.section||s.category)==="home";})()
+DSB DONE 2657
+CHECK PASS DSB menus without-rulers: exit and fresh entrance discard stale route 
+DSB STEP 2657 __ooga.dsb["shopMenu"].close()
+DSB DONE 2659
+DSB STEP 2659 (()=>{const B=__ooga,D=B.dsb,I=D.interiors;if(I.active){I.request(I.active.room.exit);I.update(.4);}I.review("proof-of-ink",true);I.update(.4);const R
+DSB DONE 2670
+DSB STEP 2670 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2692
+DSB STEP 2708 __ooga.dsb.openVenue()
+DSB DONE 2718
+DSB STEP 2718 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2746
+DSB STEP 2746 (()=>{const D=__ooga.dsb,m=D["inkMenu"],p=document.querySelector("#ink-catalog")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRec
+DSB DONE 2749
+CHECK PASS DSB menus proof-of-ink 1440x900: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"fine-arts","stats":{"active":true,"opened":true,"disposed":false,"section":"collections","tag":"fine-arts","panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2749 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2779
+CHECK PASS Review render health: proof-of-ink-menu-1440.png {"before":{"scene":"dsb","room":"proof-of-ink","frames":84,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":640},"live":{"scene":"dsb","room":"proof-of-ink","frames":86,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":640}}
+DSB STEP 2779 __ooga.dsb["inkMenu"].close()
+DSB DONE 2781
+DSB STEP 2781 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2802
+DSB STEP 2802 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2805
+CHECK PASS DSB menus proof-of-ink 1440x900: close restores control layer 
+DSB STEP 2812 __ooga.dsb.openVenue()
+DSB DONE 2824
+DSB STEP 2824 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2845
+DSB STEP 2845 (()=>{const D=__ooga.dsb,m=D["inkMenu"],p=document.querySelector("#ink-catalog")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRec
+DSB DONE 2849
+CHECK PASS DSB menus proof-of-ink 390x844: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"fine-arts","stats":{"active":true,"opened":true,"disposed":false,"section":"collections","tag":"fine-arts","panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2849 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2880
+CHECK PASS Review render health: proof-of-ink-menu-390.png {"before":{"scene":"dsb","room":"proof-of-ink","frames":90,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":640},"live":{"scene":"dsb","room":"proof-of-ink","frames":92,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":640}}
+DSB STEP 2880 __ooga.dsb["inkMenu"].close()
+DSB DONE 2883
+DSB STEP 2883 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2904
+DSB STEP 2904 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 2907
+CHECK PASS DSB menus proof-of-ink 390x844: close restores control layer 
+DSB STEP 2911 __ooga.dsb.openVenue()
+DSB DONE 2921
+DSB STEP 2922 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2942
+DSB STEP 2942 (()=>{const D=__ooga.dsb,m=D["inkMenu"],p=document.querySelector("#ink-catalog")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRec
+DSB DONE 2945
+CHECK PASS DSB menus proof-of-ink 844x390: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"fine-arts","stats":{"active":true,"opened":true,"disposed":false,"section":"collections","tag":"fine-arts","panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 2945 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 2979
+CHECK PASS Review render health: proof-of-ink-menu-844.png {"before":{"scene":"dsb","room":"proof-of-ink","frames":96,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":640},"live":{"scene":"dsb","room":"proof-of-ink","frames":98,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":640}}
+DSB STEP 2979 __ooga.dsb["inkMenu"].close()
+DSB DONE 2981
+DSB STEP 2981 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3002
+DSB STEP 3002 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 3005
+CHECK PASS DSB menus proof-of-ink 844x390: close restores control layer 
+DSB STEP 3005 (()=>{const D=__ooga.dsb,I=D.interiors;I.request(I.active.room.exit);I.update(.4);I.review("proof-of-ink",true);I.update(.4);D.openVenue();})()
+DSB DONE 3010
+DSB STEP 3011 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3034
+DSB STEP 3034 (()=>{const s=__ooga.dsb["inkMenu"].stats;return (s.route||s.section||s.category)==="featured";})()
+DSB DONE 3037
+CHECK PASS DSB menus proof-of-ink: exit and fresh entrance discard stale route 
+DSB STEP 3037 __ooga.dsb["inkMenu"].close()
+DSB DONE 3039
+DSB STEP 3039 (()=>{const B=__ooga,D=B.dsb,I=D.interiors;if(I.active){I.request(I.active.room.exit);I.update(.4);}I.review("big-bitcoin",true);I.update(.4);const R=
+DSB DONE 3048
+DSB STEP 3048 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3086
+DSB STEP 3093 __ooga.dsb.openVenue()
+DSB DONE 3103
+DSB STEP 3103 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3127
+DSB STEP 3128 (()=>{const D=__ooga.dsb,m=D["bigMenu"],p=document.querySelector("#big-terminal")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRe
+DSB DONE 3130
+CHECK PASS DSB menus big-bitcoin 1440x900: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"research","stats":{"active":true,"opened":true,"disposed":false,"section":"research","panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 3130 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 3163
+CHECK PASS Review render health: big-bitcoin-menu-1440.png {"before":{"scene":"dsb","room":"big-bitcoin","frames":107,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":722},"live":{"scene":"dsb","room":"big-bitcoin","frames":109,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":722}}
+DSB STEP 3163 __ooga.dsb["bigMenu"].close()
+DSB DONE 3165
+DSB STEP 3165 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3187
+DSB STEP 3187 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 3190
+CHECK PASS DSB menus big-bitcoin 1440x900: close restores control layer 
+DSB STEP 3196 __ooga.dsb.openVenue()
+DSB DONE 3208
+DSB STEP 3208 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3229
+DSB STEP 3229 (()=>{const D=__ooga.dsb,m=D["bigMenu"],p=document.querySelector("#big-terminal")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRe
+DSB DONE 3233
+CHECK PASS DSB menus big-bitcoin 390x844: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"research","stats":{"active":true,"opened":true,"disposed":false,"section":"research","panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 3233 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 3263
+CHECK PASS Review render health: big-bitcoin-menu-390.png {"before":{"scene":"dsb","room":"big-bitcoin","frames":113,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":722},"live":{"scene":"dsb","room":"big-bitcoin","frames":115,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":722}}
+DSB STEP 3263 __ooga.dsb["bigMenu"].close()
+DSB DONE 3266
+DSB STEP 3266 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3288
+DSB STEP 3288 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 3291
+CHECK PASS DSB menus big-bitcoin 390x844: close restores control layer 
+DSB STEP 3295 __ooga.dsb.openVenue()
+DSB DONE 3298
+DSB STEP 3298 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3319
+DSB STEP 3319 (()=>{const D=__ooga.dsb,m=D["bigMenu"],p=document.querySelector("#big-terminal")||document.querySelector('.dsb-menu-engaged'),r=p.getBoundingClientRe
+DSB DONE 3326
+CHECK PASS DSB menus big-bitcoin 844x390: contextual route, centered scrolling shell, safe bounds and hidden controls {"route":"research","stats":{"active":true,"opened":true,"disposed":false,"section":"research","panels":1},"cx":0,"cy":0,"fits":true,"scroll":true,"isolated":true,"hud":"hidden","overflow":"auto"}
+DSB STEP 3326 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 3364
+CHECK PASS Review render health: big-bitcoin-menu-844.png {"before":{"scene":"dsb","room":"big-bitcoin","frames":118,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":722},"live":{"scene":"dsb","room":"big-bitcoin","frames":120,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":722}}
+DSB STEP 3364 __ooga.dsb["bigMenu"].close()
+DSB DONE 3366
+DSB STEP 3366 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3387
+DSB STEP 3388 !document.body.classList.contains("dsb-menu-open")&&BL.dsbMenuShell.count===0&&!document.querySelector(".dsb-menu-shade")
+DSB DONE 3390
+CHECK PASS DSB menus big-bitcoin 844x390: close restores control layer 
+DSB STEP 3390 (()=>{const D=__ooga.dsb,I=D.interiors;I.request(I.active.room.exit);I.update(.4);I.review("big-bitcoin",true);I.update(.4);D.openVenue();})()
+DSB DONE 3394
+DSB STEP 3394 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3417
+DSB STEP 3417 (()=>{const s=__ooga.dsb["bigMenu"].stats;return (s.route||s.section||s.category)==="overview";})()
+DSB DONE 3419
+CHECK PASS DSB menus big-bitcoin: exit and fresh entrance discard stale route 
+DSB STEP 3419 __ooga.dsb["bigMenu"].close()
+DSB DONE 3421
+DSB STEP 3421 (()=>{const D=__ooga.dsb,I=D.interiors;I.request(I.active.room.exit);I.update(.4);I.review("dsb-studio",true);I.update(.4);__ooga.pilot.navigate({posi
+DSB DONE 3424
+DSB STEP 3424 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3445
+DSB STEP 3606 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3630
+DSB STEP 3630 __ooga.dsb.spaces.isOpen&&document.querySelector(".dsb-spaces").classList.contains("dsb-menu-engaged")
+DSB DONE 3632
+CHECK PASS DSB Spaces: physical jukebox opens shared centered dialog 
+DSB STEP 3639 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3661
+DSB STEP 3661 new Promise(resolve=>{const p=document.querySelector(".dsb-spaces"),start=performance.now();const tick=()=>{const v=visualViewport,s=p.style,ready=Mat
+DSB DONE 3670
+DSB STEP 3670 (()=>{const p=document.querySelector(".dsb-spaces"),r=p.getBoundingClientRect(),v=visualViewport,s=getComputedStyle(p),top=p.scrollTop;p.scrollTop=1;c
+DSB DONE 3671
+CHECK PASS DSB Spaces 1440x900: centered and internally scrollable {"w":1440,"h":900,"resized":true,"rect":{"x":270,"y":191.5,"width":900,"height":517},"viewport":{"x":0,"y":0,"width":1440,"height":900},"cx":0,"cy":0,"margins":[270,191.5,270,191.5],"maxHeight":876,"scrollHeight":513,"clientHeight":513,"scrolls":true,"width":true,"overflow":"auto","bodyOverflow":"hidden","isolated":true}
+DSB STEP 3678 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3704
+DSB STEP 3704 new Promise(resolve=>{const p=document.querySelector(".dsb-spaces"),start=performance.now();const tick=()=>{const v=visualViewport,s=p.style,ready=Mat
+DSB DONE 3713
+DSB STEP 3713 (()=>{const p=document.querySelector(".dsb-spaces"),r=p.getBoundingClientRect(),v=visualViewport,s=getComputedStyle(p),top=p.scrollTop;p.scrollTop=1;c
+DSB DONE 3714
+CHECK PASS DSB Spaces 390x844: centered and internally scrollable {"w":390,"h":844,"resized":true,"rect":{"x":12,"y":165.5,"width":366,"height":513},"viewport":{"x":0,"y":0,"width":390,"height":844},"cx":0,"cy":0,"margins":[12,165.5,12,165.5],"maxHeight":820,"scrollHeight":509,"clientHeight":509,"scrolls":true,"width":true,"overflow":"auto","bodyOverflow":"hidden","isolated":true}
+DSB STEP 3718 for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3738
+DSB STEP 3739 new Promise(resolve=>{const p=document.querySelector(".dsb-spaces"),start=performance.now();const tick=()=>{const v=visualViewport,s=p.style,ready=Mat
+DSB DONE 3746
+DSB STEP 3746 (()=>{const p=document.querySelector(".dsb-spaces"),r=p.getBoundingClientRect(),v=visualViewport,s=getComputedStyle(p),top=p.scrollTop;p.scrollTop=1;c
+DSB DONE 3747
+CHECK PASS DSB Spaces 844x390: centered and internally scrollable {"w":844,"h":390,"resized":true,"rect":{"x":12,"y":12,"width":820,"height":366},"viewport":{"x":0,"y":0,"width":844,"height":390},"cx":0,"cy":0,"margins":[12,12,12,12],"maxHeight":366,"scrollHeight":488,"clientHeight":362,"scrolls":true,"width":true,"overflow":"auto","bodyOverflow":"hidden","isolated":true}
+DSB STEP 3748 __ooga.dsb.spaces.close();__ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit);__ooga.dsb.interiors.update(.4)
+DSB DONE 3751
+DSB STEP 3757 (()=>{__ooga.dsb.tv.open("main");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.getBo
+DSB DONE 3809
+CHECK PASS Noderunner main 1440x900: centered context and request focus {"route":"main","cx":0,"cy":0,"width":true,"focus":"dsb-tv-close"}
+DSB STEP 3809 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 3843
+CHECK PASS Review render health: noderunner-main-1440.png {"before":{"scene":"dsb","room":null,"frames":136,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":138,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 3843 __ooga.dsb.tv.close()
+DSB DONE 3851
+DSB STEP 3858 (()=>{__ooga.dsb.tv.open("main");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.getBo
+DSB DONE 3909
+CHECK PASS Noderunner main 390x844: centered context and request focus {"route":"main","cx":0,"cy":0,"width":true,"focus":"dsb-tv-close"}
+DSB STEP 3909 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 3936
+CHECK PASS Review render health: noderunner-main-390.png {"before":{"scene":"dsb","room":null,"frames":140,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":142,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 3936 __ooga.dsb.tv.close()
+DSB DONE 3939
+DSB STEP 3943 (()=>{__ooga.dsb.tv.open("main");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.getBo
+DSB DONE 4002
+CHECK PASS Noderunner main 844x390: centered context and request focus {"route":"main","cx":0,"cy":0,"width":true,"focus":"dsb-tv-close"}
+DSB STEP 4002 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4020
+CHECK PASS Review render health: noderunner-main-844.png {"before":{"scene":"dsb","room":null,"frames":144,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":146,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4020 __ooga.dsb.tv.close()
+DSB DONE 4022
+DSB STEP 4028 (()=>{__ooga.dsb.tv.open("radio");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.getB
+DSB DONE 4086
+CHECK PASS Noderunner radio 1440x900: centered context and request focus {"route":"radio","cx":0,"cy":0,"width":true,"focus":"dsb-tv-back"}
+DSB STEP 4086 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4114
+CHECK PASS Review render health: noderunner-radio-1440.png {"before":{"scene":"dsb","room":null,"frames":148,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":150,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4114 __ooga.dsb.tv.close()
+DSB DONE 4117
+DSB STEP 4123 (()=>{__ooga.dsb.tv.open("radio");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.getB
+DSB DONE 4173
+CHECK PASS Noderunner radio 390x844: centered context and request focus {"route":"radio","cx":0,"cy":0,"width":true,"focus":"dsb-tv-back"}
+DSB STEP 4173 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4198
+CHECK PASS Review render health: noderunner-radio-390.png {"before":{"scene":"dsb","room":null,"frames":151,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":153,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4198 __ooga.dsb.tv.close()
+DSB DONE 4201
+DSB STEP 4205 (()=>{__ooga.dsb.tv.open("radio");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.getB
+DSB DONE 4249
+CHECK PASS Noderunner radio 844x390: centered context and request focus {"route":"radio","cx":0,"cy":0,"width":true,"focus":"dsb-tv-back"}
+DSB STEP 4249 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4272
+CHECK PASS Review render health: noderunner-radio-844.png {"before":{"scene":"dsb","room":null,"frames":154,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":156,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4272 __ooga.dsb.tv.close()
+DSB DONE 4275
+DSB STEP 4280 (()=>{__ooga.dsb.tv.open("jukebox");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.ge
+DSB DONE 4324
+CHECK PASS Noderunner jukebox 1440x900: centered context and request focus {"route":"jukebox","cx":0,"cy":0,"width":true,"focus":"dsb-tv-query"}
+DSB STEP 4324 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4350
+CHECK PASS Review render health: noderunner-jukebox-1440.png {"before":{"scene":"dsb","room":null,"frames":157,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":159,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4350 __ooga.dsb.tv.close()
+DSB DONE 4353
+DSB STEP 4359 (()=>{__ooga.dsb.tv.open("jukebox");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.ge
+DSB DONE 4423
+CHECK PASS Noderunner jukebox 390x844: centered context and request focus {"route":"jukebox","cx":0,"cy":0,"width":true,"focus":"dsb-tv-query"}
+DSB STEP 4423 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4451
+CHECK PASS Review render health: noderunner-jukebox-390.png {"before":{"scene":"dsb","room":null,"frames":161,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":163,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4451 __ooga.dsb.tv.close()
+DSB DONE 4454
+DSB STEP 4458 (()=>{__ooga.dsb.tv.open("jukebox");for(let i=0;i<30;i++)BL.scenes.dsb.update(1/60,i/60);const D=__ooga.dsb,e=document.getElementById("dsb-tv"),r=e.ge
+DSB DONE 4499
+CHECK PASS Noderunner jukebox 844x390: centered context and request focus {"route":"jukebox","cx":0,"cy":0,"width":true,"focus":"dsb-tv-query"}
+DSB STEP 4499 (async()=>{const health=() => {
+  const B=window.__ooga,R=B.renderer,gl=R.kind==="webgl2"?document.getElementById("scene").getContext("webgl2"):null;
+
+DSB DONE 4521
+CHECK PASS Review render health: noderunner-jukebox-844.png {"before":{"scene":"dsb","room":null,"frames":164,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787},"live":{"scene":"dsb","room":null,"frames":166,"curtain":false,"kind":"webgl2","ready":true,"failure":"","lost":false,"errors":[],"gpu":"ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)","records":787}}
+DSB STEP 4521 __ooga.dsb.tv.close()
+DSB DONE 4524
+DSB STEP 4524 for(let i=0;i<12;i++){__ooga.dsb.tv.open("radio");__ooga.dsb.tv.close();}
+DSB DONE 4564
+DSB STEP 4573 document.querySelectorAll(".dsb-menu-shade").length
+DSB DONE 4574
+CHECK PASS DSB menu lifecycle: repeated openings release shared listeners and shade {"baseline":{"listeners":13,"dom":0},"after":{"listeners":13,"dom":0}}
+CHECK PASS DSB contextual menus: runtime console remains clean 
+CHECK PASS dsb venue menus checkpoint: clean console 4.6s 
+DSB STEP 71 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 72
+DSB STEP 113 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 114
+DSB STEP 156 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 157
+DSB STEP 199 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 199
+DSB STEP 241 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 242
+DSB STEP 283 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 283
+DSB STEP 325 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 326
+DSB STEP 368 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 417 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1272
+DSB STEP 1313 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1317
+DSB STEP 1359 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1366
+DSB STEP 1408 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1415
+DSB STEP 1457 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1458
+DSB STEP 1500 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1501
+DSB STEP 1501 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1501
+DSB STEP 1501 (()=>{
+    const D=__ooga.dsb,L=D.land,E=D.detail;let floating=0,buried=0,blocked=0,invalid=0;
+    const geometries=new Set(),visit=n=>{if(n.geometry)
+DSB DONE 1505
+CHECK PASS DSB exterior: seated props leave routes and rear Olympus clear with seven bounded facades {"floating":0,"buried":0,"blocked":0,"invalid":0,"geometries":42,"facades":7,"coast":14,"rear":false}
+DSB STEP 1505 (() => {
+    const B=__ooga,D=B.dsb,N=D.nature,L=D.land;
+    const signature=(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="obje
+DSB DONE 2213
+CHECK PASS DSB nature: every contact vertex is grounded, paths stay clear and transformed geometry stays finite {"counts":{"olive":108,"cypress":80,"shrub":720,"cover":560,"grass":3000,"flowers":560,"rock":150,"bougainvillea":32,"planter":19,"meadow":5600},"floating":0,"buried":0,"blocked":0,"invalid":0,"tiers":{"high":{"visible":10829,"gulls":5,"trees":188},"medium":{"visible":5276,"gulls":3,"trees":164},"low":{"visible":1818,"gulls":0,"trees":140}},"windy":true,"matched":7647,"shifted":7647,"disposed":true}
+CHECK PASS DSB nature: surface changes move roots and disposal removes the whole bounded field {"counts":{"olive":108,"cypress":80,"shrub":720,"cover":560,"grass":3000,"flowers":560,"rock":150,"bougainvillea":32,"planter":19,"meadow":5600},"floating":0,"buried":0,"blocked":0,"invalid":0,"tiers":{"high":{"visible":10829,"gulls":5,"trees":188},"medium":{"visible":5276,"gulls":3,"trees":164},"low":{"visible":1818,"gulls":0,"trees":140}},"windy":true,"matched":7647,"shifted":7647,"disposed":true}
+CHECK PASS DSB nature: low tier retains trees, reduces detail and shares storm wind {"counts":{"olive":108,"cypress":80,"shrub":720,"cover":560,"grass":3000,"flowers":560,"rock":150,"bougainvillea":32,"planter":19,"meadow":5600},"floating":0,"buried":0,"blocked":0,"invalid":0,"tiers":{"high":{"visible":10829,"gulls":5,"trees":188},"medium":{"visible":5276,"gulls":3,"trees":164},"low":{"visible":1818,"gulls":0,"trees":140}},"windy":true,"matched":7647,"shifted":7647,"disposed":true}
+DSB STEP 2213 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 2614
+DSB STEP 2614 (()=>{const p=window.__natureCheck,n=__ooga.dsb.nature;return {same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has
+DSB DONE 2633
+CHECK PASS DSB nature: visit 2 preserves seeded layout and releases old scene {"same":true,"cleared":true,"fields":11,"total":10829,"textures":2}
+DSB STEP 2634 ({same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has(x)?"[cycle]":(m.add(x),x):x)})(__ooga.dsb.detail.placements)
+DSB DONE 2641
+CHECK PASS DSB exterior: visit 2 releases dressing without duplicates {"same":true,"cleared":true}
+DSB STEP 2642 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 3018
+DSB STEP 3018 (()=>{const p=window.__natureCheck,n=__ooga.dsb.nature;return {same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has
+DSB DONE 3041
+CHECK PASS DSB nature: visit 3 preserves seeded layout and releases old scene {"same":true,"cleared":true,"fields":11,"total":10829,"textures":2}
+DSB STEP 3041 ({same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has(x)?"[cycle]":(m.add(x),x):x)})(__ooga.dsb.detail.placements)
+DSB DONE 3051
+CHECK PASS DSB exterior: visit 3 releases dressing without duplicates {"same":true,"cleared":true}
+DSB STEP 3051 delete window.__natureCheck;delete window.__exteriorCheck
+DSB DONE 3063
+CHECK PASS DSB nature: runtime console remains clean 
+CHECK PASS dsb nature checkpoint: clean console 3.1s 
+DSB STEP 50 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 51
+DSB STEP 93 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 95
+DSB STEP 136 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 179 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 180
+DSB STEP 222 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 265
+DSB STEP 308 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 309
+DSB STEP 351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1213
+DSB STEP 1255 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1257
+DSB STEP 1299 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1303
+DSB STEP 1345 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1352
+DSB STEP 1393 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1393
+DSB STEP 1435 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1436
+DSB STEP 1436 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1437
+DSB STEP 1437 (()=>{
+    const D=__ooga.dsb,L=D.land,E=D.detail;let floating=0,buried=0,blocked=0,invalid=0;
+    const geometries=new Set(),visit=n=>{if(n.geometry)
+DSB DONE 1442
+CHECK PASS DSB exterior: seated props leave routes and rear Olympus clear with seven bounded facades {"floating":0,"buried":0,"blocked":0,"invalid":0,"geometries":42,"facades":7,"coast":14,"rear":false}
+DSB STEP 1442 (() => {
+    const B=__ooga,D=B.dsb,N=D.nature,L=D.land;
+    const signature=(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="obje
+DSB DONE 2160
+CHECK PASS DSB nature: every contact vertex is grounded, paths stay clear and transformed geometry stays finite {"counts":{"olive":108,"cypress":80,"shrub":720,"cover":560,"grass":3000,"flowers":560,"rock":150,"bougainvillea":32,"planter":19,"meadow":5600},"floating":0,"buried":0,"blocked":0,"invalid":0,"tiers":{"high":{"visible":10829,"gulls":5,"trees":188},"medium":{"visible":5276,"gulls":3,"trees":164},"low":{"visible":1818,"gulls":0,"trees":140}},"windy":true,"matched":7647,"shifted":7647,"disposed":true}
+CHECK PASS DSB nature: surface changes move roots and disposal removes the whole bounded field {"counts":{"olive":108,"cypress":80,"shrub":720,"cover":560,"grass":3000,"flowers":560,"rock":150,"bougainvillea":32,"planter":19,"meadow":5600},"floating":0,"buried":0,"blocked":0,"invalid":0,"tiers":{"high":{"visible":10829,"gulls":5,"trees":188},"medium":{"visible":5276,"gulls":3,"trees":164},"low":{"visible":1818,"gulls":0,"trees":140}},"windy":true,"matched":7647,"shifted":7647,"disposed":true}
+CHECK PASS DSB nature: low tier retains trees, reduces detail and shares storm wind {"counts":{"olive":108,"cypress":80,"shrub":720,"cover":560,"grass":3000,"flowers":560,"rock":150,"bougainvillea":32,"planter":19,"meadow":5600},"floating":0,"buried":0,"blocked":0,"invalid":0,"tiers":{"high":{"visible":10829,"gulls":5,"trees":188},"medium":{"visible":5276,"gulls":3,"trees":164},"low":{"visible":1818,"gulls":0,"trees":140}},"windy":true,"matched":7647,"shifted":7647,"disposed":true}
+DSB STEP 2160 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 2556
+DSB STEP 2556 (()=>{const p=window.__natureCheck,n=__ooga.dsb.nature;return {same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has
+DSB DONE 2575
+CHECK PASS DSB nature: visit 2 preserves seeded layout and releases old scene {"same":true,"cleared":true,"fields":11,"total":10829,"textures":2}
+DSB STEP 2575 ({same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has(x)?"[cycle]":(m.add(x),x):x)})(__ooga.dsb.detail.placements)
+DSB DONE 2583
+CHECK PASS DSB exterior: visit 2 releases dressing without duplicates {"same":true,"cleared":true}
+DSB STEP 2583 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 2942
+DSB STEP 2942 (()=>{const p=window.__natureCheck,n=__ooga.dsb.nature;return {same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has
+DSB DONE 2961
+CHECK PASS DSB nature: visit 3 preserves seeded layout and releases old scene {"same":true,"cleared":true,"fields":11,"total":10829,"textures":2}
+DSB STEP 2961 ({same:(v=>{const m=new Set();return JSON.stringify(v,(k,x)=>x&&typeof x==="object"?m.has(x)?"[cycle]":(m.add(x),x):x)})(__ooga.dsb.detail.placements)
+DSB DONE 2969
+CHECK PASS DSB exterior: visit 3 releases dressing without duplicates {"same":true,"cleared":true}
+DSB STEP 2969 delete window.__natureCheck;delete window.__exteriorCheck
+DSB DONE 2977
+CHECK PASS DSB nature: runtime console remains clean 
+CHECK PASS dsb nature checkpoint: clean console 3.0s 
+DSB STEP 49 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 50
+DSB STEP 103 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 104
+DSB STEP 146 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 147
+DSB STEP 188 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 189
+DSB STEP 231 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 231
+DSB STEP 272 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 273
+DSB STEP 315 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 316
+DSB STEP 357 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1262
+DSB STEP 1303 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1309
+DSB STEP 1351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1358
+DSB STEP 1399 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1407
+DSB STEP 1449 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1450
+DSB STEP 1492 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1493
+DSB STEP 1493 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1493
+DSB STEP 1495 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1685
+DSB STEP 1685 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active?.room;return {id:R?.id,seats:R?.seats.length,entry:R?.groundAt(0,17),lower:R?.groundAt(0,-6),stage:R
+DSB DONE 1693
+CHECK PASS Studio: correct door reveals upper entrance, descending room and isolated stage {"id":"dsb-studio","seats":39,"entry":3,"lower":0,"stage":0.6,"exterior":false,"rain":0,"master":0,"lights":3}
+DSB STEP 1693 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,A=D.avatar,clear=(a,b)=>D.interiors.walkable(a[0],a[1],b[0],b[1],3,2,A);return {left:R.jukeboxA
+DSB DONE 1696
+CHECK PASS Studio: left archive, enterable right booth, corridor and balcony approaches stay clear {"left":true,"booth":true,"corridor":true,"balcony":true,"seats":true}
+DSB STEP 1697 (()=>{const B=__ooga,R=B.dsb.interiors.active.room;return R.seats.every(s=>{B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:s.vie
+DSB DONE 1699
+CHECK PASS Studio: every audience, balcony and stage seat sits and stands safely 
+DSB STEP 1699 __ooga.pilot.navigate({position:{x:0,y:3,z:13},yaw:0,pitch:.12,dist:3})
+DSB DONE 1703
+DSB STEP 1704 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1746
+DSB STEP 1749 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 1752
+DSB STEP 1822 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1858
+DSB STEP 1858 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1897
+DSB STEP 1897 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1937
+DSB STEP 1937 __ooga.dsb.interiors.audio.stats
+DSB DONE 1939
+CHECK PASS Studio: walking and jumping add no Studio-specific audio sources {"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}
+DSB STEP 1939 (()=>{
+    window.__studioCheck={fetch:window.fetch,play:HTMLMediaElement.prototype.play,pause:HTMLMediaElement.prototype.pause,requests:0,plays:0,act
+DSB DONE 1941
+DSB STEP 1943 (()=>{const B=__ooga,R=B.dsb.interiors.active.room,s=R.stageSeats[0];
+    B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch
+DSB DONE 2047
+DSB STEP 2047 __ooga.crew.stats().tomatoesThrown
+DSB DONE 2051
+DSB STEP 2051 (()=>{const B=__ooga,s=B.dsb.interiors.active.room.stageSeats[0];B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch:.12,dist
+DSB DONE 2054
+DSB STEP 2054 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2094
+DSB STEP 2094 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2096
+DSB STEP 2155 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2190
+DSB STEP 2190 ({seat:!!__ooga.dsb.avatar.camp.seat,leg:__ooga.dsb.avatar.parts.legL.rotation.x,p:{...__ooga.dsb.avatar.root.position},close:__ooga.pilot.closeWanted
+DSB DONE 2195
+DSB STEP 2197 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2231
+DSB STEP 2232 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 2235
+DSB STEP 2305 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2343
+DSB STEP 2343 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 2348
+DSB STEP 2404 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2440
+DSB STEP 2440 (()=>{const e=document.querySelector(".dsb-studio-tools button");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 2445
+DSB STEP 2504 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2540
+DSB STEP 2540 if(!__ooga.dsb.avatar.weapon.aiming)__ooga.pilot.modeAction("mode-toggle");__ooga.crew.look(2.7,.1,1)
+DSB DONE 2545
+DSB STEP 2545 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2580
+DSB STEP 2580 ({seat:!!__ooga.dsb.avatar.camp.seat,p:{...__ooga.dsb.avatar.root.position},yaw:__ooga.dsb.avatar.root.rotation.y,shots:__ooga.dsb.avatar.weapon.shots
+DSB DONE 2584
+CHECK PASS Studio: seat 0 locks walking with seated pose and allows gun/throw controls {"seated":{"seat":true,"leg":-1.5707963267948966,"p":{"x":-5,"y":1.3367595085680484,"z":-13.4},"close":true,"yaw":0.2999999999999996},"fired":{"seat":true,"p":{"x":-5,"y":1.3367595085680484,"z":-13.4},"yaw":0.2536760598217045,"shots":3,"throws":2,"aim":true,"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 2584 Array.from(document.querySelectorAll("button")).filter(e=>/stand up/i.test(e.textContent)&&e.getClientRects().length&&getComputedStyle(e).visibility!=
+DSB DONE 2586
+DSB STEP 2586 Array.from(document.querySelectorAll("button")).some(e=>/stage lights|studio lights/i.test(e.textContent))
+DSB DONE 2587
+CHECK PASS Studio: seated control 0 has one stand action and no lighting button 
+DSB STEP 2587 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 2587
+DSB STEP 2654 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2690
+DSB STEP 2690 ({seat:!!__ooga.dsb.avatar.camp.seat,close:__ooga.pilot.closeWanted,clear:__ooga.dsb.interiors.walkable(__ooga.dsb.avatar.root.position.x,__ooga.dsb.a
+DSB DONE 2694
+CHECK PASS Studio: touch stand 0 restores clear ground and follow camera {"seat":false,"close":false,"clear":true}
+DSB STEP 2694 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.jukeboxAt,yaw:-Math.PI/2,pitch:.12,dist:3})
+DSB DONE 2695
+DSB STEP 2695 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2729
+DSB STEP 2729 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2733
+DSB STEP 2812 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2846
+DSB STEP 2928 (()=>{const e=document.querySelector(".spaces-item");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2929
+DSB STEP 3022 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3061
+DSB STEP 3061 (()=>{const e=document.querySelector(".dsb-spaces [data-next]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3063
+DSB STEP 3120 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3155
+DSB STEP 3155 (()=>{const e=document.querySelector(".dsb-spaces [data-prev]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3159
+DSB STEP 3221 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3255
+DSB STEP 3255 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3259
+DSB STEP 3321 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3355
+DSB STEP 3355 !__ooga.dsb.spaces.stats.playing
+DSB DONE 3359
+DSB STEP 3360 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3360
+DSB STEP 3421 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3456
+DSB STEP 3456 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 3460
+DSB STEP 3523 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3558
+DSB STEP 3558 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 3563
+DSB STEP 3625 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3660
+DSB STEP 3660 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 3664
+DSB STEP 3721 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3757
+DSB STEP 3757 ({stats:__ooga.dsb.spaces.stats,active:__studioCheck.active.size,requests:__studioCheck.requests})
+DSB DONE 3762
+CHECK PASS Studio: archive 0 browses, pauses, resumes and reuses one player/cache {"stats":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"active":1,"requests":1}
+DSB STEP 3762 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,plays=__studioCheck.plays,near=D.spaces.stats.gain;B.pilot.navigate({position:{x:0,y:3,z:8.5},y
+DSB DONE 3765
+CHECK PASS Studio: archive 0 fades to silence in theater and returns without replay {"near":1,"far":{"active":true,"gain":0,"muted":true,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"back":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"plays":0}
+DSB STEP 3765 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.spawn,yaw:0,pitch:.22,dist:3})
+DSB DONE 3765
+DSB STEP 3765 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3800
+DSB STEP 3800 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 3805
+DSB STEP 3871 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3933
+DSB STEP 3933 (()=>{const B=__ooga,D=B.dsb;return {indoor:!!D.interiors.active,seat:!!D.avatar.camp.seat,spaces:D.spaces.stats,active:__studioCheck.active.size,weat
+DSB DONE 3943
+CHECK PASS Studio: exit 0 disposes playback, seat, projectiles and restores exterior {"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}
+DSB STEP 3943 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 3944
+DSB STEP 4007 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4049
+DSB STEP 4049 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4090
+DSB STEP 4090 (()=>{const B=__ooga,s=B.dsb.interiors.active.room.stageSeats[1];B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch:.12,dist
+DSB DONE 4096
+DSB STEP 4096 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4130
+DSB STEP 4130 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 4134
+DSB STEP 4205 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4240
+DSB STEP 4240 ({seat:!!__ooga.dsb.avatar.camp.seat,leg:__ooga.dsb.avatar.parts.legL.rotation.x,p:{...__ooga.dsb.avatar.root.position},close:__ooga.pilot.closeWanted
+DSB DONE 4244
+DSB STEP 4245 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4278
+DSB STEP 4280 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 4283
+DSB STEP 4355 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4391
+DSB STEP 4391 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 4396
+DSB STEP 4454 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4492
+DSB STEP 4492 (()=>{const e=document.querySelector(".dsb-studio-tools button");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 4497
+DSB STEP 4554 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4589
+DSB STEP 4589 if(!__ooga.dsb.avatar.weapon.aiming)__ooga.pilot.modeAction("mode-toggle");__ooga.crew.look(2.7,.1,1)
+DSB DONE 4593
+DSB STEP 4593 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4627
+DSB STEP 4627 ({seat:!!__ooga.dsb.avatar.camp.seat,p:{...__ooga.dsb.avatar.root.position},yaw:__ooga.dsb.avatar.root.rotation.y,shots:__ooga.dsb.avatar.weapon.shots
+DSB DONE 4631
+CHECK PASS Studio: seat 1 locks walking with seated pose and allows gun/throw controls {"seated":{"seat":true,"leg":-1.5707963267948966,"p":{"x":-2,"y":1.3367595085680484,"z":-13.4},"close":true,"yaw":0.2999999999999994},"fired":{"seat":true,"p":{"x":-2,"y":1.3367595085680484,"z":-13.4},"yaw":0.3216373318812442,"shots":9,"throws":3,"aim":true,"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 4631 Array.from(document.querySelectorAll("button")).filter(e=>/stand up/i.test(e.textContent)&&e.getClientRects().length&&getComputedStyle(e).visibility!=
+DSB DONE 4632
+DSB STEP 4632 Array.from(document.querySelectorAll("button")).some(e=>/stage lights|studio lights/i.test(e.textContent))
+DSB DONE 4632
+CHECK PASS Studio: seated control 1 has one stand action and no lighting button 
+DSB STEP 4632 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 4633
+DSB STEP 4686 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4721
+DSB STEP 4722 ({seat:!!__ooga.dsb.avatar.camp.seat,close:__ooga.pilot.closeWanted,clear:__ooga.dsb.interiors.walkable(__ooga.dsb.avatar.root.position.x,__ooga.dsb.a
+DSB DONE 4725
+CHECK PASS Studio: touch stand 1 restores clear ground and follow camera {"seat":false,"close":false,"clear":true}
+DSB STEP 4726 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.jukeboxAt,yaw:-Math.PI/2,pitch:.12,dist:3})
+DSB DONE 4726
+DSB STEP 4726 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4760
+DSB STEP 4760 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 4764
+DSB STEP 4824 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4858
+DSB STEP 4938 (()=>{const e=document.querySelector(".spaces-item");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 4939
+DSB STEP 5004 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5041
+DSB STEP 5042 (()=>{const e=document.querySelector(".dsb-spaces [data-next]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5046
+DSB STEP 5104 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5138
+DSB STEP 5138 (()=>{const e=document.querySelector(".dsb-spaces [data-prev]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5142
+DSB STEP 5204 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5239
+DSB STEP 5239 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5243
+DSB STEP 5304 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5338
+DSB STEP 5338 !__ooga.dsb.spaces.stats.playing
+DSB DONE 5342
+DSB STEP 5342 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5343
+DSB STEP 5404 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5438
+DSB STEP 5438 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 5442
+DSB STEP 5505 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5541
+DSB STEP 5542 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 5546
+DSB STEP 5606 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5640
+DSB STEP 5640 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 5644
+DSB STEP 5705 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5741
+DSB STEP 5741 ({stats:__ooga.dsb.spaces.stats,active:__studioCheck.active.size,requests:__studioCheck.requests})
+DSB DONE 5746
+CHECK PASS Studio: archive 1 browses, pauses, resumes and reuses one player/cache {"stats":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"active":1,"requests":2}
+DSB STEP 5746 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,plays=__studioCheck.plays,near=D.spaces.stats.gain;B.pilot.navigate({position:{x:0,y:3,z:8.5},y
+DSB DONE 5749
+CHECK PASS Studio: archive 1 fades to silence in theater and returns without replay {"near":1,"far":{"active":true,"gain":0,"muted":true,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"back":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"plays":0}
+DSB STEP 5749 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.spawn,yaw:0,pitch:.22,dist:3})
+DSB DONE 5749
+DSB STEP 5749 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5782
+DSB STEP 5782 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 5787
+DSB STEP 5854 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5915
+DSB STEP 5915 (()=>{const B=__ooga,D=B.dsb;return {indoor:!!D.interiors.active,seat:!!D.avatar.camp.seat,spaces:D.spaces.stats,active:__studioCheck.active.size,weat
+DSB DONE 5925
+CHECK PASS Studio: exit 1 disposes playback, seat, projectiles and restores exterior {"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}
+DSB STEP 5925 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 5926
+DSB STEP 5989 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6030
+DSB STEP 6030 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6069
+DSB STEP 6069 (()=>{const B=__ooga,s=B.dsb.interiors.active.room.stageSeats[2];B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch:.12,dist
+DSB DONE 6075
+DSB STEP 6075 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6109
+DSB STEP 6109 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6112
+DSB STEP 6171 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6205
+DSB STEP 6205 ({seat:!!__ooga.dsb.avatar.camp.seat,leg:__ooga.dsb.avatar.parts.legL.rotation.x,p:{...__ooga.dsb.avatar.root.position},close:__ooga.pilot.closeWanted
+DSB DONE 6210
+DSB STEP 6210 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6244
+DSB STEP 6246 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 6248
+DSB STEP 6304 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6339
+DSB STEP 6339 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 6343
+DSB STEP 6404 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6439
+DSB STEP 6440 (()=>{const e=document.querySelector(".dsb-studio-tools button");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 6445
+DSB STEP 6504 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6541
+DSB STEP 6541 if(!__ooga.dsb.avatar.weapon.aiming)__ooga.pilot.modeAction("mode-toggle");__ooga.crew.look(2.7,.1,1)
+DSB DONE 6545
+DSB STEP 6545 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6580
+DSB STEP 6580 ({seat:!!__ooga.dsb.avatar.camp.seat,p:{...__ooga.dsb.avatar.root.position},yaw:__ooga.dsb.avatar.root.rotation.y,shots:__ooga.dsb.avatar.weapon.shots
+DSB DONE 6584
+CHECK PASS Studio: seat 2 locks walking with seated pose and allows gun/throw controls {"seated":{"seat":true,"leg":-1.5707963267948966,"p":{"x":4.2,"y":1.3367595085680484,"z":-15.2},"close":true,"yaw":2.220446049250313e-16},"fired":{"seat":true,"p":{"x":4.2,"y":1.3367595085680484,"z":-15.2},"yaw":0.03413586908025713,"shots":15,"throws":4,"aim":true,"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 6584 Array.from(document.querySelectorAll("button")).filter(e=>/stand up/i.test(e.textContent)&&e.getClientRects().length&&getComputedStyle(e).visibility!=
+DSB DONE 6585
+DSB STEP 6585 Array.from(document.querySelectorAll("button")).some(e=>/stage lights|studio lights/i.test(e.textContent))
+DSB DONE 6585
+CHECK PASS Studio: seated control 2 has one stand action and no lighting button 
+DSB STEP 6585 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 6585
+DSB STEP 6654 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6691
+DSB STEP 6691 ({seat:!!__ooga.dsb.avatar.camp.seat,close:__ooga.pilot.closeWanted,clear:__ooga.dsb.interiors.walkable(__ooga.dsb.avatar.root.position.x,__ooga.dsb.a
+DSB DONE 6695
+CHECK PASS Studio: touch stand 2 restores clear ground and follow camera {"seat":false,"close":false,"clear":true}
+DSB STEP 6695 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.jukeboxAt,yaw:-Math.PI/2,pitch:.12,dist:3})
+DSB DONE 6696
+DSB STEP 6696 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6731
+DSB STEP 6731 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6736
+DSB STEP 6807 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6843
+DSB STEP 6924 (()=>{const e=document.querySelector(".spaces-item");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6925
+DSB STEP 6987 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7024
+DSB STEP 7024 (()=>{const e=document.querySelector(".dsb-spaces [data-next]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7028
+DSB STEP 7088 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7122
+DSB STEP 7122 (()=>{const e=document.querySelector(".dsb-spaces [data-prev]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7127
+DSB STEP 7187 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7222
+DSB STEP 7222 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7226
+DSB STEP 7287 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7322
+DSB STEP 7322 !__ooga.dsb.spaces.stats.playing
+DSB DONE 7326
+DSB STEP 7326 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7326
+DSB STEP 7386 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7421
+DSB STEP 7421 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 7425
+DSB STEP 7488 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7523
+DSB STEP 7523 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 7528
+DSB STEP 7591 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7625
+DSB STEP 7625 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 7630
+DSB STEP 7689 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7725
+DSB STEP 7725 ({stats:__ooga.dsb.spaces.stats,active:__studioCheck.active.size,requests:__studioCheck.requests})
+DSB DONE 7729
+CHECK PASS Studio: archive 2 browses, pauses, resumes and reuses one player/cache {"stats":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"active":1,"requests":3}
+DSB STEP 7730 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,plays=__studioCheck.plays,near=D.spaces.stats.gain;B.pilot.navigate({position:{x:0,y:3,z:8.5},y
+DSB DONE 7732
+CHECK PASS Studio: archive 2 fades to silence in theater and returns without replay {"near":1,"far":{"active":true,"gain":0,"muted":true,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"back":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"plays":0}
+DSB STEP 7732 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.spawn,yaw:0,pitch:.22,dist:3})
+DSB DONE 7733
+DSB STEP 7733 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7766
+DSB STEP 7766 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 7771
+DSB STEP 7837 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7899
+DSB STEP 7899 (()=>{const B=__ooga,D=B.dsb;return {indoor:!!D.interiors.active,seat:!!D.avatar.camp.seat,spaces:D.spaces.stats,active:__studioCheck.active.size,weat
+DSB DONE 7909
+CHECK PASS Studio: exit 2 disposes playback, seat, projectiles and restores exterior {"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}
+CHECK PASS Studio: warmed room records remain bounded {"baseline":{"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425},"end":{"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}}
+CHECK PASS Studio: repeated cycles retain one listener set 
+DSB STEP 7910 (()=>{const B=__ooga,R=B.dsb.interiors.rooms.get("dsb-studio");return R.seats.every(s=>!s.sitter);})()
+DSB DONE 7911
+CHECK PASS Studio: every seat releases occupancy 
+DSB STEP 7911 window.fetch=__studioCheck.fetch;HTMLMediaElement.prototype.play=__studioCheck.play;HTMLMediaElement.prototype.pause=__studioCheck.pause;__studioCheck
+DSB DONE 8604
+DSB STEP 8604 ({old:__studioCheck.old.stats,dialogs:document.querySelectorAll(".dsb-spaces").length,rooms:__ooga.dsb.interiors.rooms.size,seat:!!__ooga.dsb.avatar.c
+DSB DONE 8609
+CHECK PASS Studio: leaving DSB and reentering creates one clean archive controller {"old":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"dialogs":1,"rooms":0,"seat":false}
+DSB STEP 8609 delete window.__studioCheck
+DSB DONE 8611
+CHECK PASS dsb studio checkpoint: clean console 8.6s 
+DSB STEP 68 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 69
+DSB STEP 111 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 112
+DSB STEP 153 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 153
+DSB STEP 194 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 195
+DSB STEP 235 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 236
+DSB STEP 278 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 279
+DSB STEP 321 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 322
+DSB STEP 364 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 415 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1295
+DSB STEP 1334 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1344
+DSB STEP 1386 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1390
+DSB STEP 1432 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1433
+DSB STEP 1475 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1476
+DSB STEP 1518 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1523
+DSB STEP 1523 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1524
+DSB STEP 1526 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1714
+DSB STEP 1714 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active?.room;return {id:R?.id,seats:R?.seats.length,entry:R?.groundAt(0,17),lower:R?.groundAt(0,-6),stage:R
+DSB DONE 1721
+CHECK PASS Studio: correct door reveals upper entrance, descending room and isolated stage {"id":"dsb-studio","seats":39,"entry":3,"lower":0,"stage":0.6,"exterior":false,"rain":0,"master":0,"lights":3}
+DSB STEP 1722 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,A=D.avatar,clear=(a,b)=>D.interiors.walkable(a[0],a[1],b[0],b[1],3,2,A);return {left:R.jukeboxA
+DSB DONE 1727
+CHECK PASS Studio: left archive, enterable right booth, corridor and balcony approaches stay clear {"left":true,"booth":true,"corridor":true,"balcony":true,"seats":true}
+DSB STEP 1727 (()=>{const B=__ooga,R=B.dsb.interiors.active.room;return R.seats.every(s=>{B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:s.vie
+DSB DONE 1729
+CHECK PASS Studio: every audience, balcony and stage seat sits and stands safely 
+DSB STEP 1730 __ooga.pilot.navigate({position:{x:0,y:3,z:13},yaw:0,pitch:.12,dist:3})
+DSB DONE 1730
+DSB STEP 1731 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1772
+DSB STEP 1776 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 1779
+DSB STEP 1838 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1878
+DSB STEP 1878 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1934
+DSB STEP 1934 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1982
+DSB STEP 1982 __ooga.dsb.interiors.audio.stats
+DSB DONE 1984
+CHECK PASS Studio: walking and jumping add no Studio-specific audio sources {"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}
+DSB STEP 1984 (()=>{
+    window.__studioCheck={fetch:window.fetch,play:HTMLMediaElement.prototype.play,pause:HTMLMediaElement.prototype.pause,requests:0,plays:0,act
+DSB DONE 1986
+DSB STEP 1988 (()=>{const B=__ooga,R=B.dsb.interiors.active.room,s=R.stageSeats[0];
+    B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch
+DSB DONE 2089
+DSB STEP 2089 __ooga.crew.stats().tomatoesThrown
+DSB DONE 2093
+DSB STEP 2093 (()=>{const B=__ooga,s=B.dsb.interiors.active.room.stageSeats[0];B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch:.12,dist
+DSB DONE 2096
+DSB STEP 2096 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2134
+DSB STEP 2134 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2136
+DSB STEP 2205 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2241
+DSB STEP 2241 ({seat:!!__ooga.dsb.avatar.camp.seat,leg:__ooga.dsb.avatar.parts.legL.rotation.x,p:{...__ooga.dsb.avatar.root.position},close:__ooga.pilot.closeWanted
+DSB DONE 2246
+DSB STEP 2246 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2281
+DSB STEP 2283 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 2286
+DSB STEP 2355 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2392
+DSB STEP 2392 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 2397
+DSB STEP 2453 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2489
+DSB STEP 2489 (()=>{const e=document.querySelector(".dsb-studio-tools button");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 2494
+DSB STEP 2554 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2590
+DSB STEP 2590 if(!__ooga.dsb.avatar.weapon.aiming)__ooga.pilot.modeAction("mode-toggle");__ooga.crew.look(2.7,.1,1)
+DSB DONE 2594
+DSB STEP 2594 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2628
+DSB STEP 2629 ({seat:!!__ooga.dsb.avatar.camp.seat,p:{...__ooga.dsb.avatar.root.position},yaw:__ooga.dsb.avatar.root.rotation.y,shots:__ooga.dsb.avatar.weapon.shots
+DSB DONE 2635
+CHECK PASS Studio: seat 0 locks walking with seated pose and allows gun/throw controls {"seated":{"seat":true,"leg":-1.5707963267948966,"p":{"x":-5,"y":1.3367595085680484,"z":-13.4},"close":true,"yaw":0.2999999999999996},"fired":{"seat":true,"p":{"x":-5,"y":1.3367595085680484,"z":-13.4},"yaw":0.2536760598217045,"shots":3,"throws":2,"aim":true,"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 2635 Array.from(document.querySelectorAll("button")).filter(e=>/stand up/i.test(e.textContent)&&e.getClientRects().length&&getComputedStyle(e).visibility!=
+DSB DONE 2636
+DSB STEP 2636 Array.from(document.querySelectorAll("button")).some(e=>/stage lights|studio lights/i.test(e.textContent))
+DSB DONE 2636
+CHECK PASS Studio: seated control 0 has one stand action and no lighting button 
+DSB STEP 2636 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 2637
+DSB STEP 2703 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2739
+DSB STEP 2739 ({seat:!!__ooga.dsb.avatar.camp.seat,close:__ooga.pilot.closeWanted,clear:__ooga.dsb.interiors.walkable(__ooga.dsb.avatar.root.position.x,__ooga.dsb.a
+DSB DONE 2742
+CHECK PASS Studio: touch stand 0 restores clear ground and follow camera {"seat":false,"close":false,"clear":true}
+DSB STEP 2742 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.jukeboxAt,yaw:-Math.PI/2,pitch:.12,dist:3})
+DSB DONE 2743
+DSB STEP 2743 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2777
+DSB STEP 2777 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2782
+DSB STEP 2865 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2898
+DSB STEP 2979 (()=>{const e=document.querySelector(".spaces-item");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2980
+DSB STEP 3038 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3082
+DSB STEP 3082 (()=>{const e=document.querySelector(".dsb-spaces [data-next]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3087
+DSB STEP 3153 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3188
+DSB STEP 3188 (()=>{const e=document.querySelector(".dsb-spaces [data-prev]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3192
+DSB STEP 3253 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3286
+DSB STEP 3286 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3290
+DSB STEP 3354 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3388
+DSB STEP 3388 !__ooga.dsb.spaces.stats.playing
+DSB DONE 3392
+DSB STEP 3392 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 3393
+DSB STEP 3453 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3487
+DSB STEP 3487 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 3491
+DSB STEP 3556 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3592
+DSB STEP 3592 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 3597
+DSB STEP 3658 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3691
+DSB STEP 3691 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 3696
+DSB STEP 3756 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3792
+DSB STEP 3792 ({stats:__ooga.dsb.spaces.stats,active:__studioCheck.active.size,requests:__studioCheck.requests})
+DSB DONE 3797
+CHECK PASS Studio: archive 0 browses, pauses, resumes and reuses one player/cache {"stats":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"active":1,"requests":1}
+DSB STEP 3797 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,plays=__studioCheck.plays,near=D.spaces.stats.gain;B.pilot.navigate({position:{x:0,y:3,z:8.5},y
+DSB DONE 3800
+CHECK PASS Studio: archive 0 fades to silence in theater and returns without replay {"near":1,"far":{"active":true,"gain":0,"muted":true,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"back":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"plays":0}
+DSB STEP 3800 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.spawn,yaw:0,pitch:.22,dist:3})
+DSB DONE 3803
+DSB STEP 3803 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3837
+DSB STEP 3837 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 3841
+DSB STEP 3904 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3972
+DSB STEP 3972 (()=>{const B=__ooga,D=B.dsb;return {indoor:!!D.interiors.active,seat:!!D.avatar.camp.seat,spaces:D.spaces.stats,active:__studioCheck.active.size,weat
+DSB DONE 3983
+CHECK PASS Studio: exit 0 disposes playback, seat, projectiles and restores exterior {"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}
+DSB STEP 3983 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 3988
+DSB STEP 4055 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4097
+DSB STEP 4097 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4138
+DSB STEP 4138 (()=>{const B=__ooga,s=B.dsb.interiors.active.room.stageSeats[1];B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch:.12,dist
+DSB DONE 4143
+DSB STEP 4143 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4179
+DSB STEP 4179 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 4182
+DSB STEP 4238 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4274
+DSB STEP 4274 ({seat:!!__ooga.dsb.avatar.camp.seat,leg:__ooga.dsb.avatar.parts.legL.rotation.x,p:{...__ooga.dsb.avatar.root.position},close:__ooga.pilot.closeWanted
+DSB DONE 4279
+DSB STEP 4280 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4316
+DSB STEP 4318 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 4321
+DSB STEP 4388 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4423
+DSB STEP 4423 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 4428
+DSB STEP 4486 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4522
+DSB STEP 4522 (()=>{const e=document.querySelector(".dsb-studio-tools button");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 4526
+DSB STEP 4586 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4622
+DSB STEP 4622 if(!__ooga.dsb.avatar.weapon.aiming)__ooga.pilot.modeAction("mode-toggle");__ooga.crew.look(2.7,.1,1)
+DSB DONE 4626
+DSB STEP 4626 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4663
+DSB STEP 4663 ({seat:!!__ooga.dsb.avatar.camp.seat,p:{...__ooga.dsb.avatar.root.position},yaw:__ooga.dsb.avatar.root.rotation.y,shots:__ooga.dsb.avatar.weapon.shots
+DSB DONE 4667
+CHECK PASS Studio: seat 1 locks walking with seated pose and allows gun/throw controls {"seated":{"seat":true,"leg":-1.5707963267948966,"p":{"x":-2,"y":1.3367595085680484,"z":-13.4},"close":true,"yaw":0.2999999999999994},"fired":{"seat":true,"p":{"x":-2,"y":1.3367595085680484,"z":-13.4},"yaw":0.3216373318812442,"shots":9,"throws":3,"aim":true,"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 4667 Array.from(document.querySelectorAll("button")).filter(e=>/stand up/i.test(e.textContent)&&e.getClientRects().length&&getComputedStyle(e).visibility!=
+DSB DONE 4669
+DSB STEP 4669 Array.from(document.querySelectorAll("button")).some(e=>/stage lights|studio lights/i.test(e.textContent))
+DSB DONE 4670
+CHECK PASS Studio: seated control 1 has one stand action and no lighting button 
+DSB STEP 4670 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 4670
+DSB STEP 4736 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4773
+DSB STEP 4773 ({seat:!!__ooga.dsb.avatar.camp.seat,close:__ooga.pilot.closeWanted,clear:__ooga.dsb.interiors.walkable(__ooga.dsb.avatar.root.position.x,__ooga.dsb.a
+DSB DONE 4777
+CHECK PASS Studio: touch stand 1 restores clear ground and follow camera {"seat":false,"close":false,"clear":true}
+DSB STEP 4777 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.jukeboxAt,yaw:-Math.PI/2,pitch:.12,dist:3})
+DSB DONE 4777
+DSB STEP 4777 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4813
+DSB STEP 4813 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 4818
+DSB STEP 4891 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4926
+DSB STEP 5008 (()=>{const e=document.querySelector(".spaces-item");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 5009
+DSB STEP 5071 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5112
+DSB STEP 5112 (()=>{const e=document.querySelector(".dsb-spaces [data-next]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5119
+DSB STEP 5187 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5223
+DSB STEP 5223 (()=>{const e=document.querySelector(".dsb-spaces [data-prev]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5227
+DSB STEP 5288 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5323
+DSB STEP 5323 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5327
+DSB STEP 5386 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5421
+DSB STEP 5422 !__ooga.dsb.spaces.stats.playing
+DSB DONE 5426
+DSB STEP 5426 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 5427
+DSB STEP 5487 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5522
+DSB STEP 5522 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 5526
+DSB STEP 5589 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5625
+DSB STEP 5625 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 5630
+DSB STEP 5691 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5725
+DSB STEP 5725 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 5729
+DSB STEP 5789 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5824
+DSB STEP 5824 ({stats:__ooga.dsb.spaces.stats,active:__studioCheck.active.size,requests:__studioCheck.requests})
+DSB DONE 5829
+CHECK PASS Studio: archive 1 browses, pauses, resumes and reuses one player/cache {"stats":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"active":1,"requests":2}
+DSB STEP 5829 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,plays=__studioCheck.plays,near=D.spaces.stats.gain;B.pilot.navigate({position:{x:0,y:3,z:8.5},y
+DSB DONE 5832
+CHECK PASS Studio: archive 1 fades to silence in theater and returns without replay {"near":1,"far":{"active":true,"gain":0,"muted":true,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"back":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"plays":0}
+DSB STEP 5832 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.spawn,yaw:0,pitch:.22,dist:3})
+DSB DONE 5835
+DSB STEP 5835 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5868
+DSB STEP 5868 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 5871
+DSB STEP 5935 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5993
+DSB STEP 5993 (()=>{const B=__ooga,D=B.dsb;return {indoor:!!D.interiors.active,seat:!!D.avatar.camp.seat,spaces:D.spaces.stats,active:__studioCheck.active.size,weat
+DSB DONE 6003
+CHECK PASS Studio: exit 1 disposes playback, seat, projectiles and restores exterior {"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}
+DSB STEP 6003 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6004
+DSB STEP 6073 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6113
+DSB STEP 6113 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6152
+DSB STEP 6152 (()=>{const B=__ooga,s=B.dsb.interiors.active.room.stageSeats[2];B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:0,pitch:.12,dist
+DSB DONE 6156
+DSB STEP 6156 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6189
+DSB STEP 6189 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6192
+DSB STEP 6254 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6289
+DSB STEP 6289 ({seat:!!__ooga.dsb.avatar.camp.seat,leg:__ooga.dsb.avatar.parts.legL.rotation.x,p:{...__ooga.dsb.avatar.root.position},close:__ooga.pilot.closeWanted
+DSB DONE 6294
+DSB STEP 6295 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6327
+DSB STEP 6329 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 6332
+DSB STEP 6405 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6440
+DSB STEP 6440 (()=>{const e=document.querySelector("#weapon-hud");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y
+DSB DONE 6444
+DSB STEP 6504 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6541
+DSB STEP 6541 (()=>{const e=document.querySelector(".dsb-studio-tools button");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 6545
+DSB STEP 6602 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6637
+DSB STEP 6637 if(!__ooga.dsb.avatar.weapon.aiming)__ooga.pilot.modeAction("mode-toggle");__ooga.crew.look(2.7,.1,1)
+DSB DONE 6641
+DSB STEP 6641 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6675
+DSB STEP 6675 ({seat:!!__ooga.dsb.avatar.camp.seat,p:{...__ooga.dsb.avatar.root.position},yaw:__ooga.dsb.avatar.root.rotation.y,shots:__ooga.dsb.avatar.weapon.shots
+DSB DONE 6679
+CHECK PASS Studio: seat 2 locks walking with seated pose and allows gun/throw controls {"seated":{"seat":true,"leg":-1.5707963267948966,"p":{"x":4.2,"y":1.3367595085680484,"z":-15.2},"close":true,"yaw":2.220446049250313e-16},"fired":{"seat":true,"p":{"x":4.2,"y":1.3367595085680484,"z":-15.2},"yaw":0.03413586908025713,"shots":15,"throws":4,"aim":true,"audio":{"active":true,"connected":true,"contexts":1,"sources":3,"state":"running"}}}
+DSB STEP 6679 Array.from(document.querySelectorAll("button")).filter(e=>/stand up/i.test(e.textContent)&&e.getClientRects().length&&getComputedStyle(e).visibility!=
+DSB DONE 6680
+DSB STEP 6680 Array.from(document.querySelectorAll("button")).some(e=>/stage lights|studio lights/i.test(e.textContent))
+DSB DONE 6680
+CHECK PASS Studio: seated control 2 has one stand action and no lighting button 
+DSB STEP 6680 (()=>{const e=document.querySelector("#act");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.heig
+DSB DONE 6681
+DSB STEP 6736 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6771
+DSB STEP 6771 ({seat:!!__ooga.dsb.avatar.camp.seat,close:__ooga.pilot.closeWanted,clear:__ooga.dsb.interiors.walkable(__ooga.dsb.avatar.root.position.x,__ooga.dsb.a
+DSB DONE 6775
+CHECK PASS Studio: touch stand 2 restores clear ground and follow camera {"seat":false,"close":false,"clear":true}
+DSB STEP 6775 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.jukeboxAt,yaw:-Math.PI/2,pitch:.12,dist:3})
+DSB DONE 6775
+DSB STEP 6775 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6808
+DSB STEP 6808 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6813
+DSB STEP 6875 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6908
+DSB STEP 6990 (()=>{const e=document.querySelector(".spaces-item");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 6991
+DSB STEP 7054 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7093
+DSB STEP 7093 (()=>{const e=document.querySelector(".dsb-spaces [data-next]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7097
+DSB STEP 7154 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7189
+DSB STEP 7189 (()=>{const e=document.querySelector(".dsb-spaces [data-prev]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7193
+DSB STEP 7253 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7287
+DSB STEP 7287 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7291
+DSB STEP 7354 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7388
+DSB STEP 7388 !__ooga.dsb.spaces.stats.playing
+DSB DONE 7392
+DSB STEP 7392 (()=>{const e=document.querySelector(".dsb-spaces [data-play]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.w
+DSB DONE 7392
+DSB STEP 7454 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7488
+DSB STEP 7488 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 7492
+DSB STEP 7556 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7590
+DSB STEP 7590 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 7596
+DSB STEP 7657 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7692
+DSB STEP 7692 (()=>{const e=document.querySelector(".dsb-spaces [data-close]");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.
+DSB DONE 7697
+DSB STEP 7755 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7790
+DSB STEP 7790 ({stats:__ooga.dsb.spaces.stats,active:__studioCheck.active.size,requests:__studioCheck.requests})
+DSB DONE 7795
+CHECK PASS Studio: archive 2 browses, pauses, resumes and reuses one player/cache {"stats":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"active":1,"requests":3}
+DSB STEP 7795 (()=>{const B=__ooga,D=B.dsb,R=D.interiors.active.room,plays=__studioCheck.plays,near=D.spaces.stats.gain;B.pilot.navigate({position:{x:0,y:3,z:8.5},y
+DSB DONE 7798
+CHECK PASS Studio: archive 2 fades to silence in theater and returns without replay {"near":1,"far":{"active":true,"gain":0,"muted":true,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"back":{"active":true,"gain":1,"muted":false,"position":0,"open":false,"cached":1,"items":3,"media":1,"playing":true,"loading":false,"title":"Space 3"},"plays":0}
+DSB STEP 7798 __ooga.pilot.navigate({position:__ooga.dsb.interiors.active.room.spawn,yaw:0,pitch:.22,dist:3})
+DSB DONE 7801
+DSB STEP 7801 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7835
+DSB STEP 7835 (()=>{const e=document.querySelector("#dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 7838
+DSB STEP 7904 for(let i=0;i<48;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 7964
+DSB STEP 7964 (()=>{const B=__ooga,D=B.dsb;return {indoor:!!D.interiors.active,seat:!!D.avatar.camp.seat,spaces:D.spaces.stats,active:__studioCheck.active.size,weat
+DSB DONE 7975
+CHECK PASS Studio: exit 2 disposes playback, seat, projectiles and restores exterior {"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}
+CHECK PASS Studio: warmed room records remain bounded {"baseline":{"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425},"end":{"indoor":false,"seat":false,"spaces":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"active":0,"weather":true,"trigger":false,"projectiles":0,"rooms":1,"dom":1,"records":425}}
+CHECK PASS Studio: repeated cycles retain one listener set 
+DSB STEP 7977 (()=>{const B=__ooga,R=B.dsb.interiors.rooms.get("dsb-studio");return R.seats.every(s=>!s.sitter);})()
+DSB DONE 7977
+CHECK PASS Studio: every seat releases occupancy 
+DSB STEP 7977 window.fetch=__studioCheck.fetch;HTMLMediaElement.prototype.play=__studioCheck.play;HTMLMediaElement.prototype.pause=__studioCheck.pause;__studioCheck
+DSB DONE 8621
+DSB STEP 8621 ({old:__studioCheck.old.stats,dialogs:document.querySelectorAll(".dsb-spaces").length,rooms:__ooga.dsb.interiors.rooms.size,seat:!!__ooga.dsb.avatar.c
+DSB DONE 8626
+CHECK PASS Studio: leaving DSB and reentering creates one clean archive controller {"old":{"active":false,"gain":0,"muted":true,"position":0,"open":false,"cached":0,"items":0,"media":0,"playing":false,"loading":false,"title":""},"dialogs":1,"rooms":0,"seat":false}
+DSB STEP 8626 delete window.__studioCheck
+DSB DONE 8628
+CHECK PASS dsb studio checkpoint: clean console 8.6s 
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 93 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 94
+DSB STEP 136 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 179 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 179
+DSB STEP 220 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 221
+DSB STEP 263 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 264
+DSB STEP 306 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 307
+DSB STEP 349 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1189
+DSB STEP 1231 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1235
+DSB STEP 1277 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1278
+DSB STEP 1319 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1323
+DSB STEP 1365 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1371
+DSB STEP 1413 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1414
+DSB STEP 1414 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1414
+DSB STEP 1414 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1421
+CHECK PASS DSB integration: static scene exposes global sheet without backend room {"zone":"dsb-outside","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"false"}
+DSB STEP 1421 document.getElementById("sheet-toggle").click()
+DSB DONE 1422
+DSB STEP 1422 document.getElementById("sheet").dataset.open==="true"&&JSON.parse(localStorage.getItem("oogaboogaland.sheet.v1")).open
+DSB DONE 1423
+CHECK PASS DSB integration: global roster opens and persists 
+DSB STEP 1423 (()=>{document.getElementById("sheet-toggle").focus();return {x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z};})()
+DSB DONE 1424
+DSB STEP 1425 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1619
+DSB STEP 1626 ({x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z})
+DSB DONE 1633
+CHECK PASS DSB integration: focused global sheet isolates movement {"focus":{"x":-45,"z":-43},"moved":{"x":-45,"z":-43}}
+DSB STEP 1633 document.activeElement.blur()
+DSB DONE 1642
+DSB STEP 1642 __ooga.dsb.interiors.review("dsb-studio",true)
+DSB DONE 1644
+DSB STEP 1644 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1685
+DSB STEP 1685 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1692
+CHECK PASS DSB integration: dsb-studio immediately selects its voice zone {"zone":"dsb-studio","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 1692 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 1694
+DSB STEP 1694 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1742
+DSB STEP 1742 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 1818
+CHECK PASS DSB integration: exit dsb-studio restores exterior voice 
+DSB STEP 1818 __ooga.dsb.interiors.review("maxis-club",true)
+DSB DONE 1826
+DSB STEP 1826 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1868
+DSB STEP 1868 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1879
+CHECK PASS DSB integration: maxis-club immediately selects its voice zone {"zone":"dsb-maxis","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 1879 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 1883
+DSB STEP 1883 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1932
+DSB STEP 1932 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 1940
+CHECK PASS DSB integration: exit maxis-club restores exterior voice 
+DSB STEP 1940 __ooga.dsb.interiors.review("without-rulers",true)
+DSB DONE 1949
+DSB STEP 1949 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1999
+DSB STEP 1999 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2008
+CHECK PASS DSB integration: without-rulers immediately selects its voice zone {"zone":"dsb-without-rulers","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2008 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2011
+DSB STEP 2011 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2057
+DSB STEP 2057 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2064
+CHECK PASS DSB integration: exit without-rulers restores exterior voice 
+DSB STEP 2064 __ooga.dsb.interiors.review("proof-of-ink",true)
+DSB DONE 2071
+DSB STEP 2071 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2114
+DSB STEP 2114 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2131
+CHECK PASS DSB integration: proof-of-ink immediately selects its voice zone {"zone":"dsb-proof-of-ink","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2132 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2135
+DSB STEP 2135 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2180
+DSB STEP 2180 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2187
+CHECK PASS DSB integration: exit proof-of-ink restores exterior voice 
+DSB STEP 2187 __ooga.dsb.interiors.review("big-bitcoin",true)
+DSB DONE 2194
+DSB STEP 2194 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2237
+DSB STEP 2239 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2254
+CHECK PASS DSB integration: big-bitcoin immediately selects its voice zone {"zone":"dsb-big-bitcoin","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2254 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2258
+DSB STEP 2258 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2302
+DSB STEP 2303 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2311
+CHECK PASS DSB integration: exit big-bitcoin restores exterior voice 
+DSB STEP 2311 __ooga.dsb.interiors.review("meme-factory",true)
+DSB DONE 2318
+DSB STEP 2318 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2367
+DSB STEP 2367 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2378
+CHECK PASS DSB integration: meme-factory immediately selects its voice zone {"zone":"dsb-meme-factory","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2378 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2381
+DSB STEP 2381 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2428
+DSB STEP 2428 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2435
+CHECK PASS DSB integration: exit meme-factory restores exterior voice 
+DSB STEP 2435 __ooga.dsb.interiors.review("stackchain-magazine",true)
+DSB DONE 2442
+DSB STEP 2442 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2479
+DSB STEP 2479 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2489
+CHECK PASS DSB integration: stackchain-magazine immediately selects its voice zone {"zone":"dsb-stackchain","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2489 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2493
+DSB STEP 2493 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2537
+DSB STEP 2537 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2546
+CHECK PASS DSB integration: exit stackchain-magazine restores exterior voice 
+DSB STEP 2546 __ooga.dsb.interiors.review("svrn-society",true)
+DSB DONE 2552
+DSB STEP 2552 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2594
+DSB STEP 2594 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2599
+CHECK PASS DSB integration: svrn-society immediately selects its voice zone {"zone":"dsb-svrn","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2599 __ooga.dsb.svrnMenu.open("home")
+DSB DONE 2611
+DSB STEP 2611 (()=>{const s=document.getElementById("sheet");return !!s.closest("[inert]")&&document.activeElement.closest(".svrn-menu")!==null&&BL.dsbMenuShell.cou
+DSB DONE 2612
+CHECK PASS DSB integration: venue modal isolates the global sheet and owns focus 
+DSB STEP 2614 !document.getElementById("sheet").closest("[inert]")&&document.getElementById("sheet").dataset.open==="true"&&BL.dsbMenuShell.count===0
+DSB DONE 2618
+CHECK PASS DSB integration: closing venue restores global menu without changing saved state 
+DSB STEP 2618 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2619
+DSB STEP 2619 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2660
+DSB STEP 2660 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2667
+CHECK PASS DSB integration: exit svrn-society restores exterior voice 
+DSB STEP 2667 __ooga.go("bifrost");__ooga.advance(.6,.3)
+DSB DONE 2891
+DSB STEP 2891 __ooga.scene==="bifrost"&&BL.net.state.zone==="scene-bifrost"&&!document.querySelector(".dsb-entry")&&document.getElementById("sheet").dataset.open===
+DSB DONE 2895
+CHECK PASS DSB integration: short direct return clears DSB presence and keeps global sheet 
+DSB STEP 2895 __ooga.go("dsb");__ooga.advance(.6,.3)
+DSB DONE 3352
+DSB STEP 3352 __ooga.dsb.entrance.phase==="tunnel"&&BL.net.state.zone==="dsb-transit"&&document.getElementById("sheet").dataset.open==="true"
+DSB DONE 3356
+CHECK PASS DSB integration: outbound Bifrost journey uses special tunnel without island voice 
+DSB STEP 3356 __ooga.dsb.entrance.skip();__ooga.advance(.1,.1)
+DSB DONE 3369
+DSB STEP 3369 BL.net.state.zone==="dsb-outside"&&__ooga.dsb.gate.horizon.geometry.portalRect
+DSB DONE 3378
+CHECK PASS DSB integration: arrival restores exterior and rectangular membrane 
+CHECK PASS dsb integration checkpoint: clean console 3.4s 
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 48
+DSB STEP 89 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 90
+DSB STEP 132 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 139
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 181
+DSB STEP 223 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 224
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 266
+DSB STEP 308 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 309
+DSB STEP 351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1220
+DSB STEP 1261 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1265
+DSB STEP 1307 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1308
+DSB STEP 1349 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1353
+DSB STEP 1395 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1396
+DSB STEP 1438 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1439
+DSB STEP 1439 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1440
+DSB STEP 1440 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1440
+CHECK PASS DSB integration: static scene exposes global sheet without backend room {"zone":"dsb-outside","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"false"}
+DSB STEP 1440 document.getElementById("sheet-toggle").click()
+DSB DONE 1440
+DSB STEP 1441 document.getElementById("sheet").dataset.open==="true"&&JSON.parse(localStorage.getItem("oogaboogaland.sheet.v1")).open
+DSB DONE 1441
+CHECK PASS DSB integration: global roster opens and persists 
+DSB STEP 1441 (()=>{document.getElementById("sheet-toggle").focus();return {x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z};})()
+DSB DONE 1442
+DSB STEP 1443 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1631
+DSB STEP 1638 ({x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z})
+DSB DONE 1644
+CHECK PASS DSB integration: focused global sheet isolates movement {"focus":{"x":-45,"z":-43},"moved":{"x":-45,"z":-43}}
+DSB STEP 1644 document.activeElement.blur()
+DSB DONE 1645
+DSB STEP 1645 __ooga.dsb.interiors.review("dsb-studio",true)
+DSB DONE 1646
+DSB STEP 1646 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1691
+DSB STEP 1691 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1698
+CHECK PASS DSB integration: dsb-studio immediately selects its voice zone {"zone":"dsb-studio","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 1698 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 1701
+DSB STEP 1701 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1747
+DSB STEP 1747 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 1820
+CHECK PASS DSB integration: exit dsb-studio restores exterior voice 
+DSB STEP 1820 __ooga.dsb.interiors.review("maxis-club",true)
+DSB DONE 1826
+DSB STEP 1826 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1865
+DSB STEP 1866 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1877
+CHECK PASS DSB integration: maxis-club immediately selects its voice zone {"zone":"dsb-maxis","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 1877 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 1881
+DSB STEP 1881 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1928
+DSB STEP 1928 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 1936
+CHECK PASS DSB integration: exit maxis-club restores exterior voice 
+DSB STEP 1936 __ooga.dsb.interiors.review("without-rulers",true)
+DSB DONE 1944
+DSB STEP 1944 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1985
+DSB STEP 1985 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 1995
+CHECK PASS DSB integration: without-rulers immediately selects its voice zone {"zone":"dsb-without-rulers","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 1995 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 1997
+DSB STEP 1997 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2043
+DSB STEP 2043 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2049
+CHECK PASS DSB integration: exit without-rulers restores exterior voice 
+DSB STEP 2049 __ooga.dsb.interiors.review("proof-of-ink",true)
+DSB DONE 2057
+DSB STEP 2057 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2102
+DSB STEP 2102 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2117
+CHECK PASS DSB integration: proof-of-ink immediately selects its voice zone {"zone":"dsb-proof-of-ink","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2117 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2120
+DSB STEP 2120 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2163
+DSB STEP 2163 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2170
+CHECK PASS DSB integration: exit proof-of-ink restores exterior voice 
+DSB STEP 2170 __ooga.dsb.interiors.review("big-bitcoin",true)
+DSB DONE 2176
+DSB STEP 2176 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2219
+DSB STEP 2219 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2235
+CHECK PASS DSB integration: big-bitcoin immediately selects its voice zone {"zone":"dsb-big-bitcoin","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2235 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2238
+DSB STEP 2238 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2281
+DSB STEP 2281 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2288
+CHECK PASS DSB integration: exit big-bitcoin restores exterior voice 
+DSB STEP 2288 __ooga.dsb.interiors.review("meme-factory",true)
+DSB DONE 2294
+DSB STEP 2294 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2333
+DSB STEP 2333 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2344
+CHECK PASS DSB integration: meme-factory immediately selects its voice zone {"zone":"dsb-meme-factory","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2345 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2347
+DSB STEP 2347 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2393
+DSB STEP 2393 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2400
+CHECK PASS DSB integration: exit meme-factory restores exterior voice 
+DSB STEP 2400 __ooga.dsb.interiors.review("stackchain-magazine",true)
+DSB DONE 2406
+DSB STEP 2406 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2443
+DSB STEP 2443 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2453
+CHECK PASS DSB integration: stackchain-magazine immediately selects its voice zone {"zone":"dsb-stackchain","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2453 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2456
+DSB STEP 2456 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2499
+DSB STEP 2499 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2507
+CHECK PASS DSB integration: exit stackchain-magazine restores exterior voice 
+DSB STEP 2507 __ooga.dsb.interiors.review("svrn-society",true)
+DSB DONE 2513
+DSB STEP 2514 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2548
+DSB STEP 2548 ({zone:BL.net.state.zone,body:__ooga.dsb?.presence.body,backend:BL.net.state.backend,room:BL.net.state.room,hidden:document.getElementById("sheet").hi
+DSB DONE 2554
+CHECK PASS DSB integration: svrn-society immediately selects its voice zone {"zone":"dsb-svrn","body":"YellowBrokeIt","backend":false,"room":"off","hidden":false,"open":"true"}
+DSB STEP 2554 __ooga.dsb.svrnMenu.open("home")
+DSB DONE 2566
+DSB STEP 2566 (()=>{const s=document.getElementById("sheet");return !!s.closest("[inert]")&&document.activeElement.closest(".svrn-menu")!==null&&BL.dsbMenuShell.cou
+DSB DONE 2571
+CHECK PASS DSB integration: venue modal isolates the global sheet and owns focus 
+DSB STEP 2574 !document.getElementById("sheet").closest("[inert]")&&document.getElementById("sheet").dataset.open==="true"&&BL.dsbMenuShell.count===0
+DSB DONE 2575
+CHECK PASS DSB integration: closing venue restores global menu without changing saved state 
+DSB STEP 2575 __ooga.dsb.interiors.request(__ooga.dsb.interiors.active.room.exit)
+DSB DONE 2575
+DSB STEP 2575 for(let i=0;i<36;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2620
+DSB STEP 2620 BL.net.state.zone==="dsb-outside"&&!__ooga.dsb.interiors.active
+DSB DONE 2628
+CHECK PASS DSB integration: exit svrn-society restores exterior voice 
+DSB STEP 2628 __ooga.go("bifrost");__ooga.advance(.6,.3)
+DSB DONE 2852
+DSB STEP 2852 __ooga.scene==="bifrost"&&BL.net.state.zone==="scene-bifrost"&&!document.querySelector(".dsb-entry")&&document.getElementById("sheet").dataset.open===
+DSB DONE 2856
+CHECK PASS DSB integration: short direct return clears DSB presence and keeps global sheet 
+DSB STEP 2856 __ooga.go("dsb");__ooga.advance(.6,.3)
+DSB DONE 3308
+DSB STEP 3308 __ooga.dsb.entrance.phase==="tunnel"&&BL.net.state.zone==="dsb-transit"&&document.getElementById("sheet").dataset.open==="true"
+DSB DONE 3312
+CHECK PASS DSB integration: outbound Bifrost journey uses special tunnel without island voice 
+DSB STEP 3312 __ooga.dsb.entrance.skip();__ooga.advance(.1,.1)
+DSB DONE 3328
+DSB STEP 3328 BL.net.state.zone==="dsb-outside"&&__ooga.dsb.gate.horizon.geometry.portalRect
+DSB DONE 3335
+CHECK PASS DSB integration: arrival restores exterior and rectangular membrane 
+CHECK PASS dsb integration checkpoint: clean console 3.3s 
+
+406/406 checks passed in 1.2 min

@@ -1,0 +1,700 @@
+DSB STEP 24 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 25
+DSB STEP 67 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 68
+DSB STEP 109 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 110
+DSB STEP 152 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 153
+DSB STEP 195 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 197
+DSB STEP 238 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 239
+DSB STEP 279 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 280
+DSB STEP 322 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4475
+DSB STEP 4517 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4523
+DSB STEP 4565 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4566
+DSB STEP 4608 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4612
+DSB STEP 4653 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4661
+DSB STEP 4702 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4703
+DSB STEP 4703 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4776
+DSB STEP 4776 (() => { const B = __ooga, sign = B.headquarters.roomSigns[0], n = sign.node; Object.defineProperty(navigator, "clipboard", { configurable: true, valu
+DSB DONE 4976
+DSB STEP 5034 !!window.__roomHash
+DSB DONE 5035
+DSB STEP 5035 (() => { const B = __ooga, sign = B.headquarters.roomSigns[0], meta = sign.node.geometry.roomLifehashSign; B.advance(0.08, 1 / 60); return { expected:
+DSB DONE 5056
+CHECK PASS room sign: a pointer tap drives the hanging spring, copies its displayed eight-character code, and confirms it in the toast {"expected":"9EA934A5","copied":"9EA934A5","angle":-0.23814054942503626,"velocity":-2.3358733402426326,"hits":1,"before":0,"toast":"Room hash 9EA934A5 copied to clipboard","code":"9EA934A5"}
+CHECK PASS room sign copies hash: clean console 5.1s 
+DSB STEP 70 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 72
+DSB STEP 112 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 114
+DSB STEP 156 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 157
+DSB STEP 199 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 200
+DSB STEP 242 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 242
+DSB STEP 284 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 284
+DSB STEP 327 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 327
+DSB STEP 370 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4201
+DSB STEP 4243 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4256
+DSB STEP 4297 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4300
+DSB STEP 4342 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4343
+DSB STEP 4385 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4390
+DSB STEP 4430 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4432
+DSB STEP 4432 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4442
+DSB STEP 4442 (() => {
+    const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, S = B.headquarters.solids, c = B.pilot.player;
+    const dir = BL
+DSB DONE 4463
+CHECK PASS timechain: Sani arrives safely, both shores are walkable and the edge has no invisible floor {"name":"SaniExp","display":"Sani","distance":4.858240422210498,"feet":2.5199999809265137,"floor":2.52,"failures":[],"path":true,"edge":-120,"x":-49.1602398441209,"z":19.551043922729825}
+CHECK PASS timechain: the painted path connects the meadow ring to the bridge over the terraces 
+DSB STEP 4470 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 4740
+DSB STEP 4747 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 4822
+DSB STEP 4822 (() => { const c = __ooga.pilot.player; return { x: c.root.position.x, z: c.root.position.z, feet: c.root.position.y - c.baseY }; })()
+DSB DONE 4827
+CHECK PASS timechain: keyboard movement carries Sani across the grass without falling {"x":-51.58159470878417,"z":15.581215133049831,"feet":2.5199999809265137}
+DSB STEP 4828 (async () => {
+    const original = window.fetch, fixtures = [[{"blockheight":968330,"tag":"Individuals","total":15},{"blockheight":968330,"tag":"CEXs
+DSB DONE 4850
+DSB STEP 4851 (() => {
+    const D = BL.scenes.hub.debug, T = D.timechainIsland;
+    document.getElementById('sheet').hidden = true; __ooga.pilot.release(true); __o
+DSB DONE 4864
+DSB STEP 4864 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[0]
+DSB DONE 4949
+DSB STEP 5001 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[0].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 5009
+DSB STEP 5075 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 5076
+DSB STEP 5076 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 5076
+DSB STEP 5076 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[1]
+DSB DONE 5144
+DSB STEP 5196 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[1].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 5208
+DSB STEP 5253 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 5254
+DSB STEP 5254 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 5254
+DSB STEP 5254 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[2]
+DSB DONE 5331
+DSB STEP 5383 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[2].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 5384
+DSB STEP 5497 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 5502
+DSB STEP 5502 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 5506
+DSB STEP 5506 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[3]
+DSB DONE 5571
+DSB STEP 5623 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[3].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 5624
+DSB STEP 5670 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 5670
+DSB STEP 5670 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 5671
+DSB STEP 5671 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[4]
+DSB DONE 5734
+DSB STEP 5786 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[4].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 5787
+DSB STEP 5837 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 5838
+DSB STEP 5838 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 5839
+DSB STEP 5839 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[5]
+DSB DONE 5936
+DSB STEP 5988 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[5].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 5989
+DSB STEP 6259 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 6260
+DSB STEP 6260 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 6261
+DSB STEP 6261 (() => {
+    const T = BL.scenes.hub.debug.timechainIsland, before = T.boards.entries.map(e => e.panel.geometry);
+    BL.scenes.hub.debug.useProp(BL.s
+DSB DONE 6263
+CHECK PASS timechain webgl2: six complete wall sections stay visible and open their own details {"count":6,"loaded":true,"bounded":true,"complete":true,"noTabs":true,"pointer":[true,true,true,true,true,true],"independent":true}
+CHECK PASS timechain crossing: clean console 6.3s 
+DSB STEP 6263 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 6475
+DSB STEP 6475 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 7254
+DSB STEP 7254 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 7291
+DSB STEP 7291 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 7766
+DSB STEP 7766 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hub", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 7839
+CHECK PASS hub round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hub","first":{"scene":"hub","records":595,"nodes":2525,"targets":496,"dom":3036},"second":{"scene":"hub","records":595,"nodes":2525,"targets":496,"dom":3036}}
+CHECK PASS hub round trip: clean console 7.8s 
+DSB STEP 52 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 63
+DSB STEP 106 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 106
+DSB STEP 147 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 148
+DSB STEP 190 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 191
+DSB STEP 233 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 233
+DSB STEP 275 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 276
+DSB STEP 318 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 319
+DSB STEP 361 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4483
+DSB STEP 4525 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4528
+DSB STEP 4571 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4578
+DSB STEP 4619 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4627
+DSB STEP 4667 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4668
+DSB STEP 4710 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4715
+DSB STEP 4715 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4775
+DSB STEP 4775 (() => {
+    const B = __ooga, D = BL.scenes.hub.debug, T = D.timechainIsland, c = B.cavemen.get('SaniExp'), s = T.seat;
+    const read = () => ({ vis
+DSB DONE 23926
+CHECK PASS timechain: Sani types in his recliner, spins with his laptop independently of frame rate, and beer gear hugs the sphere wall {"before":{"visible":true,"seated":true,"distance":0,"lean":-0.23,"leg":-1.05,"facingScreen":true},"sitting":{"visible":true,"seated":true,"distance":0,"lean":-0.23,"leg":-1.05,"facingScreen":true},"after":{"visible":true,"seated":true,"distance":0,"lean":-0.23,"leg":-1.05,"facingScreen":true},"typing":true,"slow":{"angle":3.5207262636933754,"speed":0.45116479675261856,"together":true},"fast":{"angle":3.5207262636933865,"speed":0.45116479675261156,"together":true},"stopped":true,"controlled":true,"released":true,"centered":true,"sideStations":true}
+DSB STEP 23926 (() => {
+    const B = __ooga, D = BL.scenes.hub.debug, T = D.timechainIsland, c = B.cavemen.get('SaniExp'), beer = T.beer;
+    const cycle = rate => 
+DSB DONE 24425
+CHECK PASS timechain: an empty half-litre triggers a walk, visible refill and return, independent of frame rate and paused by control {"slow":{"mode":"work","elapsed":4.00000000000024,"litres":0.5,"sips":5,"refills":1,"broken":false,"cleaned":1,"replaced":1,"empty":true,"filling":true,"walked":true,"increasing":true,"drinkArm":0,"streamOff":true},"fast":{"mode":"work","elapsed":3.999999999998256,"litres":0.5,"sips":5,"refills":1,"broken":false,"cleaned":1,"replaced":1,"empty":true,"filling":true,"walked":true,"increasing":true,"drinkArm":0,"streamOff":true},"returned":true,"paused":true,"resumed":true,"chug":{"triggered":true,"phases":["chug","rise","walk","fill","return","sit","work"],"mode":"work","elapsed":12.500000000000133,"litres":0.5,"sips":1,"refills":1,"broken":false,"cleaned":0,"replaced":0,"drinkArm":-1.7,"shardsHidden":true,"streamOff":true},"spin":{"triggered":true,"phases":["spin","rise","cleanwalk","clean","trashwalk","discard","cabinetwalk","take","tapwalk","fill","return","sit","work"],"mode":"work","elapsed":13.250000000000199,"litres":0.5,"sips":0,"refills":1,"broken":false,"cleaned":1,"replaced":1,"drinkArm":0,"shardsHidden":true,"streamOff":true}}
+CHECK PASS timechain: chair clicks spill the glass, cup clicks chug it at mouth level, and cleanup restores a half-litre glass {"chug":{"triggered":true,"phases":["chug","rise","walk","fill","return","sit","work"],"mode":"work","elapsed":12.500000000000133,"litres":0.5,"sips":1,"refills":1,"broken":false,"cleaned":0,"replaced":0,"drinkArm":-1.7,"shardsHidden":true,"streamOff":true},"spin":{"triggered":true,"phases":["spin","rise","cleanwalk","clean","trashwalk","discard","cabinetwalk","take","tapwalk","fill","return","sit","work"],"mode":"work","elapsed":13.250000000000199,"litres":0.5,"sips":0,"refills":1,"broken":false,"cleaned":1,"replaced":1,"drinkArm":0,"shardsHidden":true,"streamOff":true}}
+CHECK PASS timechain resident: clean console 24.4s 
+DSB STEP 48 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 60
+DSB STEP 120 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 121
+DSB STEP 163 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 163
+DSB STEP 205 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 206
+DSB STEP 248 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 249
+DSB STEP 291 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 291
+DSB STEP 334 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4655
+DSB STEP 4696 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4705
+DSB STEP 4748 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4749
+DSB STEP 4791 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4795
+DSB STEP 4837 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4843
+DSB STEP 4885 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4886
+DSB STEP 4886 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4959
+DSB STEP 4959 (() => { const B = __ooga, inner = B.path.ringOuterRadius + 1.5, rows = [...B.cavemen.values()].map(c => ({ name: c.traits.name, state: c.state, radiu
+DSB DONE 5678
+CHECK PASS chilling Oogas: every Ooga rests beyond the banana ring without eating, and 2140data carries rather than continuously spins his nunchaku {"inner":4.875,"rows":[{"name":"shitnobi","state":"chilling","radius":21.721245360245803,"snack":false},{"name":"itme-brain","state":"chilling","radius":21.501453439244518,"snack":false},{"name":"miguelmedeiros","state":"chilling","radius":13.276333868003826,"snack":false},{"name":"dani69654","state":"chilling","radius":10.434490546211505,"snack":false},{"name":"btcmcboatface","state":"chilling","radius":12.233136716872034,"snack":false},{"name":"jdelg718","state":"chilling","radius":12.731905082941154,"snack":false},{"name":"mhodl","state":"chilling","radius":9.732366568584158,"snack":false},{"name":"fnbip","state":"chilling","radius":11.015006403371599,"snack":false},{"name":"j25dunn","state":"chilling","radius":7.835639025512719,"snack":false},{"name":"csuwildcat","state":"chilling","radius":14.252049799762844,"snack":false},{"name":"hero-gamer","state":"chilling","radius":19.319584734115434,"snack":false},{"name":"zmeyer44","state":"chilling","radius":10.389565128461584,"snack":false},{"name":"doggyballs","state":"chilling","radius":20.508439726122514,"snack":false},{"name":"pdubl22","state":"chilling","radius":8.93591480558137,"snack":false},{"name":"unclejim7","state":"chilling","radius":9.666219079802975,"snack":false},{"name":"hodldee","state":"chilling","radius":17.387049007201167,"snack":false},{"name":"rob1ham","state":"chilling","radius":7.8346068204053365,"snack":false},{"name":"portlandhodl","state":"chilling","radius":24.5,"snack":false},{"name":"w-s-bitcoin","state":"chilling","radius":8.830538132068318,"snack":false},{"name":"dplusplus1024","state":"chilling","radius":24.552189311749775,"snack":false},{"name":"bc1gui","state":"chilling","radius":5.706579177944264,"snack":false},{"name":"RandyMcMillan","state":"chilling","radius":15.333674875346928,"snack":false},{"name":"MrHodlX","state":"chilling","radius":10.915399808571621,"snack":false},{"name":"timechainb","state":"chilling","radius":5.940193389137036,"snack":false},{"name":"Tmmmemcee","state":"chilling","radius":6.24691069785028,"snack":false},{"name":"mikeinspace","state":"chilling","radius":15.102746990081693,"snack":false},{"name":"kaloudis","state":"chilling","radius":20.400000000000002,"snack":false},{"name":"korg1970","state":"chilling","radius":20.4,"snack":false},{"name":"fabu-rex","state":"chilling","radius":13.527427282390098,"snack":false},{"name":"YellowBrokeIt","state":"chilling","radius":10.25933500148622,"snack":false},{"name":"DrNeski","state":"chilling","radius":13.517583651239075,"snack":false},{"name":"rules-without-rulers","state":"chilling","radius":16.732360717600557,"snack":false},{"name":"cypherboxllc","state":"chilling","radius":15.650027992908978,"snack":false},{"name":"knorrium","state":"chilling","radius":12.711257187323826,"snack":false},{"name":"2140data","state":"chilling","radius":7.867276153389309,"snack":false},{"name":"Holo-Elfstone","state":"chilling","radius":13.961400606299934,"snack":false},{"name":"SaniExp","state":"chilling","radius":12.175993236557959,"snack":false},{"name":"ibrihamturay-coder","state":"chilling","radius":11.913971360182408,"snack":false},{"name":"hotpixelgroup","state":"chilling","radius":20.4,"snack":false},{"name":"bortlesboat","state":"chilling","radius":8.530684101420206,"snack":false},{"name":"payals","state":"chilling","radius":11.818598666855289,"snack":false},{"name":"beeforbacon","state":"chilling","radius":10.233443308260556,"snack":false}],"spin":false,"clubYaw":0}
+DSB STEP 5678 (() => {
+    const gorilla = BL.agent.create({ managed: true, groundAt: () => 0 }), motion = { groom: 0, groomPhase: 0 };
+    const parts = [gorilla.p
+DSB DONE 5692
+CHECK PASS seated gorillas: within one short rest the head and both arms move subtly while the seated footprint and root stay planted {"ranges":[0.05747974387355012,0.027376410706416276,0.14832142033948204],"compact":true,"displacement":0}
+DSB STEP 5692 (() => {
+    const B = __ooga, C = B.clankers, group = C.list.slice(0, 3), shape = BL.agent.torso;
+    B.pilot.release(true); C.release();
+    for (co
+DSB DONE 6098
+CHECK PASS gorilla crowd: three overlapping NPC trunks step apart without jumping or relocation, and converging walkers keep their trunks apart {"count":3,"initiallyCrowded":true,"separated":true,"approachClear":true,"maxStep":0.038207891652227814,"airborne":false,"standing":{"initiallyClear":true,"clear":true,"animated":0.3000000000000149,"upright":true,"displacement":0},"recoveries":0}
+CHECK PASS chilling Ooga placement: clean console 6.1s 
+DSB STEP 6098 (() => {
+    const B = __ooga, C = B.clankers, P = B.pilot, c = B.cavemen.get("portlandhodl"), e = C.list.find(e => e.owner === c);
+    P.release(true
+DSB DONE 7745
+CHECK PASS gorilla support: a moving back changes an idle NPC's height without carrying or launching it, and a grounded player walks onto it {"back":1.971595153480768,"drift":0,"jumped":false,"low":0,"high":1.9939161392748357,"gorillaDistance":1.800000000000015,"walked":7.113703435207927,"raised":1.3473865988203113}
+CHECK PASS Oogas walk over gorillas: clean console 7.7s 
+DSB STEP 48 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 50
+DSB STEP 114 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 115
+DSB STEP 155 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 156
+DSB STEP 198 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 200
+DSB STEP 242 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 242
+DSB STEP 285 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 285
+DSB STEP 327 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 379 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4326
+DSB STEP 4368 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4370
+DSB STEP 4413 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4421
+DSB STEP 4462 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4464
+DSB STEP 4505 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4510
+DSB STEP 4552 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4554
+DSB STEP 4554 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4620
+DSB STEP 4620 (() => {
+    const B = __ooga, C = B.clankers, e = C.list[0], owner = e.owner, m = B.headquarters.entropyLab.mouth;
+    const site = B.crew.workSites.
+DSB DONE 4680
+CHECK PASS gorilla lab exit: an Ooga standing in the doorway leaves the departure path, height and timing unchanged {"emptyExit":true,"occupiedExit":true,"frames":69,"samePath":true,"recoveries":0}
+CHECK PASS gorilla lab exit through Oogas: clean console 4.7s 
+DSB STEP 4680 (() => {
+    const B = __ooga, C = B.clankers, e = C.list[0], lab = B.headquarters.entropyLab;
+    B.pilot.release(true); e.owner.root.visible = false
+DSB DONE 4760
+CHECK PASS lab flask: pickup completes without circling, and the final magazine sends its clanker to the next cave immediately without a return job {"seconds":1.4666666666666663,"distance":0.699999999999999,"held":true,"station":5,"expected":5,"replans":0,"recoveries":0,"immediate":true,"returned":true,"exited":true,"progress":3.787025274269234,"fastest":2.7}
+CHECK PASS lab flask approach: clean console 4.8s 
+DSB STEP 4760 (() => {
+    const B = __ooga, C = B.clankers, e = C.list[0], lab = B.headquarters.entropyLab, m = lab.mouth;
+    B.pilot.release(true); C.possess(e);
+DSB DONE 4844
+CHECK PASS lab entry: unavailable equipment never holds a worker outside, sends it back out, or repeatedly relocates its interior waiting pose {"entered":true,"retreated":false,"queued":false,"inside":true,"phase":"work","station":-1,"settled":true,"lateRecoveries":0}
+CHECK PASS lab entry without equipment: clean console 4.8s 
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 54
+DSB STEP 95 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 96
+DSB STEP 137 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 180
+DSB STEP 223 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 266
+DSB STEP 307 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 308
+DSB STEP 351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4699
+DSB STEP 4741 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4795
+DSB STEP 4838 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4847
+DSB STEP 4889 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4890
+DSB STEP 4932 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4941
+DSB STEP 4942 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 5041
+DSB STEP 5042 (() => {
+    const B = __ooga, C = B.clankers, lab = B.headquarters.entropyLab, m = lab.mouth, group = C.list.slice(0, 2);
+    B.pilot.release(true); 
+DSB DONE 8504
+CHECK PASS lab work: exclusive regular and overflow jobs animate correctly, and coworkers take room routes out together without a doorway stall {"actors":2,"seconds":[29.20000000000061,20.800000000000193],"strokes":[0.6760767048827617,0.7333874473808359],"outside":false,"duplicate":false,"regular":6,"used":[3,4,2,0,6,5,1],"six":{"used":true,"allClaimed":true,"premature":false},"shared":false,"overflowWorked":true,"code":true,"scroll":true,"restored":true,"released":true,"routed":true,"departures":6,"left":6,"beakerWorked":true,"dieRolled":true,"straight":true,"turnedAt":0.5166666666666667,"soloLeft":true,"bunchLeft":3,"bunchRecoveries":0}
+CHECK PASS lab work rotation: clean console 8.5s 
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 47
+DSB STEP 102 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 102
+DSB STEP 145 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 145
+DSB STEP 187 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 188
+DSB STEP 230 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 232
+DSB STEP 274 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 275
+DSB STEP 317 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 372 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4524
+DSB STEP 4565 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4581
+DSB STEP 4623 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4624
+DSB STEP 4665 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4674
+DSB STEP 4714 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4723
+DSB STEP 4765 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4771
+DSB STEP 4771 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4822
+DSB STEP 4822 localStorage.removeItem("oogaboogaland.sheet.v1")
+DSB DONE 4827
+DSB STEP 4833 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4861
+DSB STEP 4902 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4903
+DSB STEP 4945 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4946
+DSB STEP 4987 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4988
+DSB STEP 5030 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5031
+DSB STEP 5073 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5074
+DSB STEP 5116 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 5175 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9168
+DSB STEP 9210 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9218
+DSB STEP 9262 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9267
+DSB STEP 9309 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9310
+DSB STEP 9352 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9355
+DSB STEP 9397 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9405
+DSB STEP 9405 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 9472
+DSB STEP 9472 (() => { const sheet = document.getElementById("sheet"), tab = document.querySelector("[data-tab][aria-selected='true']").dataset.tab, saved = localSt
+DSB DONE 9477
+DSB STEP 9477 document.getElementById("sheet-bananas").click()
+DSB DONE 9478
+DSB STEP 9478 (() => { const sheet = document.getElementById("sheet"), tab = document.querySelector("[data-tab][aria-selected='true']").dataset.tab, saved = localSt
+DSB DONE 9478
+DSB STEP 9483 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9510
+DSB STEP 9552 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9553
+DSB STEP 9595 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9596
+DSB STEP 9638 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9638
+DSB STEP 9679 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9679
+DSB STEP 9720 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 9720
+DSB STEP 9762 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 9821 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13763
+DSB STEP 13806 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13813
+DSB STEP 13856 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13856
+DSB STEP 13899 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13904
+DSB STEP 13946 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 13954
+DSB STEP 13996 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14004
+DSB STEP 14004 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 14070
+DSB STEP 14070 (() => { const sheet = document.getElementById("sheet"), tab = document.querySelector("[data-tab][aria-selected='true']").dataset.tab, saved = localSt
+DSB DONE 14076
+DSB STEP 14076 document.getElementById("sheet-bananas").click()
+DSB DONE 14077
+DSB STEP 14081 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14106
+DSB STEP 14148 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14149
+DSB STEP 14191 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14192
+DSB STEP 14232 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14233
+DSB STEP 14275 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14276
+DSB STEP 14318 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 14318
+DSB STEP 14361 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 14423 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 18431
+DSB STEP 18473 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 18485
+DSB STEP 18527 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 18537
+DSB STEP 18580 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 18588
+DSB STEP 18630 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 18640
+DSB STEP 18640 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 18738
+DSB STEP 18739 (() => { const sheet = document.getElementById("sheet"), tab = document.querySelector("[data-tab][aria-selected='true']").dataset.tab, saved = localSt
+DSB DONE 18743
+DSB STEP 18743 localStorage.removeItem("oogaboogaland.sheet.v1")
+DSB DONE 18744
+CHECK PASS side panel: first load is closed and reloads restore its open state and selected tab {"first":{"open":"false","tab":"roster","panel":true,"saved":null},"opened":{"open":"true","tab":"bananas","panel":true,"saved":{"open":true,"tab":"bananas"}},"restored":{"open":"true","tab":"bananas","panel":true,"saved":{"open":true,"tab":"bananas"}},"closed":{"open":"false","tab":"bananas","panel":true,"saved":{"open":false,"tab":"bananas"}}}
+CHECK PASS side panel persistence: clean console 18.7s 
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 43
+DSB STEP 104 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 105
+DSB STEP 147 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 148
+DSB STEP 190 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 190
+DSB STEP 232 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 233
+DSB STEP 275 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 276
+DSB STEP 318 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 319
+DSB STEP 360 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4613
+DSB STEP 4654 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4662
+DSB STEP 4702 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4707
+DSB STEP 4749 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4758
+DSB STEP 4800 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4805
+DSB STEP 4847 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4848
+DSB STEP 4848 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4924
+DSB STEP 4924 (() => { const clock = document.getElementById("world-clock"), label = clock.querySelector("svg").getAttribute("aria-label"), text = label.replace(/^O
+DSB DONE 4930
+DSB STEP 4930 BL.mempool.emit({ type: "block", height: 900123, txCount: 3210 })
+DSB DONE 4931
+DSB STEP 4931 (() => { const B = __ooga, height = document.getElementById("world-block-height"), block = document.getElementById("world-block"); const shown = heigh
+DSB DONE 4943
+CHECK PASS header: a single-digit clock is centered from its displayed time and local zone, while the chain feed paints block height below it and banana-meter updates cannot overwrite it {"before":{"height":"—","bananas":false,"label":"Ooga Booga time 9:00 AM MST","namedImage":true,"text":"9:00 AM MST","zone":"MST","cells":39,"viewWidth":39,"cssWidth":6.5},"after":{"shown":"900,123","afterMeter":"900,123","label":"Bitcoin block height 900123","bananas":false,"icon":false}}
+CHECK PASS header clock and block height: clean console 4.9s 
+DSB STEP 4944 (() => { document.querySelector('[data-detached-preset="pile"]').click(); __ooga.advance(0.1, 1 / 60); return document.getElementById("detached-destin
+DSB DONE 4989
+DSB STEP 5009 (() => { document.querySelector('[data-detached-preset="lab"]').click(); __ooga.advance(0.1, 1 / 60); return document.getElementById("detached-destina
+DSB DONE 5065
+DSB STEP 5076 (() => { document.querySelector('[data-detached-preset="mirror"]').click(); __ooga.advance(0.1, 1 / 60); return document.getElementById("detached-dest
+DSB DONE 5116
+DSB STEP 5128 (() => { document.querySelector('[data-detached-preset="underground"]').click(); __ooga.advance(0.1, 1 / 60); return document.getElementById("detached
+DSB DONE 5173
+DSB STEP 5186 (() => { document.querySelector('[data-detached-preset="basement"]').click(); __ooga.advance(0.1, 1 / 60); return document.getElementById("detached-de
+DSB DONE 5221
+DSB STEP 5231 (() => { document.querySelector('[data-detached-preset="mempool"]').click(); __ooga.advance(0.1, 1 / 60); return document.getElementById("detached-des
+DSB DONE 5302
+DSB STEP 5321 __ooga.pilot.goPreset("pile"); __ooga.advance(0.1, 1 / 60)
+DSB DONE 5434
+CHECK PASS destinations: every visible place label is included in the actual browser accessibility name [{"preset":"pile","label":"Pile","names":["PILE Ooga Booga Land destinations. Select a dot or press to cycle places"]},{"preset":"lab","label":"Lab","names":["LAB Ooga Booga Land destinations. Select a dot or press to cycle places"]},{"preset":"mirror","label":"Mirror","names":["MIRROR Ooga Booga Land destinations. Select a dot or press to cycle places"]},{"preset":"underground","label":"HQ","names":["HQ Ooga Booga Land destinations. Select a dot or press to cycle places"]},{"preset":"basement","label":"Basement","names":["BASEMENT Ooga Booga Land destinations. Select a dot or press to cycle places"]},{"preset":"mempool","label":"Mempool","names":["MEMPOOL Ooga Booga Land destinations. Select a dot or press to cycle places"]}]
+CHECK PASS destination accessible names: clean console 5.4s 
+DSB STEP 75 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 78
+DSB STEP 120 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 121
+DSB STEP 163 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 164
+DSB STEP 206 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 207
+DSB STEP 248 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 249
+DSB STEP 291 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 292
+DSB STEP 334 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 334
+DSB STEP 377 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4965
+DSB STEP 5008 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5449
+DSB STEP 5491 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 5845
+DSB STEP 5846 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 6630
+DSB STEP 6630 (() => { const B = window.__ooga, c = document.getElementById("scene"), t = document.createElement("canvas"); t.width = t.height = 8; const x = t.getC
+DSB DONE 42982
+CHECK PASS canvas2d tour: with WebGL2 unavailable every scene still boots, arrives and paints {"hub":{"kind":"canvas2d","colours":40},"lab":{"arrived":true,"colours":24},"race":{"arrived":true,"colours":41},"drop":{"arrived":true,"colours":16},"orbit":{"arrived":true,"colours":29},"mine":{"arrived":true,"colours":55},"arcade":{"arrived":true,"colours":56},"back":{"arrived":true,"colours":24}}
+CHECK PASS canvas2d tour: clean console 43.0s 
+SLOW hub took 43.4 s against a 25 s budget
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 47
+DSB STEP 120 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 121
+DSB STEP 163 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 163
+DSB STEP 205 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 206
+DSB STEP 248 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 249
+DSB STEP 291 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 292
+DSB STEP 334 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4118
+DSB STEP 4160 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4299
+DSB STEP 4341 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4427
+DSB STEP 4469 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4559
+DSB STEP 4559 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4686
+DSB STEP 4686 (() => {
+    const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, S = B.headquarters.solids, c = B.pilot.player;
+    const dir = BL
+DSB DONE 4829
+CHECK PASS timechain: Sani arrives safely, both shores are walkable and the edge has no invisible floor {"name":"SaniExp","display":"Sani","distance":4.858240422210498,"feet":2.5199999809265137,"floor":2.52,"failures":[],"path":true,"edge":-120,"x":-49.1602398441209,"z":19.551043922729825}
+CHECK PASS timechain: the painted path connects the meadow ring to the bridge over the terraces 
+DSB STEP 4956 window.__ooga.advance(0.6, 1 / 60)
+DSB DONE 9782
+DSB STEP 9785 window.__ooga.advance(0.2, 1 / 60)
+DSB DONE 11460
+DSB STEP 11460 (() => { const c = __ooga.pilot.player; return { x: c.root.position.x, z: c.root.position.z, feet: c.root.position.y - c.baseY }; })()
+DSB DONE 11590
+CHECK PASS timechain: keyboard movement carries Sani across the grass without falling {"x":-51.98515385289468,"z":14.919577001436476,"feet":2.5199999809265137}
+DSB STEP 11590 (async () => {
+    const original = window.fetch, fixtures = [[{"blockheight":968330,"tag":"Individuals","total":15},{"blockheight":968330,"tag":"CEXs
+DSB DONE 11607
+DSB STEP 11607 (() => {
+    const D = BL.scenes.hub.debug, T = D.timechainIsland;
+    document.getElementById('sheet').hidden = true; __ooga.pilot.release(true); __o
+DSB DONE 11741
+DSB STEP 11741 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[0]
+DSB DONE 15791
+DSB STEP 15843 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[0].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 15918
+DSB STEP 16175 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 16302
+DSB STEP 16302 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 16428
+DSB STEP 16428 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[1]
+DSB DONE 20397
+DSB STEP 20448 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[1].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 20527
+DSB STEP 20783 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 20912
+DSB STEP 20912 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 21040
+DSB STEP 21040 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[2]
+DSB DONE 46879
+DSB STEP 46931 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[2].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 47709
+DSB STEP 49436 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 50279
+DSB STEP 50279 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 51124
+DSB STEP 51124 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[3]
+DSB DONE 55692
+DSB STEP 55744 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[3].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 55816
+DSB STEP 56072 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 56197
+DSB STEP 56197 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 56323
+DSB STEP 56323 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[4]
+DSB DONE 60632
+DSB STEP 60683 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[4].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 60772
+DSB STEP 61049 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 61187
+DSB STEP 61187 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 61327
+DSB STEP 61327 (() => {
+      const B = __ooga, T = BL.scenes.hub.debug.timechainIsland, p = T.place, o = B.pilot.orbit;
+      const yaw = p.ry - T.boards.entries[5]
+DSB DONE 78410
+DSB STEP 78462 (() => {
+      const m = BL.scenes.hub.debug.timechainIsland.boards.entries[5].node.world;
+      const p = __ooga.project(m[12] + m[4] * 5.2 - m[8] * 
+DSB DONE 78980
+DSB STEP 79957 (() => {
+      const T = BL.scenes.hub.debug.timechainIsland, note = document.getElementById('board-note');
+      return document.getElementById('boar
+DSB DONE 80449
+DSB STEP 80449 document.querySelector('[data-action="board-close"]').click()
+DSB DONE 80936
+DSB STEP 80936 (() => {
+    const T = BL.scenes.hub.debug.timechainIsland, before = T.boards.entries.map(e => e.panel.geometry);
+    BL.scenes.hub.debug.useProp(BL.s
+DSB DONE 81426
+CHECK PASS timechain canvas2d: six complete wall sections stay visible and open their own details {"count":6,"loaded":true,"bounded":true,"complete":true,"noTabs":true,"pointer":[true,true,true,true,true,true],"independent":true}
+CHECK PASS timechain crossing: clean console 81.4s 
+DSB STEP 81426 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 86201
+DSB STEP 86202 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 89123
+DSB STEP 89123 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 90437
+DSB STEP 90437 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 92992
+DSB STEP 92992 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hub", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 96842
+CHECK PASS hub round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hub","first":{"scene":"hub","records":0,"nodes":2211,"targets":430,"dom":3036},"second":{"scene":"hub","records":0,"nodes":2211,"targets":430,"dom":3036}}
+CHECK PASS hub round trip: clean console 96.8s 
+SLOW hub took 97.3 s against a 25 s budget
+
+239/239 checks passed in 4.2 min

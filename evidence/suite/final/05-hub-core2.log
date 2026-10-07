@@ -1,0 +1,223 @@
+DSB STEP 50 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 63
+DSB STEP 104 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 105
+DSB STEP 147 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 147
+DSB STEP 189 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 190
+DSB STEP 232 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 232
+DSB STEP 274 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 275
+DSB STEP 317 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 317
+DSB STEP 360 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4475
+DSB STEP 4517 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4528
+DSB STEP 4571 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4572
+DSB STEP 4613 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4621
+DSB STEP 4662 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4670
+DSB STEP 4712 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4721
+DSB STEP 4721 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4770
+DSB STEP 4770 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), slot = window.BL.caves.slots.find((s) => s.scene === "arcade"), m = B.mouths.find
+DSB DONE 5371
+DSB STEP 5425 (() => { const B = window.__ooga; for (let i = 0; i < 240 && (B.transitioning || B.scene === "hub"); i++) B.advance(1 / 30, 1 / 30); B.advance(0.3, 1 
+DSB DONE 6595
+DSB STEP 6595 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 7704
+DSB STEP 7704 (() => {
+    const B = window.__ooga, M = B.poolIsland, L = M.layout, a = B.cavemen.get("portlandhodl"), point = {};
+    if (B.crew.player !== a) B.pi
+DSB DONE 13006
+CHECK PASS hub routes: Space at the arcade mouth enters its scene, and the same Ooga walks from the mouth down the whole descent into the chamber under the lake without leaving the island {"reached":{"arcade":"arcade"},"walked":{"scene":"hub","same":true,"steps":402,"furthest":100.16245148520721,"floor":-3.7300000000000004,"feet":-3.7300000190734863,"under":true,"r":8.413629314826652,"rimBehindWall":true,"eyeInChamber":true,"rimInSight":false,"eyeInTunnel":true}}
+CHECK PASS hub routes: under the Mempool island a walker behind the chamber's wall is drawn through the rock as a rim from a view in the chamber, and gets none in plain sight from behind in the tunnel {"eyeInChamber":true,"rimBehindWall":true,"eyeInTunnel":true,"rimInSight":false}
+CHECK PASS hub routes: clean console 13.0s 
+DSB STEP 13006 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), I = B.island, ang = Math.PI / 4; if (B.crew.player !== a) B.pilot.possess(a); let
+DSB DONE 13736
+DSB STEP 13761 (() => { const B = window.__ooga, a = B.cavemen.get("portlandhodl"), p = a.root.position; let minFeet = Infinity, back = null; for (let i = 0; i < 20 
+DSB DONE 14932
+CHECK PASS hub fall: an Ooga walked off the edge falls into the abyss and is back at the pile within six seconds, still yours {"minFeet":-59.2,"back":3.966666666666667,"onLand":true,"yours":true}
+CHECK PASS hub fall: clean console 14.9s 
+DSB STEP 14945 (() => { const B = window.__ooga, clouds = [];
+    for (let tries = 0; tries < 3 && !clouds.length; tries++) {
+      if (tries) B.advance(5);
+      fo
+DSB DONE 14962
+CHECK PASS hub grounding: a cloud is never a floor for a placement from above, and no tree crown is walking support for a roaming gorilla {"clouds":[{"x":-45,"z":-3,"fromAbove":true},{"x":-45,"z":6,"fromAbove":true},{"x":-42,"z":-45,"fromAbove":true},{"x":-42,"z":-42,"fromAbove":true},{"x":-42,"z":-3,"fromAbove":true},{"x":-39,"z":-45,"fromAbove":true},{"x":-39,"z":-42,"fromAbove":true},{"x":-39,"z":-36,"fromAbove":true}],"guard":true,"treeCount":36,"crown":{"x":-28.7,"z":-3.7,"max":0,"rises":[0,0,0,0,0,0,0,0,0]}}
+CHECK PASS hub grounding: clean console 15.0s 
+DSB STEP 14963 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 15077
+DSB STEP 15077 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 15771
+DSB STEP 15771 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 15873
+DSB STEP 15873 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 16542
+DSB STEP 16542 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hub", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 16765
+CHECK PASS hub round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hub","first":{"scene":"hub","records":920,"nodes":4412,"targets":1228,"dom":3604},"second":{"scene":"hub","records":922,"nodes":4412,"targets":1228,"dom":3604}}
+CHECK PASS hub round trip: clean console 16.8s 
+DSB STEP 16765 (() => {
+    const B = __ooga, C = BL.contributors, sites = B.crew.workSites, index = sites.findIndex(site => site.mouth.id === "c2"), site = sites[in
+DSB DONE 16784
+CHECK PASS factory contribution routing: ordinary BananaPayServer and historical LightningFactory activity sends the Ooga and clanker to canonical LF {"debugRoster":false,"debugState":null,"index":2,"repo":"oogaboogax/lightningfoundry","additionalRepo":"oogaboogax/bananapayserver","rows":[{"repo":"OogaBoogaX/BananaPayServer","state":"working","assigned":2,"clanker":2},{"repo":"OogaBoogaX/LightningFactory","state":"working","assigned":2,"clanker":2}]}
+CHECK PASS factory contribution routing: clean console 16.8s 
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 99 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 100
+DSB STEP 142 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 143
+DSB STEP 185 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 186
+DSB STEP 228 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 229
+DSB STEP 271 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 272
+DSB STEP 314 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 315
+DSB STEP 357 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 399 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4167
+DSB STEP 4210 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4213
+DSB STEP 4255 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4264
+DSB STEP 4306 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4312
+DSB STEP 4354 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4355
+DSB STEP 4397 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4403
+DSB STEP 4403 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4412
+DSB STEP 4412 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 4484
+DSB STEP 4484 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 5252
+DSB STEP 5253 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 5291
+DSB STEP 5291 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 5762
+DSB STEP 5762 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hub", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 5842
+CHECK PASS hub round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hub","first":{"scene":"hub","records":595,"nodes":2543,"targets":496,"dom":3030},"second":{"scene":"hub","records":595,"nodes":2543,"targets":496,"dom":3030}}
+CHECK PASS hub round trip: clean console 5.8s 
+DSB STEP 45 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 46
+DSB STEP 94 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 95
+DSB STEP 137 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 138
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 181
+DSB STEP 223 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 266
+DSB STEP 308 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 309
+DSB STEP 351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 402 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4505
+DSB STEP 4547 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4557
+DSB STEP 4599 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4602
+DSB STEP 4644 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4653
+DSB STEP 4695 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4703
+DSB STEP 4703 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4818
+DSB STEP 4818 window.__ooga.advance(2, 1 / 60)
+DSB DONE 5519
+DSB STEP 5771 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 5775
+DSB STEP 5775 document.getElementById("sheet-toggle").click()
+DSB DONE 5777
+DSB STEP 5777 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 5778
+DSB STEP 5830 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 5832
+DSB STEP 5885 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 5888
+DSB STEP 5938 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 5940
+DSB STEP 5992 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 5994
+DSB STEP 6046 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6049
+DSB STEP 6100 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6102
+DSB STEP 6154 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6155
+DSB STEP 6208 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6209
+DSB STEP 6261 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6262
+DSB STEP 6312 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6321
+DSB STEP 6372 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6373
+DSB STEP 6425 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6431
+DSB STEP 6484 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6490
+DSB STEP 6540 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6541
+DSB STEP 6593 (() => { const s = document.getElementById("sheet"), t = getComputedStyle(s).transform; return s.dataset.open === "true" && (t === "none" || new DOMMa
+DSB DONE 6598
+DSB STEP 6598 ((required) => {
+  const W = innerWidth, H = innerHeight, bad = [];
+  const name = (el) => el.id ? '#' + el.id : el.tagName.toLowerCase() + '.' + [...
+DSB DONE 6610
+CHECK PASS hub phone: nothing is clipped, wrapped by accident or off screen, and every control is under a thumb, with the sheet open too {"play":[],"sheet":[]}
+CHECK PASS hub phone: clean console 6.6s 
+DSB STEP 44 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 45
+DSB STEP 91 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 92
+DSB STEP 133 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 134
+DSB STEP 175 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 176
+DSB STEP 218 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 219
+DSB STEP 261 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 262
+DSB STEP 303 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 304
+DSB STEP 346 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4054
+DSB STEP 4097 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4238
+DSB STEP 4280 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4365
+DSB STEP 4407 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 4494
+DSB STEP 4494 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4619
+DSB STEP 4619 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 5985
+DSB STEP 5985 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 8829
+DSB STEP 8829 (() => { const B = window.__ooga; B.go("lab"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "lab"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 10104
+DSB STEP 10104 (() => { const B = window.__ooga; B.go("hub"); for (let i = 0; i < 150 && (B.transitioning || B.scene !== "hub"); i++) B.advance(1 / 30, 1 / 30); B.ad
+DSB DONE 12634
+DSB STEP 12634 (() => { const B = window.__ooga; window.BL.scenes[B.scene].onDonation({ id: "trip-hub", sats: 2100, handle: "tester", message: "ooga", at: Date.now()
+DSB DONE 16529
+CHECK PASS hub round trip: leaving and entering twice keeps the leave contract and holds nothing the first visit did not, and a donation mid-visit is taken {"grew":[],"donated":"hub","first":{"scene":"hub","records":0,"nodes":2211,"targets":430,"dom":3030},"second":{"scene":"hub","records":0,"nodes":2211,"targets":430,"dom":3030}}
+CHECK PASS hub round trip: clean console 16.5s 
+
+214/214 checks passed in 1.2 min

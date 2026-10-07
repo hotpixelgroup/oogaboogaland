@@ -1,0 +1,830 @@
+DSB STEP 47 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 70
+DSB STEP 112 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 113
+DSB STEP 155 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 156
+DSB STEP 197 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 198
+DSB STEP 240 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 242
+DSB STEP 283 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 284
+DSB STEP 325 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 379 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1195
+DSB STEP 1237 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1243
+DSB STEP 1285 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1286
+DSB STEP 1328 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1336
+DSB STEP 1379 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1383
+DSB STEP 1425 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1431
+DSB STEP 1432 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1432
+DSB STEP 1432 (() => {
+    const B=__ooga,W=B.dsb.water,first=new Uint8Array(W.pixels);
+    W.update(13);const moved=W.pixels.some((x,i)=>x!==first[i]);
+    W.updat
+DSB DONE 1449
+DSB STEP 1449 new URLSearchParams(location.search).has("canvas2d")
+DSB DONE 1456
+CHECK PASS DSB FFT: finite, periodic, animated; depth grows offshore; renderer stays available {"kind":"webgl2","textures":2,"moved":true,"loop":true,"finite":true,"cost":0.24499999980131784,"depthNear":5.6,"depthFar":30,"camera":{"yaw":-0.08,"pitch":1.22,"dist":207,"target":{"x":-2,"y":10,"z":-1}}}
+DSB STEP 1456 document.querySelector('[data-action="reset-view"]').click()
+DSB DONE 1460
+DSB STEP 1460 ({x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z})
+DSB DONE 1479
+DSB STEP 1487 __ooga.advance(.3)
+DSB DONE 1752
+DSB STEP 1759 ({x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z})
+DSB DONE 1766
+CHECK PASS DSB keyboard movement still walks on approved land {"before":{"x":-45,"z":-43},"after":{"x":-45,"z":-45.32499999999993}}
+DSB STEP 1766 __ooga.dsb.avatar.traits.name
+DSB DONE 1767
+DSB STEP 1767 (() => {const B=__ooga,G=B.dsb.gate;G.receive();return G.traverse({x:-45,y:41.4,z:-46},{x:-45,y:41.4,z:-50},.3);})()
+DSB DONE 1767
+DSB STEP 1768 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 2428
+DSB STEP 2428 __ooga.renderer.stats.waterTextures
+DSB DONE 2428
+DSB STEP 2429 __ooga.go("dsb")
+DSB DONE 2429
+DSB STEP 2429 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3327
+DSB STEP 3328 ({entrance:!!__ooga.dsb.entrance,phase:__ooga.dsb.entrance?.phase,exterior:__ooga.dsb.exterior.visible})
+DSB DONE 3328
+CHECK PASS DSB water trip 0: return enters the Bifrost tunnel before exterior resources are measured {"entrance":true,"phase":"tunnel","exterior":false}
+DSB STEP 3328 matchMedia("(pointer: coarse)").matches
+DSB DONE 3329
+DSB STEP 3330 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 3331
+DSB STEP 3331 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3359
+DSB STEP 3359 (async () => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"); e.scrollIntoView({ block: "center", behavior: "instant" }); await
+DSB DONE 3394
+DSB STEP 3448 (() => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"), r = e.getBoundingClientRect(); window.__hudPointer = []; for (const typ
+DSB DONE 3449
+DSB STEP 3507 window.__hudPointer
+DSB DONE 3507
+DSB STEP 3507 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3532
+CHECK PASS DSB water trip 0: the real Skip entry control reaches a drawn exterior 
+DSB STEP 3533 ({name:__ooga.dsb.avatar.traits.name,textures:__ooga.renderer.stats.waterTextures})
+DSB DONE 3533
+CHECK PASS DSB water trip 0: Portara crossing preserves identity and releases textures {"crossed":true,"released":0,"returned":{"name":"YellowBrokeIt","textures":2}}
+DSB STEP 3533 (() => {const B=__ooga,G=B.dsb.gate;G.receive();return G.traverse({x:-45,y:41.4,z:-46},{x:-45,y:41.4,z:-50},.3);})()
+DSB DONE 3534
+DSB STEP 3534 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4060
+DSB STEP 4060 __ooga.renderer.stats.waterTextures
+DSB DONE 4060
+DSB STEP 4060 __ooga.go("dsb")
+DSB DONE 4061
+DSB STEP 4061 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4959
+DSB STEP 4959 ({entrance:!!__ooga.dsb.entrance,phase:__ooga.dsb.entrance?.phase,exterior:__ooga.dsb.exterior.visible})
+DSB DONE 4960
+CHECK PASS DSB water trip 1: return enters the Bifrost tunnel before exterior resources are measured {"entrance":true,"phase":"tunnel","exterior":false}
+DSB STEP 4960 matchMedia("(pointer: coarse)").matches
+DSB DONE 4960
+DSB STEP 4962 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 4962
+DSB STEP 4962 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4993
+DSB STEP 4993 (async () => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"); e.scrollIntoView({ block: "center", behavior: "instant" }); await
+DSB DONE 5027
+DSB STEP 5079 (() => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"), r = e.getBoundingClientRect(); window.__hudPointer = []; for (const typ
+DSB DONE 5080
+DSB STEP 5139 window.__hudPointer
+DSB DONE 5139
+DSB STEP 5139 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 5165
+CHECK PASS DSB water trip 1: the real Skip entry control reaches a drawn exterior 
+DSB STEP 5165 ({name:__ooga.dsb.avatar.traits.name,textures:__ooga.renderer.stats.waterTextures})
+DSB DONE 5166
+CHECK PASS DSB water trip 1: Portara crossing preserves identity and releases textures {"crossed":true,"released":0,"returned":{"name":"YellowBrokeIt","textures":2}}
+CHECK PASS dsb water checkpoint: clean console 5.2s 
+DSB STEP 42 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 82
+DSB STEP 124 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 125
+DSB STEP 167 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 168
+DSB STEP 210 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 211
+DSB STEP 252 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 253
+DSB STEP 294 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 295
+DSB STEP 337 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 386 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1595
+DSB STEP 1638 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 2466
+DSB STEP 2508 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 3245
+DSB STEP 3245 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 4025
+DSB STEP 4025 (() => {
+    const B=__ooga,W=B.dsb.water,first=new Uint8Array(W.pixels);
+    W.update(13);const moved=W.pixels.some((x,i)=>x!==first[i]);
+    W.updat
+DSB DONE 4874
+DSB STEP 4874 new URLSearchParams(location.search).has("canvas2d")
+DSB DONE 5690
+CHECK PASS DSB FFT: finite, periodic, animated; depth grows offshore; renderer stays available {"kind":"canvas2d","textures":0,"moved":true,"loop":true,"finite":true,"cost":0.24833333392937978,"depthNear":5.6,"depthFar":30,"camera":{"yaw":-0.08,"pitch":1.22,"dist":207,"target":{"x":-2,"y":10,"z":-1}}}
+DSB STEP 5690 __ooga.dsb.avatar.traits.name
+DSB DONE 6507
+DSB STEP 6508 (() => {const B=__ooga,G=B.dsb.gate;G.receive();return G.traverse({x:-45,y:41.4,z:-46},{x:-45,y:41.4,z:-50},.3);})()
+DSB DONE 7336
+DSB STEP 7336 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 9727
+DSB STEP 9727 __ooga.renderer.stats.waterTextures
+DSB DONE 9728
+DSB STEP 9728 __ooga.go("dsb")
+DSB DONE 9751
+DSB STEP 9751 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 10776
+DSB STEP 10776 ({entrance:!!__ooga.dsb.entrance,phase:__ooga.dsb.entrance?.phase,exterior:__ooga.dsb.exterior.visible})
+DSB DONE 10776
+CHECK PASS DSB water trip 0: return enters the Bifrost tunnel before exterior resources are measured {"entrance":true,"phase":"tunnel","exterior":false}
+DSB STEP 10777 matchMedia("(pointer: coarse)").matches
+DSB DONE 10777
+DSB STEP 10778 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 10779
+DSB STEP 10779 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 10810
+DSB STEP 10810 (async () => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"); e.scrollIntoView({ block: "center", behavior: "instant" }); await
+DSB DONE 10841
+DSB STEP 10907 (() => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"), r = e.getBoundingClientRect(); window.__hudPointer = []; for (const typ
+DSB DONE 10910
+DSB STEP 11083 window.__hudPointer
+DSB DONE 11454
+DSB STEP 11454 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 12371
+CHECK PASS DSB water trip 0: the real Skip entry control reaches a drawn exterior 
+DSB STEP 12371 ({name:__ooga.dsb.avatar.traits.name,textures:__ooga.renderer.stats.waterTextures})
+DSB DONE 12376
+CHECK PASS DSB water trip 0: Portara crossing preserves identity and releases textures {"crossed":true,"released":0,"returned":{"name":"YellowBrokeIt","textures":0}}
+DSB STEP 12376 (() => {const B=__ooga,G=B.dsb.gate;G.receive();return G.traverse({x:-45,y:41.4,z:-46},{x:-45,y:41.4,z:-50},.3);})()
+DSB DONE 12679
+DSB STEP 12679 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 13605
+DSB STEP 13605 __ooga.renderer.stats.waterTextures
+DSB DONE 13606
+DSB STEP 13607 __ooga.go("dsb")
+DSB DONE 13631
+DSB STEP 13631 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 14559
+DSB STEP 14559 ({entrance:!!__ooga.dsb.entrance,phase:__ooga.dsb.entrance?.phase,exterior:__ooga.dsb.exterior.visible})
+DSB DONE 14560
+CHECK PASS DSB water trip 1: return enters the Bifrost tunnel before exterior resources are measured {"entrance":true,"phase":"tunnel","exterior":false}
+DSB STEP 14560 matchMedia("(pointer: coarse)").matches
+DSB DONE 14560
+DSB STEP 14562 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 14562
+DSB STEP 14562 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 14591
+DSB STEP 14591 (async () => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"); e.scrollIntoView({ block: "center", behavior: "instant" }); await
+DSB DONE 14625
+DSB STEP 14683 (() => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"), r = e.getBoundingClientRect(); window.__hudPointer = []; for (const typ
+DSB DONE 14684
+DSB STEP 14732 window.__hudPointer
+DSB DONE 14732
+DSB STEP 14732 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 15339
+CHECK PASS DSB water trip 1: the real Skip entry control reaches a drawn exterior 
+DSB STEP 15339 ({name:__ooga.dsb.avatar.traits.name,textures:__ooga.renderer.stats.waterTextures})
+DSB DONE 15344
+CHECK PASS DSB water trip 1: Portara crossing preserves identity and releases textures {"crossed":true,"released":0,"returned":{"name":"YellowBrokeIt","textures":0}}
+CHECK PASS dsb water checkpoint: clean console 15.3s 
+DSB STEP 40 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 94
+DSB STEP 137 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 137
+DSB STEP 180 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 180
+DSB STEP 222 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 223
+DSB STEP 265 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 266
+DSB STEP 308 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 309
+DSB STEP 351 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1183
+DSB STEP 1225 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1226
+DSB STEP 1268 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1269
+DSB STEP 1311 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1318
+DSB STEP 1360 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1361
+DSB STEP 1403 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1404
+DSB STEP 1404 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1404
+DSB STEP 1404 (() => {
+    const B=__ooga,W=B.dsb.water,first=new Uint8Array(W.pixels);
+    W.update(13);const moved=W.pixels.some((x,i)=>x!==first[i]);
+    W.updat
+DSB DONE 1421
+DSB STEP 1421 new URLSearchParams(location.search).has("canvas2d")
+DSB DONE 1426
+CHECK PASS DSB FFT: finite, periodic, animated; depth grows offshore; renderer stays available {"kind":"webgl2","textures":2,"moved":true,"loop":true,"finite":true,"cost":0.24166666666666667,"depthNear":5.6,"depthFar":30,"camera":{"yaw":-0.08,"pitch":1.22,"dist":207,"target":{"x":-2,"y":10,"z":-1}}}
+DSB STEP 1426 document.querySelector('[data-action="reset-view"]').click()
+DSB DONE 1429
+DSB STEP 1429 ({x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z})
+DSB DONE 1447
+DSB STEP 1454 __ooga.advance(.3)
+DSB DONE 1703
+DSB STEP 1710 ({x:__ooga.dsb.avatar.root.position.x,z:__ooga.dsb.avatar.root.position.z})
+DSB DONE 1717
+CHECK PASS DSB keyboard movement still walks on approved land {"before":{"x":-45,"z":-43},"after":{"x":-45,"z":-45.32499999999993}}
+DSB STEP 1717 __ooga.dsb.avatar.traits.name
+DSB DONE 1722
+DSB STEP 1722 (() => {const B=__ooga,G=B.dsb.gate;G.receive();return G.traverse({x:-45,y:41.4,z:-46},{x:-45,y:41.4,z:-50},.3);})()
+DSB DONE 1723
+DSB STEP 1723 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 2397
+DSB STEP 2397 __ooga.renderer.stats.waterTextures
+DSB DONE 2398
+DSB STEP 2398 __ooga.go("dsb")
+DSB DONE 2399
+DSB STEP 2399 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3264
+DSB STEP 3264 ({entrance:!!__ooga.dsb.entrance,phase:__ooga.dsb.entrance?.phase,exterior:__ooga.dsb.exterior.visible})
+DSB DONE 3264
+CHECK PASS DSB water trip 0: return enters the Bifrost tunnel before exterior resources are measured {"entrance":true,"phase":"tunnel","exterior":false}
+DSB STEP 3264 matchMedia("(pointer: coarse)").matches
+DSB DONE 3265
+DSB STEP 3266 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 3267
+DSB STEP 3267 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3296
+DSB STEP 3296 (async () => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"); e.scrollIntoView({ block: "center", behavior: "instant" }); await
+DSB DONE 3330
+DSB STEP 3382 (() => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"), r = e.getBoundingClientRect(); window.__hudPointer = []; for (const typ
+DSB DONE 3383
+DSB STEP 3418 window.__hudPointer
+DSB DONE 3418
+DSB STEP 3418 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3451
+CHECK PASS DSB water trip 0: the real Skip entry control reaches a drawn exterior 
+DSB STEP 3451 ({name:__ooga.dsb.avatar.traits.name,textures:__ooga.renderer.stats.waterTextures})
+DSB DONE 3452
+CHECK PASS DSB water trip 0: Portara crossing preserves identity and releases textures {"crossed":true,"released":0,"returned":{"name":"YellowBrokeIt","textures":2}}
+DSB STEP 3452 (() => {const B=__ooga,G=B.dsb.gate;G.receive();return G.traverse({x:-45,y:41.4,z:-46},{x:-45,y:41.4,z:-50},.3);})()
+DSB DONE 3452
+DSB STEP 3452 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 3981
+DSB STEP 3981 __ooga.renderer.stats.waterTextures
+DSB DONE 3982
+DSB STEP 3982 __ooga.go("dsb")
+DSB DONE 3982
+DSB STEP 3982 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4895
+DSB STEP 4895 ({entrance:!!__ooga.dsb.entrance,phase:__ooga.dsb.entrance?.phase,exterior:__ooga.dsb.exterior.visible})
+DSB DONE 4896
+CHECK PASS DSB water trip 1: return enters the Bifrost tunnel before exterior resources are measured {"entrance":true,"phase":"tunnel","exterior":false}
+DSB STEP 4896 matchMedia("(pointer: coarse)").matches
+DSB DONE 4897
+DSB STEP 4898 if (document.pointerLockElement) document.exitPointerLock();
+DSB DONE 4898
+DSB STEP 4898 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 4929
+DSB STEP 4929 (async () => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"); e.scrollIntoView({ block: "center", behavior: "instant" }); await
+DSB DONE 4963
+DSB STEP 5017 (() => { const e = document.querySelector("[data-action=\"dsb-skip-entry\"]"), r = e.getBoundingClientRect(); window.__hudPointer = []; for (const typ
+DSB DONE 5017
+DSB STEP 5050 window.__hudPointer
+DSB DONE 5051
+DSB STEP 5051 new Promise((resolve) => { const B = window.__ooga, t0 = performance.now(); let hitFrame = 0; const tick = () => { const s = B.stats(); if (!hitFrame 
+DSB DONE 5085
+CHECK PASS DSB water trip 1: the real Skip entry control reaches a drawn exterior 
+DSB STEP 5085 ({name:__ooga.dsb.avatar.traits.name,textures:__ooga.renderer.stats.waterTextures})
+DSB DONE 5086
+CHECK PASS DSB water trip 1: Portara crossing preserves identity and releases textures {"crossed":true,"released":0,"returned":{"name":"YellowBrokeIt","textures":2}}
+CHECK PASS dsb water checkpoint: clean console 5.1s 
+DSB STEP 70 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 71
+DSB STEP 112 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 112
+DSB STEP 154 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 155
+DSB STEP 197 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 198
+DSB STEP 241 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 241
+DSB STEP 284 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 284
+DSB STEP 325 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 326
+DSB STEP 368 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1224
+DSB STEP 1266 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1267
+DSB STEP 1309 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1310
+DSB STEP 1352 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1355
+DSB STEP 1396 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1403
+DSB STEP 1445 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1451
+DSB STEP 1451 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1452
+DSB STEP 1455 (() => {
+    const B=__ooga,D=B.dsb,W=D.weather,S=W.shared.state,O=B.renderOpts;
+    let elapsed=0;const advance=seconds=>{for(let t=0;t<seconds;t+=1/
+DSB DONE 4419
+CHECK PASS DSB weather: rain and storm attenuate daylight and raise bounded water energy {"base":{"light":1,"sky":[0.46000000834465027,0.5349999666213989,0.6850000023841858],"wave":1,"drops":0},"rain":{"light":0.5288043584461306,"drops":291,"cloud":0.6199942652024597,"wave":1.5950000286102295},"storm":{"light":0.24000267134600728,"drops":1062,"cloud":0.999996485071043,"wave":2.759999990463257,"strikes":1},"flash":1,"expired":true,"gated":true,"resumed":true,"bounded":false,"recovered":true,"finite":true,"thunders":2,"kind":"webgl2","textures":2}
+CHECK FAIL DSB weather: flash expires, exterior gate silences and resumes, tiers bound pools and clear recovers {"base":{"light":1,"sky":[0.46000000834465027,0.5349999666213989,0.6850000023841858],"wave":1,"drops":0},"rain":{"light":0.5288043584461306,"drops":291,"cloud":0.6199942652024597,"wave":1.5950000286102295},"storm":{"light":0.24000267134600728,"drops":1062,"cloud":0.999996485071043,"wave":2.759999990463257,"strikes":1},"flash":1,"expired":true,"gated":true,"resumed":true,"bounded":false,"recovered":true,"finite":true,"thunders":2,"kind":"webgl2","textures":2}
+DSB STEP 4419 (() => {
+    const B=__ooga,D=B.dsb;D.weather.setMode("rain");for(let i=0;i<240;i++)BL.scenes.dsb.update(1/60,i/60);BL.daylight.sample(0,B.renderOpts,
+DSB DONE 4729
+CHECK PASS DSB night rain: clock stays at night, lamps stay lit, precipitation stays visible and solar glints vanish {"day":0,"lamps":1,"drops":510,"glint":0,"sky":[0.2873595356941223,0.3076251745223999,0.37348854541778564]}
+CHECK PASS DSB weather: runtime console remains clean 
+CHECK PASS dsb weather checkpoint: clean console 4.7s 
+FAIL DSB weather: flash expires, exterior gate silences and resumes, tiers bound pools and clear recovers · {"base":{"light":1,"sky":[0.46000000834465027,0.5349999666213989,0.6850000023841858],"wave":1,"drops":0},"rain":{"light":0.5288043584461306,"drops":291,"cloud":0.6199942652024597,"wave":1.5950000286102295},"storm":{"light":0.24000267134600728,"drops":1062,"cloud":0.999996485071043,"wave":2.759999990463257,"strikes":1},"flash":1,"expired":true,"gated":true,"resumed":true,"bounded":false,"recovered":true,"finite":true,"thunders":2,"kind":"webgl2","textures":2}
+DSB STEP 72 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 74
+DSB STEP 115 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 116
+DSB STEP 158 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 158
+DSB STEP 201 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 201
+DSB STEP 243 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 243
+DSB STEP 285 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 286
+DSB STEP 327 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 328
+DSB STEP 370 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1226
+DSB STEP 1269 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1270
+DSB STEP 1311 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1314
+DSB STEP 1356 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1357
+DSB STEP 1397 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1398
+DSB STEP 1440 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1441
+DSB STEP 1441 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1447
+DSB STEP 1451 (() => {
+    const B=__ooga,D=B.dsb,W=D.weather,S=W.shared.state,O=B.renderOpts;
+    let elapsed=0;const advance=seconds=>{for(let t=0;t<seconds;t+=1/
+DSB DONE 4373
+CHECK PASS DSB weather: rain and storm attenuate daylight and raise bounded water energy {"base":{"light":1,"sky":[0.46000000834465027,0.5349999666213989,0.6850000023841858],"wave":1,"drops":0},"rain":{"light":0.5288043584461306,"drops":190,"cloud":0.6199942652024597,"wave":1.5950000286102295},"storm":{"light":0.24000267134600728,"drops":695,"cloud":0.999996485071043,"wave":2.759999990463257,"strikes":1},"flash":1,"expired":true,"gated":true,"resumed":true,"bounded":false,"recovered":true,"finite":true,"thunders":2,"kind":"webgl2","textures":2}
+CHECK FAIL DSB weather: flash expires, exterior gate silences and resumes, tiers bound pools and clear recovers {"base":{"light":1,"sky":[0.46000000834465027,0.5349999666213989,0.6850000023841858],"wave":1,"drops":0},"rain":{"light":0.5288043584461306,"drops":190,"cloud":0.6199942652024597,"wave":1.5950000286102295},"storm":{"light":0.24000267134600728,"drops":695,"cloud":0.999996485071043,"wave":2.759999990463257,"strikes":1},"flash":1,"expired":true,"gated":true,"resumed":true,"bounded":false,"recovered":true,"finite":true,"thunders":2,"kind":"webgl2","textures":2}
+DSB STEP 4373 (() => {
+    const B=__ooga,D=B.dsb;D.weather.setMode("rain");for(let i=0;i<240;i++)BL.scenes.dsb.update(1/60,i/60);BL.daylight.sample(0,B.renderOpts,
+DSB DONE 4675
+CHECK PASS DSB night rain: clock stays at night, lamps stay lit, precipitation stays visible and solar glints vanish {"day":0,"lamps":1,"drops":334,"glint":0,"sky":[0.2873595356941223,0.3076251745223999,0.37348854541778564]}
+CHECK PASS DSB weather: runtime console remains clean 
+CHECK PASS dsb weather checkpoint: clean console 4.7s 
+FAIL DSB weather: flash expires, exterior gate silences and resumes, tiers bound pools and clear recovers · {"base":{"light":1,"sky":[0.46000000834465027,0.5349999666213989,0.6850000023841858],"wave":1,"drops":0},"rain":{"light":0.5288043584461306,"drops":190,"cloud":0.6199942652024597,"wave":1.5950000286102295},"storm":{"light":0.24000267134600728,"drops":695,"cloud":0.999996485071043,"wave":2.759999990463257,"strikes":1},"flash":1,"expired":true,"gated":true,"resumed":true,"bounded":false,"recovered":true,"finite":true,"thunders":2,"kind":"webgl2","textures":2}
+DSB STEP 46 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 47
+DSB STEP 87 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 88
+DSB STEP 130 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 131
+DSB STEP 173 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 174
+DSB STEP 216 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 217
+DSB STEP 259 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 260
+DSB STEP 302 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 303
+DSB STEP 345 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1285
+DSB STEP 1327 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1331
+DSB STEP 1373 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1374
+DSB STEP 1416 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1420
+DSB STEP 1463 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1464
+DSB STEP 1506 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1507
+DSB STEP 1507 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1507
+DSB STEP 1510 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1744
+DSB STEP 1744 window.__correction={audio:__ooga.dsb.noderunner.audio,tv:__ooga.dsb.tv};__ooga.dsb.tv.close()
+DSB DONE 1750
+DSB STEP 1750 (()=>{const e=document.getElementById("dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 1757
+DSB STEP 1829 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1909
+DSB STEP 1909 document.getElementById("dsb-tv").open&&document.querySelectorAll("#dsb-tv-menu button").length===5&&document.querySelectorAll("#dsb-tv-menu button:di
+DSB DONE 1920
+CHECK PASS DSB TV correction: physical nearby touch action opens five-channel menu 
+DSB STEP 1921 (()=>{const e=document.getElementById("dsb-tv-channel");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y
+DSB DONE 1921
+DSB STEP 1988 document.getElementById("dsb-tv-song").textContent==="Turtle Radio"&&document.querySelectorAll("#dsb-tv-queue li").length===1&&document.getElementById
+DSB DONE 1989
+CHECK PASS DSB TV correction: bounded metadata and local official QR are visible 
+DSB STEP 1989 document.getElementById("dsb-tv-query").value="Ooga"
+DSB DONE 1989
+DSB STEP 1989 (()=>{const e=document.getElementById("dsb-tv-search");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:
+DSB DONE 1990
+DSB STEP 2053 window.__paymentClock={native:window.setTimeout.bind(window)};window.setTimeout=(fn,ms,...args)=>{if(ms===5000){__paymentClock.tick=fn;__paymentClock.
+DSB DONE 2059
+DSB STEP 2160 (()=>{const T=BL.dsbTv,good={"bolt11": "lnbc2100n1p4vzq52pp50dsaw0kxfc0urmtzl7ezwv4qemxs8ufx98cyjjsj9wkz7l3l7afsdpltfshqgpg2c69v2f6ypqkzun0dcsykmm9de5
+DSB DONE 2161
+CHECK PASS DSB TV correction: valid station invoice, local QR, bounded data and mobile layout {"valid":true,"bad":false,"hash":false,"check":false,"clean":160,"bounded":12,"open":true,"qr":308,"link":"lightning:lnbc2100n1p4vzq52pp50dsaw0kxfc0urmtzl7ezwv4qemxs8ufx98cyjjsj9wkz7l3l7afsdpltfshqgpg2c69v2f6ypqkzun0dcsykmm9de5kwgpdyppxjarrda5kugzzv4skx6qcqzzsxqzuysp535fyv3fcdnf59stpn82fd6mypgd245r8n9zg6mcnx90a8ws68v2s9qxpqysgqxj432mzxnppe93v7fqxvs8hav584jgqfejc3mrpagrkheq0ythhse9ldk82lc0p43njn39dcs36m0djafxgug2aa374eczjfm3ew54qqt8zcnh","width":true}
+DSB STEP 2161 document.querySelector("#dsb-tv-results button").click()
+DSB DONE 2161
+DSB STEP 2161 __dsbTvFixture.invoices===1
+DSB DONE 2162
+CHECK PASS DSB TV correction: duplicate invoice is refused 
+DSB STEP 2162 __dsbTvFixture.payment={"paid":false,"queued":false};__dsbTvFixture.paymentError=false;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2162
+DSB STEP 2202 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2203
+DSB STEP 2203 __dsbTvFixture.payment=null;__dsbTvFixture.paymentError=true;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2204
+DSB STEP 2245 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2246
+DSB STEP 2246 __dsbTvFixture.payment={"paid":true,"queued":false};__dsbTvFixture.paymentError=false;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2246
+DSB STEP 2288 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2289
+DSB STEP 2289 __dsbTvFixture.payment={"paid":true,"queued":true};__dsbTvFixture.paymentError=false;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2289
+DSB STEP 2331 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2336
+CHECK PASS DSB TV correction: unpaid, failure, paid and queued states never suggest a second payment 
+DSB STEP 2336 (()=>{const e=document.getElementById("dsb-tv-copy");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2337
+DSB STEP 2405 /Invoice copied|Invoice selected/.test(document.getElementById("dsb-tv-payment-status").textContent)
+DSB DONE 2405
+CHECK FAIL DSB TV correction: copy succeeds or selects the full invoice 
+DSB STEP 2405 window.__correction.epoch=__ooga.dsb.tv.stats.paymentEpoch
+DSB DONE 2406
+DSB STEP 2406 (()=>{const e=document.getElementById("dsb-tv-cancel-invoice");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.wi
+DSB DONE 2406
+DSB STEP 2470 !__ooga.dsb.tv.stats.invoice&&__ooga.dsb.tv.stats.paymentEpoch>__correction.epoch&&document.getElementById("dsb-tv-invoice").hidden
+DSB DONE 2471
+CHECK PASS DSB TV correction: closing invoice invalidates polling epoch 
+DSB STEP 2471 clearTimeout(__paymentClock.id);__paymentClock.tick();window.setTimeout=__paymentClock.native
+DSB DONE 2472
+DSB STEP 2512 !__ooga.dsb.tv.stats.invoice&&document.getElementById("dsb-tv-invoice").hidden
+DSB DONE 2519
+CHECK PASS DSB TV correction: cancelled epoch cannot revive its invoice 
+DSB STEP 2522 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2605
+DSB STEP 2605 !__ooga.dsb.tv.isOpen&&__correction.audio.stats.mode==="live"&&__correction.audio.stats.starts===1
+DSB DONE 2611
+CHECK PASS DSB TV correction: Escape closes TV without stopping the live stream 
+DSB STEP 2611 (()=>{const D=__ooga.dsb,A=D.noderunner.audio,E=__dsbRadioFixture.element;A.update(1,4,true);const live=A.stats;D.weather.setInterior(true);const gate
+DSB DONE 2639
+DSB STEP 2690 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2772
+CHECK PASS DSB radio correction: live/fallback are exclusive and the shared gate silences HTML audio immediately {"live":{"mode":"live","target":0.45,"level":0.4499999989394813,"starts":1,"sources":1,"liveSources":1,"fallbackSources":0,"liveAudible":true,"fallbackLevel":0,"enabled":true,"disposed":false,"timers":0},"gated":true,"far":true,"offline":{"mode":"fallback","target":0.45,"level":0.4417579625000696,"starts":1,"sources":1,"liveSources":1,"fallbackSources":1,"liveAudible":false,"fallbackLevel":0.4417579625000696,"enabled":true,"disposed":false,"timers":1},"connecting":{"mode":"connecting","target":0.45,"level":0.4498490418174439,"starts":2,"sources":1,"liveSources":1,"fallbackSources":1,"liveAudible":false,"fallbackLevel":0,"enabled":true,"disposed":false,"timers":1}}
+DSB STEP 2773 __correction.audio.stats.mode==="live"&&__correction.audio.stats.fallbackLevel===0
+DSB DONE 2778
+CHECK PASS DSB radio correction: recovery returns to one live stream 
+DSB STEP 2778 __ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 2994
+DSB STEP 2994 __correction.audio.stats.disposed&&__correction.audio.stats.sources===0&&__correction.audio.stats.timers===0&&__correction.audio.stats.fallbackSources
+DSB DONE 2998
+CHECK PASS DSB radio correction: scene disposal stops stream, fallback and TV timers 
+DSB STEP 2998 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 3466
+DSB STEP 3466 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3471
+DSB STEP 3471 __ooga.dsb.noderunner.audio.stats.starts===1&&__ooga.dsb.noderunner.audio.stats.sources===1
+DSB DONE 3473
+CHECK PASS DSB radio correction: re-entry creates one fresh station 
+CHECK PASS DSB radio correction: console remains clean 
+CHECK PASS dsb radio TV correction: clean console 3.5s 
+FAIL DSB TV correction: copy succeeds or selects the full invoice
+DSB STEP 64 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 65
+DSB STEP 107 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 108
+DSB STEP 150 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 151
+DSB STEP 193 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 194
+DSB STEP 237 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 237
+DSB STEP 278 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 279
+DSB STEP 321 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 322
+DSB STEP 364 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1285
+DSB STEP 1326 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1329
+DSB STEP 1371 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1371
+DSB STEP 1413 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1415
+DSB STEP 1457 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1458
+DSB STEP 1499 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1500
+DSB STEP 1500 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1501
+DSB STEP 1504 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1729
+DSB STEP 1729 window.__correction={audio:__ooga.dsb.noderunner.audio,tv:__ooga.dsb.tv};__ooga.dsb.tv.close()
+DSB DONE 1735
+DSB STEP 1735 (()=>{const e=document.getElementById("dsb-context");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 1740
+DSB STEP 1807 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1883
+DSB STEP 1883 document.getElementById("dsb-tv").open&&document.querySelectorAll("#dsb-tv-menu button").length===5&&document.querySelectorAll("#dsb-tv-menu button:di
+DSB DONE 1898
+CHECK PASS DSB TV correction: physical nearby touch action opens five-channel menu 
+DSB STEP 1898 (()=>{const e=document.getElementById("dsb-tv-channel");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y
+DSB DONE 1899
+DSB STEP 1970 document.getElementById("dsb-tv-song").textContent==="Turtle Radio"&&document.querySelectorAll("#dsb-tv-queue li").length===1&&document.getElementById
+DSB DONE 1970
+CHECK PASS DSB TV correction: bounded metadata and local official QR are visible 
+DSB STEP 1970 document.getElementById("dsb-tv-query").value="Ooga"
+DSB DONE 1971
+DSB STEP 1971 (()=>{const e=document.getElementById("dsb-tv-search");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:
+DSB DONE 1972
+DSB STEP 2032 window.__paymentClock={native:window.setTimeout.bind(window)};window.setTimeout=(fn,ms,...args)=>{if(ms===5000){__paymentClock.tick=fn;__paymentClock.
+DSB DONE 2039
+DSB STEP 2141 (()=>{const T=BL.dsbTv,good={"bolt11": "lnbc2100n1p4vzq52pp50dsaw0kxfc0urmtzl7ezwv4qemxs8ufx98cyjjsj9wkz7l3l7afsdpltfshqgpg2c69v2f6ypqkzun0dcsykmm9de5
+DSB DONE 2142
+CHECK PASS DSB TV correction: valid station invoice, local QR, bounded data and mobile layout {"valid":true,"bad":false,"hash":false,"check":false,"clean":160,"bounded":12,"open":true,"qr":308,"link":"lightning:lnbc2100n1p4vzq52pp50dsaw0kxfc0urmtzl7ezwv4qemxs8ufx98cyjjsj9wkz7l3l7afsdpltfshqgpg2c69v2f6ypqkzun0dcsykmm9de5kwgpdyppxjarrda5kugzzv4skx6qcqzzsxqzuysp535fyv3fcdnf59stpn82fd6mypgd245r8n9zg6mcnx90a8ws68v2s9qxpqysgqxj432mzxnppe93v7fqxvs8hav584jgqfejc3mrpagrkheq0ythhse9ldk82lc0p43njn39dcs36m0djafxgug2aa374eczjfm3ew54qqt8zcnh","width":true}
+DSB STEP 2142 document.querySelector("#dsb-tv-results button").click()
+DSB DONE 2143
+DSB STEP 2143 __dsbTvFixture.invoices===1
+DSB DONE 2148
+CHECK PASS DSB TV correction: duplicate invoice is refused 
+DSB STEP 2148 __dsbTvFixture.payment={"paid":false,"queued":false};__dsbTvFixture.paymentError=false;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2149
+DSB STEP 2190 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2191
+DSB STEP 2191 __dsbTvFixture.payment=null;__dsbTvFixture.paymentError=true;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2192
+DSB STEP 2234 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2235
+DSB STEP 2235 __dsbTvFixture.payment={"paid":true,"queued":false};__dsbTvFixture.paymentError=false;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2235
+DSB STEP 2277 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2283
+DSB STEP 2283 __dsbTvFixture.payment={"paid":true,"queued":true};__dsbTvFixture.paymentError=false;clearTimeout(__paymentClock.id);__paymentClock.tick()
+DSB DONE 2283
+DSB STEP 2325 document.getElementById("dsb-tv-payment-status").textContent
+DSB DONE 2326
+CHECK PASS DSB TV correction: unpaid, failure, paid and queued states never suggest a second payment 
+DSB STEP 2326 (()=>{const e=document.getElementById("dsb-tv-copy");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.
+DSB DONE 2331
+DSB STEP 2400 /Invoice copied|Invoice selected/.test(document.getElementById("dsb-tv-payment-status").textContent)
+DSB DONE 2401
+CHECK FAIL DSB TV correction: copy succeeds or selects the full invoice 
+DSB STEP 2401 window.__correction.epoch=__ooga.dsb.tv.stats.paymentEpoch
+DSB DONE 2402
+DSB STEP 2402 (()=>{const e=document.getElementById("dsb-tv-cancel-invoice");e.scrollIntoView({block:"center"});const r=e.getBoundingClientRect();return {x:r.x+r.wi
+DSB DONE 2403
+DSB STEP 2467 !__ooga.dsb.tv.stats.invoice&&__ooga.dsb.tv.stats.paymentEpoch>__correction.epoch&&document.getElementById("dsb-tv-invoice").hidden
+DSB DONE 2468
+CHECK PASS DSB TV correction: closing invoice invalidates polling epoch 
+DSB STEP 2468 clearTimeout(__paymentClock.id);__paymentClock.tick();window.setTimeout=__paymentClock.native
+DSB DONE 2468
+DSB STEP 2510 !__ooga.dsb.tv.stats.invoice&&document.getElementById("dsb-tv-invoice").hidden
+DSB DONE 2515
+CHECK PASS DSB TV correction: cancelled epoch cannot revive its invoice 
+DSB STEP 2519 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 2599
+DSB STEP 2600 !__ooga.dsb.tv.isOpen&&__correction.audio.stats.mode==="live"&&__correction.audio.stats.starts===1
+DSB DONE 2606
+CHECK PASS DSB TV correction: Escape closes TV without stopping the live stream 
+DSB STEP 2606 (()=>{const D=__ooga.dsb,A=D.noderunner.audio,E=__dsbRadioFixture.element;A.update(1,4,true);const live=A.stats;D.weather.setInterior(true);const gate
+DSB DONE 2636
+DSB STEP 2688 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3107
+CHECK PASS DSB radio correction: live/fallback are exclusive and the shared gate silences HTML audio immediately {"live":{"mode":"live","target":0.45,"level":0.4499999990088029,"starts":1,"sources":1,"liveSources":1,"fallbackSources":0,"liveAudible":true,"fallbackLevel":0,"enabled":true,"disposed":false,"timers":0},"gated":true,"far":true,"offline":{"mode":"fallback","target":0.45,"level":0.4417579625000696,"starts":1,"sources":1,"liveSources":1,"fallbackSources":1,"liveAudible":false,"fallbackLevel":0.4417579625000696,"enabled":true,"disposed":false,"timers":1},"connecting":{"mode":"connecting","target":0.45,"level":0.4498490418174439,"starts":2,"sources":1,"liveSources":1,"fallbackSources":1,"liveAudible":false,"fallbackLevel":0,"enabled":true,"disposed":false,"timers":1}}
+DSB STEP 3107 __correction.audio.stats.mode==="live"&&__correction.audio.stats.fallbackLevel===0
+DSB DONE 3111
+CHECK PASS DSB radio correction: recovery returns to one live stream 
+DSB STEP 3111 __ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 3330
+DSB STEP 3330 __correction.audio.stats.disposed&&__correction.audio.stats.sources===0&&__correction.audio.stats.timers===0&&__correction.audio.stats.fallbackSources
+DSB DONE 3335
+CHECK PASS DSB radio correction: scene disposal stops stream, fallback and TV timers 
+DSB STEP 3335 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 3780
+DSB STEP 3780 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 3785
+DSB STEP 3786 __ooga.dsb.noderunner.audio.stats.starts===1&&__ooga.dsb.noderunner.audio.stats.sources===1
+DSB DONE 3787
+CHECK PASS DSB radio correction: re-entry creates one fresh station 
+CHECK PASS DSB radio correction: console remains clean 
+CHECK PASS dsb radio TV correction: clean console 3.8s 
+FAIL DSB TV correction: copy succeeds or selects the full invoice
+DSB STEP 52 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 73
+DSB STEP 115 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 116
+DSB STEP 158 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 159
+DSB STEP 201 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 202
+DSB STEP 243 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 244
+DSB STEP 285 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 286
+DSB STEP 326 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 327
+DSB STEP 369 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1259
+DSB STEP 1299 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1307
+DSB STEP 1347 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1348
+DSB STEP 1390 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1391
+DSB STEP 1432 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1433
+DSB STEP 1475 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1476
+DSB STEP 1476 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1476
+DSB STEP 1476 window.__harborStart={...__ooga.dsb.avatar.root.position}
+DSB DONE 1477
+DSB STEP 1477 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1715
+DSB STEP 1723 ({distance:Math.hypot(__ooga.dsb.avatar.root.position.x-__harborStart.x,__ooga.dsb.avatar.root.position.z-__harborStart.z),controlled:__ooga.pilot.pla
+DSB DONE 1730
+CHECK PASS DSB harbor: normal non-overview gameplay walks the selected player {"distance":7.878649999999766,"controlled":true}
+DSB STEP 1732 (()=>{
+    const B=__ooga,D=B.dsb,N=D.noderunner,W=D.weather;const rows=[];
+    const move=p=>{B.pilot.navigate({position:{x:p.x,y:D.land.heightAt(p.x
+DSB DONE 4272
+CHECK PASS DSB harbor: proximity fades in/out, is silent far away and never boosts itself over storms {"rows":[{"distance":51.06687319678214,"target":0,"level":0,"sources":1},{"distance":21.405543359081907,"target":0.156846854280414,"level":0.15684683662962584,"sources":1},{"distance":4.881950254890706,"target":0.45,"level":0.4499999670099576,"sources":1},{"distance":21.405543359081907,"target":0.156846854280414,"level":0.15684688727045082,"sources":1},{"distance":51.06687319678214,"target":0,"level":1.7650791863152295e-8,"sources":1},{"distance":4.881950254890706,"target":0.45,"level":0.4499999493591734,"sources":1}],"clear":0.45,"storm":0.45,"rain":0.0813804566860199,"starts":1,"sources":1}
+DSB STEP 4272 (()=>{
+    const D=__ooga.dsb,N=D.noderunner,L=D.land;let obstructed=0;
+    for(let i=1;i<L.waterfront.length;i++){
+      const a=L.waterfront[i-1],b=
+DSB DONE 4395
+CHECK PASS DSB harbor: promenade stays clear and the normal ground graph reaches harbor, Chora and Meme Factory {"obstructed":0,"visited":7971,"harbor":true,"chora":true,"meme":true}
+DSB STEP 4395 (()=>{const B=__ooga,d=B.dsb.interiors.registry.get("meme-factory");B.pilot.navigate({position:d.entry,yaw:d.building.yaw,pitch:.22,dist:7});})()
+DSB DONE 4403
+DSB STEP 4405 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4465
+DSB STEP 4466 ({room:!!__ooga.dsb.interiors.active,gate:__ooga.dsb.weather.shared.state.masterLevel,radio:__ooga.dsb.noderunner.stats,indoor:__ooga.dsb.interiors.au
+DSB DONE 4476
+DSB STEP 4480 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4559
+DSB STEP 4559 ({room:!!__ooga.dsb.interiors.active,gate:__ooga.dsb.weather.shared.state.masterLevel,radio:__ooga.dsb.noderunner.stats,same:__ooga.dsb.noderunner.aud
+DSB DONE 4568
+CHECK PASS DSB harbor: the real interior disconnects all exterior sound and exit uses current listener distance {"inside":{"room":true,"gate":0,"radio":{"distance":60.852482338744586,"target":0,"level":0,"sources":1},"indoor":true},"outside":{"room":false,"gate":0.30000001192092896,"radio":{"distance":73.92920369873231,"target":0,"level":0,"sources":1},"same":true}}
+DSB STEP 4568 __harborTest.old=__ooga.dsb.noderunner;__ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 4790
+DSB STEP 4790 ({disposed:__harborTest.old.audio.stats.disposed,sources:__harborTest.old.audio.stats.sources,attached:!!__harborTest.old.group.parent,solids:__harbor
+DSB DONE 4793
+DSB STEP 4794 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 5242
+DSB STEP 5242 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5247
+DSB STEP 5247 ({sources:__ooga.dsb.noderunner.audio?.stats.sources,starts:__ooga.dsb.noderunner.audio?.stats.starts})
+DSB DONE 5248
+CHECK PASS DSB harbor: scene round trip 1 stops the old station and creates only one new source {"released":{"disposed":true,"sources":0,"attached":false,"solids":0},"fresh":{"sources":1,"starts":1}}
+DSB STEP 5248 __harborTest.old=__ooga.dsb.noderunner;__ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 5276
+DSB STEP 5276 ({disposed:__harborTest.old.audio.stats.disposed,sources:__harborTest.old.audio.stats.sources,attached:!!__harborTest.old.group.parent,solids:__harbor
+DSB DONE 5279
+DSB STEP 5279 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 5701
+DSB STEP 5701 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5711
+DSB STEP 5711 ({sources:__ooga.dsb.noderunner.audio?.stats.sources,starts:__ooga.dsb.noderunner.audio?.stats.starts})
+DSB DONE 5712
+CHECK PASS DSB harbor: scene round trip 2 stops the old station and creates only one new source {"released":{"disposed":true,"sources":0,"attached":false,"solids":0},"fresh":{"sources":1,"starts":1}}
+DSB STEP 5712 __harborTest.old=__ooga.dsb.noderunner;__ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 5738
+DSB STEP 5738 ({disposed:__harborTest.old.audio.stats.disposed,sources:__harborTest.old.audio.stats.sources,attached:!!__harborTest.old.group.parent,solids:__harbor
+DSB DONE 5740
+DSB STEP 5740 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 6154
+DSB STEP 6155 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6165
+DSB STEP 6165 ({sources:__ooga.dsb.noderunner.audio?.stats.sources,starts:__ooga.dsb.noderunner.audio?.stats.starts})
+DSB DONE 6166
+CHECK PASS DSB harbor: scene round trip 3 stops the old station and creates only one new source {"released":{"disposed":true,"sources":0,"attached":false,"solids":0},"fresh":{"sources":1,"starts":1}}
+DSB STEP 6166 delete window.__harborTest;delete window.__harborStart
+DSB DONE 6166
+CHECK PASS DSB harbor: runtime console remains clean 
+CHECK PASS dsb harbor checkpoint: clean console 6.2s 
+DSB STEP 32 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 35
+DSB STEP 78 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 79
+DSB STEP 122 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 131
+DSB STEP 173 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 173
+DSB STEP 215 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 216
+DSB STEP 258 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 259
+DSB STEP 301 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 301
+DSB STEP 343 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB STEP 389 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1219
+DSB STEP 1259 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1263
+DSB STEP 1306 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1307
+DSB STEP 1349 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1350
+DSB STEP 1392 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1393
+DSB STEP 1434 (() => { const B=window.__ooga;return {scene:B?.scene,frames:B?.renderedFrames||0,curtain:!!document.getElementById("curtain"),renderer:B?.renderer?.k
+DSB DONE 1440
+DSB STEP 1440 new Promise((resolve) => { const t0 = performance.now(); const tick = () => { if (window.BL.scene.tweenCount() === 0 || performance.now() - t0 > 4000)
+DSB DONE 1441
+DSB STEP 1441 window.__harborStart={...__ooga.dsb.avatar.root.position}
+DSB DONE 1441
+DSB STEP 1442 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 1672
+DSB STEP 1679 ({distance:Math.hypot(__ooga.dsb.avatar.root.position.x-__harborStart.x,__ooga.dsb.avatar.root.position.z-__harborStart.z),controlled:__ooga.pilot.pla
+DSB DONE 1749
+CHECK PASS DSB harbor: normal non-overview gameplay walks the selected player {"distance":7.87942499999977,"controlled":true}
+DSB STEP 1757 (()=>{
+    const B=__ooga,D=B.dsb,N=D.noderunner,W=D.weather;const rows=[];
+    const move=p=>{B.pilot.navigate({position:{x:p.x,y:D.land.heightAt(p.x
+DSB DONE 4214
+CHECK PASS DSB harbor: proximity fades in/out, is silent far away and never boosts itself over storms {"rows":[{"distance":51.06687319678214,"target":0,"level":0,"sources":1},{"distance":21.405543359081907,"target":0.156846854280414,"level":0.15684683662962584,"sources":1},{"distance":4.881950254890706,"target":0.45,"level":0.4499999670099576,"sources":1},{"distance":21.405543359081907,"target":0.156846854280414,"level":0.15684688727045082,"sources":1},{"distance":51.06687319678214,"target":0,"level":1.7650791863152295e-8,"sources":1},{"distance":4.881950254890706,"target":0.45,"level":0.4499999493591734,"sources":1}],"clear":0.45,"storm":0.45,"rain":0.08141238242387772,"starts":1,"sources":1}
+DSB STEP 4214 (()=>{
+    const D=__ooga.dsb,N=D.noderunner,L=D.land;let obstructed=0;
+    for(let i=1;i<L.waterfront.length;i++){
+      const a=L.waterfront[i-1],b=
+DSB DONE 4271
+CHECK PASS DSB harbor: promenade stays clear and the normal ground graph reaches harbor, Chora and Meme Factory {"obstructed":0,"visited":7971,"harbor":true,"chora":true,"meme":true}
+DSB STEP 4271 (()=>{const B=__ooga,d=B.dsb.interiors.registry.get("meme-factory");B.pilot.navigate({position:d.entry,yaw:d.building.yaw,pitch:.22,dist:7});})()
+DSB DONE 4278
+DSB STEP 4294 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4352
+DSB STEP 4352 ({room:!!__ooga.dsb.interiors.active,gate:__ooga.dsb.weather.shared.state.masterLevel,radio:__ooga.dsb.noderunner.stats,indoor:__ooga.dsb.interiors.au
+DSB DONE 4363
+DSB STEP 4371 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 4451
+DSB STEP 4451 ({room:!!__ooga.dsb.interiors.active,gate:__ooga.dsb.weather.shared.state.masterLevel,radio:__ooga.dsb.noderunner.stats,same:__ooga.dsb.noderunner.aud
+DSB DONE 4458
+CHECK PASS DSB harbor: the real interior disconnects all exterior sound and exit uses current listener distance {"inside":{"room":true,"gate":0,"radio":{"distance":60.852482338744586,"target":0,"level":0,"sources":1},"indoor":true},"outside":{"room":false,"gate":0.30000001192092896,"radio":{"distance":73.92920369873231,"target":0,"level":0,"sources":1},"same":true}}
+DSB STEP 4458 __harborTest.old=__ooga.dsb.noderunner;__ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 4680
+DSB STEP 4680 ({disposed:__harborTest.old.audio.stats.disposed,sources:__harborTest.old.audio.stats.sources,attached:!!__harborTest.old.group.parent,solids:__harbor
+DSB DONE 4683
+DSB STEP 4683 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 5132
+DSB STEP 5132 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5137
+DSB STEP 5137 ({sources:__ooga.dsb.noderunner.audio?.stats.sources,starts:__ooga.dsb.noderunner.audio?.stats.starts})
+DSB DONE 5139
+CHECK PASS DSB harbor: scene round trip 1 stops the old station and creates only one new source {"released":{"disposed":true,"sources":0,"attached":false,"solids":0},"fresh":{"sources":1,"starts":1}}
+DSB STEP 5139 __harborTest.old=__ooga.dsb.noderunner;__ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 5168
+DSB STEP 5168 ({disposed:__harborTest.old.audio.stats.disposed,sources:__harborTest.old.audio.stats.sources,attached:!!__harborTest.old.group.parent,solids:__harbor
+DSB DONE 5176
+DSB STEP 5177 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 5604
+DSB STEP 5605 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 5616
+DSB STEP 5616 ({sources:__ooga.dsb.noderunner.audio?.stats.sources,starts:__ooga.dsb.noderunner.audio?.stats.starts})
+DSB DONE 5618
+CHECK PASS DSB harbor: scene round trip 2 stops the old station and creates only one new source {"released":{"disposed":true,"sources":0,"attached":false,"solids":0},"fresh":{"sources":1,"starts":1}}
+DSB STEP 5618 __harborTest.old=__ooga.dsb.noderunner;__ooga.go("bifrost",null,true);__ooga.advance(.05)
+DSB DONE 5645
+DSB STEP 5645 ({disposed:__harborTest.old.audio.stats.disposed,sources:__harborTest.old.audio.stats.sources,attached:!!__harborTest.old.group.parent,solids:__harbor
+DSB DONE 5647
+DSB STEP 5647 __ooga.go("dsb",null,true);__ooga.advance(.05)
+DSB DONE 6043
+DSB STEP 6043 for(let i=0;i<60;i++)BL.scenes.dsb.update(1/60,i/60)
+DSB DONE 6055
+DSB STEP 6055 ({sources:__ooga.dsb.noderunner.audio?.stats.sources,starts:__ooga.dsb.noderunner.audio?.stats.starts})
+DSB DONE 6057
+CHECK PASS DSB harbor: scene round trip 3 stops the old station and creates only one new source {"released":{"disposed":true,"sources":0,"attached":false,"solids":0},"fresh":{"sources":1,"starts":1}}
+DSB STEP 6057 delete window.__harborTest;delete window.__harborStart
+DSB DONE 6058
+CHECK PASS DSB harbor: runtime console remains clean 
+CHECK PASS dsb harbor checkpoint: clean console 6.1s 
+
+277/281 checks passed in 1.4 min
+
+STOP · these failed in consecutive runs; do not try another fix, hand them to the maintainer with untracked/test-ledger.json:
+  DSB weather: flash expires, exterior gate silences and resumes, tiers bound pools and clear recovers (4 runs since 2026-10-07T09:03:23.471Z)
+  DSB weather: flash expires, exterior gate silences and resumes, tiers bound pools and clear recovers (4 runs since 2026-10-07T09:03:23.471Z)
+  DSB TV correction: copy succeeds or selects the full invoice (4 runs since 2026-10-07T09:03:23.471Z)
+  DSB TV correction: copy succeeds or selects the full invoice (4 runs since 2026-10-07T09:03:23.471Z)
