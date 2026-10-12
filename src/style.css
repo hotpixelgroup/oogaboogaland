@@ -8002,7 +8002,7 @@ body.dsb-menu-open :is(.bottom-hud,.top-hud,#joy-move,#joy-look,#act,.weapon-hud
 .pier-prize-list li { display: flex; gap: 10px; justify-content: space-between; align-items: center; margin: 12px 0; }
 .pier-navigation { position: absolute; right: calc(16px + var(--safe-right)); bottom: calc(90px + var(--safe-bottom)); width: 184px; padding: 8px; pointer-events: auto; background: #29464deb; color: #f5e4c7; border: 1px solid #d4b572; border-radius: 8px; }
 .pier-nav-actions { display: flex; gap: 6px; margin-bottom: 6px; }
-.pier-navigation button, .pier-prompt button, .pier-guide-dialog button { min-height: 44px; padding: 6px 8px; background: #3f6269; color: #fff0d3; border: 1px solid #d4b572; border-radius: 6px; cursor: pointer; }
+.pier-navigation button, .pier-guide-dialog button { min-height: 44px; padding: 6px 8px; background: #3f6269; color: #fff0d3; border: 1px solid #d4b572; border-radius: 6px; cursor: pointer; }
 .pier-navigation button { font-size: 10px; white-space: nowrap; }
 .pier-navigation .pier-ticket-balance { position: static; display: block; padding: 4px 6px; margin-bottom: 6px; font-size: 10px; }
 .presets[data-scene="pier"] { flex-wrap: wrap; }
@@ -8010,16 +8010,13 @@ body.dsb-menu-open :is(.bottom-hud,.top-hud,#joy-move,#joy-look,#act,.weapon-hud
 body[data-active-scene="pier"] #detached-destination-name { left: 0; transform: none; text-align: left; max-width: min(240px, calc(100vw - 40px)); white-space: normal; overflow-wrap: anywhere; }
 #pier-minimap { display: block; width: 100%; height: auto; border-radius: 4px; }
 #pier-compass { display: block; text-align: center; font-size: 10px; margin-top: 4px; }
-.pier-prompt { position: absolute; transform: translate(-50%, -100%); width: 220px; padding: 7px; pointer-events: auto; background: #244653f5; color: #ffe2a0; border: 1px solid #f7931a; border-radius: 8px; text-align: center; }
-.pier-prompt b { display: block; margin-bottom: 5px; font-size: 11px; }
-.pier-prompt button { width: 100%; font-size: 11px; }
 .pier-guide-dialog { width: min(440px, calc(100% - 24px)); max-height: calc(100% - 48px - var(--safe-top) - var(--safe-bottom)); overflow-y: auto; pointer-events: auto; padding: 18px; background: #29464dfa; color: #f5e4c7; border: 2px solid #d4b572; border-radius: 12px; }
 .pier-guide-dialog::backdrop { background: #10273580; }
 .pier-guide-dialog h2 { margin: 0 0 10px; color: #ffe2a0; }
 .pier-guide-dialog .actions { display: flex; gap: 8px; }
 .pier-guide-dialog a { display: block; color: #ffd9a0; margin-bottom: 14px; }
 .pier-guide-dialog small { display: block; font-size: 10px; }
-.pier-guide-dialog button:focus-visible, .pier-navigation button:focus-visible, .pier-prompt button:focus-visible { outline: 3px solid #efc85d; outline-offset: 2px; }
+.pier-guide-dialog button:focus-visible, .pier-navigation button:focus-visible { outline: 3px solid #efc85d; outline-offset: 2px; }
 #pier-stamp-list { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 #pier-stamp-list li { padding: 8px; border: 1px dashed #93b4b4; border-radius: 7px; }
 #pier-stamp-list li[data-stamped="true"] { border: 2px solid #f7931a; background: #f7931a22; }

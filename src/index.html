@@ -294,10 +294,6 @@
         <button type="button" data-action="pier-beach-view">Beach view</button>
         <button type="button" data-action="reset-view">Walk</button>
         <button type="button" data-action="pier-gate">Gate</button>
-        <button type="button" id="pier-ride" data-action="pier-ride" hidden>Ride Ferris wheel</button>
-        <button type="button" id="pier-play" data-action="pier-play" hidden>Play</button>
-        <button type="button" id="pier-beach-act" data-action="pier-beach-act" hidden>Free ice cream</button>
-        <button type="button" id="pier-boat" data-action="pier-boat" hidden>Board boat</button>
         <button type="button" id="pier-whistle" data-action="pier-whistle" hidden>Whistle</button>
         <button type="button" data-action="pier-wave" title="Wave: G · cheer: V · dance: Z">Wave</button>
         <button type="button" data-action="pier-photo">Photo</button>
@@ -775,7 +771,7 @@
         <svg class="game-intro-coin" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f7931a" d="M5 1h6v1H5zM3 2h10v1H3zM2 3h12v1H2zM1 5h14v6H1zM2 4h12v1H2zM2 11h12v1H2zM3 12h10v1H3zM5 13h6v1H5z" /><path fill="#fff0d3" d="M6 4h1v8H6zM9 3h1v2H9zM9 11h1v2H9zM7 5h3v1H7zM10 6h1v1h-1zM7 7h3v1H7zM10 8h1v2h-1zM7 10h3v1H7z" /></svg>
         <p class="game-intro-goal">Ride, play and explore. Everything pays in <b>tickets</b>.</p>
         <ul class="game-rules">
-          <li><svg class="game-rule-icon" viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f7931a" d="M3 0h3v1H3zM1 1h2v1H1zM6 1h2v1H6zM0 3h1v3H0zM8 3h1v3H8zM1 7h2v1H1zM6 7h2v1H6zM3 8h3v1H3zM1 2h1v1H1zM7 2h1v1H7zM1 6h1v1H1zM7 6h1v1H7z" /><path fill="#fff0d3" d="M4 3h1v3H4zM3 4h3v1H3z" /></svg><b>Use what is near</b><small data-coarse="Tap the orange prompt.">E, Space or a click on the orange prompt.</small></li>
+          <li><svg class="game-rule-icon" viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f7931a" d="M3 0h3v1H3zM1 1h2v1H1zM6 1h2v1H6zM0 3h1v3H0zM8 3h1v3H8zM1 7h2v1H1zM6 7h2v1H6zM3 8h3v1H3zM1 2h1v1H1zM7 2h1v1H7zM1 6h1v1H1zM7 6h1v1H7z" /><path fill="#fff0d3" d="M4 3h1v3H4zM3 4h3v1H3z" /></svg><b>Use what is near</b><small data-coarse="The JUMP! button becomes the action. Tap it.">The JUMP! button becomes the action. Press Space.</small></li>
           <li><svg class="game-rule-icon" viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f5c542" d="M0 2h9v5H0z" /><path fill="#7a3f0c" d="M2 3h1v1H2zM2 5h1v1H2zM4 3h3v1H4zM4 5h3v1H4z" /></svg><b>Win tickets</b><small>Games pay tickets. Trade them at the prize counter.</small></li>
           <li><svg class="game-rule-icon" viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#30b9bd" d="M1 0h7v9H1z" /><path fill="#fff0d3" d="M2 1h5v1H2zM2 7h5v1H2z" /><path fill="#f7931a" d="M3 3h3v3H3z" /></svg><b>Stamp your Passport</b><small>Ten landmarks. The map shows where.</small></li>
           <li><svg class="game-rule-icon" viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true"><path fill="#f35f79" d="M3 0h3v1H3zM1 1h2v1H1zM6 1h2v1H6zM0 3h1v3H0zM8 3h1v3H8zM1 7h2v1H1zM6 7h2v1H6zM3 8h3v1H3z" /><path fill="#fff0d3" d="M4 1h1v7H4zM1 4h7v1H1z" /><path fill="#ffd04e" d="M4 4h1v1H4z" /></svg><b>Ride everything</b><small>The wheel, the carousel and a train that never stops.</small></li>
@@ -798,7 +794,6 @@
       <output id="pier-heat" class="pier-heat" aria-label="Heat: how badly the lifeguards want you" hidden></output>
       <div id="pier-party" class="pier-party" role="status" hidden><b id="pier-party-name">Block Party</b><span id="pier-party-left"></span><small>Tickets pay double · find the orange coin</small></div>
       <div id="pier-photo" class="pier-photo" hidden><button type="button" id="pier-photo-save">Save photo</button><button type="button" id="pier-photo-done">Done</button></div>
-      <div id="pier-prompt" class="pier-prompt" hidden><b id="pier-prompt-text"></b><button type="button" id="pier-prompt-use">Press E</button></div>
       <dialog id="pier-guide" class="pier-guide-dialog" aria-label="Pier Passport and vendor conversations">
         <section id="pier-passport">
           <div id="pier-today">

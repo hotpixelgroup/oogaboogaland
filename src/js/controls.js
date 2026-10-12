@@ -61,7 +61,7 @@
   const create = ({ move = null, look = null, boost = null, chord = null, onAction = null, pressActions = false, shooter = () => false, canDescend = () => true } = {}) => {
     const held = { forward: 0, back: 0, left: 0, right: 0, yawLeft: 0, yawRight: 0, pitchDown: 0, pitchUp: 0, up: 0, space: 0, down: 0, boost: 0, chord: 0, sprint: 0, peek: 0 };
     const axes = { x: 0, y: 0, up: 0, yaw: 0, pitch: 0, orbitYaw: 0, sprint: 0, peek: 0, shiftTap: 0 };
-    let spaceDown = false, boostPointer = null, boostClick = false, shiftAt = 0, shiftUsed = false, shiftTap = 0;
+    let spaceDown = false, boostPointer = null, shiftAt = 0, shiftUsed = false, shiftTap = 0;
     const typing = (e) => e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA" || (e.target.closest && e.target.closest("dialog, #sheet")));
     const onKeyDown = (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey || typing(e)) return;
@@ -89,7 +89,6 @@
       for (const name in held) held[name] = 0;
       spaceDown = false;
       boostPointer = null;
-      boostClick = false;
       shiftAt = shiftTap = 0;
       shiftUsed = false;
     };
@@ -104,7 +103,6 @@
       if (!pressActions) { held.boost = 1; return; }
       if (boostPointer !== null) return;
       boostPointer = e.pointerId;
-      boostClick = !!onAction;
       held.boost = onAction && onAction() ? 0 : 1;
     };
     const onBoostUp = (e) => {
@@ -113,9 +111,11 @@
       boostPointer = null;
       held.boost = 0;
     };
+    // The press already acted, so a pointer's click never acts again. This holds whatever the action did in
+    // between: taking a seat or opening a panel resets the controls, and a claim kept in their state was lost
+    // with it, so the click acted a second time and undid the press. A keyboard's click (detail 0) has no press.
     const onBoostClick = (e) => {
-      if (boostClick && e.detail > 0) { e.preventDefault(); e.stopImmediatePropagation(); }
-      boostClick = false;
+      if (onAction && e.detail > 0) { e.preventDefault(); e.stopImmediatePropagation(); }
     };
     if (boost) {
       boost.addEventListener("pointerdown", onBoostDown);
@@ -173,7 +173,6 @@
     const clearPointer = () => {
       held.chord = held.boost = 0;
       boostPointer = null;
-      boostClick = false;
     };
     const reset = () => { onBlur(); if (moveStick) moveStick.reset(); if (lookStick) lookStick.reset(); };
     return { read, axes, clearPointer, reset, dispose, get rightShift() { return !!held.peek; } };

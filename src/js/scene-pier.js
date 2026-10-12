@@ -13,8 +13,8 @@
     { id: "whack", label: "Double-Spend Whack", module: "pierWhack", at: "whack" },
     { id: "seed-match", label: "Seed Phrase Match", module: "pierSeedMatch", at: "seedMatch" },
     { id: "volley", label: "Lightning Volley", module: "pierVolley", at: "volley" },
-    { id: "shop", label: "Surf Shop", module: "pierShop", at: "shop", icon: "S" },
-    { id: "jobs", label: "Jobs board", module: "pierJobs", at: "jobs", icon: "J" }
+    { id: "shop", label: "Surf Shop", module: "pierShop", at: "shop", icon: "S", verb: "SHOP" },
+    { id: "jobs", label: "Jobs board", module: "pierJobs", at: "jobs", icon: "J", verb: "JOBS" }
   ];
   // Each game's saved result, as the day's challenges and the season's bests count it: the save's method, the
   // challenge's id, the season's key, and what one point of the challenge is worth in the game's score.
@@ -42,7 +42,7 @@
   const SUNSET_GLINT = [1, 0.67, 0.36], GREYED = ["horizon", "zenith", "sky", "ground"];
   const scene = { id: "pier", voiceZone: "scene-pier", renderOpts };
   let root, camera, input, hud, pilot, crew, avatar, fx, solids, land, gate, clock, world, go, game, remotes, unsubscribe, life, rides, games, boats, wheels, ferry, interactions;
-  let daily, coins, fame, heat, radio, lights, decor, crowd, fireworks, chain, boards, bell, purse, picture, photoBar, photoSave, photoDone, photoUrl = null, photoSnap = false, photoBytes = 0, sound, trainAudio, ambience, menuButton, rideButton, playButton, whistleButton, muteButton, beachButton, boatButton, navigationLayout = null;
+  let daily, coins, fame, heat, radio, lights, decor, crowd, fireworks, chain, boards, bell, purse, picture, photoBar, photoSave, photoDone, photoUrl = null, photoSnap = false, photoBytes = 0, sound, trainAudio, ambience, menuButton, whistleButton, muteButton, navigationLayout = null;
   let returnAfterRide = false, leaving = false, wet = false, ripple = 0, heard = 0, skew = 0, gesture = -1, gestureAge = 0, rang = 0, unhear = null;
   const minis = [];
   const before = { x: 0, y: 0, z: 0 }, after = { x: 0, y: 0, z: 0 }, tally = { rings: 0, rides: 0, brass: 0, metres: 0 };
@@ -180,27 +180,24 @@
       return;
     }
     if (name === "pier-beach-view") { showBeach(); return; }
-    if (name === "pier-beach-act") { if (crew.player && !rides.riding && !games.busy && !boats.riding) land.beach.act(crew.player, hud, fx); return; }
     if (name === "pier-mute") { sound.setMuted(!sound.muted); showMute(); return; }
     if (name === "pier-whistle") { if (rides.kind === "coaster") trainAudio.whistle(); return; }
     if (boats?.riding) {
       if (name === "leave") returnHome();
-      else if (name === "act" || name === "pier-boat" || name === "pier-overview" || name === "reset-view" || name === "pier-gate") boats.requestExit();
+      else if (name === "act" || name === "pier-overview" || name === "reset-view" || name === "pier-gate") boats.requestExit();
       return;
     }
     const playing = games?.busy ? games : busyMini();
     if (playing) {
-      if (name === "leave") returnHome(); else if (name === "act" || name === "pier-play") playing.act();
+      if (name === "leave") returnHome(); else if (name === "act") playing.act();
       else if (name === "pier-overview") showOverview(); else if (name === "reset-view") walk();
       return;
     }
     if (rides?.riding) {
       if (name === "leave") returnHome();
-      else if (name === "act" || name === "pier-ride" || name === "pier-overview" || name === "reset-view") rides.requestExit();
+      else if (name === "act" || name === "pier-overview" || name === "reset-view") rides.requestExit();
       return;
     }
-    if (name === "pier-boat") { if (crew.player && !gate.isOpen) boats.board(); return; }
-    if (name === "pier-ride" || name === "pier-play") { act(); return; }
     if (pilot.modeAction(name) || pilot.weaponAction(name)) return;
     if (name === "jetpack-toggle") toggleJetpack();
     else if (name === "act") pilot.action();
@@ -233,7 +230,6 @@
   };
   // A page write only when the value changes.
   const hide = (el, hidden) => { if (el.hidden !== hidden) el.hidden = hidden; };
-  const label = (el, text) => { if (el.textContent !== text) el.textContent = text; };
   const enter = (ctx) => {
     ({ world, go, game } = ctx);
     // The pier's own view of the save: the same game, with tickets paying double while a Block Party lasts.
@@ -309,16 +305,16 @@
     crew = shared.crew = BL.crew.create(shared); pilot.bind(shared);
     avatar = crew.cavemen.get(name); Object.assign(avatar.root.position, L.spawn); avatar.root.position.y += avatar.baseY;
     crew.setJetpackOwnership(avatar, true, BL.hubModels.jetpack(), BL.hubModels.jetFlame());
-    rides = BL.pierRides.create({ models: [land.ferris, land.coaster, land.carousel, ...land.park.rides], crew, pilot, hud, game: purse, sound, layout: L }); rideButton = document.getElementById("pier-ride");
-    games = BL.pierGames.create({ land, crew, pilot, hud, game: purse, layout: L, fx, sound }); playButton = document.getElementById("pier-play"); beachButton = document.getElementById("pier-beach-act");
-    boats = BL.pierBoats.create({ root, land, water: life.ocean, crew, pilot, hud }); boatButton = document.getElementById("pier-boat");
+    rides = BL.pierRides.create({ models: [land.ferris, land.coaster, land.carousel, ...land.park.rides], crew, pilot, hud, game: purse, sound, layout: L });
+    games = BL.pierGames.create({ land, crew, pilot, hud, game: purse, layout: L, fx, sound });
+    boats = BL.pierBoats.create({ root, land, water: life.ocean, crew, pilot, hud });
     solids.add(boats.dock); solids.sync();
     const floorAt = (x, z, feet, r) => Math.max(-5, solids.supportAt(x, z, feet, BL.pilot.WALK.step, r));
     wheels = BL.pierWheels.create({ root, layout: L, crew, pilot, hud, fx, sound, walkable, floorAt, sea: L.sea });
     ferry = BL.pierFerry.create({ root, layout: L, water: life.ocean, crew, pilot, hud, game: purse, sound, solids, lighthouse: life.lighthouse, travel });
     for (const row of MINIS) {
       const place = L[row.at];
-      minis.push({ id: row.id, label: row.label, icon: row.icon, pad: place.play, floor: place.floor ?? L.top,
+      minis.push({ id: row.id, label: row.label, icon: row.icon, verb: row.verb, pad: place.play, floor: place.floor ?? L.top,
         game: BL[row.module].create({ models: land[row.at], roof: land.park.bumperRoof, layout: L, water: life.ocean, camera, crew, pilot, hud, fx, game: purse, sound, fireworks: (n) => { fireworks.show(n); BL.net.sendEvent("fireworks", [n]); } }) });
     }
     Object.assign(hooks, pilot.hooks); hud.onAction(action); hud.onPreset(showOverview);
@@ -335,17 +331,17 @@
       travel: (q) => travel(q.arrive ? q.arrive.x : q.x, q.y, q.arrive ? q.arrive.z : q.z, 0, `${q.name}`) });
     // The Block Ferry's pads, and the lighthouse's door, crank and hatch. With the ferry away, its landing still
     // gets a visitor home: a launch is called.
-    interactions.register({ id: "ferry", label: "Block Ferry", x: ferry.pierPad.x, z: ferry.pierPad.z, y: L.top, icon: "F", near: ferry.atPier, act: ferry.board, note: () => ferry.label });
-    interactions.register({ id: "ferry-home", label: "Block Ferry", x: ferry.landing.x, z: ferry.landing.z, y: ferry.landing.y, icon: "F", near: ferry.atLanding, note: () => ferry.state.phase === "landed" ? ferry.label : "Call a launch home",
+    interactions.register({ id: "ferry", label: "Block Ferry", x: ferry.pierPad.x, z: ferry.pierPad.z, y: L.top, icon: "F", near: ferry.atPier, act: ferry.board, verb: () => ferry.state.phase === "out" || ferry.state.phase === "back" ? "FERRY AWAY" : "BOARD FERRY" });
+    interactions.register({ id: "ferry-home", label: "Block Ferry", x: ferry.landing.x, z: ferry.landing.z, y: ferry.landing.y, icon: "F", near: ferry.atLanding, verb: () => ferry.state.phase === "landed" ? "BOARD FERRY" : "CALL LAUNCH",
       act: () => ferry.board() || travel(ferry.pierPad.x, L.top, ferry.pierPad.z + 2.5, 0, "A launch brought you back to the pier") });
-    interactions.register({ id: "lighthouse-door", label: "Climb the lighthouse", x: ferry.door.x, z: ferry.door.z, y: ferry.landing.y, icon: "↑", near: ferry.nearDoor, act: ferry.climb });
-    interactions.register({ id: "lighthouse-crank", label: "Turn the crank: check the block", x: ferry.gallery.x, z: ferry.gallery.z, y: ferry.gallery.y, icon: "✓", near: ferry.nearCrank, act: ferry.check });
-    interactions.register({ id: "lighthouse-hatch", label: "Climb down", x: ferry.hatch.x, z: ferry.hatch.z, y: ferry.gallery.y, icon: "↓", near: ferry.nearHatch, act: ferry.descend });
+    interactions.register({ id: "lighthouse-door", label: "Climb the lighthouse", x: ferry.door.x, z: ferry.door.z, y: ferry.landing.y, icon: "↑", verb: "CLIMB UP", near: ferry.nearDoor, act: ferry.climb });
+    interactions.register({ id: "lighthouse-crank", label: "Turn the crank: check the block", x: ferry.gallery.x, z: ferry.gallery.z, y: ferry.gallery.y, icon: "✓", verb: "TURN CRANK", near: ferry.nearCrank, act: ferry.check });
+    interactions.register({ id: "lighthouse-hatch", label: "Climb down", x: ferry.hatch.x, z: ferry.hatch.z, y: ferry.gallery.y, icon: "↓", verb: "CLIMB DOWN", near: ferry.nearHatch, act: ferry.descend });
     const swimming = () => { const a = crew.player; return !!a && !a.camp.seat && a.root.position.y - a.baseY < L.sea - 0.5; };
     for (let i = 0; i < LADDERS.length; i++) {
       const q = LADDERS[i];
       S.addChild(root, S.createNode({ geometry: BL.pierDetails.ladder(), position: { x: q.x, y: L.top, z: q.z }, rotation: { x: 0, y: q.up.x < q.x ? Math.PI / 2 : -Math.PI / 2, z: 0 } }));
-      interactions.register({ id: `ladder-${i}`, label: "Climb out", x: q.x, z: q.z, y: L.sea, icon: "↑", any: true,
+      interactions.register({ id: `ladder-${i}`, label: "Climb out", verb: "CLIMB OUT", x: q.x, z: q.z, y: L.sea, icon: "↑", any: true,
         near: () => swimming() && Math.hypot(crew.player.root.position.x - q.x, crew.player.root.position.z - q.z) < 4,
         act: () => travel(q.up.x, L.top, q.up.z, q.up.x < q.x ? Math.PI / 2 : -Math.PI / 2, "Back on the boardwalk") });
     }
@@ -367,7 +363,7 @@
       }
     } });
     bell = BL.pierBell.create({ models: land.bell, layout: L, crew, hud, fx, game: purse, sound });
-    interactions.register({ id: "pow-bell", label: "Swing the hammer", x: L.bell.play.x, z: L.bell.play.z, y: L.bell.y, icon: "!", near: bell.near, act: bell.act });
+    interactions.register({ id: "pow-bell", label: "Swing the hammer", verb: "SWING", x: L.bell.play.x, z: L.bell.play.z, y: L.bell.y, icon: "!", near: bell.near, act: bell.act });
     boards = BL.pierBoards.create({ root, layout: L, renderer: ctx.renderer, chain });
     // Reasons to come back: today's three and the streak, the hidden coins, and the hall of fame.
     daily = BL.pierDaily.create({ game: purse, hud, sound, onAll: () => fireworks.show(4) });
@@ -463,11 +459,6 @@
     radio.update(wheels.riding && !wheels.boarding);
     hide(whistleButton, rides.kind !== "coaster");
     if (returnAfterRide && !rides.riding && !boats.riding && !ferry.riding) { returnHome(); return; }
-    const driving = !!crew.player, playing = !!busyMini();
-    hide(rideButton, !driving || playing || games.busy || boats.riding || (!rides.riding && !rides.near())); label(rideButton, rides.label);
-    hide(beachButton, !driving || playing || gate.isOpen || rides.riding || games.busy || boats.riding || !land.beach.near(crew.player));
-    hide(playButton, !driving || playing || rides.riding || boats.riding || games.busy || !games.near()); label(playButton, games.label);
-    hide(boatButton, !driving || playing || gate.isOpen || rides.riding || games.busy || (!boats.riding && !boats.near())); label(boatButton, boats.label);
     if (walker && crew.player === walker) {
       Object.assign(after, walker.root.position); after.y += walker.bodyHeight / 2 - walker.baseY;
       if (gate.traverse(before, after, walker.bodyRadius, -1, walker.bodyHeight)) return;
@@ -496,7 +487,7 @@
     ripple -= dt;
     if (ripple <= 0 && pilot.moving) { ripple = 0.35; fx.spawnParticle(BL.pierDetails.droplet(), p.x, L.sea + 0.05, p.z, 0, 0.8, 0, 0.4, 0, BL.pilot.WALK.gravity, L.sea); }
   };
-  const drawNames = (c, p) => { remotes.drawNames(c, p); interactions.overlay(c, p); };
+  const drawNames = (c, p) => { remotes.drawNames(c, p); };
   const leave = () => {
     navigationLayout.disconnect(); navigationLayout = null;
     document.body.style.removeProperty("--pier-toolbar-bottom"); document.body.style.removeProperty("--pier-equipment-bottom");
@@ -512,13 +503,13 @@
     minis.length = 0;
     games.dispose(); rides.dispose(); boats.dispose(); wheels.dispose(); ferry.dispose(); decor.dispose(); lights.dispose(); land.beach.dispose(); life.dispose(); renderOpts.dsbWater = null;
     trainAudio.dispose(); ambience.dispose(); sound.dispose();
-    whistleButton.hidden = playButton.hidden = boatButton.hidden = beachButton.hidden = rideButton.hidden = true;
+    whistleButton.hidden = true;
     gate.dispose(); pilot.dispose(); crew.dispose(); fx.dispose(); solids.dispose();
     while (root.children.length) S.removeChild(root, root.children[root.children.length - 1]);
     const targets = input.targetCount;
     input.dispose(); hud.dispose(); scene.input = scene.debug = null;
     root = camera = input = hud = pilot = crew = avatar = fx = solids = land = gate = clock = game = remotes = unsubscribe = life = rides = games = boats = wheels = ferry = interactions = null;
-    daily = coins = fame = heat = radio = lights = decor = crowd = fireworks = chain = boards = bell = purse = picture = photoBar = photoSave = photoDone = sound = trainAudio = ambience = menuButton = rideButton = playButton = whistleButton = muteButton = beachButton = boatButton = null;
+    daily = coins = fame = heat = radio = lights = decor = crowd = fireworks = chain = boards = bell = purse = picture = photoBar = photoSave = photoDone = sound = trainAudio = ambience = menuButton = whistleButton = muteButton = null;
     return { targets };
   };
   const claim = (e) => { e.preventDefault(); e.stopImmediatePropagation(); };

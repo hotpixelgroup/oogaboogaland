@@ -1,9 +1,11 @@
-// One visit-owned registry for prompts, coastal navigation, saved stamps and vendor conversations.
+// One visit-owned registry for what can be used, coastal navigation, saved stamps and vendor conversations.
+// Whatever is in reach is offered on the game's own action button, as everywhere else on the island: it reads
+// JUMP! with nothing near and the action (BOARD BOAT, BOARD TRAIN, PLAY) beside something, and Space or a tap
+// on it does that. The pier has no prompt or action button of its own.
 (() => {
   "use strict";
   const BL=window.BL,S=BL.scene,M=BL.models,L=BL.pierModels.LAYOUT;
   const beacon=BL.pierLighthouse.LAYOUT;
-  const PIXELS=Array.from({length:4096},(_,i)=>`${i}px`);
   const POIS=[
     {id:"boardwalk",name:"Bitcoin Boardwalk",x:0,z:250,y:L.entrance.y,radius:5,hint:"Walk under the orange entrance arch."},
     {id:"hippodrome",name:"Looff Hippodrome",x:-18,z:80,y:L.hippodrome.floor,radius:3,hint:"Climb the east stairs to the carousel hall."},
@@ -19,13 +21,17 @@
   const ring=M.cached(()=>{const g=M.torus(.8,.035,"#f7931a",.65,24,5);g.castShadow=false;return g;});
   const create=({root,land,crew,pilot,hud,fx,game,rides,games,boats,gate,minis,wheels,occupied,available,exploring,travel,byWater})=>{
     const group=S.createNode(),entries=[],rows=[];S.addChild(root,group);
-    const ui={prompt:document.getElementById("pier-prompt"),text:document.getElementById("pier-prompt-text"),use:document.getElementById("pier-prompt-use"),map:document.getElementById("pier-minimap"),toggle:document.getElementById("pier-map-toggle"),compass:document.getElementById("pier-compass"),passport:document.getElementById("pier-passport-open"),dialog:document.getElementById("pier-guide"),book:document.getElementById("pier-passport"),list:document.getElementById("pier-stamp-list"),progress:document.getElementById("pier-passport-progress"),reward:document.getElementById("pier-passport-reward"),vendor:document.getElementById("pier-vendor"),title:document.getElementById("pier-vendor-title"),fact:document.getElementById("pier-vendor-fact"),learn:document.getElementById("pier-vendor-learn"),detail:document.getElementById("pier-vendor-detail"),source:document.getElementById("pier-vendor-source"),treat:document.getElementById("pier-vendor-treat"),close:document.getElementById("pier-guide-close")};
+    const ui={map:document.getElementById("pier-minimap"),toggle:document.getElementById("pier-map-toggle"),compass:document.getElementById("pier-compass"),passport:document.getElementById("pier-passport-open"),dialog:document.getElementById("pier-guide"),book:document.getElementById("pier-passport"),list:document.getElementById("pier-stamp-list"),progress:document.getElementById("pier-passport-progress"),reward:document.getElementById("pier-passport-reward"),vendor:document.getElementById("pier-vendor"),title:document.getElementById("pier-vendor-title"),fact:document.getElementById("pier-vendor-fact"),learn:document.getElementById("pier-vendor-learn"),detail:document.getElementById("pier-vendor-detail"),source:document.getElementById("pier-vendor-source"),treat:document.getElementById("pier-vendor-treat"),close:document.getElementById("pier-guide-close")};
     let current=null,talking=null,shown=null,stampCount=-1,prize=false,mapAge=1,dialogActor=null;
-    const trainLabels=Array.from({length:Math.ceil(land.coaster.seconds)+1},(_,i)=>`Train in ${i}s`);
-    const coarse=matchMedia("(pointer: coarse)").matches,promptMinY=coarse?240:180,USE=coarse?"Tap":"Press E";
+    const trainLabels=Array.from({length:Math.ceil(land.coaster.seconds)+1},(_,i)=>`TRAIN IN ${i}s`);
+    const coarse=matchMedia("(pointer: coarse)").matches;
+    // What the game's one action button reads beside each thing, as it does everywhere else on the island:
+    // JUMP! with nothing in reach, the action when something is. A verb is a word or a function for one that changes.
+    const BOARD={wheel:"BOARD WHEEL",coaster:"BOARD TRAIN",carousel:"BOARD CAROUSEL",ship:"BOARD SHIP",scrambler:"BOARD SCRAMBLER",drop:"BOARD TOWER"},WHEELS={bike:"RIDE BIKE",board:"SKATE",cart:"DRIVE CART"};
+    const verbOf=q=>typeof q.verb==="function"?q.verb():q.verb;
     // A phone starts with the map folded to a chip; its button opens it.
     ui.map.hidden=ui.compass.hidden=coarse;ui.toggle.setAttribute("aria-expanded",String(!coarse));
-    const screen={x:0,y:0,depth:0},map=ui.map.getContext("2d"),base=document.createElement("canvas");base.width=base.height=256;const ink=base.getContext("2d");
+    const map=ui.map.getContext("2d"),base=document.createElement("canvas");base.width=base.height=256;const ink=base.getContext("2d");
     const mx=x=>128+x*240/660,mz=z=>12+(330-z)*232/710;
     const rect=(x,z,w,d,color)=>{ink.fillStyle=color;ink.fillRect(mx(x-w/2),mz(z+d/2),w*240/660,d*232/710);};
     ink.fillStyle="#286576";ink.fillRect(0,0,256,256);rect(0,145,660,370,"#d9bc84");
@@ -33,7 +39,7 @@
     for(const d of L.decks)rect(d.x,d.z,d.w,d.d,"#c49661");rect(0,169,L.bridge.width,L.bridge.length,"#c49661");
     ink.fillStyle="#1e464e";ink.font="10px monospace";ink.textAlign="center";ink.fillText("Ocean Ave",128,mz(190));ink.fillText("Beach",210,mz(60));ink.fillStyle="#dbefea";ink.fillText("Pacific Ocean",195,mz(-225));
     const register=q=>{if(entries.length===64)throw new RangeError("Pier interaction capacity exceeded");const n=S.createNode({geometry:ring(),position:{x:q.x,y:q.y+.035,z:q.z},visible:false});S.addChild(group,n);q.ring=n;q.mapX=mx(q.x);q.mapZ=mz(q.z);entries.push(q);return q;};
-    const close=()=>{if(!ui.dialog.open)return;talking=dialogActor=null;ui.dialog.close();pilot.setActive(true);pilot.controls.reset();crew.steer(0,0,0,0,0);pilot.showAct();if(ui.dialog.contains(document.activeElement)||document.activeElement===ui.passport||document.activeElement===ui.use)document.activeElement.blur();};
+    const close=()=>{if(!ui.dialog.open)return;talking=dialogActor=null;ui.dialog.close();pilot.setActive(true);pilot.controls.reset();crew.steer(0,0,0,0,0);pilot.showAct();if(ui.dialog.contains(document.activeElement)||document.activeElement===ui.passport)document.activeElement.blur();};
     const show=()=>{pilot.controls.reset();crew.setWeaponTrigger(false);crew.steer(0,0,0,0,0);pilot.setActive(false);dialogActor=crew.player;ui.dialog.showModal();ui.close.focus({preventScroll:true});ui.dialog.scrollTop=0;};
     const talk=vendor=>{
       const fact=BL.pierFacts[vendor.fact];talking=vendor;ui.book.hidden=true;ui.vendor.hidden=false;ui.title.textContent=vendor.label;
@@ -41,17 +47,17 @@
       show();fx.say(vendor.person.cave,fact.line,4);return true;
     };
     const passport=()=>{if(gate.isOpen||occupied()){hud.toast("Visit the Passport when back on the boardwalk");return;}if(ui.dialog.open)close();ui.vendor.hidden=true;ui.book.hidden=false;show();};
-    for(const model of rides.models)register({id:model.id,label:model.label,x:model.board.x,z:model.board.z,y:model.seat.floor,icon:"R",timed:!!model.strict,near:()=>rides.nearest()===model,act:()=>rides.tapBoard()});
-    for(const station of land.midway.stations)register({id:station.q.id,label:station.q.label,x:station.q.play.x,z:station.q.play.z,y:L.top,icon:"G",near:()=>games.near()===station,act:games.act});
-    register({id:"prizes",label:"Tickets and Prizes",x:L.prizes.play.x,z:L.prizes.play.z,y:L.top,icon:"★",near:()=>games.near()==="prizes",act:games.act});
-    for(const m of minis)register({id:m.id,label:m.label,x:m.pad.x,z:m.pad.z,y:m.floor,icon:m.icon||"G",near:m.game.near,act:m.game.act});
+    for(const model of rides.models)register({id:model.id,label:model.label,verb:model.strict?()=>model.boardOpen?BOARD[model.id]:trainLabels[Math.ceil(model.untilBoard)]:BOARD[model.id],x:model.board.x,z:model.board.z,y:model.seat.floor,icon:"R",near:()=>rides.nearest()===model,act:()=>rides.tapBoard()});
+    for(const station of land.midway.stations)register({id:station.q.id,label:station.q.label,verb:"PLAY",x:station.q.play.x,z:station.q.play.z,y:L.top,icon:"G",near:()=>games.near()===station,act:games.act});
+    register({id:"prizes",label:"Tickets and Prizes",verb:"PRIZES",x:L.prizes.play.x,z:L.prizes.play.z,y:L.top,icon:"★",near:()=>games.near()==="prizes",act:games.act});
+    for(const m of minis)register({id:m.id,label:m.label,verb:m.verb||"PLAY",x:m.pad.x,z:m.pad.z,y:m.floor,icon:m.icon||"G",near:m.game.near,act:m.game.act});
     // A vehicle's prompt follows it wherever it was last left.
-    for(const v of wheels.vehicles)register({id:v.id,label:`${v.kind.verb} the ${v.kind.label}`,x:v.x,z:v.z,y:v.y,icon:"W",follow:v,near:()=>wheels.nearest()===v,act:wheels.mount});
-    for(const boat of boats.entries)register({id:boat.name,label:`Sail ${boat.name}`,x:boat.board.x,z:boat.board.z,y:L.top,icon:"B",near:()=>boats.nearest()===boat,act:boats.board});
-    register({id:"gate",label:"₿IFRÖST gate",x:L.gate.x,z:L.gate.z,y:L.gate.y,icon:"↗",near:()=>{const a=crew.player;return !!a&&Math.abs(a.root.position.y-a.baseY-L.gate.y)<.5&&Math.hypot(a.root.position.x-L.gate.x,a.root.position.z-L.gate.z)<7;},act:()=>{gate.open();return true;}});
+    for(const v of wheels.vehicles)register({id:v.id,label:`${v.kind.verb} the ${v.kind.label}`,verb:WHEELS[v.type],x:v.x,z:v.z,y:v.y,icon:"W",follow:v,near:()=>wheels.nearest()===v,act:wheels.mount});
+    for(const boat of boats.entries)register({id:boat.name,label:`Sail ${boat.name}`,verb:"BOARD BOAT",x:boat.board.x,z:boat.board.z,y:L.top,icon:"B",near:()=>boats.nearest()===boat,act:boats.board});
+    register({id:"gate",label:"₿IFRÖST gate",verb:"OPEN GATE!",x:L.gate.x,z:L.gate.z,y:L.gate.y,icon:"↗",near:()=>{const a=crew.player;return !!a&&Math.abs(a.root.position.y-a.baseY-L.gate.y)<.5&&Math.hypot(a.root.position.x-L.gate.x,a.root.position.z-L.gate.z)<7;},act:()=>{gate.open();return true;}});
     for(let i=0;i<land.beach.vendors.length;i++){
       const vendor=land.beach.vendors[i];vendor.fact=i?"keys":"verification";vendor.label=i?"Sunny · Ice cream vendor":"Coral · Ice cream vendor";
-      register({id:`vendor-${i}`,label:`Talk to ${i?"Sunny":"Coral"}`,x:vendor.x,z:vendor.z-1.5,y:.35,icon:"V",near:()=>land.beach.near(crew.player)===vendor,act:()=>talk(vendor)});
+      register({id:`vendor-${i}`,label:`Talk to ${i?"Sunny":"Coral"}`,verb:"TALK",x:vendor.x,z:vendor.z-1.5,y:.35,icon:"V",near:()=>land.beach.near(crew.player)===vendor,act:()=>talk(vendor)});
     }
     // A stamped landmark is also a place to travel to: exploring once earns the shortcut.
     const trips=[];
@@ -62,14 +68,13 @@
       if(e.key.toLowerCase()!=="e"||e.metaKey||e.ctrlKey||e.altKey||e.target.closest?.("input, textarea, button, a, dialog, #sheet"))return;
       select();if(!current)return;e.preventDefault();e.stopImmediatePropagation();if(!e.repeat)activate();
     };
-    const onPromptKey=e=>{if(e.key===" ")e.stopPropagation();};
     const onDialogKey=e=>{if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();close();}};
     const onCancel=e=>{e.preventDefault();close();};
     const learn=()=>{const open=ui.detail.hidden;ui.detail.hidden=ui.source.hidden=!open;ui.learn.setAttribute("aria-expanded",String(open));(open?ui.detail:ui.fact).focus();};
     const treat=()=>{if(talking)land.beach.act(crew.player,hud,fx);ui.fact.focus();};
     const onTrip=e=>{const b=e.target.closest("button[data-poi]");if(!b||b.hidden)return;const q=POIS[Number(b.dataset.poi)];close();travel(q);};
     const toggle=()=>{ui.map.hidden=ui.compass.hidden=!ui.map.hidden;ui.toggle.setAttribute("aria-expanded",String(!ui.map.hidden));ui.toggle.blur();};
-    ui.use.addEventListener("click",activate);ui.use.addEventListener("keydown",onPromptKey);ui.passport.addEventListener("click",passport);ui.close.addEventListener("click",close);ui.learn.addEventListener("click",learn);ui.treat.addEventListener("click",treat);ui.toggle.addEventListener("click",toggle);ui.list.addEventListener("click",onTrip);ui.dialog.addEventListener("cancel",onCancel);ui.dialog.addEventListener("keydown",onDialogKey);window.addEventListener("keydown",onKey,true);hud.dismissOutside(ui.dialog,close);
+    ui.passport.addEventListener("click",passport);ui.close.addEventListener("click",close);ui.learn.addEventListener("click",learn);ui.treat.addEventListener("click",treat);ui.toggle.addEventListener("click",toggle);ui.list.addEventListener("click",onTrip);ui.dialog.addEventListener("cancel",onCancel);ui.dialog.addEventListener("keydown",onDialogKey);window.addEventListener("keydown",onKey,true);hud.dismissOutside(ui.dialog,close);
     const refreshPassport=()=>{
       const p=game.state.pier;if(stampCount===p.stamps.length&&prize===p.prize)return;stampCount=p.stamps.length;prize=p.prize;
       ui.passport.textContent=`Passport ${stampCount}/10`;ui.progress.textContent=`${stampCount} of 10 landmarks visited · saved`;
@@ -87,26 +92,20 @@
       for(let i=0;i<entries.length;i++){const q=entries[i],f=q.follow;if(f&&(q.x!==f.x||q.z!==f.z||q.y!==f.y)){q.x=f.x;q.y=f.y;q.z=f.z;q.ring.position.x=q.x;q.ring.position.y=q.y+.035;q.ring.position.z=q.z;q.mapX=mx(q.x);q.mapZ=mz(q.z);}}
       select();
       for(const q of entries)q.ring.visible=!!current&&q.near();
-      if(current!==shown){shown=current;ui.prompt.hidden=!current;if(current){ui.text.textContent=current.label;ui.use.textContent=USE;}}
-      if(current?.timed){const label=land.coaster.boardOpen?"BOARD NOW":trainLabels[Math.ceil(land.coaster.untilBoard)];if(ui.use.textContent!==label)ui.use.textContent=label;}
       const a=crew.player;
-      if(current?.note){const label=current.note();if(ui.use.textContent!==label)ui.use.textContent=label;}
+      // The hint says it once, on arriving; the button is set every frame, since closing a panel or landing a jump
+      // puts JUMP! back. With nothing in reach the button is the pilot's again (a seated rider's is their ride's).
+      if(current!==shown){shown=current;if(current)hud.hint(`${coarse?verbOf(current):"Space"}: ${current.label}`);else if(a&&!a.camp.seat)pilot.showAct();}
+      if(current)hud.setAct(verbOf(current));
       if(a&&exploring()&&!ui.dialog.open&&!a.jet&&a.hopV<=0)for(const q of POIS){
         if(game.state.pier.stamps.includes(q.id)||q.boat!==undefined&&!byWater()||!q.boat&&(a.camp.seat||Math.abs(a.root.position.y-a.baseY-q.y)>.35))continue;
         if(Math.hypot(a.root.position.x-q.x,a.root.position.z-q.z)<q.radius&&game.stampPier(q.id))hud.toast(`${q.name} stamped · ${game.state.pier.stamps.length}/10`);
       }
       refreshPassport();mapAge+=dt;if(mapAge>=.15){mapAge=0;if(!ui.map.hidden)drawMap();}
     };
-    const overlay=(_c,project)=>{
-      if(!current){ui.prompt.hidden=true;return;}const pos=project(current.x,current.y+2.5,current.z);const w=window.innerWidth,h=window.innerHeight;
-      if(!pos){ui.prompt.hidden=true;return;}screen.x=pos.x;
-      // A nearby cart can pull the shoulder camera in; keep its projected tap target on screen.
-      screen.y=Math.max(Math.min(promptMinY,h-100),Math.min(h-100,pos.y));
-      ui.prompt.hidden=false;ui.prompt.style.left=PIXELS[Math.round(Math.max(110,Math.min(4095,w-110,screen.x)))];ui.prompt.style.top=PIXELS[Math.round(Math.min(4095,screen.y))];
-    };
     refreshPassport();drawMap();
-    return {register,activate,update,overlay,passport,close,pois:POIS,entries,get current(){return current;},get busy(){return ui.dialog.open;},
-      dispose:()=>{close();window.removeEventListener("keydown",onKey,true);ui.use.removeEventListener("click",activate);ui.use.removeEventListener("keydown",onPromptKey);ui.passport.removeEventListener("click",passport);ui.close.removeEventListener("click",close);ui.learn.removeEventListener("click",learn);ui.treat.removeEventListener("click",treat);ui.toggle.removeEventListener("click",toggle);ui.list.removeEventListener("click",onTrip);ui.dialog.removeEventListener("cancel",onCancel);ui.dialog.removeEventListener("keydown",onDialogKey);ui.prompt.hidden=true;ui.map.hidden=ui.compass.hidden=false;ui.toggle.setAttribute("aria-expanded","true");ui.list.replaceChildren();S.removeChild(root,group);}};
+    return {register,activate,update,passport,close,pois:POIS,entries,get current(){return current;},get busy(){return ui.dialog.open;},
+      dispose:()=>{close();window.removeEventListener("keydown",onKey,true);ui.passport.removeEventListener("click",passport);ui.close.removeEventListener("click",close);ui.learn.removeEventListener("click",learn);ui.treat.removeEventListener("click",treat);ui.toggle.removeEventListener("click",toggle);ui.list.removeEventListener("click",onTrip);ui.dialog.removeEventListener("cancel",onCancel);ui.dialog.removeEventListener("keydown",onDialogKey);ui.map.hidden=ui.compass.hidden=false;ui.toggle.setAttribute("aria-expanded","true");ui.list.replaceChildren();S.removeChild(root,group);}};
   };
   BL.pierInteractions={create,POIS};
 })();
