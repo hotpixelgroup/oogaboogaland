@@ -51,7 +51,7 @@
   // whose looks change gives all of them through `look`. `instant` crosses without the fade, as that world's own way
   // back does.
   const WINDOWS = [
-    { id: "west", kind: "mirror" },
+    { id: "pier", kind: "travel", scene: "pier", name: "Ooga Pier", label: "OOGA PIER", tint: "#70cbd1", stand: { key: "pier", bands: [[0, .3, "#a57d52", .15], [.3, .55, "#398f9f", .3], [.55, 1, "#abdce5", .2]], dots: ["#f3d9aa", "#d77d62"], dotY: [.4, .2] } },
     { id: "dsb", kind: "travel", scene: "dsb", name: "DSB Land", label: "DSB", tint: "#3f8cff", stand: DSB_STAND },
     { id: "poker", kind: "travel", scene: "poker", name: "The Ember Den", label: "EMBER DEN", instant: true, look: () => pokerLook() },
     { id: "east", kind: "mirror" }

@@ -32,6 +32,8 @@ export const STALE_MS = 90000;
 export const SWEEP_MS = 60000;
 // Generous bounds around the hub: jetpack flight reaches about 140 out and 72 up, falls end at -120.
 export const BOUND_XZ = 160;
+// Pier launches explore the sea beyond the measured coastal walking footprint.
+export const PIER_BOUND_XZ = 900;
 export const BOUND_Y_MIN = -130;
 export const BOUND_Y_MAX = 100;
 export const BODY_NAME = /^[A-Za-z0-9_.-]{1,40}$/;
@@ -53,7 +55,7 @@ const finite = (v) => typeof v === "number" && Number.isFinite(v);
 const round = (v) => Math.round(v * 1000) / 1000;
 
 /** A parsed client message, `null` for one to ignore, or `false` for one that should close the socket. */
-export const parseClientMessage = (text) => {
+export const parseClientMessage = (text, zone = OUTSIDE) => {
   if (typeof text !== "string" || text.length > MESSAGE_MAX) return false;
   let msg;
   try {
@@ -65,7 +67,8 @@ export const parseClientMessage = (text) => {
   if (msg.t === "pose") {
     const { x, y, z, yaw } = msg;
     if (!finite(x) || !finite(y) || !finite(z) || !finite(yaw)) return null;
-    if (Math.abs(x) > BOUND_XZ || Math.abs(z) > BOUND_XZ || y < BOUND_Y_MIN || y > BOUND_Y_MAX) return null;
+    const bound = zone === "scene-pier" ? PIER_BOUND_XZ : BOUND_XZ;
+    if (Math.abs(x) > bound || Math.abs(z) > bound || y < BOUND_Y_MIN || y > BOUND_Y_MAX) return null;
     return { t: "pose", x: round(x), y: round(y), z: round(z), yaw: round(Math.atan2(Math.sin(yaw), Math.cos(yaw))) };
   }
   if (msg.t === "body") {

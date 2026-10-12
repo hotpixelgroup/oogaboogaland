@@ -48,7 +48,9 @@
   };
   const isString = (v, max) => typeof v === "string" && v.length <= max;
   const isEntry = (e, catalog) => e && typeof e === "object" && isString(e.id, 40) && catalog.some((c) => c.id === e.itemId) && LOOT_TIERS.some((t) => t.tier === e.tier) && isString(e.donationId, 64) && Number.isFinite(e.at);
-  const defaults = () => ({ inventory: [], assignments: {}, handle: "", message: "", handFed: 0, totalSats: 0, donations: 0, race: { best: {}, cup: null }, drop: { best: null, jumps: 0 }, orbit: { best: null, build: null }, mine: { best: null }, arcade: { skee: 0, hoops: 0, shy: 0, claw: 0, hockey: 0, billiards: 0, darts: 0, pinball: 0, ride: 0, invaders: 0, snake: 0, pong: 0, stampede: 0, flap: 0, breaker: 0, dash: 0, stacker: 0, tickets: 0, prizes: [] } });
+  const defaults = () => ({ inventory: [], assignments: {}, handle: "", message: "", handFed: 0, totalSats: 0, donations: 0, pier: { version: 1, stamps: [], prize: false, fishing: 0, builder: 0, mayhem: 0, whack: 0, seedMatch: 0, volley: 0 }, race: { best: {}, cup: null }, drop: { best: null, jumps: 0 }, orbit: { best: null, build: null }, mine: { best: null }, arcade: { skee: 0, hoops: 0, shy: 0, claw: 0, hockey: 0, billiards: 0, darts: 0, pinball: 0, ride: 0, invaders: 0, snake: 0, pong: 0, stampede: 0, flap: 0, breaker: 0, dash: 0, stacker: 0, tickets: 0, prizes: [] } });
+  // Stable passport ids are saved independently of authored positions and display names.
+  const PIER_STAMPS = ["boardwalk", "hippodrome", "aquarium", "pacific-park", "playland", "route66", "seafood", "muscle-beach", "pier-tip", "lighthouse"];
   // Ooga Arcade's carnival bests, each capped past the most its game can score (nine doubled 100s; the round games
   // run on), the retro cabinets' bests (`retro-games.js`, capped past any run), the ticket balance, and the prizes
   // (`ARCADE_PRIZES` ids) redeemed at the counter.
@@ -109,6 +111,17 @@
       }
       if (a && Number.isFinite(a.tickets) && a.tickets >= 0 && a.tickets <= TICKETS_MAX) state.arcade.tickets = Math.floor(a.tickets);
       if (a && Array.isArray(a.prizes)) state.arcade.prizes = ARCADE_PRIZES.filter((id) => a.prizes.includes(id));
+      const p = parsed.pier;
+      if (p && p.version === 1 && Array.isArray(p.stamps)) {
+        state.pier.stamps = PIER_STAMPS.filter((id) => p.stamps.includes(id));
+        state.pier.prize = state.pier.stamps.length === PIER_STAMPS.length && p.prize === true;
+        if (Number.isInteger(p.fishing) && p.fishing >= 0 && p.fishing <= 150 && p.fishing % 5 === 0) state.pier.fishing = p.fishing;
+        if (Number.isInteger(p.builder) && p.builder >= 0 && p.builder <= 216) state.pier.builder = p.builder;
+        if (Number.isInteger(p.whack) && p.whack >= 0 && p.whack <= 120) state.pier.whack = p.whack;
+        if (Number.isInteger(p.volley) && p.volley >= 0 && p.volley <= 15) state.pier.volley = p.volley;
+        if (Number.isInteger(p.seedMatch) && p.seedMatch >= 0 && p.seedMatch <= 12) state.pier.seedMatch = p.seedMatch;
+        if (Number.isInteger(p.mayhem) && p.mayhem >= 0 && p.mayhem <= 42 && p.mayhem % 6 === 0) state.pier.mayhem = p.mayhem;
+      }
     } catch {
       return defaults();
     }
@@ -252,9 +265,58 @@
     };
     // A prize at the counter: false when it is already won or the tickets fall short.
     const redeem = (id, cost) => {
-      if (!ARCADE_PRIZES.includes(id) || state.arcade.prizes.includes(id) || state.arcade.tickets < cost) return false;
+      if (!Number.isInteger(cost) || cost <= 0 || !ARCADE_PRIZES.includes(id) || state.arcade.prizes.includes(id) || state.arcade.tickets < cost) return false;
       state.arcade.tickets -= cost;
       state.arcade.prizes.push(id);
+      save(state);
+      return true;
+    };
+    const stampPier = (id) => {
+      if (!PIER_STAMPS.includes(id) || state.pier.stamps.includes(id)) return false;
+      state.pier.stamps.push(id);
+      save(state);
+      return true;
+    };
+    // A separate, free souvenir never spends tickets or duplicates an arcade prize.
+    const redeemPierPassport = () => {
+      if (state.pier.prize || state.pier.stamps.length !== PIER_STAMPS.length) return false;
+      state.pier.prize = true;
+      save(state);
+      return true;
+    };
+    const recordPierFishing = (score) => {
+      if (!Number.isInteger(score) || score <= state.pier.fishing || score > 150 || score % 5 !== 0) return false;
+      state.pier.fishing = score;
+      save(state);
+      return true;
+    };
+    const recordPierBuilder = (fees) => {
+      if (!Number.isInteger(fees) || fees <= state.pier.builder || fees > 216) return false;
+      state.pier.builder = fees;
+      save(state);
+      return true;
+    };
+    const recordPierMayhem = (tickets) => {
+      if (!Number.isInteger(tickets) || tickets <= state.pier.mayhem || tickets > 42 || tickets % 6 !== 0) return false;
+      state.pier.mayhem = tickets;
+      save(state);
+      return true;
+    };
+    const recordPierWhack = (score) => {
+      if (!Number.isInteger(score) || score <= state.pier.whack || score > 120) return false;
+      state.pier.whack = score;
+      save(state);
+      return true;
+    };
+    const recordPierSeedMatch = (score) => {
+      if (!Number.isInteger(score) || score <= state.pier.seedMatch || score > 12) return false;
+      state.pier.seedMatch = score;
+      save(state);
+      return true;
+    };
+    const recordPierVolley = (score) => {
+      if (!Number.isInteger(score) || score <= state.pier.volley || score > 15) return false;
+      state.pier.volley = score;
       save(state);
       return true;
     };
@@ -278,7 +340,7 @@
       if (seconds < 5400) return `${Math.round(seconds / 60)}m`;
       return `${(seconds / 3600).toFixed(1)}h`;
     };
-    return { state, countOf, lootFor: lootForVisitor, addItem, assign, unassign, itemOf, assignedTo, clearLoot, resetAll, recordDonation, recordHandFed, recordRace, recordCup, recordJump, recordDrop, recordOrbit, recordMine, recordArcade, addTickets, spendTickets, redeem, setOrbitBuild, setIdentity, forecast, formatDuration };
+    return { state, countOf, lootFor: lootForVisitor, addItem, assign, unassign, itemOf, assignedTo, clearLoot, resetAll, recordDonation, recordHandFed, recordRace, recordCup, recordJump, recordDrop, recordOrbit, recordMine, recordArcade, addTickets, spendTickets, redeem, stampPier, redeemPierPassport, recordPierFishing, recordPierBuilder, recordPierMayhem, recordPierWhack, recordPierSeedMatch, recordPierVolley, setOrbitBuild, setIdentity, forecast, formatDuration };
   };
-  BL.game = { create, LOOT_TIERS, STACK_MAX, SATS_PER_BANANA, tierFor, lootFor, bananasFor, formatLarge, formatThree, formatFeeRate };
+  BL.game = { create, LOOT_TIERS, STACK_MAX, SATS_PER_BANANA, PIER_STAMPS, tierFor, lootFor, bananasFor, formatLarge, formatThree, formatFeeRate };
 })();

@@ -1,19 +1,24 @@
 // Pure checks on the room's wire format and limits: no Durable Object, no sockets.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { BOUND_XZ, MESSAGE_MAX, MOVE_HZ, parseClientMessage, playerFromHeaders, spawnPoint, takeToken } from "../src/protocol.js";
+import { BOUND_XZ, PIER_BOUND_XZ, MESSAGE_MAX, MOVE_HZ, parseClientMessage, playerFromHeaders, spawnPoint, takeToken } from "../src/protocol.js";
 
 test("poses inside the bounds are accepted, rounded and their yaw wrapped", () => {
   const m = parseClientMessage(JSON.stringify({ t: "pose", x: 1.23456, y: -7, z: 3, yaw: 7 }));
   assert.equal(m.t, "pose");
   assert.equal(m.x, 1.235);
   assert.ok(Math.abs(m.yaw - (7 - 2 * Math.PI)) < 1e-3);
+  const pier = JSON.stringify({ t: "pose", x: -300, y: 12.323, z: 288, yaw: 0 });
+  assert.equal(parseClientMessage(pier, "scene-pier").z, 288, "the enlarged pier reports its full ground coordinates");
+  assert.equal(parseClientMessage(pier), null, "other worlds retain the hub bounds");
+  assert.equal(parseClientMessage(pier, "scene-dsb"), null);
 });
 
 test("poses out of bounds or not numbers are ignored, not fatal", () => {
   for (const bad of [{ x: BOUND_XZ + 1, y: 0, z: 0, yaw: 0 }, { x: 0, y: 500, z: 0, yaw: 0 }, { x: "1", y: 0, z: 0, yaw: 0 }, { x: 0, y: 0, z: 0 }]) {
     assert.equal(parseClientMessage(JSON.stringify({ t: "pose", ...bad })), null, JSON.stringify(bad));
   }
+  assert.equal(parseClientMessage(JSON.stringify({ t: "pose", x: PIER_BOUND_XZ + 1, y: 0, z: 0, yaw: 0 }), "scene-pier"), null);
 });
 
 test("a body is an Ooga name or null; anything else is ignored", () => {

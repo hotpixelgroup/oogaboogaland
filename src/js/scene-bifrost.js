@@ -36,6 +36,7 @@
     entrance: view(0, 3.2, -2, 0, 0.12, 13),
     core: view(0, 3.4, 0, 0.5, 0.16, 9.5),
     dsb: toward(WINDOWS.findIndex((w) => w.id === "dsb")),
+    pier: toward(WINDOWS.findIndex((w) => w.id === "pier")),
     poker: toward(WINDOWS.findIndex((w) => w.id === "poker")),
     // Low by the dais, looking up the beam through the open dome, the ringed giant beside it.
     sky: view(0, 7, 0, -0.3, -0.7, 7)
@@ -116,6 +117,10 @@
     return POKER_LIGHT;
   };
   const SHOTS = {
+    pier: {
+      width: 360, up: .42, eye: { x: 55, y: 70, z: 100 }, look: { x: 0, y: 2, z: 0 }, colour: .83, mist: .05, haze: [70, 120, 235],
+      build: () => BL.pierModels.build().root, opts: () => DSB_LIGHT
+    },
     dsb: {
       width: 360, up: 0.36, eye: { x: 0, y: 40, z: 84 }, look: { x: 0, y: -3, z: 0 }, colour: 0.83, mist: 0.08, haze: [70, 120, 235],
       build: () => BL.dsbGeography.build().root, opts: () => DSB_LIGHT

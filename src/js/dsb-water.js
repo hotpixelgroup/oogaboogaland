@@ -131,7 +131,15 @@
       environment[2]=bounded(value.glint,0,1,1);
       environment[3]=bounded(value.foam,1,3,1);
     };
-    const state={environment,setEnvironment,node,geometry,pixels,depths,update,version:0,size:N,depthSize:B,depthAt,heights:re};
+    // Floating bodies sample the existing FFT, including its repeat and texture texel centres.
+    // This read-only query leaves the mean waterline, spectrum and optical surface unchanged.
+    const heightAt=(x,z)=>{
+      const px=((x/L%1+1)%1)*N-.5,pz=((z/L%1+1)%1)*N-.5,ix=Math.floor(px),iz=Math.floor(pz),tx=px-ix,tz=pz-iz;
+      const x0=(ix+N)%N,x1=(x0+1)%N,z0=(iz+N)%N,z1=(z0+1)%N;
+      const a=re[z0*N+x0]*(1-tx)+re[z0*N+x1]*tx,b=re[z1*N+x0]*(1-tx)+re[z1*N+x1]*tx;
+      return LEVEL+(a*(1-tz)+b*tz)*environment[0];
+    };
+    const state={environment,setEnvironment,node,geometry,pixels,depths,update,version:0,size:N,depthSize:B,depthAt,heightAt,heights:re};
     update(0);return state;
   };
   const gpu=(gl,state)=>{

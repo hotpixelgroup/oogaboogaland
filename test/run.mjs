@@ -2861,7 +2861,7 @@ const orbitFlow = async (b) => {
 // `node test/run.mjs race mine` runs the global unit tier plus those scenes; `full` runs every scene and the
 // perf floor; `perf` runs the perf floor alone; `unit` (or nothing) runs only the global tier.
 // Eight lanes saturate a 16-core box (measured 2026-09-20); raising it only adds heat.
-const SCENES = ["hub", "lab", "race", "drop", "orbit", "mine", "dsb", "factory", "bifrost", "poker", "arcade", "skee", "hoops", "shy", "claw", "hockey", "billiards", "darts", "pinball", "ride", "invaders", "snake", "pong", "stampede", "flap", "breaker", "dash", "stacker"];
+const SCENES = ["hub", "lab", "race", "drop", "orbit", "mine", "dsb", "factory", "bifrost", "pier", "poker", "arcade", "skee", "hoops", "shy", "claw", "hockey", "billiards", "darts", "pinball", "ride", "invaders", "snake", "pong", "stampede", "flap", "breaker", "dash", "stacker"];
 const LANES = Number(process.env.LANES) || 8;
 const ARGS = process.argv.slice(2);
 for (const a of ARGS) if (!SCENES.includes(a) && !["unit", "integration-unit", "svrn-unit", "svrn-review", "vacancy-unit", "portal-unit", "water-baseline", "water-review", "water-unit", "stackchain-review", "stackchain-unit", "dsb-menus-unit", "maxis-unit", "exterior-unit", "rulers-unit", "ink-unit", "big-unit", "perf", "full", "poker-protocol"].includes(a)) throw new Error(`Unknown argument "${a}" (unit | perf | full | poker-protocol | ${SCENES.join(" | ")})`);
@@ -3772,6 +3772,22 @@ const gameRulesChecks = async () => {
     wallet.addTickets(1);
     const spent = wallet.spendTickets(20) && wallet.state.arcade.tickets === 0 && make().state.arcade.tickets === 0;
     record("tickets: a spend refuses when the tickets fall short or the cost is no whole number above nothing, spending nothing, and one that goes through is saved", short && malformed && spent, JSON.stringify({ short, malformed, spent }));
+    wallet.addTickets(90);
+    const invalidPrize=[0,-5,2.5,NaN,"30"].every(n=>!wallet.redeem("banana-plush",n))&&!wallet.redeem("missing",30)&&!wallet.redeem("crown",500)&&wallet.state.arcade.tickets===90;
+    const bought=wallet.redeem("banana-plush",30)&&!wallet.redeem("banana-plush",30)&&wallet.state.arcade.tickets===60&&make().state.arcade.prizes.includes("banana-plush");
+    record("prizes: malformed costs, unaffordable and duplicate claims cannot spend or mint tickets; a valid claim saves its exact cost",invalidPrize&&bought,JSON.stringify({invalidPrize,bought}));
+    const ids=BL.game.PIER_STAMPS;
+    const locked=!wallet.redeemPierPassport()&&!wallet.stampPier("unknown");
+    for(const id of ids.slice(0,-1))wallet.stampPier(id);
+    const partial=make().state.pier.stamps.length===9&&!wallet.redeemPierPassport()&&!wallet.stampPier(ids[0]);
+    wallet.stampPier(ids.at(-1));
+    const claimed=wallet.redeemPierPassport()&&!wallet.redeemPierPassport()&&make().state.pier.prize&&wallet.state.arcade.tickets===60;
+    const passportSave=JSON.parse(store.get("oogaboogaland.v1"));passportSave.pier.stamps=[ids[0],ids[0],"invented"];passportSave.pier.prize=true;store.set("oogaboogaland.v1",JSON.stringify(passportSave));
+    const cleaned=make().state;
+    const sanitized=cleaned.pier.stamps.length===1&&!cleaned.pier.prize&&cleaned.arcade.tickets===60;
+    passportSave.pier.version=99;store.set("oogaboogaland.v1",JSON.stringify(passportSave));
+    const version=make().state.pier.stamps.length===0;
+    record("Pier Passport: ten unique stable stamps survive reload; completion claims a free souvenir once; malformed or future saves cannot unlock it",ids.length===10&&new Set(ids).size===10&&locked&&partial&&claimed&&sanitized&&version,JSON.stringify({locked,partial,claimed,sanitized,version}));
   }
   {
     // The jackpot wheel, from arcade-models.js on the builders it loads with: the house wins slowly, and every
@@ -3785,6 +3801,111 @@ const gameRulesChecks = async () => {
       if (wheelAt(to) !== k || turns < 3 || turns >= 4) missed.push({ from, k, at, got: wheelAt(to), turns });
     }
     record("jackpot wheel: a spin pays back 75 to 90% of its cost on average, the jackpot is ten spins' worth, and every wedge stops under the clapper wherever the spin aims in it", V.length === 20 && ev >= cost * 0.75 && ev <= cost * 0.9 && jackpot >= cost * 10 && missed.length === 0, JSON.stringify({ ev, cost, jackpot, missed: missed.slice(0, 4) }));
+  }
+  {
+    runInNewContext(await readFile(new URL("../src/js/pier-fishing.js",import.meta.url),"utf8"),context);
+    const F=BL.pierFishing,sim=F.createRound(()=>draws[count++]);let count=0;
+    const target=sim.state.target,draws=[target+1,target,0];sim.reset();sim.start();sim.cast();
+    const held=!sim.cast()&&count===1;sim.update(2.5);const miss=sim.state.catches===0&&sim.state.score===0;
+    sim.cast();sim.update(2.5);const equal=sim.state.catches===1&&sim.state.score===5;
+    sim.cast();sim.update(2.5);const below=sim.state.catches===2&&sim.state.score===10;
+    const late=F.createRound(()=>0);late.reset();late.start();late.update(74.8);late.cast();late.update(.3);late.update(NaN);late.update(1000);
+    const deadline=late.state.phase==="result"&&late.state.elapsed===75&&late.state.score===0&&!late.cast();
+    record("Hash Fishing rules: one draw per cast, hashes above the target miss, equality catches, and an unresolved deadline cast cannot score",held&&miss&&equal&&below&&deadline,JSON.stringify({held,miss,equal,below,deadline}));
+    const fast=F.createRound(()=>0),slow=F.createRound(()=>0);for(const r of [fast,slow]){r.reset();r.start();}
+    for(let i=0;i<3;i++){fast.cast();fast.update(2.5);slow.update(10);slow.cast();slow.update(2.5);}
+    const retarget=fast.state.retargets===1&&slow.state.retargets===1&&fast.state.target<target&&slow.state.target>target&&fast.state.direction==="harder"&&slow.state.direction==="easier";
+    const coarse=F.createRound(()=>0),fine=F.createRound(()=>0);for(const r of [coarse,fine]){r.reset();r.start();r.cast();}coarse.update(2.5);for(let i=0;i<250;i++)fine.update(.01);
+    const steps=coarse.state.phase===fine.state.phase&&coarse.state.score===fine.state.score&&Math.abs(coarse.state.elapsed-fine.state.elapsed)<1e-7;
+    const maximum=F.createRound(()=>0);maximum.reset();maximum.start();for(let i=0;i<30;i++){maximum.cast();maximum.update(2.5);}const bounded=maximum.state.phase==="result"&&maximum.state.elapsed===75&&maximum.state.score===F.MAX_SCORE;maximum.close();maximum.update(10);
+    record("Hash Fishing rules: quick catches lower the target, slow catches raise it, frame steps agree, and the 75-second round caps its payout",retarget&&steps&&bounded&&maximum.state.score===F.MAX_SCORE,JSON.stringify({retarget,steps,bounded,fast:fast.state.target,slow:slow.state.target}));
+    store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();
+    const best=g.recordPierFishing(15)&&[15,10,-5,NaN,151,7.5,14].every(n=>!g.recordPierFishing(n))&&make().state.pier.fishing===15;
+    g.stampPier("boardwalk");const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.fishing=999;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    const sanitized=make().state.pier.fishing===0&&make().state.pier.stamps.includes("boardwalk");delete saved.pier.fishing;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    record("Hash Fishing saves: only a better valid five-ticket score survives reload; malformed and older saves preserve the Passport",best&&sanitized&&make().state.pier.fishing===0,JSON.stringify({best,sanitized}));
+  }
+  {
+    runInNewContext(await readFile(new URL("../src/js/pier-builder.js",import.meta.url),"utf8"),context);
+    const P=BL.pierBuilder;let draw=0;const r=P.createRound(()=>draw++%2?5:0);r.reset();r.start();
+    r.anchor(5,0);const edge=!r.place()&&r.state.used===0;r.rotate();const rotated=r.place()&&r.state.used===2&&r.state.fees===12;
+    r.anchor(4,0);const frozen=Array.from(r.state.board).join(),overlap=!r.place()&&r.state.fees===12&&Array.from(r.state.board).join()===frozen;
+    const bad=!r.anchor(-1,0)&&!r.anchor(0,6)&&!r.select(3);
+    record("Block Builder rules: a rotated transaction fits the edge; overlap and invalid coordinates cannot spend block space or add fees",edge&&rotated&&overlap&&bad,JSON.stringify({edge,rotated,overlap,bad}));
+    const shapes=[];for(let shape=0;shape<6;shape++){let n=0;const tx=P.createRound(()=>n++%2?5:shape);tx.reset();tx.start();tx.anchor(2,1);let fits=true;for(let turn=0;turn<4;turn++){fits&&=tx.fits();tx.rotate();}const fee=tx.state.offers[0].fee,size=tx.state.offers[0].size;shapes.push(fits&&tx.place()&&tx.state.used===size&&tx.state.fees===fee&&Array.from(tx.state.board).filter(Boolean).length===size);}
+    record("Block Builder rules: all six transaction shapes rotate through four orientations and pack exactly their displayed space and fees",shapes.every(Boolean),JSON.stringify(shapes));
+    const full=P.createRound(()=>draw++%2?5:0);draw=0;full.reset();full.start();for(let y=0;y<6;y++)for(let x=0;x<6;x+=2){full.anchor(x,y);full.place();}
+    const bounded=full.state.used===36&&full.state.fees===216&&full.state.tickets===54&&!full.place();full.update(NaN);full.update(75);const deadline=full.state.phase==="result"&&full.state.elapsed===75&&!full.place()&&!full.rotate()&&!full.skip();full.update(50);full.close();full.update(50);
+    record("Block Builder rules: a full block caps fees and tickets; the deadline seals once and closed or expired rounds cannot change it",bounded&&deadline&&full.state.fees===P.MAX_FEES&&full.state.elapsed===75,JSON.stringify({bounded,deadline,fees:full.state.fees}));
+    store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);
+    const best=g.recordPierBuilder(36)&&[36,20,-1,NaN,217,2.5].every(n=>!g.recordPierBuilder(n))&&make().state.pier.builder===36;
+    const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.builder=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const cleaned=make().state.pier;delete saved.pier.builder;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    record("Block Builder saves: only better bounded whole fee totals survive reload; older and malformed saves keep fishing and Passport progress",best&&cleaned.builder===0&&cleaned.fishing===15&&cleaned.stamps.includes("boardwalk")&&make().state.pier.builder===0,JSON.stringify({best,cleaned}));
+  }
+  {
+    runInNewContext(await readFile(new URL("../src/js/pier-mayhem.js",import.meta.url),"utf8"),context);
+    const P=BL.pierMayhem,makeRound=()=>{const r=P.createRound();r.reset();r.start();return r;};
+    const queue=r=>r.state.cars.forEach((c,i)=>{c.x=-7.5+i*3;c.z=-5.4;c.vx=c.vz=0;c.fee=i+1;c.queued=i+1;});
+    const priority=makeRound();priority.update(9.95);queue(priority);priority.state.cars[0].fee=9;priority.state.cars[5].fee=9;priority.state.cars[5].queued=0;priority.state.cars[5].z=3;priority.update(.1);
+    const higher=priority.state.lastWinner===0&&priority.state.tickets===6&&priority.state.blocks===1;
+    const tie=makeRound();tie.update(9.95);queue(tie);tie.state.cars[0].fee=tie.state.cars[1].fee=9;tie.state.cars[0].queued=5;tie.state.cars[1].queued=2;tie.update(.1);
+    const earlier=tie.state.lastWinner===1&&tie.state.tickets===0;
+    record("Mempool Mayhem rules: the gate admits one eligible highest-fee car; an earlier arrival breaks ties and an unqueued car cannot win",higher&&earlier,JSON.stringify({higher,earlier}));
+    const boosts=makeRound(),c=boosts.state.cars[0];c.x=5;c.z=0;boosts.update(.02);const once=c.fee===3&&boosts.state.pickups===1;boosts.update(.2);const held=c.fee===3&&boosts.state.pickups===1;c.x=-5;c.z=0;c.vx=c.vz=0;c.fee=8;boosts.update(.02);
+    record("Mempool Mayhem rules: each fee token works once until the next gate and the fee stays bounded",once&&held&&c.fee===9&&boosts.state.pickups===2,JSON.stringify({once,held,fee:c.fee,pickups:boosts.state.pickups}));
+    const coarse=makeRound(),fine=makeRound();coarse.update(2,1,0);for(let i=0;i<200;i++)fine.update(.01,1,0);const steps=Math.abs(coarse.state.cars[0].x-fine.state.cars[0].x)<1e-8&&Math.abs(coarse.state.cars[0].vx-fine.state.cars[0].vx)<1e-8;coarse.update(8,1,-1);const bounded=coarse.state.cars.every(c=>Math.abs(c.x)<=8&&Math.abs(c.z)<=7);coarse.brake();const stopped=coarse.state.cars[0].vx===0&&coarse.state.cars[0].vz===0;
+    const bump=makeRound();bump.state.cars[0].x=-1;bump.state.cars[0].z=0;bump.state.cars[0].vx=4;bump.state.cars[1].x=1;bump.state.cars[1].z=0;bump.state.cars[1].vx=-4;bump.update(.01);const rebound=bump.state.bumps>0&&bump.state.cars[0].vx<0&&Math.hypot(bump.state.cars[0].x-bump.state.cars[1].x,bump.state.cars[0].z-bump.state.cars[1].z)>=2;
+    record("Mempool Mayhem rules: frame steps agree, cars rebound on contact, walls contain them and braking stops the player",steps&&bounded&&stopped&&rebound,JSON.stringify({steps,bounded,stopped,rebound}));
+    const complete=makeRound();for(let i=0;i<7;i++){complete.update(9.95);queue(complete);complete.state.cars[0].fee=9;complete.update(.05);}complete.update(5);const finished=complete.state.phase==="result"&&complete.state.elapsed===75&&complete.state.tickets===P.MAX_TICKETS&&complete.state.admissions===7&&!complete.brake();complete.update(100);complete.close();complete.update(100);
+    record("Mempool Mayhem rules: seven gate admissions cap the 75-second round; expired and closed rounds cannot mint further tickets",finished&&complete.state.tickets===42&&complete.state.elapsed===75,JSON.stringify({finished,tickets:complete.state.tickets,admissions:complete.state.admissions}));
+    store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);g.recordPierBuilder(36);
+    const best=g.recordPierMayhem(12)&&[12,6,-6,NaN,43,7,2.5].every(n=>!g.recordPierMayhem(n))&&make().state.pier.mayhem===12;const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.mayhem=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const clean=make().state.pier;delete saved.pier.mayhem;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    record("Mempool Mayhem saves: only better six-ticket admissions survive reload; older or malformed saves retain the other games and Passport",best&&clean.mayhem===0&&clean.builder===36&&clean.fishing===15&&clean.stamps.includes("boardwalk")&&make().state.pier.mayhem===0,JSON.stringify({best,clean}));
+  }
+  {
+    runInNewContext(await readFile(new URL("../src/js/pier-whack.js",import.meta.url),"utf8"),context);
+    const P=BL.pierWhack,makeRound=()=>{const r=P.createRound(()=>0);r.reset();r.start();return r;},r=makeRound();
+    const slot=coin=>r.state.cells.findIndex(c=>c.active&&c.coin===coin);
+    r.select(slot(1));const first=r.whack()&&r.state.score===2&&!r.whack()&&r.state.rejected===1;r.select(slot(2));r.whack();r.select(slot(4));r.whack();
+    const classification=r.state.spent===14&&first&&r.state.rejected===2&&r.state.wrong===1&&r.state.score===2&&r.state.tickets===0;
+    const invalid=!r.select(-1)&&!r.select(9)&&!r.select(1.5)&&!r.start();r.update(2.5);r.update(2.5);
+    record("Double-Spend Whack rules: spent B and C reject once, unspent E loses points, invalid slots do nothing and missed rejections cannot make a negative score",classification&&invalid&&r.state.missed===2&&r.state.score===0,JSON.stringify({classification,invalid,missed:r.state.missed,score:r.state.score}));
+    const full=makeRound();for(let wave=0;wave<30;wave++){for(const coin of [1,2]){full.select(full.state.cells.findIndex(c=>c.active&&c.coin===coin));full.whack();}full.update(2.5);}
+    const finish=full.state.phase==="result"&&full.state.elapsed===75&&full.state.score===P.MAX_SCORE&&full.state.tickets===40&&full.state.allowed===30&&!full.whack();full.update(1000);full.close();full.update(1000);
+    const coarse=makeRound(),fine=makeRound();coarse.update(NaN);coarse.update(1000);for(let i=0;i<750;i++)fine.update(.1);
+    record("Double-Spend Whack rules: thirty timed waves cap tickets, valid transactions pass, frame sizes agree and expired or closed rounds cannot score",finish&&full.state.score===120&&coarse.state.phase===fine.state.phase&&coarse.state.wave===30&&fine.state.wave===30&&coarse.state.missed===fine.state.missed&&coarse.state.allowed===fine.state.allowed,JSON.stringify({finish,coarse:coarse.state.missed,fine:fine.state.missed}));
+    store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);g.recordPierBuilder(36);g.recordPierMayhem(12);
+    const best=g.recordPierWhack(10)&&[10,4,-1,NaN,121,2.5].every(n=>!g.recordPierWhack(n))&&make().state.pier.whack===10;const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.whack=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const clean=make().state.pier;delete saved.pier.whack;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    record("Double-Spend Whack saves: only a better bounded whole score survives reload; older or malformed saves retain prior games and Passport",best&&clean.whack===0&&clean.mayhem===12&&clean.builder===36&&clean.fishing===15&&clean.stamps.includes("boardwalk")&&make().state.pier.whack===0,JSON.stringify({best,clean}));
+  }
+  {
+    runInNewContext(await readFile(new URL("../src/js/pier-seed-match.js",import.meta.url),"utf8"),context);
+    const P=BL.pierSeedMatch,makeRound=()=>{const r=P.createRound(n=>n-1);r.reset();r.start();return r;},r=makeRound();
+    const memory=r.state.phase==="memorize"&&!r.select(0)&&!r.choose()&&!r.check()&&!r.start();r.update(11.9);const held=r.state.phase==="memorize";r.update(.1);
+    const shuffled=r.state.phase==="recall"&&new Set(r.state.cards).size===12&&r.state.cards[0]===1&&r.state.cards[1]===0;
+    r.select(0);r.choose();r.choose();const cancelled=r.state.held===-1&&r.state.swaps===0;r.select(0);r.choose();r.select(1);r.choose();r.check();
+    const secured=r.state.phase==="secured"&&r.state.correct===12&&r.state.swaps===1&&r.state.tickets===30&&!r.select(0)&&!r.choose();r.update(62.99);const pending=r.state.phase==="secured"&&r.state.remaining>0;r.update(.01);
+    record("Seed Phrase Match rules: twelve unique cards stay ordered for 12s, shuffle even with identity dice, swap once and secure the exact 30-ticket maximum at 75s",memory&&held&&shuffled&&cancelled&&secured&&pending&&r.state.phase==="result"&&r.state.elapsed===75&&r.state.score===12,JSON.stringify({memory,held,shuffled,cancelled,secured,pending}));
+    const partial=makeRound();partial.update(12);const invalid=!partial.select(-1)&&!partial.select(12)&&!partial.select(.5);partial.select(0);partial.choose();partial.select(2);partial.choose();partial.check();const wrong=partial.state.phase==="recall"&&partial.state.correct===9;partial.update(NaN);partial.update(1000);const payout=partial.state.score===9&&partial.state.tickets===18&&!partial.choose()&&!partial.check();partial.close();partial.update(1000);
+    const coarse=makeRound(),fine=makeRound();coarse.update(75);for(let i=0;i<750;i++)fine.update(.1);
+    record("Seed Phrase Match rules: misplaced words pay only their correct positions; invalid, expired and closed input cannot score, and different time steps agree",invalid&&wrong&&payout&&partial.state.tickets===18&&coarse.state.phase===fine.state.phase&&coarse.state.score===10&&fine.state.score===10&&coarse.state.tickets===20,JSON.stringify({invalid,wrong,payout,coarse:coarse.state.score,fine:fine.state.score}));
+    store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);g.recordPierBuilder(36);g.recordPierMayhem(12);g.recordPierWhack(10);
+    const best=g.recordPierSeedMatch(9)&&[9,4,-1,NaN,13,2.5].every(n=>!g.recordPierSeedMatch(n))&&make().state.pier.seedMatch===9;const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.seedMatch=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const clean=make().state.pier;delete saved.pier.seedMatch;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    record("Seed Phrase Match saves: only a better bounded whole score persists; older or malformed saves retain all prior games and Passport without saving card words",best&&clean.seedMatch===0&&clean.whack===10&&clean.mayhem===12&&clean.builder===36&&clean.fishing===15&&clean.stamps.includes("boardwalk")&&make().state.pier.seedMatch===0&&!Object.values(saved.pier).some(v=>Array.isArray(v)&&v.includes("OOGA")),JSON.stringify({best,clean}));
+  }
+  {
+    runInNewContext(await readFile(new URL("../src/js/pier-volley.js",import.meta.url),"utf8"),context);
+    const P=BL.pierVolley,makeRound=()=>{const r=P.createRound(()=>0);r.reset();r.start();return r;},r=makeRound();
+    r.select(3);const blocked=!r.pass()&&r.state.event==="blocked"&&r.state.passes===0;r.select(1);const flying=r.pass()&&!r.pass()&&!r.select(2);r.update(.4);const airborne=r.state.phase==="flight"&&r.state.score===0;r.update(.4);r.select(3);r.pass();r.update(.8);
+    const delivered=r.state.phase==="delivered"&&r.state.score===1&&r.state.tickets===4&&!r.pass();r.update(3.4);const bell=r.state.rally===2&&r.state.phase==="ready";r.select(1);r.pass();r.update(.8);r.select(1);const visited=!r.pass();r.restart();
+    record("Lightning Volley rules: insufficient and revisited channels reject, a pass lands once, a target pays four pending tickets and the bell resets the route",blocked&&flying&&airborne&&delivered&&bell&&visited&&r.state.current===0&&r.state.visited===1&&r.state.score===1,JSON.stringify({blocked,flying,airborne,delivered,bell,visited}));
+    const full=makeRound();for(let i=0;i<15;i++){full.select(1);full.pass();full.update(.8);full.select(3);full.pass();full.update(.8);full.update(3.4);}const cap=full.state.phase==="result"&&full.state.elapsed===75&&full.state.score===15&&full.state.tickets===60&&!full.pass();full.close();full.update(1000);
+    const coarse=makeRound(),fine=makeRound();coarse.update(NaN);coarse.update(75);for(let i=0;i<750;i++)fine.update(.1);const tie=makeRound();tie.update(4.2);tie.select(1);tie.pass();tie.update(.8);
+    record("Lightning Volley rules: fifteen rallies cap payouts at sixty, coarse and fine expiry agree and an expiry-tied landing cannot score",cap&&coarse.state.phase==="result"&&fine.state.phase==="result"&&coarse.state.missed===15&&fine.state.missed===15&&tie.state.current===0&&tie.state.rally===2&&!full.pass(),JSON.stringify({cap,coarse:coarse.state.missed,fine:fine.state.missed,tie:tie.state.current}));
+    let solvable=true;for(let pattern=0;pattern<4;pattern++){let draws=0;const round=P.createRound(n=>{draws++;return draws===8?pattern:0;});round.reset();round.start();const route=pattern===0?[1,3]:pattern===1?[2,3]:pattern===2?[1,2,3]:[2,1,3];for(const to of route){round.select(to);solvable=round.pass()&&solvable;round.update(.8);}solvable=solvable&&round.state.score===1;}
+    record("Lightning Volley routes: every generated pattern has a usable path through one or both teammates",solvable);
+    store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierSeedMatch(9);g.recordPierWhack(10);const best=g.recordPierVolley(11)&&[11,4,-1,NaN,16,2.5].every(n=>!g.recordPierVolley(n))&&make().state.pier.volley===11;const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.volley=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const clean=make().state.pier;delete saved.pier.volley;store.set("oogaboogaland.v1",JSON.stringify(saved));
+    record("Lightning Volley saves: only improving whole delivery counts persist, and older or malformed saves keep the other games and Passport",best&&clean.volley===0&&clean.seedMatch===9&&clean.whack===10&&clean.stamps.includes("boardwalk")&&make().state.pier.volley===0,JSON.stringify({best,clean}));
   }
 };
 const wallPerformance = async (b) => {
@@ -8332,6 +8453,479 @@ scene("factory", { query: "character=portlandhodl", steps: [factoryWalking, fact
 scene("factory", { label: "entrance", url: hubPage(src, "character=portlandhodl"), steps: [factoryFloor, factoryEntrance] });
 scene("factory", { label: "canvas2d", query: "canvas2d=1&character=portlandhodl", steps: [factoryCanvas, factoryGreeter] });
 scene("bifrost", { url: hubPage(src, "solo=1&character=portlandhodl"), steps: [bifrostEntrance, bifrostWalking, bifrostExit, trip("bifrost")] });
+const pierLandmarkReview={name:"pier landmark review",why:"contract: inspect the approved landmark cameras at sunset and night on both renderers and record tier frame costs without changing simulation",run:async b=>{
+  const dir=join(root,"untracked","pier-phase1-review");mkdirSync(dir,{recursive:true});
+  await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click()`);
+  const kind=await b.evaluate(`__ooga.renderer.kind`),tiers=[];
+  for(const hour of [18.8,22])for(const view of ["pier-park","pier-hippodrome","pier-tip","pier-aquarium"]){
+    await b.evaluate(`__ooga.setHour(${hour});__ooga.pilot.goPreset("${view}");__ooga.advance(2,1/60)`);
+    await reviewShot(b,join(dir,`${kind}-${view}-${hour===22?"night":"sunset"}.png`));
+  }
+  if(kind==="webgl2")for(const tier of ["low","medium","high"]){
+    const row=await b.evaluate(`(async()=>{const B=__ooga,R=B.renderer;B.pilot.goPreset("pier-park");B.setHour(18.8);B.advance(2,1/60);const samples=[],draw=R.render,setQuality=R.setQuality;setQuality.call(R,"${tier}");R.setQuality=name=>{if(name==="${tier}")setQuality.call(R,name);};R.render=function(...args){const t=performance.now(),result=draw.apply(this,args);samples.push(performance.now()-t);return result;};await new Promise(r=>requestAnimationFrame(r));const frames=B.renderedFrames,t=performance.now();try{await new Promise(r=>setTimeout(r,1000));}finally{R.render=draw;R.setQuality=setQuality;}const ms=performance.now()-t;samples.sort((a,c)=>a-c);return {tier:"${tier}",actualQuality:R.quality,fps:(B.renderedFrames-frames)*1000/ms,renderMedian:samples[Math.floor(samples.length/2)],renderP95:samples[Math.floor(samples.length*.95)],stats:{...R.stats}};})()`);
+    tiers.push(row);
+  }
+  writeFileSync(join(dir,`${kind}-tiers.json`),JSON.stringify(tiers,null,2)+"\n");
+  if(tiers.length)console.log("PIER TIERS "+JSON.stringify(tiers));
+}};
+const pierInteractionFlow={name:"pier Phase 2 exploration",why:"playthrough: nearby E/tap actions respect existing controllers, vendor dialogs restore walking, and ten explored landmarks unlock one saved souvenir",run:async b=>{
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,hit:hit?.id,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw new Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);await b.click(p.x,p.y);};
+  await b.evaluate(`(()=>{const B=__ooga;B.pilot.navigate({position:{x:0,y:12.3228,z:284},yaw:0,pitch:.24,dist:7});B.advance(.3,1/60);window.__pierYaw=B.pilot.orbit.yaw;})()`);
+  await holdKey(b,"e",.4);
+  record("pier interactions: E away from an attraction still turns the camera",await b.evaluate(`!__ooga.pier.interactions.busy&&Math.abs(__ooga.pilot.orbit.yaw-window.__pierYaw)>.1`));
+  for(let i=0;i<2;i++){
+    // Face the vendor from the trail side. S then walks along clear sand, rather than into the cart.
+    await b.evaluate(`(()=>{const B=__ooga,v=B.pier.land.beach.vendors[${i}];B.pilot.navigate({position:{x:v.x-2,y:.35,z:v.z},yaw:0,pitch:.4,dist:10});B.advance(.3,1/60);window.__pierVendorPosition={...B.crew.player.root.position};})()`);
+    if(i)await click("pier-prompt-use");else await b.key("e");
+    record(`pier vendor ${i}: nearby interaction opens its fact card`,await b.evaluate(`__ooga.pier.interactions.busy&&!document.getElementById("pier-vendor").hidden&&document.getElementById("pier-vendor-fact").textContent===BL.pierFacts[${JSON.stringify(i?"keys":"verification")}].line`));
+    await click("pier-vendor-learn");await holdKey(b,"w",.4);await b.key(" ");
+    record(`pier vendor ${i}: optional detail and source show while movement and Space stay isolated`,await b.evaluate(`(()=>{const B=__ooga,p=B.crew.player.root.position;return !document.getElementById("pier-vendor-detail").hidden&&!document.getElementById("pier-vendor-source").hidden&&Math.hypot(p.x-window.__pierVendorPosition.x,p.z-window.__pierVendorPosition.z)<.01&&!B.pier.games.busy&&!B.pier.rides.riding;})()`));
+    await b.key("Escape");await holdKey(b,"s",.4);
+    record(`pier vendor ${i}: Escape restores the same walking Ooga`,await b.evaluate(`!__ooga.pier.interactions.busy&&__ooga.crew.player.traits.name==="portlandhodl"&&Math.hypot(__ooga.crew.player.root.position.x-window.__pierVendorPosition.x,__ooga.crew.player.root.position.z-window.__pierVendorPosition.z)>1`));
+  }
+  await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.games[0];B.pilot.navigate({position:{x:q.play.x,y:1.35,z:q.play.z},yaw:q.ry,pitch:.24,dist:6});B.advance(.3,1/60);})()`);await b.key("e");
+  record("pier interactions: E opens the existing ring toss controller",await b.evaluate(`__ooga.pier.games.status.kind==="ring"&&__ooga.pier.games.busy`));await b.key("Escape");
+  await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.prizes.play;B.pilot.navigate({position:{x:q.x,y:1.35,z:q.z},yaw:-Math.PI/2,pitch:.24,dist:6});B.advance(.3,1/60);})()`);await b.key("e");
+  record("pier Passport: prize counter refuses an incomplete passport",await b.evaluate(`!document.getElementById("pier-prizes").hidden&&document.getElementById("pier-passport-claim").disabled&&!__ooga.game.redeemPierPassport()`));await b.key("Escape");
+  const stamps=await b.evaluate(`(()=>{const B=__ooga,rows=[];for(const q of B.pier.interactions.pois){if(q.boat)continue;B.pilot.navigate({position:{x:q.x,y:q.y,z:q.z},yaw:0,pitch:.24,dist:6});B.advance(.3,1/60);rows.push({id:q.id,stamped:B.game.state.pier.stamps.includes(q.id),feet:B.crew.player.root.position.y-B.crew.player.baseY});}const state=B.game.state.pier,saved=BL.game.create({catalog:BL.models.SWAG}).state.pier;return {rows,count:state.stamps.length,reload:saved.stamps.length,prize:state.prize};})()`);
+  record("pier Passport: all nine walking landmarks stamp at their actual floors and survive reload",stamps.rows.every(q=>q.stamped)&&stamps.count===9&&stamps.reload===9&&!stamps.prize,JSON.stringify(stamps));
+  await b.evaluate(`(()=>{const B=__ooga,q=BL.pierLighthouse.LAYOUT;B.pilot.navigate({position:{x:q.x-20,y:-.3,z:q.z},yaw:0,pitch:.24,dist:6});B.advance(.1,1/60);})()`);
+  record("pier Passport: lighthouse cannot stamp without a boat",await b.evaluate(`!__ooga.game.state.pier.stamps.includes("lighthouse")`));
+  await b.evaluate(`__ooga.pilot.navigate({position:{x:24.5,y:1.35,z:-267},yaw:-Math.PI/2,pitch:.24,dist:6});__ooga.advance(.3,1/60)`);await b.key("e");await b.evaluate(`__ooga.advance(.4,1/60)`);
+  const sailing=await b.evaluate(`(()=>{const B=__ooga,b=B.pier.boats.entries[0],q=BL.pierLighthouse.LAYOUT;b.node.position.x=q.x-20;b.node.position.z=q.z;B.advance(.4,1/60);return {aboard:B.pier.boats.riding,seated:B.crew.player.camp.seat===b.seat,count:B.game.state.pier.stamps.length,saved:BL.game.create({catalog:BL.models.SWAG}).state.pier.stamps.length};})()`);
+  record("pier Passport: sailing near the beacon earns and saves the tenth stamp",sailing.aboard&&sailing.seated&&sailing.count===10&&sailing.saved===10,JSON.stringify(sailing));
+  await b.evaluate(`__ooga.pier.boats.recover();__ooga.pilot.navigate({position:{x:-45,y:1.35,z:14},yaw:-Math.PI/2,pitch:.24,dist:6});__ooga.advance(.3,1/60)`);await b.key("e");
+  await click("pier-passport-claim");
+  const reward=await b.evaluate(`(()=>{const B=__ooga,b=document.getElementById("pier-passport-claim"),tickets=B.game.state.arcade.tickets;b.click();return {owned:B.game.state.pier.prize,saved:BL.game.create({catalog:BL.models.SWAG}).state.pier.prize,disabled:b.disabled,once:!B.game.redeemPierPassport()&&B.game.state.arcade.tickets===tickets,visible:B.pier.land.midway.souvenir.visible};})()`);
+  record("pier Passport: completion redeems one free visible medallion at the existing counter",Object.values(reward).every(Boolean),JSON.stringify(reward));await b.key("Escape");
+  await b.evaluate(`__ooga.pilot.navigate({position:{x:0,y:12.3228,z:284},yaw:0,pitch:.24,dist:7});__ooga.advance(.3,1/60)`);
+  await click("pier-passport-open");
+  const book=await b.evaluate(`(()=>{const list=document.getElementById("pier-stamp-list"),dialog=document.getElementById("pier-guide"),r=dialog.getBoundingClientRect();return {open:dialog.open,rows:list.children.length,stamped:list.querySelectorAll('[data-stamped="true"]').length,fits:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight,noOverflow:dialog.scrollWidth<=dialog.clientWidth};})()`);
+  record("pier Passport: numbered landmark guide shows saved completion without horizontal clipping",book.open&&book.rows===10&&book.stamped===10&&book.fits&&book.noOverflow,JSON.stringify(book));await b.key("Escape");
+}};
+const pierNavigationFlow={name:"pier Phase 2 navigation",why:"regression: reselecting an Ooga after overview froze movement; first input started every minigame audio engine, and navigation must leave touch controls clear",run:async b=>{
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),rows=[];
+  const click=async selector=>{
+    // Desktop selection captures aim; Tab returns the cursor before a toolbar click.
+    if(!touch&&await b.evaluate(`!!document.pointerLockElement`)){await b.key("Tab");await b.evaluate(`new Promise(requestAnimationFrame)`);}
+    const p=await b.evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2];})()`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p[0],y:p[1]}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p[0],p[1]);
+  };
+  await b.evaluate(`new Promise(requestAnimationFrame)`);
+  const nav=await b.evaluate(PHONE(["#pier-map-toggle","#pier-passport-open",'.presets[data-scene="pier"] [data-action="pier-overview"]','.presets[data-scene="pier"] [data-action="pier-beach-view"]','.presets[data-scene="pier"] [data-action="reset-view"]','.presets[data-scene="pier"] [data-action="pier-gate"]',"#pier-mute",'.presets[data-scene="pier"] [data-action="leave"]']));
+  record("pier navigation: map and passport controls stay visible and uncovered",nav.length===0,JSON.stringify(nav));
+  if(await b.evaluate(`matchMedia("(pointer: coarse)").matches`)){
+    const sticks=await b.evaluate(PHONE(["#joy-move","#joy-look"]));record("pier navigation: minimap leaves both touch sticks clear",sticks.length===0,JSON.stringify(sticks));
+  }
+  await click("#pier-map-toggle");record("pier navigation: map folds to keep the ocean view clear",await b.evaluate(`document.getElementById("pier-minimap").hidden`));await click("#pier-map-toggle");
+  await b.evaluate(`(()=>{const Audio=window.AudioContext;window.__navAudioOriginal=Audio;window.__navAudioStarts=0;if(Audio)window.AudioContext=new Proxy(Audio,{construct(target,args,newTarget){window.__navAudioStarts++;return Reflect.construct(target,args,newTarget);}});})()`);
+  try{
+    for(const view of ["pier-overview","pier-beach-view"]){
+      await click(`.presets[data-scene="pier"] [data-action="${view}"]`);
+      record(`pier navigation: native ${view} button releases walking for its overview`,await b.evaluate(`!__ooga.crew.player`));
+      await b.evaluate(`__ooga.advance(.3,1/60);__ooga.pilot.hooks.onDoubleTap({owner:{kind:"caveman",cave:__ooga.pier.avatar}});`);
+      for(const [key,x,y,right,fwd] of [["ArrowUp",0,-1,0,1],["ArrowLeft",-1,0,-1,0],["ArrowDown",0,1,0,-1],["ArrowRight",1,0,1,0]]){
+        const stick=await b.evaluate(`(()=>{const B=__ooga;B.controls.reset();B.pilot.navigate({position:{x:0,y:1.35,z:72},yaw:2.2,pitch:.3,dist:7});B.advance(.3,1/60);const p=B.crew.player.root.position;window.__navStart={x:p.x,z:p.z};const r=document.getElementById("joy-move").getBoundingClientRect();return{x:r.x+r.width/2+${x}*(r.width/2-19),y:r.y+r.height/2+${y}*(r.height/2-19)};})()`);
+        if(touch)await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:stick.x,y:stick.y}]});else await b.send("Input.dispatchKeyEvent",{type:"keyDown",key,code:key});
+        const first=await b.evaluate(`(()=>{const B=__ooga,a=B.controls.read(),p=B.crew.player.root.position,x=p.x,z=p.z;B.advance(1/60,1/60);return{axes:Math.hypot(a.x,a.y),moved:Math.hypot(p.x-x,p.z-z)};})()`);await b.evaluate(`__ooga.advance(.25,1/60)`);
+        if(touch)await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});else await b.send("Input.dispatchKeyEvent",{type:"keyUp",key,code:key});
+        const moved=await b.evaluate(`(()=>{const B=__ooga,p=B.crew.player.root.position,q=__navStart,from=B.project(q.x,p.y,q.z),to=B.project(p.x,p.y,p.z),x=p.x,z=p.z;B.advance(.1,1/60);return{right:to.x-from.x,fwd:from.y-to.y,stopped:Math.hypot(p.x-x,p.z-z)<.001};})()`);rows.push({view,key,first,...moved,ok:first.axes>.9&&first.moved>.08&&(moved.right*right+moved.fwd*fwd)>1.5&&moved.stopped});
+      }
+    }
+    record("pier navigation: selecting an Ooga from either overview restores all four directions on the first physics tick and releases without drift",rows.every(r=>r.ok),JSON.stringify(rows));
+    record("pier navigation: ordinary movement starts at most the ambient locomotive audio, with dormant minigames silent",await b.evaluate(`__navAudioStarts<=1&&!__ooga.pier.volley.audioRunning&&!__ooga.pier.seedMatch.audioRunning&&!__ooga.pier.whack.audioRunning&&!__ooga.pier.mayhem.audioRunning`),String(await b.evaluate(`__navAudioStarts`)));
+    const focus=await b.evaluate(`(()=>{const B=__ooga,hasFocus=document.hasFocus;try{document.hasFocus=()=>false;B.advance(9,1/30);return{walking:BL.scenes.pier.inMotion,interval:B.frameInterval};}finally{document.hasFocus=hasFocus;}})()`);
+    record("pier navigation: a driven visitor keeps full-rate updates when the embedded browser reports no focus",focus.walking&&focus.interval===0,JSON.stringify(focus));
+    await b.evaluate(`(()=>{const B=__ooga,c=B.pier.avatar;B.pilot.release(true);B.pilot.hooks.onDoubleTap({owner:{kind:"caveman",cave:c}});B.pilot.navigate({position:{x:60,y:.35,z:100},yaw:0,pitch:.3,dist:7});B.advance(.3,1/60);})()`);await click('.presets[data-scene="pier"] [data-action="reset-view"]');await holdKey(b,"w",.3);
+    record("pier navigation: Walk preserves the selected Ooga and updates its own support and shadow focus",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player,p=a.root.position,s=BL.scenes.pier.renderOpts.shadowCenter;return a.traits.name==="portlandhodl"&&p.z<99&&Math.abs(p.y-a.baseY-.35)<.05&&Math.abs(s.x-p.x)<.2&&Math.abs(s.z-p.z)<.2;})()`));
+    await b.evaluate(`__ooga.pilot.possess(__ooga.pier.avatar);__ooga.pilot.navigate({position:{x:0,y:1.35,z:-50},yaw:0,pitch:.3,dist:7});__ooga.advance(.3,1/60)`);
+    const timing=await b.evaluate(`(async()=>{const B=__ooga,R=B.renderer,scene=BL.scenes.pier,originals=[],rows=[],gaps=[];let last=performance.now();for(const[o,k,n]of[[scene,"update","update"],[scene,"overlay","overlay"],[R,"render","render"]]){const f=o[k];originals.push(()=>o[k]=f);o[k]=function(...args){const t=performance.now();if(n==="update"){gaps.push(t-last);last=t;}const value=f.apply(this,args);rows.push([n,performance.now()-t]);return value;};}try{await new Promise(r=>setTimeout(r,1200));}finally{originals.forEach(f=>f());}const data={};for(const[n,t]of rows)(data[n]??=[]).push(t);for(const n in data){const a=data[n].sort((a,b)=>a-b);data[n]={median:a[Math.floor(a.length/2)],p95:a[Math.floor(a.length*.95)]};}gaps.sort((a,b)=>a-b);return{renderer:R.kind,quality:R.quality,frames:gaps.length,intervalMedian:gaps[Math.floor(gaps.length/2)],intervalP95:gaps[Math.floor(gaps.length*.95)],timings:data};})()`);
+    if(process.env.DSB_REVIEW==="1"){const dir=join(root,"untracked/pier-navigation-review");mkdirSync(dir,{recursive:true});writeFileSync(join(dir,touch?"phone-performance.json":"desktop-performance.json"),JSON.stringify(timing,null,2)+"\n");await reviewShot(b,join(dir,touch?"phone-walking.png":"desktop-walking.png"));}console.log("PIER NAVIGATION "+JSON.stringify(timing));
+  }finally{await b.evaluate(`if(window.__navAudioOriginal)window.AudioContext=window.__navAudioOriginal;delete window.__navAudioOriginal;delete window.__navAudioStarts;delete window.__navStart;`);}
+}};
+const pierFishingFlow={name:"pier Hash Fishing",why:"playthrough: keyboard and touch casts finish a timed round, bank one saved payout and best, isolate movement and return the same Ooga safely to the pier",run:async b=>{
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`);
+  const place=()=>b.evaluate(`(()=>{const B=__ooga,L=BL.pierModels.LAYOUT,q=L.fishing;B.pilot.navigate({position:{x:q.play.x,y:L.top,z:q.play.z},yaw:q.ry,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
+  const act=()=>touch?click("pier-fishing-act"):b.key(" ");
+  await place();
+  await b.evaluate(`(()=>{const B=__ooga;window.__fishingRandom=BL.math.randomInt;window.__fishingDraws=0;BL.math.randomInt=n=>n===4294967296?(window.__fishingDraws++?0:4294967295):window.__fishingRandom(n);window.__fishingTickets=B.game.state.arcade.tickets;window.__fishingPosition={...B.crew.player.root.position};})()`);
+  try {
+    await b.key("e");
+    record("Hash Fishing: E opens the tip's lesson without starting the clock",await b.evaluate(`__ooga.pier.fishing.busy&&__ooga.pier.fishing.state.phase==="intro"&&__ooga.pier.fishing.state.remaining===75&&!document.getElementById("pier-fishing-panel").hidden&&document.getElementById("pier-fishing-lesson").textContent===BL.pierFacts.fishing.line`));
+    const controls=await b.evaluate(PHONE(["#pier-fishing-act","#pier-fishing-done"]));
+    await act();await act();
+    await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",code:"Space",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" ",code:"Space"});await holdKey(b,"w",.25);
+    await b.evaluate(`__ooga.advance(2.6,1/30)`);
+    const miss=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.fishing.state,p=B.crew.player.root.position;return {phase:s.phase,casts:s.casts,catches:s.catches,draws:window.__fishingDraws,score:s.score,moved:Math.hypot(p.x-window.__fishingPosition.x,p.z-window.__fishingPosition.z),uncharged:B.game.state.arcade.tickets===window.__fishingTickets};})()`);
+    record("Hash Fishing: repeated Space and movement cannot queue another draw or turn a missed cast into tickets",miss.phase==="ready"&&miss.casts===1&&miss.catches===0&&miss.draws===1&&miss.score===0&&miss.moved<.01&&miss.uncharged,JSON.stringify(miss));
+    await act();await b.evaluate(`__ooga.advance(1.2,1/30)`);
+    const float=await b.evaluate(`(()=>{const B=__ooga,L=BL.pierModels.LAYOUT,q=L.fishing,p=B.pier.land.fishing.float.position,x=q.play.x+Math.sin(q.ry)*p.z,z=q.play.z+Math.cos(q.ry)*p.z;return {phase:B.pier.fishing.state.phase,x,delta:Math.abs(p.y+L.top-B.pier.life.ocean.heightAt(x,z)-.12)};})()`);
+    record("Hash Fishing: the cast clears the west rail and its bobber follows the shared DSB water",float.phase==="cast"&&float.x<-20&&float.delta<.001,JSON.stringify(float));
+    const activeControls=await b.evaluate(PHONE(["#pier-fishing-act","#pier-fishing-done"]));
+    record("Hash Fishing: start and exit controls are visible and uncovered",controls.length===0&&activeControls.length===0,JSON.stringify({intro:controls,casting:activeControls}));
+    const dir=join(root,"untracked/pier-fishing-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
+    await reviewShot(b,join(dir,touch?"fishing-touch.png":"fishing-keyboard.png"));
+    await b.evaluate(`__ooga.advance(1.4,1/30)`);
+    for(let i=0;i<32;i++){
+      const phase=await b.evaluate(`__ooga.pier.fishing.state.phase`);if(phase==="result")break;if(phase==="ready")await act();await b.evaluate(`__ooga.advance(2.5,1/30)`);
+    }
+    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.fishing.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,casts:s.casts,catches:s.catches,score:s.score,retargets:s.retargets,earned:tickets-window.__fishingTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.fishing,lesson:!document.getElementById("pier-fishing-lesson").hidden,info:document.getElementById("pier-fishing-info").textContent};})()`);
+    record("Hash Fishing: a complete 75-second round retargets and saves its exact catch tickets and best once",result.phase==="result"&&result.time===75&&result.catches>3&&result.score===result.catches*5&&result.retargets>=1&&result.earned===result.score&&result.repeat===0&&result.saved&&result.best===result.score&&result.lesson&&result.info.includes("banked"),JSON.stringify(result));
+    await b.key("Escape");await holdKey(b,"s",.4);
+    record("Hash Fishing: Escape returns the same upright Ooga to walking",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.fishing.busy&&document.getElementById("pier-fishing-panel").hidden&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__fishingPosition.x,a.root.position.z-window.__fishingPosition.z)>1;})()`));
+    await place();await click("pier-prompt-use");await click("pier-fishing-act");await b.key(" ");await b.evaluate(`__ooga.advance(2.6,1/30)`);
+    const pending=await b.evaluate(`(()=>{const B=__ooga;window.__fishingBeforeQuit=B.game.state.arcade.tickets;document.getElementById("pier-fishing-done").focus();return B.pier.fishing.state.catches===1&&B.pier.fishing.state.score===5;})()`);await b.key(" ");
+    const quit=await b.evaluate(`({closed:!__ooga.pier.fishing.busy,unpaid:__ooga.game.state.arcade.tickets===window.__fishingBeforeQuit,navigation:!document.querySelector(".pier-navigation").hidden,focus:!document.getElementById("pier-fishing-panel").contains(document.activeElement)})`);
+    record("Hash Fishing: tap entry clears hidden focus; native Space casts and Back exits without banking an unfinished round",pending&&Object.values(quit).every(Boolean),JSON.stringify({pending,...quit}));
+    if(!touch){
+      await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-fishing");__ooga.setHour(18.8);__ooga.advance(1,1/60)`);
+      await reviewShot(b,join(dir,"fishing-sunset.png"));
+      if(process.env.DSB_REVIEW==="1"){
+        const sample=await b.evaluate(`(async()=>{const B=__ooga,R=B.renderer,samples=[],draw=R.render;R.render=function(...args){const t=performance.now(),result=draw.apply(this,args);samples.push(performance.now()-t);return result;};await new Promise(r=>requestAnimationFrame(r));const frames=B.renderedFrames,t=performance.now();try{await new Promise(r=>setTimeout(r,1000));}finally{R.render=draw;}const ms=performance.now()-t;samples.sort((a,c)=>a-c);return {quality:R.quality,fps:(B.renderedFrames-frames)*1000/ms,renderMedian:samples[Math.floor(samples.length/2)],renderP95:samples[Math.floor(samples.length*.95)],stats:{...R.stats}};})()`);
+        writeFileSync(join(dir,"performance.json"),JSON.stringify(sample,null,2)+"\n");
+      }
+    }
+  }finally{await b.evaluate(`BL.math.randomInt=window.__fishingRandom;delete window.__fishingRandom;`);}
+}};
+const pierBuilderFlow={name:"pier Block Builder",why:"playthrough: keyboard and touch pack a block, reject overlaps, finish one saved round and return the same Ooga to clear beach access",run:async b=>{
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`);
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
+  const position=()=>b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.builder;B.pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:0,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
+  const act=()=>touch?click("pier-builder-act"):b.key(" ");
+  const anchor=async(x,y)=>{if(touch)return click(`pier-builder-cell-${y*6+x}`);const at=await b.evaluate(`({x:__ooga.pier.builder.state.x,y:__ooga.pier.builder.state.y})`);for(let i=at.x;i!==x;i+=x>i?1:-1)await b.key(x>i?"ArrowRight":"ArrowLeft");for(let i=at.y;i!==y;i+=y>i?1:-1)await b.key(y>i?"ArrowDown":"ArrowUp");};
+  await position();await b.evaluate(`window.__builderRandom=BL.math.randomInt;BL.math.randomInt=n=>n===6?0:window.__builderRandom(n);window.__builderTickets=__ooga.game.state.arcade.tickets;window.__builderPosition={...__ooga.crew.player.root.position};`);
+  try{
+    if(touch)await click("pier-prompt-use");else await b.key("e");
+    record("Block Builder: the beach prompt opens its lesson without starting the clock",await b.evaluate(`__ooga.pier.builder.busy&&__ooga.pier.builder.state.phase==="intro"&&__ooga.pier.builder.state.remaining===75&&!document.getElementById("pier-builder-lesson").hidden&&document.getElementById("pier-builder-lesson").textContent===BL.pierFacts.builder.line`));
+    const intro=await b.evaluate(PHONE(["#pier-builder-act","#pier-builder-done"]));await act();
+    for(let i=0;i<4;i++)if(touch)await click("pier-builder-rotate");else await b.key("r");
+    if(touch)await click("pier-builder-offer-2");else await b.key("3");await act();await act();
+    await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");
+    const reject=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.builder.state,p=B.crew.player.root.position;return {used:s.used,fees:s.fees,placed:s.placed,event:s.event,jet:B.crew.player.jet,moved:Math.hypot(p.x-window.__builderPosition.x,p.z-window.__builderPosition.z),unpaid:B.game.state.arcade.tickets===window.__builderTickets};})()`);
+    record("Block Builder: rotation and selection work; repeated Space and overlapping placement cannot double fees or move the Ooga",reject.used===2&&reject.fees===2&&reject.placed===1&&reject.event==="blocked"&&!reject.jet&&reject.moved<.01&&reject.unpaid,JSON.stringify(reject));
+    const controls=await b.evaluate(PHONE(["#pier-builder-act","#pier-builder-done","#pier-builder-rotate","#pier-builder-skip","#pier-builder-offer-0","#pier-builder-offer-2","#pier-builder-cell-0","#pier-builder-cell-35"]));
+    record("Block Builder: lesson and active grid controls are wholly visible and uncovered",intro.length===0&&controls.length===0,JSON.stringify({intro,controls}));
+    const dir=join(root,"untracked/pier-builder-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});await reviewShot(b,join(dir,touch?"builder-touch.png":"builder-keyboard.png"));
+    for(let y=0;y<6;y++)for(let x=0;x<6;x+=2)if(x||y){await anchor(x,y);await act();}
+    await b.evaluate(`__ooga.advance(75,1/15)`);
+    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.builder.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,used:s.used,fees:s.fees,score:s.tickets,earned:tickets-window.__builderTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.builder,lesson:!document.getElementById("pier-builder-lesson").hidden};})()`);
+    record("Block Builder: the complete block seals at 75 seconds with its exact tickets and best saved once",result.phase==="result"&&result.time===75&&result.used===36&&result.fees===36&&result.score===9&&result.earned===9&&result.repeat===0&&result.saved&&result.best===36&&result.lesson,JSON.stringify(result));
+    await b.key("Escape");await holdKey(b,"s",.4);
+    record("Block Builder: Escape restores walking on the sand with the same upright Ooga and navigation",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.builder.busy&&document.getElementById("pier-builder-panel").hidden&&!document.querySelector(".pier-navigation").hidden&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.builder.floor)<.05&&Math.hypot(a.root.position.x-window.__builderPosition.x,a.root.position.z-window.__builderPosition.z)>1;})()`));
+    await position();await click("pier-prompt-use");await click("pier-builder-act");await click("pier-builder-cell-0");await click("pier-builder-act");await b.evaluate(`window.__builderBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-builder-done").focus();`);await b.key(" ");
+    record("Block Builder: a focused Back button exits an unfinished round without paying pending fees or retaining hidden focus",await b.evaluate(`!__ooga.pier.builder.busy&&__ooga.game.state.arcade.tickets===window.__builderBeforeQuit&&!document.getElementById("pier-builder-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden`));
+    if(!touch){
+      const access=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.builder,s=B.pier.solids;return {lane:s.segmentClear(q.x+4,q.floor+.45,q.z+10,q.x+4,q.floor+.45,q.z-10,.4,1.6),walk:s.segmentClear(q.x-20,.8,158,q.x+20,.8,158,.4,1.6),bike:s.segmentClear(q.x-20,.8,122,q.x+20,.8,122,.4,1.6),sameWater:B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater};})()`);
+      record("Block Builder: the low table leaves beach circulation and both coastal trails clear while using the shared DSB ocean",Object.values(access).every(Boolean),JSON.stringify(access));
+      await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-builder");__ooga.setHour(18.8);__ooga.advance(1,1/60)`);await reviewShot(b,join(dir,"builder-beach-sunset.png"));await b.evaluate(`__ooga.pilot.goPreset("beach");__ooga.advance(1,1/60)`);await reviewShot(b,join(dir,"builder-coast-sunset.png"));
+    }
+  }finally{await b.evaluate(`BL.math.randomInt=window.__builderRandom;delete window.__builderRandom;`);}
+}};
+const pierVolleyFlow={name:"pier Lightning Volley",why:"playthrough: keyboard and phone route through teammates, reject blocked channels, save exact full and partial payouts and exit safely onto beach sand",run:async b=>{
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),canvas=await b.evaluate(`location.search.includes("canvas2d=1")`),dir=join(root,"untracked/pier-volley-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit),hit:hit?.id};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
+  const position=()=>b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.volley;B.pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:Math.PI,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
+  const pass=async to=>{if(touch)await click(to===1?"pier-volley-a":to===2?"pier-volley-b":"pier-volley-target");else {await b.key(String(to));await b.key(" ");}};
+  const land=()=>b.evaluate(`__ooga.advance(.8,1/60)`);
+  const next=()=>b.evaluate(`__ooga.advance(Math.ceil((__ooga.pier.volley.state.next-__ooga.pier.volley.state.elapsed)*60)/60,1/60)`);
+  const required=["#pier-mute","#pier-volley-act","#pier-volley-done"],active=[...required,"#pier-volley-restart","#pier-volley-a","#pier-volley-b","#pier-volley-target"];
+  await position();await b.evaluate(`window.__volleyRandom=BL.math.randomInt;BL.math.randomInt=()=>0;window.__volleyTickets=__ooga.game.state.arcade.tickets;window.__volleyPosition={...__ooga.crew.player.root.position};`);
+  try{
+    if(touch)await click("pier-prompt-use");else await b.key("e");const intro=await b.evaluate(PHONE(required));
+    record("Lightning Volley: the court prompt opens its sourced routing lesson without starting the round",await b.evaluate(`__ooga.pier.volley.busy&&__ooga.pier.volley.state.phase==="intro"&&__ooga.pier.volley.state.remaining===75&&!document.getElementById("pier-volley-lesson").hidden&&document.getElementById("pier-volley-lesson").textContent===BL.pierFacts.volley.line&&__ooga.pier.land.beach.people.length===32`));
+    if(touch)await click("pier-volley-act");else await b.key(" ");const activeLayout=await b.evaluate(PHONE(active));await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.volley.muted&&__ooga.pier.trainAudio.muted`);await click("pier-mute");
+    record("Lightning Volley: a real Start unlocks sound and the shared pier mute silences and restores it",muted&&await b.evaluate(`__ooga.pier.volley.audioRunning&&!__ooga.pier.volley.muted&&__ooga.pier.volley.state.phase==="ready"`));
+    if(!touch){await b.key("1");const rows=[];for(const [key,direction] of [["ArrowRight",1],["a",-1],["s",1],["w",-1]]){const before=await b.evaluate(`document.querySelector('#pier-volley-choices [aria-pressed="true"]').getBoundingClientRect().x`);await b.key(key);const after=await b.evaluate(`document.querySelector('#pier-volley-choices [aria-pressed="true"]').getBoundingClientRect().x`);rows.push((after-before)*direction);}record("Lightning Volley: arrows and WASD move receiver selection in the displayed direction",rows.every(n=>n>10),JSON.stringify(rows));}
+    await pass(3);record("Lightning Volley: a blocked direct-to-target channel explains the refusal without moving or scoring",await b.evaluate(`__ooga.pier.volley.state.event==="blocked"&&__ooga.pier.volley.state.current===0&&__ooga.pier.volley.state.passes===0&&document.getElementById("pier-volley-info").textContent.includes("Channel blocked")`));
+    await pass(1);await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");await b.evaluate(`__ooga.advance(.4,1/60)`);
+    const flight=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.volley.state,p=B.pier.land.volley.court.node.position;return {phase:s.phase,passes:s.passes,x:p.x,z:p.z,y:p.y,score:s.score,actor:Math.hypot(B.crew.player.root.position.x-window.__volleyPosition.x,B.crew.player.root.position.z-window.__volleyPosition.z)};})()`);
+    record("Lightning Volley: the ball follows a raised physical arc, repeat Space and jetpack input cannot pass twice or move the Ooga",flight.phase==="flight"&&flight.passes===1&&flight.y>2.7&&flight.score===0&&flight.actor<.01&&await b.evaluate(`!__ooga.crew.player.jet&&!__ooga.pier.rides.riding`),JSON.stringify(flight));await reviewShot(b,join(dir,touch?"volley-phone.png":canvas?"volley-canvas.png":"volley-keyboard.png"));await b.evaluate(`__ooga.advance(.4,1/60)`);
+    await pass(1);const visited=await b.evaluate(`__ooga.pier.volley.state.event==="blocked"&&__ooga.pier.volley.state.current===1`);if(touch)await click("pier-volley-restart");else await b.key("x");record("Lightning Volley: revisiting a teammate is refused and Restart returns to Serve without a payout",visited&&await b.evaluate(`__ooga.pier.volley.state.current===0&&__ooga.game.state.arcade.tickets===window.__volleyTickets`));
+    await pass(1);await land();await pass(3);const crossing=await b.evaluate(`(()=>{const B=__ooga;B.advance(Math.max(0,.2-B.pier.volley.state.flight),1/120);const c=B.pier.land.volley.court,net=BL.scene.boundsOf(c.net.geometry),ball=BL.scene.boundsOf(c.node.geometry);return{z:c.node.position.z,netZ:c.net.position.z,bottom:c.node.position.y+ball.min[1],top:c.net.position.y+net.max[1]};})()`);record("Lightning Volley: the shortest far-target pass clears the actual net mesh",Math.abs(crossing.z-crossing.netZ)<.1&&crossing.bottom>crossing.top+.1,JSON.stringify(crossing));await land();const pending=await b.evaluate(`__ooga.pier.volley.state.phase==="delivered"&&__ooga.pier.volley.state.score===1&&__ooga.pier.volley.state.tickets===4&&__ooga.game.state.arcade.tickets===window.__volleyTickets`);await next();
+    for(let rally=1;rally<15;rally++){await pass(1);await land();await pass(3);await land();await next();}
+    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.volley.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__volleyTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.volley,lesson:!document.getElementById("pier-volley-lesson").hidden};})()`);
+    record("Lightning Volley: fifteen deliveries bank exactly sixty tickets and best once at 75s, with the routing lesson restored",pending&&result.phase==="result"&&result.time===75&&result.score===15&&result.earned===60&&result.repeat===0&&result.saved&&result.best===15&&result.lesson,JSON.stringify(result));
+    const resultLayout=await b.evaluate(PHONE(required)),toastClear=await b.evaluate(`(()=>{const t=document.getElementById("toast").getBoundingClientRect(),p=document.getElementById("pier-volley-panel").getBoundingClientRect();return t.right<=p.left||t.left>=p.right||t.bottom<=p.top||t.top>=p.bottom;})()`);record("Lightning Volley: intro, play and result controls remain visible and uncovered, with the payout toast clear",intro.length===0&&activeLayout.length===0&&resultLayout.length===0&&toastClear,JSON.stringify({intro,activeLayout,resultLayout,toastClear}));await reviewShot(b,join(dir,touch?"volley-result-phone.png":canvas?"volley-result-canvas.png":"volley-result-keyboard.png"));
+    await click("pier-volley-act");await pass(1);await land();await pass(3);await land();await b.evaluate(`__ooga.advance(76,1/15)`);record("Lightning Volley: a single delivery pays four tickets, missed rallies pay nothing and the perfect best remains",await b.evaluate(`__ooga.pier.volley.state.score===1&&__ooga.pier.volley.state.missed===14&&__ooga.game.state.arcade.tickets===window.__volleyTickets+64&&__ooga.game.state.pier.volley===15`));
+    if(touch)await click("pier-volley-done");else await b.key("Escape");await holdKey(b,"s",.4);record("Lightning Volley: exiting restores the same upright walking Ooga, sand height, equipment and navigation",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.volley.busy&&document.getElementById("pier-volley-panel").hidden&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden&&!B.pier.land.volley.court.playing&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&a.traits.name==="portlandhodl"&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.volley.floor)<.05&&Math.hypot(a.root.position.x-window.__volleyPosition.x,a.root.position.z-window.__volleyPosition.z)>1;})()`));
+    await position();await b.key(" ");await click("pier-volley-act");await pass(1);await land();await pass(3);await land();await b.evaluate(`window.__volleyBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-volley-done").focus();`);await b.key(" ");record("Lightning Volley: fresh Space opens at the pad, native Space on Back discards pending tickets and clears hidden focus",await b.evaluate(`!__ooga.pier.volley.busy&&__ooga.game.state.arcade.tickets===window.__volleyBeforeQuit&&!document.getElementById("pier-volley-panel").contains(document.activeElement)&&!document.getElementById("equipment-hud").hidden`));
+    if(!touch){const access=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.volley,s=B.pier.solids;return {walk:s.segmentClear(30,.95,158,100,.95,158,.4,1.6),bike:s.segmentClear(30,.95,122,100,.95,122,.4,1.6),pad:s.segmentClear(q.x,.95,20,q.x,.95,q.play.z,.4,1.6),water:B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater};})()`);record("Lightning Volley: both coastal trails and the beach pad approach remain clear with the shared DSB ocean",Object.values(access).every(Boolean),JSON.stringify(access));await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-volley");__ooga.setHour(18.8);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,canvas?"volley-court-canvas.png":"volley-court-sunset.png"));}
+  }finally{await b.evaluate(`BL.math.randomInt=window.__volleyRandom;delete window.__volleyRandom;`);}
+}};
+scene("pier",{label:"Lightning Volley desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierVolleyFlow,trip("pier")]});
+scene("pier",{label:"Lightning Volley phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierVolleyFlow]});
+scene("pier",{label:"Lightning Volley canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierVolleyFlow]});
+const pierSeedMatchFlow={name:"pier Seed Phrase Match",why:"playthrough: memorize twelve public cards, swap with keyboard or touch, bank exact full and partial payouts and return safely to the Playland porch",run:async b=>{
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),canvas=await b.evaluate(`location.search.includes("canvas2d=1")`),dir=join(root,"untracked/pier-seed-match-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit),hit:hit?.id};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
+  const position=()=>b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.seedMatch;B.pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:Math.PI/2,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
+  const select=async index=>{const before=await b.evaluate(`__ooga.pier.seedMatch.state.selected`);for(let x=before%3;x!==index%3;x+=x<index%3?1:-1)await b.key(x<index%3?"ArrowRight":"ArrowLeft");for(let y=Math.floor(before/3);y!==Math.floor(index/3);y+=y<Math.floor(index/3)?1:-1)await b.key(y<Math.floor(index/3)?"ArrowDown":"ArrowUp");};
+  const pick=async index=>{if(touch)await click(`pier-seed-card-${index}`);else {await select(index);await b.key(" ");}};
+  const remember=()=>b.evaluate(`[...document.querySelectorAll("#pier-seed-grid button")].map(b=>b.textContent.split(". ")[1])`);
+  const solve=async words=>{for(let i=0;i<12;i++){const cards=await remember();if(cards[i]===words[i])continue;await pick(i);await pick(cards.indexOf(words[i]));}};
+  await position();await b.evaluate(`window.__seedRandom=BL.math.randomInt;BL.math.randomInt=()=>0;window.__seedTickets=__ooga.game.state.arcade.tickets;window.__seedPosition={...__ooga.crew.player.root.position};`);
+  try{
+    if(touch)await click("pier-prompt-use");else await b.key("e");
+    record("Seed Phrase Match: its prompt opens the sourced backup lesson without starting the clock or collecting words",await b.evaluate(`__ooga.pier.seedMatch.busy&&__ooga.pier.seedMatch.state.phase==="intro"&&__ooga.pier.seedMatch.state.remaining===75&&!document.getElementById("pier-seed-lesson").hidden&&document.getElementById("pier-seed-lesson").textContent===BL.pierFacts.seedMatch.line&&document.getElementById("pier-seed-panel").querySelectorAll("input,textarea").length===0`));
+    const intro=await b.evaluate(PHONE(["#pier-mute","#pier-seed-act","#pier-seed-done"]));if(touch)await click("pier-seed-act");else await b.key(" ");const words=await remember();
+    await b.key(" ");await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});
+    const memory=await b.evaluate(`__ooga.pier.seedMatch.state.phase==="memorize"&&__ooga.pier.seedMatch.state.held===-1&&__ooga.pier.seedMatch.state.swaps===0&&document.getElementById("pier-seed-act").disabled`);const memoryLayout=await b.evaluate(PHONE(["#pier-mute","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)]));
+    await reviewShot(b,join(dir,touch?"seed-memory-phone.png":canvas?"seed-memory-canvas.png":"seed-memory-keyboard.png"));
+    if(process.env.DSB_REVIEW==="1"){const profile=await b.evaluate(`(()=>{const B=__ooga,q=B.pier.land.seedMatch;let faces=0;const count=n=>{faces+=n.geometry?.faces?.length||0;for(const c of n.children)count(c);};count(q.root);const t=performance.now();B.advance(.1,1/60);return {tableFaces:faces,cardFaces:q.cards[0].geometry.faces.length,sixStepsMs:performance.now()-t,renderer:{...B.renderer.stats}};})()`);writeFileSync(join(dir,touch?"performance-phone.json":canvas?"performance-canvas.json":"performance-keyboard.json"),JSON.stringify(profile,null,2)+"\n");}
+    await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.seedMatch.muted&&__ooga.pier.trainAudio.muted`);await click("pier-mute");
+    record("Seed Phrase Match: Start unlocks audio, shared mute toggles it, and memorize input cannot move cards",memory&&muted&&new Set(words).size===12&&await b.evaluate(`__ooga.pier.seedMatch.audioRunning&&!__ooga.pier.seedMatch.muted&&!__ooga.pier.trainAudio.muted`));
+    await b.evaluate(`__ooga.advance(12,1/30)`);const recall=await remember();await click("pier-seed-act");
+    record("Seed Phrase Match: at 12s the order changes and a wrong Check gives a count without marking correct cards or paying early",words.join()!==recall.join()&&await b.evaluate(`__ooga.pier.seedMatch.state.phase==="recall"&&__ooga.pier.seedMatch.state.correct<12&&[...document.querySelectorAll("#pier-seed-grid button")].every(b=>b.dataset.correct==="")&&__ooga.game.state.arcade.tickets===window.__seedTickets`));
+    if(!touch){await select(4);const moves=[];for(const [key,x,y] of [["a",-1,0],["ArrowRight",1,0],["w",0,-1],["ArrowDown",0,1]]){const before=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.seedMatch.marker.position;return B.project(p.x,p.y,p.z,{});})()`);await b.key(key);await b.evaluate(`__ooga.advance(.02,1/60)`);const after=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.seedMatch.marker.position;return B.project(p.x,p.y,p.z,{});})()`);moves.push(x?(after.x-before.x)*x:(after.y-before.y)*y);}record("Seed Phrase Match: WASD and arrows select left, right, up and down on the displayed card table",moves.every(n=>n>3),JSON.stringify(moves));}
+    const controls=await b.evaluate(PHONE(["#pier-mute","#pier-seed-act","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)]));
+    await pick(0);await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");
+    record("Seed Phrase Match: repeated Space and jetpack input cannot swap twice, move the actor or board another ride",await b.evaluate(`(()=>{const B=__ooga,s=B.pier.seedMatch.state,p=B.crew.player.root.position;return s.held===0&&s.swaps===0&&!B.crew.player.jet&&!B.pier.rides.riding&&!B.pier.whack.busy&&Math.hypot(p.x-window.__seedPosition.x,p.z-window.__seedPosition.z)<.01;})()`));await pick(0);
+    await solve(words);if(touch)await click("pier-seed-act");else await b.key("c");
+    record("Seed Phrase Match: reordering all twelve observed words secures thirty pending tickets and locks edits",await b.evaluate(`__ooga.pier.seedMatch.state.phase==="secured"&&__ooga.pier.seedMatch.state.correct===12&&__ooga.pier.seedMatch.state.tickets===30&&document.getElementById("pier-seed-act").disabled&&__ooga.game.state.arcade.tickets===window.__seedTickets`));
+    // advance rounds to whole frames; cover the deadline rather than rounding the remaining time down.
+    await b.evaluate(`__ooga.advance(Math.ceil((75-__ooga.pier.seedMatch.state.elapsed)*15)/15,1/15)`);const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.seedMatch.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/15);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__seedTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.seedMatch,lesson:!document.getElementById("pier-seed-lesson").hidden,words:Object.hasOwn(saved.pier,"cards")||Object.hasOwn(saved.pier,"order")};})()`);
+    record("Seed Phrase Match: the full 75-second round saves exactly thirty tickets and its best once, restores the lesson and saves no words",result.phase==="result"&&result.time===75&&result.score===12&&result.earned===30&&result.repeat===0&&result.saved&&result.best===12&&result.lesson&&!result.words,JSON.stringify(result));
+    const resultControls=await b.evaluate(PHONE(["#pier-mute","#pier-seed-act","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)])),toastClear=await b.evaluate(`(()=>{const toast=document.getElementById("toast"),t=toast.getBoundingClientRect(),p=document.getElementById("pier-seed-panel").getBoundingClientRect();return !toast.classList.contains("show")||t.right<=p.left||t.left>=p.right||t.bottom<=p.top||t.top>=p.bottom;})()`);
+    record("Seed Phrase Match: intro, memorize, recall and results keep mute, Back and all cards uncovered, with the payout toast clear of the result text",intro.length===0&&memoryLayout.length===0&&controls.length===0&&resultControls.length===0&&toastClear,JSON.stringify({intro,memoryLayout,controls,resultControls,toastClear}));await reviewShot(b,join(dir,touch?"seed-result-phone.png":canvas?"seed-result-canvas.png":"seed-result-keyboard.png"));
+    await click("pier-seed-act");await b.evaluate(`BL.math.randomInt=n=>n-1;`);await b.evaluate(`__ooga.advance(12,1/30)`);
+    // The first restart already drew its order; identity recall swaps two cards and leaves ten correct.
+    await b.evaluate(`__ooga.advance(63,1/15)`);
+    record("Seed Phrase Match: a partial round pays twenty tickets while retaining the perfect best",await b.evaluate(`__ooga.pier.seedMatch.state.score===10&&__ooga.pier.seedMatch.state.tickets===20&&__ooga.game.state.arcade.tickets===window.__seedTickets+50&&__ooga.game.state.pier.seedMatch===12`));
+    await b.key("Escape");await holdKey(b,"s",.4);record("Seed Phrase Match: Escape restores the same upright walking Ooga, equipment and navigation at deck height",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.seedMatch.busy&&document.getElementById("pier-seed-panel").hidden&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&a.traits.name==="portlandhodl"&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__seedPosition.x,a.root.position.z-window.__seedPosition.z)>1;})()`));
+    await position();await click("pier-prompt-use");await click("pier-seed-act");const again=await remember();await b.evaluate(`__ooga.advance(12,1/30)`);await solve(again);await click("pier-seed-act");await b.evaluate(`window.__seedBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-seed-done").focus();`);await b.key(" ");
+    record("Seed Phrase Match: native Space on Back discards secured pending tickets and clears hidden focus",await b.evaluate(`!__ooga.pier.seedMatch.busy&&__ooga.game.state.arcade.tickets===window.__seedBeforeQuit&&!document.getElementById("pier-seed-panel").contains(document.activeElement)&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden`));
+    if(!touch){const lanes=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.seedMatch,s=B.pier.solids;return s.segmentClear(-37,q.floor+.45,33,-37,q.floor+.45,59,.4,1.6)&&s.segmentClear(-41,q.floor+.45,38,-41,q.floor+.45,59,.4,1.6)&&s.segmentClear(-38,q.floor+.45,q.z,q.play.x,q.floor+.45,q.z,.4,1.6)&&B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater;})()`);record("Seed Phrase Match: both porch lanes and the approach stay clear, beside Whack and the shared DSB ocean",lanes);await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-seed-match");__ooga.setHour(18.8);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,canvas?"seed-frontage-canvas.png":"seed-frontage-sunset.png"));}
+  }finally{await b.evaluate(`BL.math.randomInt=window.__seedRandom;delete window.__seedRandom;`);}
+}};
+scene("pier",{label:"Seed Phrase Match desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierSeedMatchFlow,trip("pier")]});
+scene("pier",{label:"Seed Phrase Match phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierSeedMatchFlow]});
+scene("pier",{label:"Seed Phrase Match canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierSeedMatchFlow]});
+const pierWhackFlow={name:"pier Double-Spend Whack",why:"playthrough: keyboard and touch compare pop-up inputs to a spent ledger, bank a complete timed round and return safely to the Playland promenade",run:async b=>{
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),canvas=await b.evaluate(`location.search.includes("canvas2d=1")`),dir=join(root,"untracked/pier-whack-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
+  const position=()=>b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.whack;B.pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:Math.PI/2,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
+  const hit=async coin=>{const slot=await b.evaluate(`__ooga.pier.whack.state.cells.findIndex(c=>c.active&&c.coin===${coin})`);if(touch)await click(`pier-whack-cell-${slot}`);else {await b.key(String(slot+1));await b.key(" ");}};
+  await position();await b.evaluate(`window.__whackRandom=BL.math.randomInt;BL.math.randomInt=()=>0;window.__whackTickets=__ooga.game.state.arcade.tickets;window.__whackPosition={...__ooga.crew.player.root.position};`);
+  try{
+    if(touch)await click("pier-prompt-use");else await b.key("e");
+    record("Double-Spend Whack: Playland's prompt opens the sourced lesson without starting the clock",await b.evaluate(`__ooga.pier.whack.busy&&__ooga.pier.whack.state.phase==="intro"&&__ooga.pier.whack.state.remaining===75&&!document.getElementById("pier-whack-lesson").hidden&&document.getElementById("pier-whack-lesson").textContent===BL.pierFacts.whack.line`));
+    const intro=await b.evaluate(PHONE(["#pier-mute","#pier-whack-act","#pier-whack-done"]));if(touch)await click("pier-whack-act");else await b.key(" ");
+    await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.whack.muted&&__ooga.pier.trainAudio.muted`);await click("pier-mute");record("Double-Spend Whack: real Start unlocks its sound and the shared pier mute silences and restores it",muted&&await b.evaluate(`__ooga.pier.whack.state.phase==="ready"&&__ooga.pier.whack.audioRunning&&!__ooga.pier.whack.muted&&!__ooga.pier.trainAudio.muted`));
+    if(!touch){const moves=[];for(const [key,x,y] of [["ArrowLeft",-1,0],["d",1,0],["ArrowUp",0,-1],["s",0,1]]){await b.key("5");const before=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.whack.marker.position;return B.project(p.x,p.y,p.z,{});})()`);await b.key(key);await b.evaluate(`__ooga.advance(.02,1/60)`);const after=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.whack.marker.position;return B.project(p.x,p.y,p.z,{});})()`);moves.push(x?(after.x-before.x)*x:(after.y-before.y)*y);}record("Double-Spend Whack: arrows and WASD move the cabinet cursor left, right, up and down on screen",moves.every(n=>n>3),JSON.stringify(moves));}
+    const controls=await b.evaluate(PHONE(["#pier-mute","#pier-whack-act","#pier-whack-done",...Array.from({length:9},(_,i)=>`#pier-whack-cell-${i}`)]));record("Double-Spend Whack: mute, Start, Back and all nine transaction slots fit the viewport and remain uncovered",intro.length===0&&controls.length===0,JSON.stringify({intro,controls}));
+    await reviewShot(b,join(dir,touch?"whack-active-touch.png":canvas?"whack-active-canvas.png":"whack-active-keyboard.png"));
+    await hit(1);const first=await b.evaluate(`__ooga.pier.whack.state.score`);
+    if(touch){const slot=await b.evaluate(`__ooga.pier.whack.state.cells.findIndex(c=>c.coin===1)`);await click(`pier-whack-cell-${slot}`);}else await b.key(" ");
+    await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");
+    record("Double-Spend Whack: one repeat-spend hit scores once; repeated Space, empty taps and jetpack keys cannot add points or move the Ooga",first===2&&await b.evaluate(`(()=>{const B=__ooga,s=B.pier.whack.state,p=B.crew.player.root.position;return s.score===2&&s.rejected===1&&!B.crew.player.jet&&!B.pier.rides.riding&&Math.hypot(p.x-window.__whackPosition.x,p.z-window.__whackPosition.z)<.01&&B.game.state.arcade.tickets===window.__whackTickets;})()`));
+    await hit(4);record("Double-Spend Whack: rejecting an unspent coin costs points and explains the mistake",await b.evaluate(`__ooga.pier.whack.state.score===0&&__ooga.pier.whack.state.wrong===1&&document.getElementById("pier-whack-info").textContent.includes("unspent")`));await hit(2);
+    await reviewShot(b,join(dir,touch?"whack-touch.png":canvas?"whack-canvas.png":"whack-keyboard.png"));
+    for(let wave=0;wave<29;wave++){await b.evaluate(`__ooga.advance(__ooga.pier.whack.state.next-__ooga.pier.whack.state.elapsed+.1,1/15)`);await hit(1);await hit(2);}
+    await b.evaluate(`__ooga.advance(3,1/15)`);
+    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.whack.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/15);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__whackTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.whack,allowed:s.allowed,lesson:!document.getElementById("pier-whack-lesson").hidden};})()`);
+    record("Double-Spend Whack: 75 seconds bank the exact payout and best once, let valid inputs pass and restore the result lesson",result.phase==="result"&&result.time===75&&result.score===118&&result.earned===39&&result.repeat===0&&result.saved&&result.best===118&&result.allowed===29&&result.lesson,JSON.stringify(result));
+    await b.key("Escape");await holdKey(b,"s",.4);
+    record("Double-Spend Whack: Escape restores walking, navigation and the same upright Ooga on the deck",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.whack.busy&&document.getElementById("pier-whack-panel").hidden&&!document.querySelector(".pier-navigation").hidden&&!document.getElementById("equipment-hud").hidden&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__whackPosition.x,a.root.position.z-window.__whackPosition.z)>1;})()`));
+    await position();await click("pier-prompt-use");await click("pier-whack-act");await hit(1);await hit(2);await b.evaluate(`window.__whackBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-whack-done").focus();`);await b.key(" ");
+    record("Double-Spend Whack: native Space on Back discards pending tickets and clears hidden focus",await b.evaluate(`!__ooga.pier.whack.busy&&__ooga.game.state.arcade.tickets===window.__whackBeforeQuit&&!document.getElementById("pier-whack-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden&&!document.getElementById("equipment-hud").hidden`));
+    if(!touch){const lane=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.whack,s=B.pier.solids;return s.segmentClear(-37,q.floor+.45,33,-37,q.floor+.45,55,.4,1.6)&&s.segmentClear(-41,q.floor+.45,38,-41,q.floor+.45,50,.4,1.6)&&s.segmentClear(-38,q.floor+.45,44,q.play.x,q.floor+.45,44,.4,1.6)&&B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater;})()`);record("Double-Spend Whack: both porch lanes and the play-pad approach stay clear beside the cabinet with the shared DSB ocean",lane);await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-whack");__ooga.setHour(18.8);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,canvas?"whack-frontage-canvas.png":"whack-frontage-sunset.png"));if(!canvas){await b.evaluate(`__ooga.setHour(23);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,"whack-frontage-night.png"));}}
+  }finally{await b.evaluate(`BL.math.randomInt=window.__whackRandom;delete window.__whackRandom;`);}
+}};
+scene("pier",{label:"Double-Spend Whack desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierWhackFlow,trip("pier")]});
+scene("pier",{label:"Double-Spend Whack phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierWhackFlow]});
+scene("pier",{label:"Double-Spend Whack canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierWhackFlow]});
+const pierMayhemFlow={name:"pier Mempool Mayhem",why:"playthrough: real keyboard and touch driving reaches the fee gate, banks one saved payout and returns the same seated Ooga to the pavilion pad",run:async b=>{
+  const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),dir=join(root,"untracked/pier-mayhem-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
+  const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
+  const position=()=>b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.mayhem;B.pilot.navigate({position:{x:q.play.x,y:BL.pierModels.LAYOUT.top,z:q.play.z},yaw:-Math.PI/2,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
+  const gateWin=()=>b.evaluate(`(()=>{const B=__ooga,s=B.pier.mayhem.state;B.advance(Math.max(0,s.next-s.elapsed-.1),1/120);s.cars.forEach((c,i)=>{c.x=-7.5+i*3;c.z=-5.4;c.vx=c.vz=0;c.fee=i?i+1:9;c.queued=i+1;});B.advance(.2,1/120);})()`);
+  await position();await b.evaluate(`window.__mayhemTickets=__ooga.game.state.arcade.tickets;window.__mayhemPosition={...__ooga.crew.player.root.position};`);
+  if(touch)await click("pier-prompt-use");else await b.key("e");
+  record("Mempool Mayhem: its pavilion prompt opens the lesson without starting the clock",await b.evaluate(`__ooga.pier.mayhem.busy&&__ooga.pier.mayhem.state.phase==="intro"&&__ooga.pier.mayhem.state.elapsed===0&&!document.getElementById("pier-mayhem-lesson").hidden&&document.getElementById("pier-mayhem-lesson").textContent===BL.pierFacts.mayhem.line`));
+  const intro=await b.evaluate(PHONE(["#pier-mayhem-act","#pier-mayhem-done"]));if(touch)await click("pier-mayhem-act");else await b.key(" ");await b.evaluate(`__ooga.advance(.3,1/60)`);
+  record("Mempool Mayhem: a fresh Start boards the same Ooga, exposes the arena and unlocks sound through the actual gesture",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return B.pier.mayhem.state.phase==="driving"&&a.traits.name==="portlandhodl"&&B.pier.mayhem.ownsSeat(a.camp.seat)&&!B.pier.land.park.bumperRoof.visible&&B.pier.mayhem.audioRunning&&!a.jet;})()`));
+  const controls=await b.evaluate(PHONE(["#pier-mayhem-act","#pier-mayhem-done",...(touch?["#joy-move"]:[])]));record("Mempool Mayhem: intro, brake, exit and touch steering stay fully visible and uncovered",intro.length===0&&controls.length===0,JSON.stringify({intro,controls}));
+  const rows=[];
+  for(const [key,dx,dy] of [["w",0,-1],["s",0,1],["a",-1,0],["d",1,0]]){
+    const before=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.mayhem.state,q=BL.pierModels.LAYOUT.mayhem;B.pilot.controls.reset();s.cars.forEach((c,i)=>{c.x=i?(i-3)*2.7:0;c.z=i?-5.4:4;c.vx=c.vz=0;});B.advance(.02,1/120);const p=B.crew.player.root.position;return B.project(p.x,p.y,p.z,{});})()`);
+    if(touch){const p=await b.evaluate(`(()=>{const r=document.getElementById("joy-move").getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};})()`);await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{x:p.x+dx*45,y:p.y+dy*45}]});await b.evaluate(`__ooga.advance(.4,1/60)`);await b.send("Input.dispatchTouchEvent",{type:key==="d"?"touchCancel":"touchEnd",touchPoints:[]});await b.evaluate(`__ooga.advance(.2,1/60)`);}else await holdKey(b,key,.4);
+    const after=await b.evaluate(`(()=>{const B=__ooga,p=B.crew.player.root.position,s=B.pier.mayhem.state;return {screen:B.project(p.x,p.y,p.z,{}),released:B.pilot.controls.read().x===0&&B.pilot.controls.read().y===0,pickups:s.pickups};})()`);rows.push({key,x:after.screen.x-before.x,y:after.screen.y-before.y,released:after.released,pickups:after.pickups});
+  }
+  record("Mempool Mayhem: WASD and the touch stick drive up, down, left and right on screen and release or cancellation clears steering",rows.every(r=>r.released)&&(rows[0].y<-3&&rows[1].y>3&&rows[2].x<-3&&rows[3].x>3)&&rows[0].pickups>0,JSON.stringify(rows));
+  await b.key("j");await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});
+  record("Mempool Mayhem: held Space and jetpack keys cannot reboard another ride, bypass the gate or pay tickets",await b.evaluate(`__ooga.pier.mayhem.state.phase==="driving"&&!__ooga.crew.player.jet&&!__ooga.pier.rides.riding&&__ooga.game.state.arcade.tickets===window.__mayhemTickets`));
+  await gateWin();const pending=await b.evaluate(`({winner:__ooga.pier.mayhem.state.lastWinner,score:__ooga.pier.mayhem.state.tickets,unpaid:__ooga.game.state.arcade.tickets===window.__mayhemTickets})`);record("Mempool Mayhem: the fee gate admits the highest-fee queued player and holds its six tickets until the finish",pending.winner===0&&pending.score===6&&pending.unpaid,JSON.stringify(pending));
+  await reviewShot(b,join(dir,touch?"mayhem-touch.png":await b.evaluate(`location.search.includes("canvas2d=1")`)?"mayhem-canvas.png":"mayhem-keyboard.png"));
+  if(!touch&&process.env.DSB_REVIEW==="1"&&!await b.evaluate(`location.search.includes("canvas2d=1")`)){
+    const sample=await b.evaluate(`(async()=>{const B=__ooga,R=B.renderer,samples=[],draw=R.render;R.render=function(...args){const t=performance.now(),result=draw.apply(this,args);samples.push(performance.now()-t);return result;};await new Promise(r=>requestAnimationFrame(r));const frames=B.renderedFrames,t=performance.now();try{await new Promise(r=>setTimeout(r,1000));}finally{R.render=draw;}const ms=performance.now()-t;samples.sort((a,c)=>a-c);return {quality:R.quality,fps:(B.renderedFrames-frames)*1000/ms,renderMedian:samples[Math.floor(samples.length/2)],renderP95:samples[Math.floor(samples.length*.95)],stats:{...R.stats}};})()`);writeFileSync(join(dir,"performance.json"),JSON.stringify(sample,null,2)+"\n");
+  }
+  await b.evaluate(`__ooga.advance(76,1/30)`);
+  const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.mayhem.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,score:s.tickets,earned:tickets-window.__mayhemTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.mayhem,lesson:!document.getElementById("pier-mayhem-lesson").hidden,seated:B.pier.mayhem.ownsSeat(B.crew.player.camp.seat)};})()`);
+  record("Mempool Mayhem: its 75-second result saves the exact earned tickets and best once and restates the lesson",result.phase==="result"&&result.time===75&&result.score===6&&result.earned===6&&result.repeat===0&&result.saved&&result.best===6&&result.lesson&&result.seated,JSON.stringify(result));
+  await b.key("Escape");await holdKey(b,"s",.4);
+  record("Mempool Mayhem: Escape restores the same upright Ooga, walking, roof and navigation at the exterior pad",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.mayhem.busy&&document.getElementById("pier-mayhem-panel").hidden&&!document.querySelector(".pier-navigation").hidden&&B.pier.land.park.bumperRoof.visible&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__mayhemPosition.x,a.root.position.z-window.__mayhemPosition.z)>1;})()`));
+  await position();await click("pier-prompt-use");await click("pier-mayhem-act");await b.evaluate(`__ooga.advance(.3,1/60)`);await gateWin();await b.evaluate(`window.__mayhemBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-mayhem-done").focus();`);await b.key(" ");
+  record("Mempool Mayhem: native Space on Back exits safely and discards unfinished tickets without hidden focus",await b.evaluate(`!__ooga.pier.mayhem.busy&&!__ooga.crew.player.camp.seat&&__ooga.game.state.arcade.tickets===window.__mayhemBeforeQuit&&!document.getElementById("pier-mayhem-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden`));
+  if(!touch){
+    const access=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.mayhem,s=B.pier.solids;return {lane:s.segmentClear(q.play.x+3.5,BL.pierModels.LAYOUT.top+.45,q.z-10,q.play.x+3.5,BL.pierModels.LAYOUT.top+.45,q.z+8,.4,1.6),sameWater:B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater};})()`);record("Mempool Mayhem: the pavilion preserves its adjacent walking lane and shared DSB ocean",Object.values(access).every(Boolean),JSON.stringify(access));
+    if(!await b.evaluate(`location.search.includes("canvas2d=1")`)){await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-mayhem");__ooga.setHour(18.8);__ooga.advance(1,1/60)`);await reviewShot(b,join(dir,"mayhem-pavilion-sunset.png"));await b.evaluate(`__ooga.setHour(23);__ooga.advance(1,1/60)`);await reviewShot(b,join(dir,"mayhem-pavilion-night.png"));}
+  }
+}};
+scene("pier",{label:"Mempool Mayhem desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierMayhemFlow,trip("pier")]});
+scene("pier",{label:"Mempool Mayhem phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierMayhemFlow]});
+scene("pier",{label:"Mempool Mayhem canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierMayhemFlow]});
+scene("pier",{label:"Block Builder desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierBuilderFlow,trip("pier")]});
+scene("pier",{label:"Block Builder phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierBuilderFlow]});
+scene("pier",{label:"Hash Fishing desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierFishingFlow,trip("pier")]});
+scene("pier",{label:"Hash Fishing phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierFishingFlow]});
+scene("pier",{label:"Phase 2 desktop",query:"character=portlandhodl",steps:[pierNavigationFlow,pierInteractionFlow,trip("pier")]});
+scene("pier",{label:"Phase 2 phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierNavigationFlow,pierInteractionFlow]});
+scene("pier",{label:"landmark review",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierLandmarkReview]});
+scene("pier",{label:"landmark canvas",query:"character=portlandhodl&day=172&canvas2d=1",steps:[pierLandmarkReview]});
+scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk and gateway", why: "playthrough: a canonical Ooga walks the full pier and crosses both destination gates without losing identity", run: async b => {
+  await tourGo(b, "bifrost");
+  const direction=await b.evaluate(`(() => { const B=__ooga,w=B.bifrost.scene.windows.find(w=>w.row.scene==="pier"),r=BL.bifrostModels.HALL.r-2.8,x=w.sn*r,z=w.c*r;B.pilot.navigate({position:{x,y:0,z},yaw:Math.atan2(w.sn,w.c)+Math.PI,pitch:.2,dist:5});B.advance(.5,1/60);return [w.sn,w.c]; })()`);
+  await walkToward(b,direction[0],direction[1],1.2);
+  record("pier window: arrives as the same Ooga",await untilPage(b,'B.scene === "pier" && !B.transitioning && B.crew.player.traits.name === "portlandhodl"',15000));
+  for(const yaw of [0,2.2])for(const key of "wasd"){
+    await b.evaluate(`(() => {const B=__ooga;B.pilot.navigate({position:{x:0,y:BL.pierModels.LAYOUT.top,z:72},yaw:${yaw},pitch:.4,dist:7});B.advance(.3,1/60);const p=B.crew.player.root.position,c=B.camera,dx=c.target.x-c.position.x,dz=c.target.z-c.position.z,l=Math.hypot(dx,dz);window.__pierWalk={x:p.x,z:p.z,fx:dx/l,fz:dz/l};})()`);
+    await holdKey(b,key,.35);
+    const move=await b.evaluate(`(() => {const q=window.__pierWalk,p=__ooga.crew.player.root.position,dx=p.x-q.x,dz=p.z-q.z;return {right:dx*-q.fz+dz*q.fx,fwd:dx*q.fx+dz*q.fz};})()`),[right,fwd]=WALK[key];
+    record(`pier ${yaw} ${key}: camera-relative walking`,move.right*right+move.fwd*fwd>1,JSON.stringify(move));
+  }
+  // Regression: an open bridge surface counted the air underneath as solid and blocked both trails.
+  const coastal=[];
+  for(const [name,start,dx,dz,seconds,axis,limit,floor] of [
+    ["bridge uphill",[0,1.35,92],0,1,24,"z",275,12.3828],
+    ["bike trail",[-280,.41,122],1,0,73,"x",275,.41],
+    ["Ocean Front Walk",[-280,.41,158],1,0,73,"x",275,.41],
+    ["Appian Way under bridge",[-30,.41,180],1,0,8,"x",25,.41],
+    ["rear beach ramp",[-35,1.35,92],0,1,3,"z",113,.35],
+    ["west beach ramp",[-72,1.35,92],-1,0,3,"x",93,.35],
+    ["east beach ramp",[4,1.35,92],1,0,3,"x",25,.35]
+  ]){
+    await b.evaluate(`__ooga.pilot.navigate({position:{x:${start[0]},y:${start[1]},z:${start[2]}},yaw:${Math.atan2(-dx,-dz)},pitch:.22,dist:7});__ooga.advance(.3,1/60)`);
+    await holdKey(b,"w",seconds);
+    const there=await b.evaluate(`(()=>{const A=__ooga.crew.player;return {x:A.root.position.x,z:A.root.position.z,feet:A.root.position.y-A.baseY};})()`);
+    await holdKey(b,"s",seconds);
+    const back=await b.evaluate(`(()=>{const A=__ooga.crew.player;return {x:A.root.position.x,z:A.root.position.z,feet:A.root.position.y-A.baseY};})()`);
+    const sign=axis==="x"?dx:dz,returned=Math.hypot(back.x-start[0],back.z-start[2])<1&&Math.abs(back.feet-start[1])<.05;
+    coastal.push({name,there,back,pass:there[axis]*sign>limit&&Math.abs(there.feet-floor)<.05&&returned});
+  }
+  record("pier coastal access: the widest Ooga walks the bridge, full trails, lower road and all three beach ramps in both directions",coastal.every(row=>row.pass),JSON.stringify(coastal));
+  await b.evaluate(`__ooga.pilot.navigate({position:BL.pierModels.LAYOUT.spawn,yaw:0,pitch:.22,dist:7});__ooga.advance(.3,1/60);`);
+  const walkingSeconds=await b.evaluate(`(BL.pierModels.LAYOUT.spawn.z-BL.pierModels.LAYOUT.tip-5)/BL.pilot.WALK.speed`);
+  await walkToward(b,0,-1,walkingSeconds);
+  const end=await b.evaluate(`(() => { const a=__ooga.crew.player,p=a.root.position,L=BL.pierModels.LAYOUT;return {z:p.z,feet:p.y-a.baseY,tip:L.tip,deck:L.top}; })()`);
+  record("pier boardwalk: arrival to outer deck stays on the rendered surface",end.z < end.tip+10 && Math.abs(end.feet-end.deck)<.05,JSON.stringify(end));
+  await b.evaluate(`(() => {const q=BL.pierModels.LAYOUT.gate;__ooga.pilot.navigate({position:{x:q.x,y:q.y,z:q.z-4},yaw:Math.PI,pitch:.22,dist:7});__ooga.pier.gate.activate();})()`);
+  await b.evaluate(`new Promise(resolve=>setTimeout(resolve,2200))`);
+  await walkToward(b,0,1,1.2);
+  record("pier gate: returns the same Ooga before its Bifrost window",await untilPage(b,'B.scene === "bifrost" && !B.transitioning && B.bifrost.avatar.traits.name === "portlandhodl"',15000));
+  const back=await b.evaluate(`(() => {const B=__ooga,w=B.bifrost.scene.windows.find(w=>w.row.scene==="pier"),p=B.bifrost.avatar.root.position;return p.x*w.sn+p.z*w.c-BL.bifrostModels.HALL.r;})()`);
+  record("pier return placement",back > -3.5 && back < -2,String(back));
+ } }, { name: "pier landmark access", why: "playthrough: the widest Ooga reaches both Hippodrome floors through real entrances, walks the new park aisles and returns without a collision or a floor jump", run: async b => {
+  await tourGo(b,"pier");
+  const routes=[
+    ["carousel stairs",[-4,1.35,86],-1,0,1.8,"x",-16,3.65],
+    ["aquarium boardwalk ramp",[-4,1.35,76],-1,0,1.8,"x",-16,.35],
+    ["aquarium beach entrance",[-25,.35,104],0,-1,3,"z",84,.35],
+    ["park circulation",[-39,1.35,-12],0,-1,10,"z",-85,1.35],
+    ["arrival plaza",[-40,1.35,26],0,1,7,"z",76,1.35],
+    ["open promenade",[0,1.35,94],0,-1,22,"z",-65,1.35],
+    ["boat access",[10,1.35,-264.5],1,0,1.5,"x",20,1.35]
+  ];
+  const rows=[];
+  for(const [name,start,dx,dz,seconds,axis,limit,floor] of routes){
+    await b.evaluate(`__ooga.pilot.navigate({position:{x:${start[0]},y:${start[1]},z:${start[2]}},yaw:${Math.atan2(-dx,-dz)},pitch:.14,dist:5});__ooga.advance(.3,1/60)`);
+    await holdKey(b,"w",seconds);
+    const end=await b.evaluate(`(()=>{const A=__ooga.crew.player;return {x:A.root.position.x,z:A.root.position.z,feet:A.root.position.y-A.baseY};})()`);
+    await holdKey(b,"s",seconds);
+    const back=await b.evaluate(`(()=>{const A=__ooga.crew.player;return {x:A.root.position.x,z:A.root.position.z,feet:A.root.position.y-A.baseY};})()`);
+    const sign=dx||dz,pass=end[axis]*sign>limit*sign&&Math.abs(end.feet-floor)<.05&&Math.hypot(back.x-start[0],back.z-start[2])<1&&Math.abs(back.feet-start[1])<.05;
+    rows.push({name,end,back,pass});
+  }
+  record("pier landmarks: stairs, both aquarium entrances, park lanes, arrival plaza, promenade and boat access return safely",rows.every(r=>r.pass),JSON.stringify(rows));
+  const levels=await b.evaluate(`(()=>{const B=__ooga,P=B.pier,A=P.avatar,L=BL.pierModels.LAYOUT;B.pilot.navigate({position:{x:L.carousel.board.x,y:L.aquarium.floor,z:L.carousel.board.z},yaw:0,pitch:.14,dist:5});B.advance(.3,1/60);return {floor:A.root.position.y-A.baseY,near:P.rides.near(),ceiling:P.solids.ceilingAt(-25,80,.35,A.bodyRadius),crowd:P.land.beach.people.length,fishermen:P.land.beach.people.filter(p=>p.fisher).length,horses:P.land.carousel.animals.length,seconds:P.land.carousel.seconds};})()`);
+  record("pier landmarks: basement cannot board upstairs; headroom, six horses, circuit and capped crowd remain intact",Math.abs(levels.floor-.35)<.05&&!levels.near&&Math.abs(levels.ceiling-3.25)<.01&&levels.crowd===32&&levels.fishermen===2&&levels.horses===6&&levels.seconds===24,JSON.stringify(levels));
+  await b.evaluate(`__ooga.pilot.navigate({position:{x:24.5,y:1.35,z:-267},yaw:-Math.PI/2,pitch:.24,dist:6});__ooga.advance(.3,1/60)`);
+  await b.key(" ");await b.evaluate(`__ooga.advance(.4,1/60)`);await holdKey(b,"w",3);
+  const sailing=await b.evaluate(`(()=>{const B=__ooga;return {riding:B.pier.boats.riding,seated:!!B.crew.player.camp.seat,x:B.crew.player.root.position.x};})()`);
+  await b.key(" ");await b.evaluate(`__ooga.advance(15,1/60)`);
+  const dock=await b.evaluate(`(()=>{const B=__ooga,A=B.crew.player,p=A.root.position;return {riding:B.pier.boats.riding,seated:!!A.camp.seat,tilt:A.root.quaternion,feet:p.y-A.baseY,distance:Math.hypot(p.x-24.5,p.z+267),name:A.traits.name};})()`);
+  record("pier landmarks: existing launch sails on DSB water and returns the same upright Ooga to its dock",sailing.riding&&sailing.seated&&sailing.x>40&&!dock.riding&&!dock.seated&&!dock.tilt&&Math.abs(dock.feet-1.35)<.05&&dock.distance<1&&dock.name==="portlandhodl",JSON.stringify({sailing,dock}));
+ } }, { name: "pier carnival circuits", why: "regression: Space while walking failed to board; every ride must carry the widest Ooga through its circuit and restore it at a safe platform", run: async b => {
+  await tourGo(b,"pier");
+  await b.evaluate(`(() => {const B=__ooga,q=BL.pierModels.LAYOUT.wheel.board;B.pilot.navigate({position:{x:q.x,y:BL.pierModels.LAYOUT.top,z:q.z},yaw:Math.PI,pitch:.22,dist:7});B.advance(.3,1/60);})()`);
+  await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:"w",code:"KeyW"});
+  await b.evaluate(`__ooga.advance(.1,1/60)`);
+  await b.key(" ");
+  await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:"w",code:"KeyW"});
+  await b.evaluate(`__ooga.advance(.3,1/60)`);
+  const boarded=await b.evaluate(`__ooga.pier.rides.riding && __ooga.crew.player.camp.seat === __ooga.pier.land.ferris.seat`);
+  record("pier wheel: action boards the physical gondola",boarded);
+  await holdKey(b,"w",1);
+  await b.evaluate(`__ooga.advance(23,1/30)`);
+  const top=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,c=B.pier.land.ferris.cars[0];return {seated:!!a.camp.seat,height:a.root.position.y,carY:c.position.y,tilt:c.rotation.z};})()`);
+  record("pier wheel: movement keeps the rider in an upright ocean-view gondola",top.seated && top.height>20 && top.carY>9 && top.tilt===0,JSON.stringify(top));
+  await b.key(" ");
+  const held=await b.evaluate(`__ooga.pier.rides.riding && __ooga.pier.rides.exitRequested`);
+  await b.evaluate(`__ooga.advance(25,1/30)`);
+  const end=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,q=BL.pierModels.LAYOUT.wheel.board,p=a.root.position;return {riding:B.pier.rides.riding,seated:!!a.camp.seat,name:a.traits.name,feet:p.y-a.baseY,distance:Math.hypot(p.x-q.x,p.z-q.z)};})()`);
+  record("pier wheel: exit waits for the platform and restores the same walking Ooga",held && !end.riding && !end.seated && end.name==="portlandhodl" && Math.abs(end.feet-1.35)<.05 && end.distance<1,JSON.stringify(end));
+  for(const id of ["coaster","carousel"]){
+    const seconds=await b.evaluate(`(() => {const B=__ooga,L=BL.pierModels.LAYOUT,m=L.${id},q=m.board;B.pilot.navigate({position:{x:q.x,y:m.floor??L.top,z:q.z},yaw:Math.PI,pitch:.22,dist:7});B.advance(.3,1/60);return B.pier.land.${id}.seconds;})()`);
+    if(id==="coaster"){
+      const moving=await b.evaluate(`(() => {const B=__ooga,m=B.pier.land.coaster,p=m.train.position,x=p.x,z=p.z;B.advance((m.seconds+2-m.phase)%m.seconds,1/60);return {moved:Math.hypot(p.x-x,p.z-z)>1,open:m.boardOpen,name:m.label,window:m.boardingSeconds};})()`);
+      record("pier train: empty locomotive runs continuously with a one-second window",moving.moved&&!moving.open&&moving.name==="Nothing Stops This Train"&&moving.window===1,JSON.stringify(moving));
+      await b.key(" ");
+      record("pier train: early Space is rejected without queuing",await b.evaluate(`!__ooga.pier.rides.riding`));
+      await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",code:"Space"});
+      await b.evaluate(`(() => {const B=__ooga,m=B.pier.land.coaster;B.advance(m.untilBoard+.15,1/60);})()`);
+      await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",code:"Space",autoRepeat:true});
+      record("pier train: holding early Space through arrival cannot board",await b.evaluate(`!__ooga.pier.rides.riding && __ooga.pier.land.coaster.boardOpen`));
+      await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" ",code:"Space"});
+      await b.evaluate(`document.getElementById("pier-ride").click()`);
+      record("pier train: clicking during the window cannot bypass Space timing",await b.evaluate(`!__ooga.pier.rides.riding && __ooga.pier.land.coaster.boardOpen`));
+    }
+    if(id==="coaster"){await b.key("e");await b.evaluate(`document.getElementById("pier-prompt-use").click()`);record("pier train: E and the shared prompt cannot bypass fresh Space",await b.evaluate(`!__ooga.pier.rides.riding`));}
+    await b.key(" ");await b.evaluate(`__ooga.advance(.3,1/60)`);
+    record(`pier ${id}: Space boards its own seat`,await b.evaluate(`__ooga.pier.rides.kind === "${id}" && __ooga.crew.player.camp.seat === __ooga.pier.land.${id}.seat`));
+    await holdKey(b,"w",1);
+    await b.evaluate(`__ooga.advance(${seconds/2-1.3},1/60)`);
+    const middle=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,m=B.pier.land.${id},p=a.root.position;return {seated:a.camp.seat===m.seat,height:p.y,attached:Math.hypot(p.x-m.seat.x,p.z-m.seat.z)<.01,orientation:a.root.quaternion===m.tilt};})()`);
+    record(`pier ${id}: movement retains the seated rider and ride orientation`,middle.seated&&middle.attached&&middle.orientation&&middle.height>(id==="coaster"?12:2),JSON.stringify(middle));
+    await b.key(" ");
+    record(`pier ${id}: exit is queued until the platform`,await b.evaluate(`__ooga.pier.rides.riding && __ooga.pier.rides.exitRequested`));
+    await b.evaluate(`__ooga.advance(${seconds/2+1},1/60)`);
+    const returned=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,L=BL.pierModels.LAYOUT,m=L.${id},q=m.board,p=a.root.position;return {riding:B.pier.rides.riding,seated:!!a.camp.seat,tilt:a.root.quaternion,name:a.traits.name,feet:p.y-a.baseY,floor:m.floor??L.top,distance:Math.hypot(p.x-q.x,p.z-q.z)};})()`);
+    record(`pier ${id}: the same upright Ooga walks off at deck height`,!returned.riding&&!returned.seated&&!returned.tilt&&returned.name==="portlandhodl"&&Math.abs(returned.feet-returned.floor)<.05&&returned.distance<1,JSON.stringify(returned));
+    if(id==="coaster")record("pier train: safe exit leaves the engine moving",await b.evaluate(`(() => {const B=__ooga,p=B.pier.land.coaster.train.position,x=p.x,z=p.z;B.advance(1,1/60);return Math.hypot(p.x-x,p.z-z)>1&&!B.pier.rides.riding;})()`));
+  }
+} }, { name: "pier midway rounds and prizes", why: "playthrough: aim and throw at both physical stations, save tickets once, leave safely and trade only affordable unowned prizes", run: async b => {
+  for(const id of ["ring","basket"]){
+    await b.evaluate(`(() => {const B=__ooga,q=BL.pierModels.LAYOUT.games.find(q=>q.id==="${id}");B.pilot.navigate({position:{x:q.play.x,y:BL.pierModels.LAYOUT.top,z:q.play.z},yaw:q.ry,pitch:.24,dist:6});B.advance(.3,1/60);window.__pierTickets=B.game.state.arcade.tickets;})()`);
+    await b.key(" ");
+    record(`pier ${id}: Space opens its station`,await b.evaluate(`__ooga.pier.games.busy && __ooga.pier.games.status.kind === "${id}" && !document.getElementById("pier-game-panel").hidden`));
+    const round=await b.evaluate(`(() => {const B=__ooga,g=B.pier.games,s=g.status,button=document.getElementById("pier-game-act"),space=()=>{window.dispatchEvent(new KeyboardEvent("keydown",{key:" ",code:"Space",bubbles:true,cancelable:true}));window.dispatchEvent(new KeyboardEvent("keydown",{key:" ",code:"Space",repeat:true,bubbles:true,cancelable:true}));window.dispatchEvent(new KeyboardEvent("keyup",{key:" ",code:"Space",bubbles:true}));};let timed=true;for(let i=0;i<5;i++){for(const phase of ["aim","power"]){let waited=0;while(s.phase===phase&&(s.meter<.49||s.meter>.51)&&waited<4){B.advance(.005,.005);waited+=.005;}if(s.phase!==phase||s.meter<.49||s.meter>.51){timed=false;break;}if(i%2)button.click();else space();}if(!timed)break;B.advance(1.9,1/60);}const tickets=B.game.state.arcade.tickets,saved=JSON.parse(localStorage.getItem("oogaboogaland.v1")).arcade.tickets===tickets;B.advance(2,1/60);return {timed,saved,phase:s.phase,shots:s.shots,hits:s.hits,reward:s.reward,earned:tickets-window.__pierTickets,repeated:B.game.state.arcade.tickets-tickets,name:B.crew.player.traits.name};})()`);
+    record(`pier ${id}: five well timed throws credit saved tickets once`,round.timed&&round.saved&&round.phase==="result"&&round.shots===5&&round.hits===5&&round.reward===(id==="ring"?50:40)&&round.earned===round.reward&&round.repeated===0&&round.name==="portlandhodl",JSON.stringify(round));
+    await b.key("Escape");
+    record(`pier ${id}: Escape restores walking`,await b.evaluate(`!__ooga.pier.games.busy && document.getElementById("pier-game-panel").hidden && !__ooga.crew.player.camp.seat`));
+  }
+  await b.key(" ");
+  await b.evaluate(`document.getElementById("pier-game-done").focus()`);await b.key(" ");
+  record("pier midway: Space on Done leaves without awarding an abandoned round",await b.evaluate(`__ooga.game.state.arcade.tickets === window.__pierTickets + 40`));
+  const trade=await b.evaluate(`(() => {const B=__ooga,q=BL.pierModels.LAYOUT.prizes.play;B.pilot.navigate({position:{x:q.x,y:BL.pierModels.LAYOUT.top,z:q.z},yaw:-Math.PI/2,pitch:.24,dist:6});B.advance(.3,1/60);return B.game.state.arcade.tickets;})()`);
+  await b.key(" ");
+  const prizes=await b.evaluate(`(() => {const B=__ooga,list=document.getElementById("pier-prize-list"),buttons=[...list.querySelectorAll("button")],catalog=BL.arcadeModels.PRIZES,affordable=buttons.find(b=>!b.disabled),p=catalog.find(p=>p.id===affordable?.dataset.prize);const unavailable=buttons.every(b=>{const p=catalog.find(p=>p.id===b.dataset.prize);return b.disabled===(B.game.state.arcade.prizes.includes(p.id)||B.game.state.arcade.tickets<p.cost);});if(!p)return {unavailable,count:buttons.length,owned:false};affordable.focus();window.__pierPrize={id:p.id,cost:p.cost};return {unavailable,count:buttons.length,ready:true};})()`);
+  record("pier prizes: unaffordable and owned buttons are disabled",prizes.unavailable&&prizes.count===6&&prizes.ready,JSON.stringify(prizes));
+  await b.key(" ");
+  const redeemed=await b.evaluate(`(() => {const B=__ooga,p=window.__pierPrize,affordable=document.querySelector('#pier-prize-list button[data-prize="'+p.id+'"]'),balance=B.game.state.arcade.tickets;affordable.click();return {owned:B.game.state.arcade.prizes.includes(p.id),saved:JSON.parse(localStorage.getItem("oogaboogaland.v1")).arcade.prizes.includes(p.id),disabled:affordable.disabled,spent:${trade}-balance,cost:p.cost,repeated:B.game.state.arcade.tickets===balance};})()`);
+  record("pier prizes: shared counter enforces affordability and one redemption",redeemed.owned&&redeemed.saved&&redeemed.disabled&&redeemed.spent===redeemed.cost&&redeemed.repeated,JSON.stringify(redeemed));
+  await b.evaluate(`document.getElementById("pier-prize-close").focus()`);await b.key(" ");
+  await b.evaluate(`window.__pierBeforeWalk={x:__ooga.crew.player.root.position.x,z:__ooga.crew.player.root.position.z}`);await holdKey(b,"s",.4);
+  record("pier prize counter: Space on Back restores boardwalk movement",await b.evaluate(`!__ooga.pier.games.busy && Math.hypot(__ooga.crew.player.root.position.x-window.__pierBeforeWalk.x,__ooga.crew.player.root.position.z-window.__pierBeforeWalk.z)>1`));
+} }, trip("pier")] });
 scene("bifrost", { label: "dsb round trip", query: "character=portlandhodl", steps: [bifrostDsb] });
 scene("bifrost", { label: "poker round trip", query: "character=portlandhodl", steps: [bifrostPoker] });
 scene("bifrost", { label: "canvas2d", url: hubPage(src, "canvas2d=1"), steps: [bifrostCanvas] });

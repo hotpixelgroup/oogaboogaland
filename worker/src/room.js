@@ -127,7 +127,7 @@ export class Room extends DurableObject {
       this.npcFrame(p, message);
       return;
     }
-    const msg = parseClientMessage(typeof message === "string" ? message : "");
+    const msg = parseClientMessage(typeof message === "string" ? message : "", p.zone);
     if (msg === false) {
       this.drop(p, "protocol");
       ws.close(CLOSE_PROTOCOL, "unreadable message");

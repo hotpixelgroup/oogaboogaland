@@ -157,6 +157,7 @@
         <p data-scene="lab" hidden>EntropyLab cave</p>
         <p data-scene="factory" hidden>Lightning Factory</p>
         <p data-scene="bifrost" hidden>₿IFRÖST</p>
+        <p data-scene="pier" hidden>Ooga Pier</p>
         <p data-scene="arcade" hidden>Ooga Arcade</p>
         <p data-scene="skee" hidden>Ooga Arcade · Thro-ball</p>
         <p data-scene="hoops" hidden>Ooga Arcade · Hoop Shot</p>
@@ -287,9 +288,23 @@
         <button type="button" data-action="reset-view">Walk</button>
         <button type="button" data-action="dsb-mute" id="dsb-mute" aria-pressed="false">Mute</button>
       </nav>
+      <nav class="presets" aria-label="Ooga Pier" data-scene="pier" hidden>
+        <button type="button" data-action="pier-overview">Pier overview</button>
+        <button type="button" data-action="pier-beach-view">Beach view</button>
+        <button type="button" data-action="reset-view">Walk</button>
+        <button type="button" data-action="pier-gate">Dial gate</button>
+        <button type="button" id="pier-ride" data-action="pier-ride" hidden>Ride Ferris wheel</button>
+        <button type="button" id="pier-play" data-action="pier-play" hidden>Play</button>
+        <button type="button" id="pier-beach-act" data-action="pier-beach-act" hidden>Ice cream · Space</button>
+        <button type="button" id="pier-boat" data-action="pier-boat" hidden>Board boat · Space</button>
+        <button type="button" id="pier-whistle" data-action="pier-whistle" hidden>Whistle (H)</button>
+        <button type="button" id="pier-mute" data-action="pier-mute" aria-pressed="false">Mute train</button>
+        <button type="button" class="leave" data-action="leave">₿IFRÖST</button>
+      </nav>
       <nav class="presets" aria-label="₿IFRÖST" data-scene="bifrost" hidden>
         <button type="button" data-preset="core">Core</button>
         <button type="button" data-preset="dsb">DSB</button>
+        <button type="button" data-preset="pier">Pier</button>
         <button type="button" data-preset="poker">Poker</button>
         <button type="button" data-preset="sky">Sky</button>
         <button type="button" class="leave" data-action="leave">Leave<span> chamber</span></button>
@@ -747,6 +762,106 @@
           <button type="button" data-action="drop-board">Board</button>
           <button type="button" data-action="leave">Exit Game</button>
         </div>
+      </section>
+    </div>
+    <div class="pier-games-ui" data-scene="pier" hidden>
+      <aside class="pier-navigation" aria-label="Pier navigation">
+        <div class="pier-nav-actions"><button type="button" id="pier-map-toggle" aria-expanded="true" aria-controls="pier-minimap">Map</button><button type="button" id="pier-passport-open">Passport 0/10</button></div>
+        <output id="pier-tickets" class="pier-ticket-balance" aria-label="Saved carnival tickets">0 tickets</output>
+        <canvas id="pier-minimap" width="256" height="256" role="img" aria-label="Pier map: inland at top, ocean at bottom. Numbered landmarks are listed in the Passport; R rides, G games, B boats, V vendors, star prizes, arrow gate."></canvas>
+        <small id="pier-compass">↑ Inland · ↓ Ocean</small>
+      </aside>
+      <div id="pier-prompt" class="pier-prompt" hidden><b id="pier-prompt-text"></b><button type="button" id="pier-prompt-use">Press E / tap</button></div>
+      <dialog id="pier-guide" class="pier-guide-dialog" aria-label="Pier Passport and vendor conversations">
+        <section id="pier-passport">
+          <h2>Pier Passport</h2><p id="pier-passport-progress" aria-live="polite"></p>
+          <ol id="pier-stamp-list"></ol><p id="pier-passport-reward"></p>
+          <small>Walk near each landmark to collect its stamp. The lighthouse stamp requires a boat.</small>
+        </section>
+        <section id="pier-vendor" hidden>
+          <h2 id="pier-vendor-title"></h2><p id="pier-vendor-fact" tabindex="-1"></p>
+          <div class="actions"><button type="button" id="pier-vendor-learn" aria-expanded="false" aria-controls="pier-vendor-detail">Learn more</button><button type="button" id="pier-vendor-treat">Ice cream</button></div>
+          <p id="pier-vendor-detail" tabindex="-1" hidden></p><a id="pier-vendor-source" target="_blank" rel="noopener noreferrer" hidden>Bitcoin developer guide</a>
+        </section>
+        <button type="button" id="pier-guide-close">Back to boardwalk</button>
+      </dialog>
+      <section id="pier-game-panel" class="pier-game-panel" aria-label="Carnival game" hidden>
+        <h2 id="pier-game-title">Ring toss</h2>
+        <p id="pier-game-score"></p>
+        <p id="pier-game-info" aria-live="polite"></p>
+        <div id="pier-game-meter" class="pier-meter" role="img" aria-label="Timing meter: release in a green zone"><div id="pier-game-needle" class="pier-needle"><span></span></div></div>
+        <div class="actions"><button type="button" id="pier-game-act">Lock aim</button><button type="button" id="pier-game-done">Done</button></div>
+        <small>Free round · five throws · tickets saved at round end. Space plays; Escape leaves.</small>
+      </section>
+      <section id="pier-prizes" class="pier-game-panel" aria-label="Pier prize counter" tabindex="-1" hidden>
+        <h2>Tickets and prizes</h2>
+        <p>Tickets and owned prizes are shared with Ooga Arcade.</p>
+        <ul id="pier-prize-list" class="pier-prize-list"></ul>
+        <p id="pier-passport-claim-info"></p><button type="button" id="pier-passport-claim" disabled>Collect 10 stamps</button>
+        <button type="button" id="pier-prize-close">Back to boardwalk</button>
+      </section>
+      <section id="pier-fishing-panel" class="pier-game-panel" aria-label="Hash Fishing" hidden>
+        <h2>Hash Fishing</h2>
+        <p id="pier-fishing-score"></p><p id="pier-fishing-time"></p>
+        <p id="pier-fishing-info" aria-live="polite"></p>
+        <p class="pier-fishing-readout"><code id="pier-fishing-hash"></code><small id="pier-fishing-target"></small></p>
+        <p id="pier-fishing-lesson"></p>
+        <details id="pier-fishing-more"><summary>Learn more</summary><p id="pier-fishing-detail"></p><a id="pier-fishing-source" target="_blank" rel="noopener noreferrer">Bitcoin developer guide</a></details>
+        <div class="actions"><button type="button" id="pier-fishing-act">Start 75-second round</button><button type="button" id="pier-fishing-done">Back to boardwalk</button></div>
+        <small>Free round · 5 tickets per catch · finish 75 seconds to bank tickets. Space casts; Escape leaves.</small>
+      </section>
+      <section id="pier-builder-panel" class="pier-game-panel" aria-label="Block Builder" hidden>
+        <h2>Block Builder <small id="pier-builder-time"></small></h2>
+        <p id="pier-builder-score"></p><p id="pier-builder-info" aria-live="polite"></p>
+        <p id="pier-builder-lesson"></p>
+        <details id="pier-builder-more"><summary>Learn more</summary><p id="pier-builder-detail"></p><a id="pier-builder-source" target="_blank" rel="noopener noreferrer">Block weight limit</a></details>
+        <div id="pier-builder-play" hidden>
+          <div id="pier-builder-offers" class="pier-builder-offers" aria-label="Choose a transaction"></div>
+          <div id="pier-builder-grid" class="pier-builder-grid" role="group" aria-label="Block: six rows by six columns. Tap a cell to position the transaction."></div>
+          <div class="actions"><button type="button" id="pier-builder-rotate">Rotate · R</button><button type="button" id="pier-builder-skip">New offer · X</button></div>
+        </div>
+        <div class="actions"><button type="button" id="pier-builder-act">Start · 75s</button><button type="button" id="pier-builder-done">Back to beach</button></div>
+        <small>Free round · 4 game fees = 1 ticket. Finish 75 seconds to bank tickets. Escape leaves.</small>
+      </section>
+      <section id="pier-mayhem-panel" class="pier-game-panel" aria-label="Mempool Mayhem" hidden>
+        <h2>Mempool Mayhem <small id="pier-mayhem-time"></small></h2>
+        <p id="pier-mayhem-score"></p><p id="pier-mayhem-fee"></p>
+        <p id="pier-mayhem-info" aria-live="polite"></p>
+        <p id="pier-mayhem-lesson"></p>
+        <details id="pier-mayhem-more"><summary>Learn more</summary><p id="pier-mayhem-detail"></p><a id="pier-mayhem-source" target="_blank" rel="noopener noreferrer">Bitcoin Core: Block selection</a></details>
+        <div class="actions"><button type="button" id="pier-mayhem-act">Start · 75s</button><button type="button" id="pier-mayhem-done">Back to pier</button></div>
+      </section>
+      <section id="pier-whack-panel" class="pier-game-panel" aria-label="Double-Spend Whack" hidden>
+        <h2>Double-Spend Whack <small id="pier-whack-time"></small></h2>
+        <p id="pier-whack-score"></p><p id="pier-whack-info" aria-live="polite"></p>
+        <p id="pier-whack-lesson"></p>
+        <details id="pier-whack-more"><summary>Learn more</summary><p id="pier-whack-detail"></p><a id="pier-whack-source" target="_blank" rel="noopener noreferrer">Bitcoin developer guide</a></details>
+        <div id="pier-whack-play" hidden>
+          <p id="pier-whack-ledger" class="pier-whack-ledger"></p>
+          <div id="pier-whack-grid" class="pier-whack-grid" role="group" aria-label="Nine transaction slots. Tap to reject a transaction using a spent coin."></div>
+        </div>
+        <div class="actions"><button type="button" id="pier-whack-act">Start · 75s</button><button type="button" id="pier-whack-done">Back to pier</button></div>
+        <small>Reject +2 · wrong −2 · missed −1. Three points = 1 ticket. Finish 75s to bank tickets; Escape leaves.</small>
+      </section>
+      <section id="pier-volley-panel" class="pier-game-panel" aria-label="Lightning Volley" hidden>
+        <h2>Lightning Volley <small id="pier-volley-time"></small></h2>
+        <p id="pier-volley-score"></p><p id="pier-volley-info" aria-live="polite"></p>
+        <p id="pier-volley-lesson"></p>
+        <details id="pier-volley-more"><summary>Learn more</summary><p id="pier-volley-detail"></p><a id="pier-volley-source" target="_blank" rel="noopener noreferrer">BOLT 4: Onion routing</a></details>
+        <p id="pier-volley-route" class="pier-volley-readout"></p>
+        <div id="pier-volley-choices" role="group" aria-label="Choose a receiver. A lit channel must carry the ball’s units." hidden><button type="button" id="pier-volley-a" data-volley="1">A</button><button type="button" id="pier-volley-b" data-volley="2">B</button><button type="button" id="pier-volley-target" data-volley="3">Target</button></div>
+        <div class="actions"><button type="button" id="pier-volley-act">Start · 75s</button><button type="button" id="pier-volley-done">Back to beach</button></div>
+        <button type="button" id="pier-volley-restart" hidden>Restart route · X</button>
+        <small>Free · 15 rallies · 4 tickets per delivery · Escape / Back leaves</small>
+      </section>
+      <section id="pier-seed-panel" class="pier-game-panel" aria-label="Seed Phrase Match" hidden>
+        <h2>Seed Phrase Match <small id="pier-seed-time"></small></h2>
+        <p id="pier-seed-score"></p><p id="pier-seed-info" aria-live="polite"></p>
+        <p id="pier-seed-lesson"></p>
+        <details id="pier-seed-more"><summary>Learn more</summary><p id="pier-seed-detail"></p><a id="pier-seed-source" target="_blank" rel="noopener noreferrer">BIP 39: Mnemonic code</a></details>
+        <div id="pier-seed-grid" role="group" aria-label="Twelve public game word cards. Pick two to swap positions." hidden></div>
+        <div class="actions"><button type="button" id="pier-seed-act">Start · 75s</button><button type="button" id="pier-seed-done">Back to pier</button></div>
+        <small>Public game words · never use as a wallet backup. Finish 75s to bank tickets. C checks; Escape leaves.</small>
       </section>
     </div>
     <div class="race arcade-ui" id="arcade-ui" data-scene="arcade" hidden>
@@ -1746,6 +1861,28 @@ Then run npm run build and ONLY=characters node test/run.mjs.</pre>
   <script src="js/dsb-noderunner.js"></script>
   <script src="js/dsb-collision.js"></script>
   <script src="js/scene-dsb.js"></script>
+  <script src="js/pier-rides.js"></script>
+  <script src="js/pier-coaster.js"></script>
+  <script src="js/pier-train-audio.js"></script>
+  <script src="js/pier-carousel.js"></script>
+  <script src="js/pier-games.js"></script>
+  <script src="js/pier-fishing.js"></script>
+  <script src="js/pier-builder.js"></script>
+  <script src="js/pier-mayhem.js"></script>
+  <script src="js/pier-whack.js"></script>
+  <script src="js/pier-details.js"></script>
+  <script src="js/pier-beach.js"></script>
+  <script src="js/pier-park.js"></script>
+  <script src="js/pier-landmarks.js"></script>
+  <script src="js/pier-models.js"></script>
+  <script src="js/pier-lighthouse.js"></script>
+  <script src="js/pier-life.js"></script>
+  <script src="js/pier-boats.js"></script>
+  <script src="js/pier-facts.js"></script>
+  <script src="js/pier-seed-match.js"></script>
+  <script src="js/pier-volley.js"></script>
+  <script src="js/pier-interactions.js"></script>
+  <script src="js/scene-pier.js"></script>
   <script src="js/bifrost-models.js"></script>
   <script src="js/bifrost-gate.js"></script>
   <script src="js/bifrost-isle.js"></script>

@@ -370,8 +370,9 @@
     const now = performance.now();
     if (now - poseAt < POSE_MS) return;
     // The room drops a pose outside its bounds, which would freeze this Ooga on other pages: hold it at the edge.
-    x = Math.max(-BOUND_XZ, Math.min(BOUND_XZ, x));
-    z = Math.max(-BOUND_XZ, Math.min(BOUND_XZ, z));
+    const bound = zone === "scene-pier" ? 900 : BOUND_XZ;
+    x = Math.max(-bound, Math.min(bound, x));
+    z = Math.max(-bound, Math.min(bound, z));
     y = Math.max(BOUND_Y_MIN, Math.min(BOUND_Y_MAX, y));
     if (Math.abs(x - px) < 0.005 && Math.abs(y - py) < 0.005 && Math.abs(z - pz) < 0.005 && Math.abs(yaw - pyaw) < 0.01) return;
     poseAt = now;
