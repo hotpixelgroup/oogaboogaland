@@ -34,7 +34,7 @@
       const board={x:24.5,z:q.z},seat={x:q.x,y:layout.sea+.82,z:q.z+.35,ry:Math.PI,floor:layout.top,walkAt:board,sitter:null,allowWeapons:false,lockMovement:true};
       const mark=S.createNode({geometry:BL.hubModels.postSign(q.name.toUpperCase(),.28,1.3),position:{x:20.2,y:layout.top,z:q.z}});S.addChild(dock,mark);
       S.addChild(group,S.createNode({geometry:M.box({w:2.5,h:.015,d:1.9,color:q.color}),position:{x:board.x,y:layout.top+.01,z:board.z}}));
-      entries.push({name:q.name,button:`Board ${q.name} · Space`,node,foam,board,seat,home:q,yaw:q.yaw,pitch:0,roll:0,speed:0});
+      entries.push({name:q.name,button:`Board ${q.name}`,node,foam,board,seat,home:q,yaw:q.yaw,pitch:0,roll:0,speed:0});
     }
     const obstacles=layout.decks.map(q=>({minX:q.x-q.w/2-RADIUS,maxX:q.x+q.w/2+RADIUS,minZ:q.z-q.d/2-RADIUS,maxZ:q.z+q.d/2+RADIUS,boat:null}));
     // The tower's 10 m footing is protected even though it is distant scenery for walkers.
@@ -44,7 +44,7 @@
     // A small visibility graph is rebuilt only on a return request; all scratch storage is visit-owned.
     const capacity=2+obstacles.length*4,xs=new Float64Array(capacity),zs=new Float64Array(capacity),costs=new Float64Array(capacity),previous=new Int16Array(capacity),visited=new Uint8Array(capacity),path=new Int16Array(capacity);
     const offset=new Float32Array(3),riderTurn=Q.create(),backward=Q.create();Q.fromEuler(backward,0,Math.PI,0);
-    let rider=null,pending=null,current=null,jetBefore=false,returning=false,age=0,accumulator=0,pathIndex=-1;
+    let rider=null,pending=null,current=null,jetBefore=false,returning=false,helm=false,age=0,accumulator=0,pathIndex=-1;
     const clear=(ax,az,bx,bz)=>{
       if(Math.abs(bx)>BOUNDS.x-RADIUS||bz<BOUNDS.minZ+RADIUS||bz>BOUNDS.maxZ-RADIUS)return false;
       for(const r of obstacles)if(r.boat!==current&&intersects(ax,az,bx,bz,r))return false;
@@ -80,7 +80,7 @@
       if(pending){pending=current=null;pilot.controls.reset();pilot.showAct();return true;}
       if(!rider)return false;if(returning)return true;
       if(!planReturn()){hud.toast("Move into open water, then request a return to the dock");return true;}
-      returning=true;current.speed=0;pilot.controls.reset();hud.toast("Returning to the pier — stay seated until docked");return true;
+      returning=true;helm=false;current.speed=0;pilot.controls.reset();hud.toast("Returning to the dock. Steer to take the helm back");return true;
     };
     const pose=(b,dt)=>{
       const p=b.node.position,sy=Math.sin(b.yaw),cy=Math.cos(b.yaw),bow=water.heightAt(p.x-sy*1.7,p.z-cy*1.7),stern=water.heightAt(p.x+sy*1.7,p.z+cy*1.7),port=water.heightAt(p.x-cy,p.z+sy),starboard=water.heightAt(p.x+cy,p.z-sy),blend=1-Math.exp(-5*dt);
@@ -121,6 +121,8 @@
       }
       if(rider){
         const axes=pilot.controls.read();accumulator=Math.min(accumulator+dt,STEP*4);
+        // The autopilot gives way to a fresh push on the helm, never to a key still held from before.
+        if(returning){if(Math.abs(axes.x)<.1&&Math.abs(axes.y)<.1)helm=true;else if(helm){returning=false;hud.toast("You have the helm");}}
         while(accumulator>=STEP&&rider){accumulator-=STEP;step(STEP,axes.y,axes.x);}
       }
       for(const b of entries)pose(b,dt);
@@ -138,7 +140,7 @@
     return {entries,dock,board,near:()=>!!nearby(),nearest:nearby,requestExit,update,recover,
       ownsSeat:seat=>{for(const b of entries)if(b.seat===seat)return true;return false;},
       get riding(){return !!(rider||pending);},get boarding(){return !!pending;},get returning(){return returning;},
-      get label(){return pending?"Boarding boat…":rider?(returning?"Returning to dock…":"Return to dock · Space"):(nearby()?.button||"Board boat · Space");},
+      get label(){return pending?"Boarding boat…":rider?(returning?"Returning to dock…":"Return to dock"):(nearby()?.button||"Board boat");},
       dispose:()=>{recover();S.removeChild(root,group);}};
   };
   BL.pierBoats={create,BOUNDS,BERTHS};

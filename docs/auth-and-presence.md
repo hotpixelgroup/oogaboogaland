@@ -12,7 +12,7 @@ PR ownership check are described in [Contributor onboarding](contributor-onboard
 |---|---|---|
 | Static site | `_site/` (the page as `index.html` and each `<route>.html`), staged by `npm run build:site` | the whole game, served by the Worker's assets binding with the headers in `worker/_headers` |
 | Worker | `worker/src/index.js` | runs only for `/auth/*`, `/api/*` and `/room` (`run_worker_first`); everything else is the static page |
-| D1 `oogaboogaland` | `worker/migrations/` | `players` (GitHub id, login, display name) and `sessions` (token hash, expiry) |
+| D1 `oogaboogaland` | `worker/migrations/` | `players` (GitHub id, login, display name), `sessions` (token hash, expiry) and `pier_scores` (a player's best at each Ooga Pier game each season, and their lighthouse lantern) |
 | Page modules | `src/js/net.js` (`BL.net`), `src/js/remote-players.js` | the account and the room socket; the other visitors on the island. The sheet footer shows the account and the online count through `hud.showAccount` |
 | Room | `worker/src/room.js` (Durable Object `Room`) | one socket per signed-in player, presence and poses |
 
@@ -34,12 +34,16 @@ PR ownership check are described in [Contributor onboarding](contributor-onboard
 ## Signing out and leaving
 
 - **Sign out** posts `/auth/logout`, which deletes that session row and clears the cookie. `/auth/logout?all=1` ends every session of the player.
-- `DELETE /api/me` deletes the player and every session.
+- `DELETE /api/me` deletes the player, every session and every Ooga Pier score and lantern of theirs.
 - Every state-changing request must carry the site's own `Origin` (or `Sec-Fetch-Site: same-origin`); anything else is 403.
 
 ## What is stored
 
-For a signed-in player: GitHub id, login, avatar URL, the chosen display name, sign-in and last-seen times, and for each session its token hash, times and the first 120 characters of the user agent. Nothing for visitors who never sign in. No GitHub token is ever stored.
+For a signed-in player: GitHub id, login, avatar URL, the chosen display name, sign-in and last-seen times, and for each session its token hash, times and the first 120 characters of the user agent. A signed-in player who plays on Ooga Pier also has, for each game and season, their best score and when they set it, and one row if they lit their lantern at the lighthouse. Nothing for visitors who never sign in. No GitHub token is ever stored.
+
+## Ooga Pier's online board
+
+`GET /api/pier/scores?season=N` answers `{ season, boards: { <game>: [[name, score], ...] }, lanterns }` to anyone: each game's best five that season (a banned player is left out; the name is the display name, else the login) and the count of lanterns lit. `POST /api/pier/scores` with `{ game, season, score }` keeps a signed-in player's own score when it beats the one stored (`SCORE_LIMITER`, 30 a minute per player). A score must be a whole number within its game's cap (`PIER_CAPS` in `worker/src/db.js`, the same numbers as `src/js/game.js`), and a lantern is `{ game: "lantern", season: 0, score: 1 }`. A season is one difficulty period, numbered by the page as block height divided by 2,016. The stakes are a name on a board and a light on the sand, so the cap and one row per player, game and season are the whole defence; nothing here should ever pay out. The page reads the board when a visitor comes near the hall of fame, at most once a minute (`src/js/pier-fame.js`), and with no backend asks for nothing.
 
 ## Presence
 
@@ -53,6 +57,8 @@ A signed-in visitor holds one WebSocket to `/room` for the page life. The Worker
 | client → room | `{ t: "hub", on }` | this page shows the island in a visible tab: it can host the NPCs and receives their frames |
 | client → room | `{ t: "mute", on }` | this page muted or unmuted its own microphone, for everyone's roster |
 | client → room | `{ t: "hp", v, ko }` | the driven Ooga's health (0-100, in steps of 4) and whether it is knocked out; only on a change, 4 a second at most |
+| client → room | `{ t: "st", v }` | how the driven Ooga carries itself: 0 on foot, 1 seated (a ride, a boat, a bike), 2 swimming; only on a change, 4 a second at most |
+| client → room | `{ t: "ev", k, v }` | a moment for the players in the same zone group: a short kind (`emote`, `fireworks`, `bell`) and up to six numbers; 2 a second at most, relayed once and stored nowhere |
 | client → room | binary | the NPC host's frame: Ooga poses, gear, status and work, then its events (see The crew in step) |
 | client → room | `"ping"` every 10 s | answered `"pong"` without waking the room |
 | room → client | `welcome { you, players, tickHz, now, loopEpoch, host, followers }` | on connect: everyone else, their last pose, whether each is in voice (`voice`) and muted (`muted`), and their health (`hp`, `ko`) |
@@ -62,6 +68,8 @@ A signed-in visitor holds one WebSocket to `/room` for the page life. The Worker
 | room → client | `voice { peers, gens }` | the ids this player should hear and each one's publication count (a new count is a microphone published again, pulled again); sent when that changes, and after every zone message |
 | room → client | `vstate { id, voice, muted }` | a player's microphone went live or off, or they muted or unmuted it; sent only on a change |
 | room → client | `hp { id, v, ko }` | a player's driven Ooga's health changed (a new body starts at 100) |
+| room → client | `st { id, v }` | a player's driven Ooga sat down, stood up or went swimming (a new body starts at 0); `welcome` and `join` carry `st` on every player |
+| room → client | `ev { id, k, v }` | a moment from a player driving an Ooga in this page's zone group; a page that arrives later never sees it |
 | room → client | `release { name, reason }` | a claim refused (`not-yours`, `owner-here`, `taken`, `unknown`) or an Ooga taken back by its arriving owner |
 | room → client | `kick { reason }`, then close 4000 | `replaced` (a newer tab), `stale` (90 s silent, swept once a minute), `full` (32 players) |
 
@@ -96,7 +104,7 @@ The page enforces all of it (`net.mayDrive`, checked by `pilot.possess` through 
 
 A second tab of the same account takes over: the first is kicked with `replaced`, stops reconnecting, and its sheet footer offers **Play here**. Every deploy drops every socket; pages reconnect on their own with backoff (0.5 s × 1.7, up to 15 s). A tab hidden for five minutes leaves the room (voice stops) and rejoins when it is shown again.
 
-**What keeps the room cheap.** The room is a Durable Object, billed for the time it is awake and for the messages it receives, and it sleeps (hibernates) only when no timer is pending and nothing arrives for a few seconds. So nothing in it runs on its own: a pose schedules one snapshot, voice lists go out when who hears whom can change (a join or leave, a body or zone, a voice session), `vstate` goes out when a microphone goes live or off or is muted, `hp` when a driven Ooga's health moves, and the stale sweep is an alarm once a minute. Pings are answered without waking it. The NPC host sends only while another page follows it (`followers`), four frames a second, and skips a frame when no Ooga changed and nothing happened (at most 2 s).
+**What keeps the room cheap.** The room is a Durable Object, billed for the time it is awake and for the messages it receives, and it sleeps (hibernates) only when no timer is pending and nothing arrives for a few seconds. So nothing in it runs on its own: a pose schedules one snapshot, voice lists go out when who hears whom can change (a join or leave, a body or zone, a voice session), `vstate` goes out when a microphone goes live or off or is muted, `hp` when a driven Ooga's health moves, `st` when it sits, stands or swims, an `ev` only when a player makes a moment (the room keeps none, so events add no storage and no timer), and the stale sweep is an alarm once a minute. Pings are answered without waking it. The NPC host sends only while another page follows it (`followers`), four frames a second, and skips a frame when no Ooga changed and nothing happened (at most 2 s).
 
 ## The crew in step
 

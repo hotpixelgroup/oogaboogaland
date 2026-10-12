@@ -18,7 +18,7 @@
 import { DurableObject } from "cloudflare:workers";
 import {
   CLOSE_KICK, CLOSE_PROTOCOL, MAX_PLAYERS, MOVE_HZ, STALE_MS, SWEEP_MS, TICK_HZ,
-  NPC_FRAME_MAX, NPC_HZ, OUTSIDE, HP_HZ, VOICE_TRACK, castIndex, electHost, npcFollowers, claimRefusal, parseClientMessage, playerFromHeaders, spawnPoint, takeToken, voicePeers,
+  NPC_FRAME_MAX, NPC_HZ, OUTSIDE, HP_HZ, STANCE_HZ, EVENT_HZ, VOICE_TRACK, castIndex, electHost, eventAudience, npcFollowers, claimRefusal, parseClientMessage, playerFromHeaders, spawnPoint, takeToken, voicePeers,
 } from "./protocol.js";
 import { sfuClient } from "./sfu.js";
 import CAST_ROWS from "./characters.gen.json";
@@ -54,15 +54,15 @@ export class Room extends DurableObject {
   }
 
   record(ws, a) {
-    return { ws, voice: { pub: null, sub: null, track: null, gen: 0 }, muted: false, hp: 100, ko: false, sent: null, zone: OUTSIDE, inHub: false, joinedAt: Date.now(), ...a, bucket: { tokens: MOVE_HZ, at: Date.now() }, npcBucket: { tokens: NPC_HZ, at: Date.now() }, hpBucket: { tokens: HP_HZ, at: Date.now() }, seenAt: Date.now() };
+    return { ws, voice: { pub: null, sub: null, track: null, gen: 0 }, muted: false, hp: 100, ko: false, st: 0, sent: null, zone: OUTSIDE, inHub: false, joinedAt: Date.now(), ...a, bucket: { tokens: MOVE_HZ, at: Date.now() }, npcBucket: { tokens: NPC_HZ, at: Date.now() }, hpBucket: { tokens: HP_HZ, at: Date.now() }, stBucket: { tokens: STANCE_HZ, at: Date.now() }, evBucket: { tokens: EVENT_HZ, at: Date.now() }, seenAt: Date.now() };
   }
 
   attachment(p) {
-    return { id: p.id, login: p.login, display: p.display, contributor: p.contributor, body: p.body, x: p.x, y: p.y, z: p.z, yaw: p.yaw, voice: p.voice, muted: p.muted, hp: p.hp, ko: p.ko, sent: p.sent, zone: p.zone, inHub: p.inHub, joinedAt: p.joinedAt };
+    return { id: p.id, login: p.login, display: p.display, contributor: p.contributor, body: p.body, x: p.x, y: p.y, z: p.z, yaw: p.yaw, voice: p.voice, muted: p.muted, hp: p.hp, ko: p.ko, st: p.st, sent: p.sent, zone: p.zone, inHub: p.inHub, joinedAt: p.joinedAt };
   }
 
   view(p) {
-    return { id: p.id, login: p.login, display: p.display, body: p.body, zone: p.zone, x: p.x, y: p.y, z: p.z, yaw: p.yaw, voice: !!p.voice.track, muted: p.muted, hp: p.hp, ko: p.ko };
+    return { id: p.id, login: p.login, display: p.display, body: p.body, zone: p.zone, x: p.x, y: p.y, z: p.z, yaw: p.yaw, voice: !!p.voice.track, muted: p.muted, hp: p.hp, ko: p.ko, st: p.st };
   }
 
   send(ws, msg) {
@@ -159,6 +159,17 @@ export class Room extends DurableObject {
       p.hp = msg.v;
       p.ko = msg.ko;
       this.broadcast({ t: "hp", id: p.id, v: p.hp, ko: p.ko }, p.ws);
+    } else if (msg.t === "st") {
+      if (msg.v === p.st) return;
+      if (!takeToken(p.stBucket, STANCE_HZ, p.seenAt)) return;
+      p.st = msg.v;
+      this.broadcast({ t: "st", id: p.id, v: p.st }, p.ws);
+    } else if (msg.t === "ev") {
+      // A moment for the players sharing this one's zone group: relayed once and kept nowhere.
+      if (!takeToken(p.evBucket, EVENT_HZ, p.seenAt)) return;
+      const text = JSON.stringify({ t: "ev", id: p.id, k: msg.k, v: msg.v });
+      for (const q of eventAudience(this.players.values(), p)) this.send(q.ws, text);
+      return;
     } else if (msg.t === "mute") {
       if (msg.on === p.muted) return;
       p.muted = msg.on;
@@ -173,9 +184,10 @@ export class Room extends DurableObject {
       } else {
         p.body = msg.name;
       }
-      // Another Ooga, or none: its health is reported afresh.
+      // Another Ooga, or none: its health and how it stands are reported afresh.
       p.hp = 100;
       p.ko = false;
+      p.st = 0;
       this.broadcast({ t: "body", id: p.id, name: p.body });
       this.updateVoice();
     }
@@ -208,6 +220,7 @@ export class Room extends DurableObject {
   release(p, reason) {
     this.send(p.ws, { t: "release", name: p.body, reason });
     p.body = null;
+    p.st = 0;
     p.ws.serializeAttachment(this.attachment(p));
     this.broadcast({ t: "body", id: p.id, name: null });
     this.updateVoice();

@@ -95,11 +95,50 @@ export const deleteSession = async (db, token) =>
 export const deleteAllSessions = (db, playerId) =>
   db.prepare("DELETE FROM sessions WHERE player_id = ?1").bind(playerId).run();
 
-/** Sessions go first: D1 enforces the foreign key, but the explicit order keeps the delete obvious. */
+/** Sessions and scores go first: D1 enforces the foreign keys, but the explicit order keeps the delete obvious. */
 export const deletePlayer = (db, id) => db.batch([
+  db.prepare("DELETE FROM pier_scores WHERE player_id = ?1").bind(id),
   db.prepare("DELETE FROM sessions WHERE player_id = ?1").bind(id),
   db.prepare("DELETE FROM players WHERE id = ?1").bind(id),
 ]);
 
 export const purgeExpiredSessions = (db) =>
   db.prepare("DELETE FROM sessions WHERE expires_at <= ?1").bind(nowSeconds()).run();
+
+// Ooga Pier's online board. The most each game can score (src/js/game.js PIER_CAPS keeps the same numbers), so a
+// posted score is at least possible; a lantern is the row ("lantern", season 0, score 1). Stakes are looks and a
+// name on a board, so a cap and one row per player, game and season are the whole defence.
+export const PIER_CAPS = { fishing: 150, builder: 216, mayhem: 42, whack: 120, seedMatch: 12, volley: 15, lantern: 1 };
+export const PIER_SEASON_MAX = 100000;
+export const PIER_TOP = 5;
+
+/** The score a player may post, or null: a known game, a whole score within its cap, a plausible season. */
+export const pierEntry = (body) => {
+  if (!body || typeof body !== "object" || Array.isArray(body)) return null;
+  const { game, season, score } = body;
+  if (typeof game !== "string" || !Object.hasOwn(PIER_CAPS, game)) return null;
+  if (!Number.isInteger(score) || score < 1 || score > PIER_CAPS[game]) return null;
+  if (game === "lantern" ? season !== 0 : !Number.isInteger(season) || season < 1 || season > PIER_SEASON_MAX) return null;
+  return { game, season, score };
+};
+
+/** Keeps the better of the stored and the posted score; an equal or lower one changes nothing. */
+export const putPierScore = (db, playerId, { game, season, score }) => db.prepare(
+  `INSERT INTO pier_scores (player_id, game, season, score, at) VALUES (?1, ?2, ?3, ?4, ?5)
+   ON CONFLICT(player_id, game, season) DO UPDATE SET score = excluded.score, at = excluded.at WHERE excluded.score > pier_scores.score`,
+).bind(playerId, game, season, score, nowSeconds()).run();
+
+/** `{ season, boards: { game: [[name, score], ...] }, lanterns }`: each game's best five, and every lantern lit. */
+export const pierBoards = async (db, season) => {
+  const games = Object.keys(PIER_CAPS).filter((game) => game !== "lantern");
+  const answers = await db.batch([
+    ...games.map((game) => db.prepare(
+      `SELECT COALESCE(p.display, p.login) AS name, s.score AS score FROM pier_scores s JOIN players p ON p.id = s.player_id
+       WHERE s.game = ?1 AND s.season = ?2 AND p.banned_at IS NULL ORDER BY s.score DESC, s.at ASC LIMIT ?3`,
+    ).bind(game, season, PIER_TOP)),
+    db.prepare("SELECT COUNT(*) AS n FROM pier_scores WHERE game = 'lantern'"),
+  ]);
+  const boards = {};
+  games.forEach((game, i) => { boards[game] = answers[i].results.map((row) => [row.name, row.score]); });
+  return { season, boards, lanterns: answers[games.length].results[0].n };
+};

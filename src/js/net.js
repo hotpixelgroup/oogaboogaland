@@ -28,20 +28,29 @@
 // body or voice change; `subscribe` stays for the account and the room. `setMuted` tells the room this
 // page muted its microphone, and `state.body` is the Ooga this page reports driving.
 // `setHealth` reports the driven Ooga's health (on a change, at most HP_MS apart), which other pages draw over
-// it; remote records carry `hp` and `ko`.
-// Exports start, subscribe, subscribeRoster, dispose, login, logout, rejoin, setBody, setZone, setHub, setMuted, setHealth, sendNpc,
-// npcFrame, sendPose, mayDrive, ownCharacter, characterOf, serverNow, remotes and state.
+// it; remote records carry `hp` and `ko`. `setStance` does the same for how the Ooga carries itself (0 on
+// foot, 1 seated, 2 swimming; remote records carry `stance`), so a rider is seen sitting.
+// `sendEvent(kind, values)` shows a moment (a wave, a firework) to the players in this page's zone group, at
+// most one every EVENT_MS; the room relays it and keeps nothing. `subscribeEvents(fn)` hears theirs as
+// `fn(record, kind, values)`.
+// `pierBoard(season)` reads the pier's online scores and lantern count from the Worker and `postPierScore`
+// writes a signed-in player's own; with no backend both answer null and nothing is asked.
+// Exports start, subscribe, subscribeRoster, subscribeEvents, dispose, login, logout, rejoin, setBody, setZone, setHub, setMuted,
+// setHealth, setStance, sendEvent, sendNpc, npcFrame, sendPose, pierBoard, postPierScore, mayDrive, ownCharacter, characterOf,
+// serverNow, remotes and state.
 (() => {
   "use strict";
   const BL = window.BL = window.BL || {};
   const POSE_MS = 1000 / 10;
   // Health in steps of the smallest hit, a few reports a second at most; the room's own bounds for poses.
   const HP_MS = 250, HP_STEP = 4, BOUND_XZ = 160, BOUND_Y_MIN = -130, BOUND_Y_MAX = 100;
+  const STANCE_MS = 300, STANCE_MAX = 7, EVENT_MS = 550, EVENT_KIND = /^[a-z][a-z0-9-]{0,15}$/;
   const PING_MS = 10000;
   const HIDDEN_PAUSE_MS = 5 * 60000;
   const BACKOFF_MS = 500, BACKOFF_MAX_MS = 15000;
   const subscribers = new Set();
   const rosterSubscribers = new Set();
+  const eventSubscribers = new Set();
   const remotes = new Map();
   // room: "off" (signed out or no backend), "connecting", "live", "paused" (hidden a while), or a kick that
 // stopped it ("replaced", "full").
@@ -49,6 +58,7 @@
   let ws = null, retry = 0, retryTimer = 0, pingTimer = 0, hiddenTimer = 0, stopped = false;
   let npcFrame = null, inHub = false, hubSent = null;
   let zone = "outside", body = null, muted = false, hpSent = 100, koSent = false, hpAt = 0, poseAt = 0, px = NaN, py = NaN, pz = NaN, pyaw = NaN;
+  let stanceSent = 0, stanceAt = 0, eventAt = 0;
   let clockOffset = 0, clockKnown = false;
   // A server timestamp minus the arrival time is the true offset less the trip; the largest such
   // sample is the one that travelled fastest, so it is the best estimate yet.
@@ -97,7 +107,7 @@
 
   const upsert = (p) => {
     if (!p || !Number.isSafeInteger(p.id) || p.id === state.selfId) return;
-    const rec = remotes.get(p.id) || { id: p.id, login: "", display: "", body: null, zone: "outside", voice: false, muted: false, hp: 100, ko: false, x: 0, y: 0, z: 0, yaw: 0 };
+    const rec = remotes.get(p.id) || { id: p.id, login: "", display: "", body: null, zone: "outside", voice: false, muted: false, hp: 100, ko: false, stance: 0, x: 0, y: 0, z: 0, yaw: 0 };
     rec.login = String(p.login);
     rec.display = String(p.display || p.login);
     rec.body = typeof p.body === "string" ? p.body : null;
@@ -105,6 +115,7 @@
     rec.voice = p.voice === true;
     rec.hp = Number.isFinite(p.hp) ? p.hp : 100;
     rec.ko = p.ko === true;
+    rec.stance = Number.isInteger(p.st) ? p.st : 0;
     rec.muted = p.muted === true;
     rec.x = +p.x || 0; rec.y = +p.y || 0; rec.z = +p.z || 0; rec.yaw = +p.yaw || 0;
     remotes.set(p.id, rec);
@@ -149,6 +160,7 @@
       if (muted) sendMute();
       // A fresh room record starts at full health; the next report sends ours if it differs.
       hpSent = 100; koSent = false; hpAt = 0;
+      stanceSent = 0; stanceAt = 0;
       hubSent = null;
       sendHub();
       BL.voice.restart();
@@ -166,6 +178,7 @@
         rec.body = typeof msg.name === "string" ? msg.name : null;
         rec.hp = 100;
         rec.ko = false;
+        rec.stance = 0;
       }
       rosterChanged();
     } else if (msg.t === "vstate") {
@@ -179,6 +192,13 @@
       if (!rec || !Number.isFinite(msg.v)) return;
       rec.hp = msg.v;
       rec.ko = msg.ko === true;
+    } else if (msg.t === "st") {
+      const rec = remotes.get(msg.id);
+      if (rec && Number.isInteger(msg.v)) rec.stance = msg.v;
+    } else if (msg.t === "ev") {
+      const rec = remotes.get(msg.id);
+      if (!rec || typeof msg.k !== "string" || !Array.isArray(msg.v)) return;
+      for (const fn of eventSubscribers) fn(rec, msg.k, msg.v);
     } else if (msg.t === "zone") {
       const rec = remotes.get(msg.id);
       if (rec && typeof msg.name === "string") rec.zone = msg.name;
@@ -338,8 +358,8 @@
     if (name === body) return;
     body = state.body = name;
     sendBody();
-    // The room starts another Ooga at full health.
-    hpSent = 100; koSent = false;
+    // The room starts another Ooga at full health, on its feet.
+    hpSent = 100; koSent = false; stanceSent = 0;
     rosterChanged();
   };
 
@@ -355,6 +375,51 @@
     hpSent = v;
     koSent = ko;
     send(`{"t":"hp","v":${v},"ko":${ko}}`);
+  };
+
+  // How the driven Ooga carries itself, called every frame: sent on a change, STANCE_MS apart.
+  const setStance = (value) => {
+    if (state.room !== "live" || !body || value === stanceSent || !Number.isInteger(value) || value < 0 || value > STANCE_MAX) return;
+    const now = performance.now();
+    if (now - stanceAt < STANCE_MS) return;
+    stanceAt = now;
+    stanceSent = value;
+    send(`{"t":"st","v":${value}}`);
+  };
+
+  // A moment for the players in this zone group. Answers whether it went: no room, no Ooga, a kind the room
+  // would not read, or one sent too soon after the last, and it did not.
+  const sendEvent = (kind, values = []) => {
+    if (state.room !== "live" || !body || !EVENT_KIND.test(kind)) return false;
+    const now = performance.now();
+    if (now - eventAt < EVENT_MS) return false;
+    eventAt = now;
+    send(JSON.stringify({ t: "ev", k: kind, v: values }));
+    return true;
+  };
+
+  // The pier's online board for a season: `{ boards: { fishing: [[name, score], ...], ... }, lanterns }`, or
+  // null with no backend or no answer. One request, no retry: the caller decides when to ask again.
+  const pierBoard = async (season) => {
+    if (!state.backend) return null;
+    try {
+      const res = await fetch(`/api/pier/scores?season=${season | 0}`, { credentials: "same-origin", headers: { accept: "application/json" }, signal: AbortSignal.timeout(6000) });
+      if (!res.ok || !(res.headers.get("content-type") || "").startsWith("application/json")) return null;
+      const data = await res.json();
+      return data && typeof data.boards === "object" && data.boards ? data : null;
+    } catch {
+      return null;
+    }
+  };
+  // A signed-in player's own score for a season (or their lantern: game "lantern", season 0, score 1).
+  const postPierScore = async (game, season, score) => {
+    if (!state.backend || !state.me) return false;
+    try {
+      const res = await fetch("/api/pier/scores", { method: "POST", credentials: "same-origin", headers: { "content-type": "application/json" }, body: JSON.stringify({ game, season, score }), signal: AbortSignal.timeout(6000) });
+      return res.ok;
+    } catch {
+      return false;
+    }
   };
 
   // This page's own microphone muted or not, for every other page's roster.
@@ -413,6 +478,10 @@
     rosterSubscribers.add(fn);
     return () => rosterSubscribers.delete(fn);
   };
+  const subscribeEvents = (fn) => {
+    eventSubscribers.add(fn);
+    return () => eventSubscribers.delete(fn);
+  };
 
   const dispose = () => {
     document.removeEventListener("visibilitychange", onVisibility);
@@ -421,8 +490,9 @@
     window.clearTimeout(hiddenTimer);
     subscribers.clear();
     rosterSubscribers.clear();
+    eventSubscribers.clear();
     close("off");
   };
 
-  BL.net = { start, subscribe, subscribeRoster, dispose, login, logout, rejoin, setBody, setZone, setHub, setMuted, setHealth, sendNpc, sendPose, mayDrive, ownCharacter, characterOf, serverNow, remotes, state, get npcFrame() { return npcFrame; } };
+  BL.net = { start, subscribe, subscribeRoster, subscribeEvents, dispose, login, logout, rejoin, setBody, setZone, setHub, setMuted, setHealth, setStance, sendEvent, sendNpc, sendPose, pierBoard, postPierScore, mayDrive, ownCharacter, characterOf, serverNow, remotes, state, get npcFrame() { return npcFrame; } };
 })();

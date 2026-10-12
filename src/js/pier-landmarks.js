@@ -139,12 +139,11 @@
       for(const node of BL.dressing.nodes(bake)){node.position.x=at.x;node.position.y=layout.top;node.position.z=at.z;S.addChild(node.geometry===bake.solid?solid:root,node);if(node.geometry!==bake.solid)lamps.push(node);}
     }
     const roomLights=new Float32Array(24);for(let i=0;i<3;i++)roomLights.set([q.x+(i-1)*7,a.floor+2.65,q.z,8,.25,.38,.4,0],i*8);
-    const update=(night,lighting,eye,player)=>{
-      for(const node of lamps)node.glow=.15+night*.7;
-      if(!lighting?.lights)return;
+    // Returns the marine room's own lights while the visitor is in it, for the pier's light manager to place.
+    const update=(night,eye,player)=>{
+      for(const node of lamps)node.glow=.15+night*1.6;
       const p=player?.root.position||eye,feet=player?p.y-player.baseY:p?.y;
-      const inside=p&&Math.abs(p.x-q.x)<q.w/2+2&&Math.abs(p.z-q.z)<q.d/2+2&&feet<q.floor-.4;
-      lighting.lightCount=inside?6:3;if(inside)lighting.lights.set(roomLights,24);
+      return p&&Math.abs(p.x-q.x)<q.w/2+2&&Math.abs(p.z-q.z)<q.d/2+2&&feet<q.floor-.4?roomLights:null;
     };update(0);
     return {root,solid,upper,lower,venues,lamps,update};
   };

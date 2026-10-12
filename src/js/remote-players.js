@@ -9,6 +9,9 @@
 // has none until the visitor drives, and `hide(name, on)` lets a scene hide its own decor copy of an Ooga
 // someone drives. A nameplate carries the name, a health bar from the room's `hp` (red while knocked out) and,
 // for a player in voice, the speaker: green while speaking, red with a cross when they muted their microphone.
+// A body follows the room's `stance` for its player: seated on a ride, a boat or a bike, or swimming, instead of
+// walking on the spot. `emote(id, kind)` plays a short gesture on one (EMOTES: wave, cheer, dance), which a scene
+// calls when the room relays that player's `emote` event; `emotePose` is the same gesture for the scene's own Ooga.
 // One pool per scene visit: `create` in enter, `dispose` in leave, before the crew's.
 (() => {
   "use strict";
@@ -38,6 +41,16 @@
   const ISLAND_ZONES = new Set(["outside", "sphere", "rainforest", "bifrost", "lab", "factory", "arcade", "mirror", "hq"]);
   const onIsland = (zone) => ISLAND_ZONES.has(zone) || typeof zone === "string" && zone.startsWith("cave-");
   const sameZone = (rec) => rec.zone === BL.net.state.zone;
+  // Gestures, by the number an `emote` event carries, and how long one lasts.
+  const EMOTES = ["wave", "cheer", "dance"], EMOTE_SECONDS = 1.8, SEATED = 1, SWIMMING = 2;
+  // One gesture written onto a caveman's arms and head, `age` seconds in. Legs are left to whatever moves them.
+  // The wave is the left arm's: a visitor's own Ooga keeps its right hand on what it carries.
+  const emotePose = (parts, kind, age) => {
+    const beat = Math.sin(age * 14);
+    if (kind === 0) { parts.armL.rotation.x = -2.7 + beat * 0.35; parts.head.rotation.x = -0.1; }
+    else if (kind === 1) { parts.armR.rotation.x = -2.6 + beat * 0.35; parts.armL.rotation.x = -2.6 - beat * 0.35; parts.head.rotation.x = -0.15; }
+    else { parts.armR.rotation.x = -1.2 + beat * 0.9; parts.armL.rotation.x = -1.2 - beat * 0.9; parts.head.rotation.x = Math.sin(age * 7) * 0.2; }
+  };
 
   // `posed(cave, feetY)` lets the scene finish a body's pose once it stands where the room says: the hub sets a
   // swimmer's arms by it, from the position the pose transport already carries, with no simulation of its own.
@@ -75,7 +88,7 @@
       const parts = cave.parts;
       for (const key of ["snack", "gun", "jetpack", "jetFlame"]) if (parts[key]) parts[key].visible = false;
       addChild(root, cave.root);
-      const entry = { id: rec.id, name: rec.body, cave, baseY: cave.root.position.y, x: rec.x, y: rec.y, z: rec.z, yaw: rec.yaw, phase: 0, hidden: null, hiddenOverride: null };
+      const entry = { id: rec.id, name: rec.body, cave, baseY: cave.root.position.y, x: rec.x, y: rec.y, z: rec.z, yaw: rec.yaw, phase: 0, hidden: null, hiddenOverride: null, emote: -1, emoteAge: 0 };
       bodies.set(rec.id, entry);
       hideLocal(entry);
       return entry;
@@ -87,11 +100,21 @@
       bodies.delete(entry.id);
     };
 
-    const pose = (entry, dt) => {
+    const pose = (entry, dt, stance) => {
       const { cave } = entry;
       const parts = cave.parts;
       const moved = Math.hypot(entry.dx, entry.dz) / Math.max(dt, 1e-3);
-      if (moved > WALK_SPEED) {
+      if (stance === SEATED) {
+        // Carried by what it sits on: knees forward, hands down, no walk however fast the seat moves.
+        entry.phase = 0;
+        parts.legL.rotation.x = parts.legR.rotation.x = -Math.PI / 2;
+        parts.armL.rotation.x = parts.armR.rotation.x = -0.7;
+      } else if (stance === SWIMMING) {
+        entry.phase += dt * 5;
+        const stroke = Math.sin(entry.phase);
+        parts.legL.rotation.x = stroke * 0.3; parts.legR.rotation.x = -stroke * 0.3;
+        parts.armL.rotation.x = -1.5 + stroke * 0.5; parts.armR.rotation.x = -1.5 - stroke * 0.5;
+      } else if (moved > WALK_SPEED) {
         entry.phase += dt * 10;
         const swing = Math.sin(entry.phase);
         parts.legL.rotation.x = swing * 0.55;
@@ -103,8 +126,12 @@
         parts.legL.rotation.x = parts.legR.rotation.x = 0;
         parts.armL.rotation.x = parts.armR.rotation.x = -0.2;
       }
+      if (entry.emote >= 0) {
+        entry.emoteAge += dt;
+        if (entry.emoteAge >= EMOTE_SECONDS) { entry.emote = -1; parts.head.rotation.x = 0; } else emotePose(parts, entry.emote, entry.emoteAge);
+      }
       cave.root.position.x = entry.x;
-      cave.root.position.y = entry.y + entry.baseY + Math.abs(Math.sin(entry.phase)) * 0.04;
+      cave.root.position.y = entry.y + entry.baseY + (stance ? 0 : Math.abs(Math.sin(entry.phase)) * 0.04);
       cave.root.position.z = entry.z;
       cave.root.rotation.y = entry.yaw;
     };
@@ -132,7 +159,7 @@
         entry.z += entry.dz;
         entry.yaw += Math.atan2(Math.sin(rec.yaw - entry.yaw), Math.cos(rec.yaw - entry.yaw)) * t;
         if (far) entry.dx = entry.dz = 0;
-        pose(entry, dt);
+        pose(entry, dt, rec.stance);
         if (posed) posed(entry.cave, entry.cave.root.position.y - entry.baseY);
         entry.cave.root.visible = visible(rec) && !(crew && crew.player && crew.player.traits.name === entry.name);
         if (!entry.cave.root.visible) continue;
@@ -144,6 +171,13 @@
     };
 
     const actors = () => actorList;
+    // A gesture on the body player `id` drives, if it is shown here. Answers its caveman, for a word over its head.
+    const emote = (id, kind) => {
+      const entry = bodies.get(id);
+      if (!entry || !entry.cave.root.visible || !(kind >= 0 && kind < EMOTES.length)) return null;
+      entry.emote = kind | 0; entry.emoteAge = 0;
+      return entry.cave;
+    };
 
     // Nameplates on the overlay, above each head, in the order the room sent them: the name, the health bar
     // under it and the speaker right of the bar.
@@ -192,8 +226,8 @@
       actorList.length = 0;
     };
 
-    return { update, actors, drawNames, liveGeometry, stats, dispose };
+    return { update, actors, emote, drawNames, liveGeometry, stats, dispose };
   };
 
-  BL.remotePlayers = { create, onIsland, sameZone, MAX, BODY_HEIGHT };
+  BL.remotePlayers = { create, onIsland, sameZone, emotePose, EMOTES, EMOTE_SECONDS, MAX, BODY_HEIGHT };
 })();

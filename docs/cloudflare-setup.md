@@ -14,7 +14,7 @@ The two share code and nothing else: each has its own D1 database, room, OAuth A
 | Thing | Name | Set where |
 |---|---|---|
 | D1 database | `oogaboogaland-staging`, `oogaboogaland-production` | `d1_databases` (`database_id`), migrations in `worker/migrations` |
-| Rate limiters | `AUTH_LIMITER` 10 sign-ins a minute per IP; `ROOM_LIMITER` 20 room connections and `VOICE_LIMITER` 120 voice calls a minute per player | `ratelimits` (staging namespaces 2001–2003, production 1001–1003) |
+| Rate limiters | `AUTH_LIMITER` 10 sign-ins a minute per IP; `ROOM_LIMITER` 20 room connections, `VOICE_LIMITER` 120 voice calls and `SCORE_LIMITER` 30 Ooga Pier scores a minute per player | `ratelimits` (staging namespaces 2001–2004, production 1001–1004) |
 | Durable Object | `Room`, one named `island` | `durable_objects`, `migrations` |
 | Cron | daily 04:00 UTC, purges expired sessions | `triggers` |
 | Vars | `SITE_ORIGIN`, `GITHUB_CLIENT_ID`, `REALTIME_APP_ID` | `vars` |

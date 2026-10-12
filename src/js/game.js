@@ -48,9 +48,16 @@
   };
   const isString = (v, max) => typeof v === "string" && v.length <= max;
   const isEntry = (e, catalog) => e && typeof e === "object" && isString(e.id, 40) && catalog.some((c) => c.id === e.itemId) && LOOT_TIERS.some((t) => t.tier === e.tier) && isString(e.donationId, 64) && Number.isFinite(e.at);
-  const defaults = () => ({ inventory: [], assignments: {}, handle: "", message: "", handFed: 0, totalSats: 0, donations: 0, pier: { version: 1, stamps: [], prize: false, fishing: 0, builder: 0, mayhem: 0, whack: 0, seedMatch: 0, volley: 0 }, race: { best: {}, cup: null }, drop: { best: null, jumps: 0 }, orbit: { best: null, build: null }, mine: { best: null }, arcade: { skee: 0, hoops: 0, shy: 0, claw: 0, hockey: 0, billiards: 0, darts: 0, pinball: 0, ride: 0, invaders: 0, snake: 0, pong: 0, stampede: 0, flap: 0, breaker: 0, dash: 0, stacker: 0, tickets: 0, prizes: [] } });
+  const defaults = () => ({ inventory: [], assignments: {}, handle: "", message: "", handFed: 0, totalSats: 0, donations: 0, pier: { version: 1, stamps: [], prize: false, fishing: 0, builder: 0, mayhem: 0, whack: 0, seedMatch: 0, volley: 0, lantern: false, midway: { ring: 0, hoops: 0 }, fish: [0, 0, 0, 0, 0], coins: 0, owned: [], balloon: "", daily: { day: 0, progress: [0, 0, 0], done: [false, false, false], bonus: false }, streak: { last: 0, count: 0, best: 0, spared: 0 }, season: { id: 0, fishing: 0, builder: 0, mayhem: 0, whack: 0, seedMatch: 0, volley: 0 }, jobs: { dash: 0, run: 0, sweep: 0 } }, race: { best: {}, cup: null }, drop: { best: null, jumps: 0 }, orbit: { best: null, build: null }, mine: { best: null }, arcade: { skee: 0, hoops: 0, shy: 0, claw: 0, hockey: 0, billiards: 0, darts: 0, pinball: 0, ride: 0, invaders: 0, snake: 0, pong: 0, stampede: 0, flap: 0, breaker: 0, dash: 0, stacker: 0, tickets: 0, prizes: [] } });
   // Stable passport ids are saved independently of authored positions and display names.
   const PIER_STAMPS = ["boardwalk", "hippodrome", "aquarium", "pacific-park", "playland", "route66", "seafood", "muscle-beach", "pier-tip", "lighthouse"];
+  // What the pier keeps beside its bests: looks bought at the Surf Shop or earned by a streak (never power), the
+  // hidden coins found (one bit each), the fish journal by rarity, and the day's three challenges with the streak.
+  const PIER_GOODS = ["balloon-orange", "balloon-teal", "balloon-pink", "balloon-stripe", "balloon-gold", "balloon-block"], PIER_COINS = 21, PIER_FISH_MAX = 9999, PIER_DAY_MAX = 999999;
+  // The most each pier game can score, for the season's bests (a season is one difficulty period, numbered by the chain).
+  const PIER_CAPS = { fishing: 150, builder: 216, mayhem: 42, whack: 120, seedMatch: 12, volley: 15 };
+  // A job on the pier takes a few seconds at the very least and is given up long before an hour.
+  const PIER_JOB_MIN = 3000, PIER_JOB_MAX = 3600000;
   // Ooga Arcade's carnival bests, each capped past the most its game can score (nine doubled 100s; the round games
   // run on), the retro cabinets' bests (`retro-games.js`, capped past any run), the ticket balance, and the prizes
   // (`ARCADE_PRIZES` ids) redeemed at the counter.
@@ -121,6 +128,24 @@
         if (Number.isInteger(p.volley) && p.volley >= 0 && p.volley <= 15) state.pier.volley = p.volley;
         if (Number.isInteger(p.seedMatch) && p.seedMatch >= 0 && p.seedMatch <= 12) state.pier.seedMatch = p.seedMatch;
         if (Number.isInteger(p.mayhem) && p.mayhem >= 0 && p.mayhem <= 42 && p.mayhem % 6 === 0) state.pier.mayhem = p.mayhem;
+        state.pier.lantern = p.lantern === true;
+        const whole = (v, max) => Number.isInteger(v) && v >= 0 && v <= max;
+        if (p.midway && typeof p.midway === "object") for (const kind of ["ring", "hoops"]) if (whole(p.midway[kind], 5)) state.pier.midway[kind] = p.midway[kind];
+        if (Array.isArray(p.fish)) for (let i = 0; i < state.pier.fish.length; i++) if (whole(p.fish[i], PIER_FISH_MAX)) state.pier.fish[i] = p.fish[i];
+        if (whole(p.coins, 2 ** PIER_COINS - 1)) state.pier.coins = p.coins;
+        if (Array.isArray(p.owned)) state.pier.owned = PIER_GOODS.filter((id) => p.owned.includes(id));
+        if (state.pier.owned.includes(p.balloon)) state.pier.balloon = p.balloon;
+        const d = p.daily, k = p.streak;
+        if (d && typeof d === "object" && whole(d.day, PIER_DAY_MAX) && Array.isArray(d.progress) && Array.isArray(d.done)) {
+          state.pier.daily.day = d.day;
+          for (let i = 0; i < 3; i++) { if (whole(d.progress[i], 99999)) state.pier.daily.progress[i] = d.progress[i]; state.pier.daily.done[i] = d.done[i] === true; }
+          state.pier.daily.bonus = d.bonus === true && state.pier.daily.done.every(Boolean);
+        }
+        // A job's best time in milliseconds; 0 is never finished.
+        if (p.jobs && typeof p.jobs === "object") for (const id in state.pier.jobs) if (whole(p.jobs[id], PIER_JOB_MAX) && p.jobs[id] >= PIER_JOB_MIN) state.pier.jobs[id] = p.jobs[id];
+        const n = p.season;
+        if (n && typeof n === "object" && whole(n.id, PIER_DAY_MAX)) { state.pier.season.id = n.id; for (const kind in PIER_CAPS) if (whole(n[kind], PIER_CAPS[kind])) state.pier.season[kind] = n[kind]; }
+        if (k && typeof k === "object" && whole(k.last, PIER_DAY_MAX) && whole(k.best, PIER_DAY_MAX) && whole(k.count, k.best) && whole(k.spared, PIER_DAY_MAX)) Object.assign(state.pier.streak, { last: k.last, count: k.count, best: k.best, spared: k.spared });
       }
     } catch {
       return defaults();
@@ -284,6 +309,13 @@
       save(state);
       return true;
     };
+    // The lighthouse's crank, turned once: the visitor checked a block for themselves and their lantern burns for good.
+    const lightPierLantern = () => {
+      if (state.pier.lantern) return false;
+      state.pier.lantern = true;
+      save(state);
+      return true;
+    };
     const recordPierFishing = (score) => {
       if (!Number.isInteger(score) || score <= state.pier.fishing || score > 150 || score % 5 !== 0) return false;
       state.pier.fishing = score;
@@ -320,6 +352,59 @@
       save(state);
       return true;
     };
+    // A round's score in season `id`. A later season starts every best again; an earlier one is ignored.
+    const recordPierSeason = (id, kind, score) => {
+      const kept = state.pier.season;
+      if (!Number.isInteger(id) || id <= 0 || id < kept.id || !Object.hasOwn(PIER_CAPS, kind) || !Number.isInteger(score) || score < 0 || score > PIER_CAPS[kind]) return false;
+      if (id > kept.id) { for (const each in PIER_CAPS) kept[each] = 0; kept.id = id; }
+      else if (score <= kept[kind]) return false;
+      kept[kind] = Math.max(kept[kind], score);
+      save(state);
+      return true;
+    };
+    // A job's time in milliseconds: kept when it is the first or faster than the best.
+    const recordPierJob = (id, ms) => {
+      if (!Object.hasOwn(state.pier.jobs, id) || !Number.isInteger(ms) || ms < PIER_JOB_MIN || ms > PIER_JOB_MAX || state.pier.jobs[id] && ms >= state.pier.jobs[id]) return false;
+      state.pier.jobs[id] = ms;
+      save(state);
+      return true;
+    };
+    const recordPierMidway = (kind, hits) => {
+      if (!Object.hasOwn(state.pier.midway, kind) || !Number.isInteger(hits) || hits <= state.pier.midway[kind] || hits > 5) return false;
+      state.pier.midway[kind] = hits;
+      save(state);
+      return true;
+    };
+    // The fish journal: one more of that rarity. Returns how many are logged now, so 1 is a first.
+    const logPierFish = (tier) => {
+      if (!Number.isInteger(tier) || tier < 0 || tier >= state.pier.fish.length) return 0;
+      if (state.pier.fish[tier] < PIER_FISH_MAX) state.pier.fish[tier]++;
+      save(state);
+      return state.pier.fish[tier];
+    };
+    const findPierCoin = (index) => {
+      if (!Number.isInteger(index) || index < 0 || index >= PIER_COINS || state.pier.coins & 1 << index) return false;
+      state.pier.coins |= 1 << index;
+      save(state);
+      return true;
+    };
+    // A look from the Surf Shop, paid in tickets; `grantPier` is the same look earned by a streak, at no cost.
+    const buyPier = (id, cost) => {
+      if (!PIER_GOODS.includes(id) || state.pier.owned.includes(id) || !Number.isInteger(cost) || cost < 0 || state.arcade.tickets < cost) return false;
+      state.arcade.tickets -= cost;
+      state.pier.owned.push(id);
+      save(state);
+      return true;
+    };
+    const grantPier = (id) => buyPier(id, 0);
+    const wearPierBalloon = (id) => {
+      if (id !== "" && !state.pier.owned.includes(id)) return false;
+      state.pier.balloon = id;
+      save(state);
+      return true;
+    };
+    // The day's challenges and the streak are kept by pier-daily.js, which writes them in place and saves here.
+    const savePierDaily = () => save(state);
     const setOrbitBuild = (stack) => {
       state.orbit.build = stack.slice();
       save(state);
@@ -340,7 +425,7 @@
       if (seconds < 5400) return `${Math.round(seconds / 60)}m`;
       return `${(seconds / 3600).toFixed(1)}h`;
     };
-    return { state, countOf, lootFor: lootForVisitor, addItem, assign, unassign, itemOf, assignedTo, clearLoot, resetAll, recordDonation, recordHandFed, recordRace, recordCup, recordJump, recordDrop, recordOrbit, recordMine, recordArcade, addTickets, spendTickets, redeem, stampPier, redeemPierPassport, recordPierFishing, recordPierBuilder, recordPierMayhem, recordPierWhack, recordPierSeedMatch, recordPierVolley, setOrbitBuild, setIdentity, forecast, formatDuration };
+    return { state, countOf, lootFor: lootForVisitor, addItem, assign, unassign, itemOf, assignedTo, clearLoot, resetAll, recordDonation, recordHandFed, recordRace, recordCup, recordJump, recordDrop, recordOrbit, recordMine, recordArcade, addTickets, spendTickets, redeem, stampPier, redeemPierPassport, lightPierLantern, recordPierFishing, recordPierBuilder, recordPierMayhem, recordPierWhack, recordPierSeedMatch, recordPierVolley, recordPierSeason, recordPierJob, recordPierMidway, logPierFish, findPierCoin, buyPier, grantPier, wearPierBalloon, savePierDaily, setOrbitBuild, setIdentity, forecast, formatDuration };
   };
   BL.game = { create, LOOT_TIERS, STACK_MAX, SATS_PER_BANANA, PIER_STAMPS, tierFor, lootFor, bananasFor, formatLarge, formatThree, formatFeeRate };
 })();

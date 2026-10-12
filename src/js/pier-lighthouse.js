@@ -58,7 +58,7 @@
   const create=({root,sea,lighting,entrance})=>{
     const geo=kit(),node=S.createNode({position:{x:LAYOUT.x,y:sea,z:LAYOUT.z},sightHidden:true});S.addChild(root,node);
     const add=(parent,geometry,position={x:0,y:0,z:0})=>{const n=S.createNode({geometry,position});S.addChild(parent,n);return n;};
-    add(node,geo.body);const trim=add(node,geo.trim);add(node,geo.glass);
+    const body=add(node,geo.body),trim=add(node,geo.trim);add(node,geo.glass);
     const turret=S.createNode({position:{x:0,y:LAYOUT.lampY,z:0}});S.addChild(node,turret);
     const skyHead=S.createNode({rotation:{x:0,y:0,z:LAYOUT.skyPitch}}),seaHead=S.createNode({rotation:{x:0,y:0,z:LAYOUT.seaPitch}});
     S.addChild(turret,skyHead);S.addChild(turret,seaHead);
@@ -100,7 +100,7 @@
       lighting.fogNear=360+haze*220;lighting.fogFar=900+haze*600;
     };
     update(0,0);
-    return {root:node,update,dispose:()=>{S.removeChild(root,node);S.removeChild(root,pool);S.removeChild(root,projection);lighting.lights=null;lighting.lightCount=0;delete lighting.spotLight;lighting.fogNear=360;lighting.fogFar=900;}};
+    return {root:node,body,update,dispose:()=>{S.removeChild(root,node);S.removeChild(root,pool);S.removeChild(root,projection);lighting.lights=null;lighting.lightCount=0;delete lighting.spotLight;lighting.fogNear=360;lighting.fogFar=900;}};
   };
   BL.pierLighthouse={LAYOUT,create};
 })();

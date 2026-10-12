@@ -34,6 +34,14 @@
     const puff=()=>M.lathe({profile:[[0,-.35],[.3,-.25],[.45,0],[.3,.3],[0,.45]],segments:10,color:"#f7e8d6"});
     const g=M.merge(puff(),M.moved(puff(),.22,.17,.06),M.moved(puff(),-.18,.1,-.12));g.castShadow=false;return g;
   });
+  // A flat wagon carrying one sealed crate: a block coupled on behind the engine.
+  const wagon=M.cached(()=>{
+    const box=(w,h,d,x,y,z,color)=>M.moved(M.bevelBox({w,h,d,color}),x,y,z);
+    const parts=[box(2.5,.22,3.4,0,0,0,"#5a3a2a"),box(1.9,1.25,2.5,0,.74,0,"#f7931a"),box(1.94,.16,2.54,0,1.2,0,"#fff0d3"),box(1.94,.16,2.54,0,.3,0,"#fff0d3")];
+    for(const x of [-1.35,1.35])for(const z of [-1.1,1.1])parts.push(M.moved(M.turnedZ(M.torus(.3,.08,"#253c46",0,12,5),Math.PI/2),x,-.02,z));
+    return M.merge(...parts);
+  });
+  const CARS=6,GAP=1.45;
   const build=layout=>{
     const q=layout.coaster,root=S.createNode({position:{x:q.x,y:layout.top,z:q.z}}),parts=[],posts=[],a={},b={};
     const point=(p,t,side)=>{sample(p,t);const l=Math.hypot(p.dx,p.dz);p.x+=side*p.dz/l;p.z-=side*p.dx/l;};
@@ -47,6 +55,8 @@
     const train=S.createNode({geometry:engine(),quaternion:BL.math.quat.create()});S.addChild(root,train);
     const wheels=[];for(const x of [-1.35,1.35])for(const z of [-1.5,-.3,.9]){const wheel=S.createNode({geometry:drivingWheel(),position:{x,y:.07,z}});S.addChild(train,wheel);wheels.push(wheel);}
     const seat={x:0,y:0,z:0,ry:0,floor:layout.top,walkAt:{x:q.board.x,z:q.board.z},sitter:null,allowWeapons:false,lockMovement:true};
+    const cars=[];for(let i=0;i<CARS;i++){const node=S.createNode({geometry:wagon(),quaternion:BL.math.quat.create(),visible:false});S.addChild(root,node);cars.push(node);}
+    let coupled=0;const c={};
     // Fixed exhaust pool: no collision, geometry creation or particle allocation while moving.
     const steam=[];for(let i=0;i<8;i++){const node=S.createNode({geometry:steamGeometry(),visible:false});S.addChild(root,node);steam.push({node,age:2,vx:0,vz:0});}
     const chimney={x:0,y:0,z:0};
@@ -58,6 +68,8 @@
       const exhaust=1.2*cp+2.4*sp;chimney.x=p.x+sy*exhaust;chimney.y=p.y+.35+2.4*cp-1.2*sp;chimney.z=p.z+cy*exhaust;
       speed=Math.hypot(p.dx,p.dy,p.dz)*TAU/seconds;
       seat.x=q.x+p.x+sy*forward;seat.y=layout.top+p.y+.35+.8*cp+1.45*sp;seat.z=q.z+p.z+cy*forward;seat.ry=yaw;
+      // Each coupled wagon follows the same rails a little behind the last.
+      for(let i=0;i<coupled;i++){const n=cars[i];sample(c,TAU*(((u-(i+1)*GAP/seconds-.12/seconds)%1+1)%1));n.position.x=c.x;n.position.y=c.y+.35;n.position.z=c.z;BL.math.quat.fromEuler(n.quaternion,-Math.atan2(c.dy,Math.hypot(c.dx,c.dz)),Math.atan2(c.dx,c.dz),0);}
     };pose(phase/seconds);
     const advance=dt=>{
       phase=(phase+dt)%seconds;pose(phase/seconds);
@@ -71,7 +83,9 @@
       const beat=Math.floor(chug);chug+=dt*speed*4/(TAU*.42);
       if(Math.floor(chug)!==beat){const puff=steam[nextSteam];nextSteam=(nextSteam+1)%steam.length;puff.age=0;puff.vx=-.55+p.dx*TAU/seconds*.2;puff.vz=p.dz*TAU/seconds*.2;Object.assign(puff.node.position,chimney);puff.node.scale.x=puff.node.scale.z=.35;puff.node.scale.y=.3;puff.node.visible=true;}
     };
-    return {id:"coaster",label:"Nothing Stops This Train",seconds,boardingSeconds,root,frame,train,seat,board:q.board,pose,advance,tilt:train.quaternion,
+    // One wagon for each block found while the visitor is here, up to the customary six confirmations.
+    const couple=n=>{coupled=Math.max(0,Math.min(CARS,n));for(let i=0;i<CARS;i++)cars[i].visible=i<coupled;pose(phase/seconds);return coupled;};
+    return {id:"coaster",label:"Nothing Stops This Train",seconds,boardingSeconds,strict:true,stub:5,root,frame,train,cars,couple,get coupled(){return coupled;},seat,board:q.board,pose,advance,tilt:train.quaternion,
       get speed(){return speed;},get chug(){return chug;},get phase(){return phase;},get boardOpen(){return phase<boardingSeconds/2||phase>=seconds-boardingSeconds/2;},
       get untilBoard(){return phase<boardingSeconds/2||phase>=seconds-boardingSeconds/2?0:seconds-boardingSeconds/2-phase;}};
   };

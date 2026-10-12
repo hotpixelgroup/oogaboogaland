@@ -3,7 +3,7 @@
   "use strict";
   const BL=window.BL,S=BL.scene,M=BL.models,G=BL.pilot.WALK.gravity,THROWS=5;
   const PRIZES=BL.arcadeModels.PRIZES;
-  const NEEDLE=Array.from({length:101},(_,i)=>`translateX(${i}%)`);
+  const NEEDLE=Array.from({length:101},(_,i)=>`translateX(${i}%)`),STREAKS=["","","2 in a row!","3 in a row!","4 in a row!","5 in a row! A perfect round"];
   const ring=M.cached(()=>M.torus(.43,.06,"#efc85d",0,24,6));
   const ball=M.cached(()=>M.merge(M.lathe({profile:[[0,-.22],[.16,-.16],[.22,0],[.16,.16],[0,.22]],segments:16,color:"#dc8650"}),M.torus(.22,.012,"#614432",0,20,4),M.turnedX(M.torus(.22,.012,"#614432",0,20,4),Math.PI/2)));
   const medallion=M.cached(()=>M.merge(M.turnedX(M.torus(.28,.04,"#f7931a",.6,24,5),Math.PI/2),BL.factoryModels.smoothBitcoin(.35,.025,"#fff0d3",.3)));
@@ -40,12 +40,12 @@
     const souvenir=S.createNode({geometry:medallion(),visible:false,position:{x:q.x,y:layout.top+1.65,z:q.z}});S.addChild(root,souvenir);
     return {root,solid,stations,souvenir};
   };
-  const create=({land,crew,pilot,hud,game,layout})=>{
+  const create=({land,crew,pilot,hud,game,layout,fx,sound})=>{
     const models=land.midway,ui={panel:document.getElementById("pier-game-panel"),title:document.getElementById("pier-game-title"),info:document.getElementById("pier-game-info"),score:document.getElementById("pier-game-score"),meter:document.getElementById("pier-game-meter"),needle:document.getElementById("pier-game-needle"),act:document.getElementById("pier-game-act"),done:document.getElementById("pier-game-done"),balance:document.getElementById("pier-tickets"),prizes:document.getElementById("pier-prizes"),list:document.getElementById("pier-prize-list"),close:document.getElementById("pier-prize-close")};
     const rows=[];for(const p of PRIZES){const li=document.createElement("li"),name=document.createElement("span"),button=document.createElement("button");name.textContent=`${p.name} · ${p.cost} tickets`;button.type="button";button.dataset.prize=p.id;li.append(name,button);ui.list.append(li);rows.push({p,button});}
     ui.claim=document.getElementById("pier-passport-claim");ui.claimInfo=document.getElementById("pier-passport-claim-info");
     const status={phase:"idle",kind:null,shots:0,hits:0,score:0,reward:0,meter:.5,aim:0,power:.5};
-    let station=null,clock=0,flight=0,vx=0,vz=0,vy=0,checked=false,paid=false,prizesOpen=false,balance=-1,actor=null,stampCount=-1,passportPrize=false;
+    let station=null,clock=0,flight=0,vx=0,vz=0,vy=0,checked=false,paid=false,prizesOpen=false,balance=-1,actor=null,stampCount=-1,passportPrize=false,streak=0;
     const near=()=>{
       const a=crew.player;if(!a||a.jet||Math.abs(a.root.position.y-a.baseY-layout.top)>.15)return null;
       for(const m of models.stations)if(Math.hypot(a.root.position.x-m.q.play.x,a.root.position.z-m.q.play.z)<2)return m;
@@ -65,7 +65,7 @@
       ui.info.textContent=p==="aim"?"Space or tap: lock aim in a green zone.":p==="power"?"Space or tap: release in the green power zone.":p==="flight"?"Watch your throw…":`${status.hits} hits · +${status.reward} tickets saved. Trade at the prize counter.`;
       ui.score.textContent=`${status.hits} hits · ${THROWS-status.shots} throws left`;
     };
-    const reset=()=>{status.shots=status.hits=status.score=status.reward=0;paid=false;for(const n of station.landed)n.visible=false;station.projectile.visible=false;phase("aim");};
+    const reset=()=>{status.shots=status.hits=status.score=status.reward=streak=0;paid=false;for(const n of station.landed)n.visible=false;station.projectile.visible=false;phase("aim");};
     const close=()=>{
       if(ui.panel.contains(document.activeElement)||ui.prizes.contains(document.activeElement))document.activeElement.blur();
       if(station)station.projectile.visible=false;
@@ -90,7 +90,7 @@
       vy=station.q.id==="ring"?4.8:6.1;
       const t=(vy+Math.sqrt(vy*vy-2*G*(height-1.8)))/G;
       vx=status.aim/t;vz=(target.z-.8)/t*(.5+status.power);
-      const p=station.projectile;p.visible=true;p.position.x=0;p.position.y=1.8;p.position.z=.8;phase("flight");return true;
+      const p=station.projectile;p.visible=true;p.position.x=0;p.position.y=1.8;p.position.z=.8;sound.cue("whoosh",.5);phase("flight");return true;
     };
     // Let focused trade/exit buttons keep native Space activation instead of throwing again.
     const onButtonKey=e=>{if(e.key===" "&&e.target.closest("button"))e.stopPropagation();};
@@ -119,12 +119,16 @@
         if(hit>=0){status.hits++;status.score+=station.q.id==="ring"?10:8;
           if(station.landed.length){const n=station.landed[status.shots-1],q=station.targets[hit];n.visible=true;n.position.x=q.x;n.position.y=1.15+status.shots*.07;n.position.z=q.z;station.projectile.visible=false;}
           ui.info.textContent=station.q.id==="ring"?"Ring landed! +10 tickets at round end.":"Basket! +8 tickets at round end.";
-        }else ui.info.textContent="Just missed! Try the green zones.";
+          // A hit rings and throws confetti off the peg or the hoop; hits in a row ring higher and are called out.
+          streak++;sound.cue(streak>1?"coin":"good",1,1+(streak-1)*.06);if(streak>1)hud.hint(STREAKS[streak],1400);
+          const q=station.targets[hit],c=Math.cos(station.q.ry),sn=Math.sin(station.q.ry),wx=station.q.x+q.x*c+q.z*sn,wz=station.q.z-q.x*sn+q.z*c;
+          for(let i=0;i<6;i++){const a=i*Math.PI/3;fx.spawnParticle(BL.fx.CONFETTI[i%BL.fx.CONFETTI.length],wx,layout.top+q.y,wz,Math.cos(a)*.9,1.8,Math.sin(a)*.9,.6,5,G,layout.top);}
+        }else{streak=0;sound.cue("miss");ui.info.textContent="Just missed! Try the green zones.";}
         ui.score.textContent=`${status.hits} hits · ${THROWS-status.shots} throws left`;
       }
       if(flight<1.8)return;station.projectile.visible=false;
       if(status.shots<THROWS)phase("aim");
-      else {if(!paid){paid=true;status.reward=status.score;game.addTickets(status.reward);}phase("result");}
+      else {if(!paid){paid=true;status.reward=status.score;game.addTickets(status.reward);const best=game.recordPierMidway(station.q.id==="ring"?"ring":"hoops",status.hits);if(status.hits)sound.cue(best?"best":"win");if(best)hud.hint("New best!",2500);}phase("result");}
     };
     const dispose=()=>{close();ui.done.removeEventListener("keydown",onButtonKey);ui.prizes.removeEventListener("keydown",onButtonKey);ui.act.removeEventListener("click",act);ui.done.removeEventListener("click",close);ui.close.removeEventListener("click",close);ui.list.removeEventListener("click",onTrade);ui.claim.removeEventListener("click",onClaim);ui.list.replaceChildren();};
     return {act,close,update,dispose,near,status,get busy(){return !!station||prizesOpen;},get label(){const m=near();return m==="prizes"?"Trade tickets":m?m.button:"Play";}};

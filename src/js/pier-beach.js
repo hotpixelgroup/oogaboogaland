@@ -71,65 +71,80 @@
   };
   const palmGeometry=[0,1,2].map(v=>M.cached(()=>({...BL.dressing.palm(v),collisionGeometry:M.lathe({profile:[[.24,0],[.22,4.8],[0,4.8]],segments:8,color:"#92704f"})})));
   let benchBake;
+  // Scenery that never changes is built once a page and shared by every visit.
+  const kept=new Map(),keep=(key,make)=>{let g=kept.get(key);if(!g){g=make();kept.set(key,g);}return g;};
+  // Beach visitors past this distance from the eye are a few pixels tall; their thirteen parts each are not drawn.
+  const FAR=260;
   const build=layout=>{
-    const root=S.createNode({sightHidden:true}),solid=S.createNode(),people=[],cyclists=[],kites=[],courts=[],vendors=[];
+    const root=S.createNode({sightHidden:true}),solid=S.createNode(),people=[],cyclists=[],kites=[],courts=[],vendors=[],lamps=[];
     S.addChild(root,solid);S.addChild(solid,S.createNode({geometry:terrain(layout)}));
     // Scenic coast continues into the haze with the same beach and inland profile.
-    const distant={verts:[],faces:[],lines:[]};
-    for(const side of [-1,1])for(let j=0;j<ROWS.length-1;j++){
-      const a=ROWS[j],b=ROWS[j+1],x0=side<0?-1800:330,x1=side<0?-330:1800,at=distant.verts.length/3;
-      distant.verts.push(x0,heightAt(x0,a),a,x0,heightAt(x0,b),b,x1,heightAt(x1,a),a,x1,heightAt(x1,b),b);
-      const color=BL.math.hexToRgb(a>=194?"#a5ad76":"#e6c99f");distant.faces.push({i:[at,at+1,at+2],color},{i:[at+2,at+1,at+3],color});
-    }
-    // Inland scenery continues beyond Ocean Avenue; the Pacific belongs on the beach side.
-    const inland=BL.math.hexToRgb("#a5ad76");
-    for(let x=-1800;x<1800;x+=120)for(let z=325;z<1200;z+=125){
-      const at=distant.verts.length/3,y=LAYOUT.upland;
-      distant.verts.push(x,y,z,x,y,z+125,x+120,y,z,x+120,y,z+125);
-      distant.faces.push({i:[at,at+1,at+2],color:inland},{i:[at+2,at+1,at+3],color:inland});
-    }
-    S.addChild(root,S.createNode({geometry:distant}));
-    const markings=[];
-    const slab=(z,d,color,y=LAYOUT.sand)=>S.addChild(solid,S.createNode({geometry:M.box({w:650,h:.06,d,color}),position:{x:0,y:y+.03,z}}));
+    const far=keep("distant",()=>{
+      const distant={verts:[],faces:[],lines:[]};
+      for(const side of [-1,1])for(let j=0;j<ROWS.length-1;j++){
+        const a=ROWS[j],b=ROWS[j+1],x0=side<0?-1800:330,x1=side<0?-330:1800,at=distant.verts.length/3;
+        distant.verts.push(x0,heightAt(x0,a),a,x0,heightAt(x0,b),b,x1,heightAt(x1,a),a,x1,heightAt(x1,b),b);
+        const color=BL.math.hexToRgb(a>=194?"#a5ad76":"#e6c99f");distant.faces.push({i:[at,at+1,at+2],color},{i:[at+2,at+1,at+3],color});
+      }
+      // Inland scenery continues beyond Ocean Avenue; the Pacific belongs on the beach side.
+      const inland=BL.math.hexToRgb("#a5ad76");
+      for(let x=-1800;x<1800;x+=120)for(let z=325;z<1200;z+=125){
+        const at=distant.verts.length/3,y=LAYOUT.upland;
+        distant.verts.push(x,y,z,x,y,z+125,x+120,y,z,x+120,y,z+125);
+        distant.faces.push({i:[at,at+1,at+2],color:inland},{i:[at+2,at+1,at+3],color:inland});
+      }
+      return distant;
+    });
+    S.addChild(root,S.createNode({geometry:far}));
+    const slab=(z,d,color,y=LAYOUT.sand)=>S.addChild(solid,S.createNode({geometry:keep(`slab|${d}|${color}`,()=>M.box({w:650,h:.06,d,color})),position:{x:0,y:y+.03,z}}));
     slab(LAYOUT.walk,6,"#cbc6bc");slab(LAYOUT.bike,4.8,"#8e9c9e");slab(LAYOUT.road,10,"#6c747b");slab(170,5,"#d1cbbb");slab(188.5,3,"#d1cbbb");
     slab(LAYOUT.ocean,22,"#6c747b",LAYOUT.upland);slab(274,6,"#d1cbbb",LAYOUT.upland);slab(302,6,"#d1cbbb",LAYOUT.upland);
-    for(let x=-320;x<=320;x+=8){markings.push(box(3,.012,.075,x,.421,LAYOUT.bike,"#f8eac5"),box(3,.012,.09,x,.421,LAYOUT.road,"#efd57e"),box(3,.012,.09,x,LAYOUT.upland+.071,LAYOUT.ocean,"#efd57e"));}
-    for(const z of [LAYOUT.walk-3,LAYOUT.walk+3,LAYOUT.bike-2.4,LAYOUT.bike+2.4,LAYOUT.road-5,LAYOUT.road+5])markings.push(box(650,.012,.06,0,.425,z,"#eee7d7"));
-    for(const z of [277,299])markings.push(box(650,.012,.06,0,LAYOUT.upland+.072,z,"#eee7d7"));
-    for(const x of [-220,-140,-60,60,140,220]){
-      markings.push(box(3,.012,1.5,x,.43,LAYOUT.bike,"#6eb882"));
-      for(const side of [-1,1]){const direction=side,z=LAYOUT.bike+side*.8;markings.push(M.beam(x-direction*.55,.45,z,x+direction*.55,.45,z,.04,"#f7f2df"),M.beam(x+direction*.55,.45,z,x+direction*.22,.45,z+.25,.04,"#f7f2df"),M.beam(x+direction*.55,.45,z,x+direction*.22,.45,z-.25,.04,"#f7f2df"));}
-    }
-    for(const x of [-240,-100,35,180])for(let z=164;z<186;z+=2)markings.push(box(3,.012,.8,x,.43,z,"#f5eddc"));
-    for(const x of [-12,12])for(let z=277;z<299;z+=2)markings.push(box(3,.012,.8,x,LAYOUT.upland+.075,z,"#f5eddc"));
-    S.addChild(root,S.createNode({geometry:M.merge(...markings)}));
+    const paint=keep("markings",()=>{
+    const markings=[];
+      for(let x=-320;x<=320;x+=8){markings.push(box(3,.012,.075,x,.421,LAYOUT.bike,"#f8eac5"),box(3,.012,.09,x,.421,LAYOUT.road,"#efd57e"),box(3,.012,.09,x,LAYOUT.upland+.071,LAYOUT.ocean,"#efd57e"));}
+      for(const z of [LAYOUT.walk-3,LAYOUT.walk+3,LAYOUT.bike-2.4,LAYOUT.bike+2.4,LAYOUT.road-5,LAYOUT.road+5])markings.push(box(650,.012,.06,0,.425,z,"#eee7d7"));
+      for(const z of [277,299])markings.push(box(650,.012,.06,0,LAYOUT.upland+.072,z,"#eee7d7"));
+      for(const x of [-220,-140,-60,60,140,220]){
+        markings.push(box(3,.012,1.5,x,.43,LAYOUT.bike,"#6eb882"));
+        for(const side of [-1,1]){const direction=side,z=LAYOUT.bike+side*.8;markings.push(M.beam(x-direction*.55,.45,z,x+direction*.55,.45,z,.04,"#f7f2df"),M.beam(x+direction*.55,.45,z,x+direction*.22,.45,z+.25,.04,"#f7f2df"),M.beam(x+direction*.55,.45,z,x+direction*.22,.45,z-.25,.04,"#f7f2df"));}
+      }
+      for(const x of [-240,-100,35,180])for(let z=164;z<186;z+=2)markings.push(box(3,.012,.8,x,.43,z,"#f5eddc"));
+      for(const x of [-12,12])for(let z=277;z<299;z+=2)markings.push(box(3,.012,.8,x,LAYOUT.upland+.075,z,"#f5eddc"));
+      return M.merge(...markings);
+    });
+    S.addChild(root,S.createNode({geometry:paint}));
     const ramp=(x0,z0,x1,z1,w,y0=layout.top,y1=LAYOUT.sand,colorHex="#c3a47b")=>{
+      S.addChild(solid,S.createNode({geometry:keep(`ramp|${x0}|${z0}|${x1}|${z1}|${w}|${y0}|${y1}|${colorHex}`,()=>{
       const horizontal=z0===z1,dx=horizontal?0:w/2,dz=horizontal?w/2:0,g={verts:[x0-dx,y0,z0-dz,x0+dx,y0,z0+dz,x1-dx,y1,z1-dz,x1+dx,y1,z1+dz],faces:[],lines:[]},color=BL.math.hexToRgb(colorHex);
       // A closed 18 cm deck shell leaves the space underneath empty in solid-props' winding query.
       for(let i=0;i<12;i+=3)g.verts.push(g.verts[i],g.verts[i+1]-.18,g.verts[i+2]);
       const flip=horizontal?x1>x0:z1<z0;
-      for(const ids of [[0,2,1],[1,2,3],[4,5,6],[5,7,6],[0,1,5,4],[2,6,7,3],[0,4,6,2],[1,3,7,5]])g.faces.push({i:flip?ids.reverse():ids,color});S.addChild(solid,S.createNode({geometry:g}));
+      for(const ids of [[0,2,1],[1,2,3],[4,5,6],[5,7,6],[0,1,5,4],[2,6,7,3],[0,4,6,2],[1,3,7,5]])g.faces.push({i:flip?ids.reverse():ids,color});return g;})}));
     };
     // The two trails pass UNDER the road bridge. Beach access joins through separate low ramps.
     ramp(-35,95,-35,112,6);ramp(-75,92,-90,92,6);ramp(7,92,22,92,6);
-    const bridge=LAYOUT.bridge,crest=bridge.start+bridge.rise/bridge.grade,end=bridge.start+bridge.length,parts=[];
+    const bridge=LAYOUT.bridge,crest=bridge.start+bridge.rise/bridge.grade,end=bridge.start+bridge.length;
     ramp(0,bridge.start,0,crest,bridge.width,layout.top,LAYOUT.upland,"#c9c4b5");
-    for(const [a,b,color] of [[crest,end,"#c9c4b5"],[end,LAYOUT.ocean,"#d1cbbb"]])S.addChild(solid,S.createNode({geometry:M.box({w:bridge.width,h:.18,d:b-a,color}),position:{x:0,y:LAYOUT.upland-.09,z:(a+b)/2}}));
+    for(const [a,b,color] of [[crest,end,"#c9c4b5"],[end,LAYOUT.ocean,"#d1cbbb"]])S.addChild(solid,S.createNode({geometry:keep(`span|${a}|${b}|${color}`,()=>M.box({w:bridge.width,h:.18,d:b-a,color})),position:{x:0,y:LAYOUT.upland-.09,z:(a+b)/2}}));
     const bridgeAt=z=>layout.top+Math.min(bridge.rise,Math.max(0,z-bridge.start)*bridge.grade);
+    const rails=keep("bridge",()=>{
+      const parts=[];
     for(const x of [-bridge.width/2+.15,bridge.width/2-.15]){
-      for(const [a,b] of [[bridge.start,crest],[crest,255]])parts.push(M.beam(x,bridgeAt(a)+1,a,x,bridgeAt(b)+1,b,.12,"#f1e4c8"));
-      for(let z=bridge.start;z<=255;z+=6)parts.push(M.beam(x,bridgeAt(z),z,x,bridgeAt(z)+1.15,z,.14,"#c1b18f"));
-      for(const z of [118,150,190,212,end]){const floor=heightAt(x,z),top=bridgeAt(z)-.18;if(top-floor>1)parts.push(M.beam(x,floor,z,x,top,z,.45,"#a9a494"));}
-    }
-    S.addChild(solid,S.createNode({geometry:M.merge(...parts)}));
+        for(const [a,b] of [[bridge.start,crest],[crest,255]])parts.push(M.beam(x,bridgeAt(a)+1,a,x,bridgeAt(b)+1,b,.12,"#f1e4c8"));
+        for(let z=bridge.start;z<=255;z+=6)parts.push(M.beam(x,bridgeAt(z),z,x,bridgeAt(z)+1.15,z,.14,"#c1b18f"));
+        for(const z of [118,150,190,212,end]){const floor=heightAt(x,z),top=bridgeAt(z)-.18;if(top-floor>1)parts.push(M.beam(x,floor,z,x,top,z,.45,"#a9a494"));}
+      }
+      return M.merge(...parts);
+    });
+    S.addChild(solid,S.createNode({geometry:rails}));
     // Meet Ocean Avenue at its edge, rather than laying coplanar paving over the carriageway.
-    S.addChild(solid,S.createNode({geometry:M.box({w:18,h:.18,d:22,color:"#d9c5a6"}),position:{x:0,y:LAYOUT.upland-.03,z:266}}));
+    S.addChild(solid,S.createNode({geometry:keep("forecourt",()=>M.box({w:18,h:.18,d:22,color:"#d9c5a6"})),position:{x:0,y:LAYOUT.upland-.03,z:266}}));
     const sign=(text,x,z,yaw=0)=>S.addChild(solid,S.createNode({geometry:BL.hubModels.postSign(text,.25,1.5),position:{x,y:.35,z},rotation:{x:0,y:yaw,z:0}}));
     sign("OCEAN FRONT WALK",-42,150);sign("BEACH AND BIKE TRAIL",22,102);sign("RETURN TO PIER",-42,153,Math.PI);
     sign("APPIAN WAY",-18,170);const oceanSign=S.createNode({geometry:BL.hubModels.postSign("OCEAN AVENUE",.25,1.5),position:{x:22,y:LAYOUT.upland,z:272}});S.addChild(solid,oceanSign);
     for(let x=-280,i=0;x<=280;x+=40,i++){
       for(const z of [150,193,310])if(Math.abs(x)>12)S.addChild(solid,S.createNode({geometry:palmGeometry[i%3](),position:{x,y:heightAt(x,z),z},scale:{x:1.35,y:1.85,z:1.35},rotation:{x:0,y:i*.7,z:0},sightHidden:true}));
-      if(i%2===0)S.addChild(solid,S.createNode({geometry:BL.pierDetails.lamp(),position:{x:x+5,y:.35,z:152},rotation:{x:0,y:Math.PI,z:0}}));
+      if(i%2===0){const lamp=S.createNode({geometry:BL.pierDetails.lamp(),position:{x:x+5,y:.35,z:152},rotation:{x:0,y:Math.PI,z:0}});S.addChild(solid,lamp);lamps.push(lamp);}
     }
     if(!benchBake){const set=BL.dressing.set();for(const x of [-260,-180,-100,60,140,220]){set.put("bench",x,.35,152);set.put("barrel",x+2,.35,152);}benchBake=set.build();}
     for(const node of BL.dressing.nodes(benchBake))S.addChild(node.geometry===benchBake.solid?solid:root,node);
@@ -145,11 +160,11 @@
       cyclists.push({node,wheels,person,distance:i*185,speed:3.4+i*.22});
     }
     for(let i=0;i<LAYOUT.courts.length;i++){
-      const x=LAYOUT.courts[i],z=LAYOUT.courtZ,lines=[box(8,.012,.055,x,.368,z-8,"#f6f1d9"),box(8,.012,.055,x,.368,z+8,"#f6f1d9")];
-      for(const side of [-1,1])lines.push(box(.055,.012,16,x+side*4,.368,z,"#f6f1d9"));S.addChild(root,S.createNode({geometry:M.merge(...lines)}));
+      const x=LAYOUT.courts[i],z=LAYOUT.courtZ;
+      S.addChild(root,S.createNode({geometry:keep(`court|${i}`,()=>{const lines=[box(8,.012,.055,x,.368,z-8,"#f6f1d9"),box(8,.012,.055,x,.368,z+8,"#f6f1d9")];for(const side of [-1,1])lines.push(box(.055,.012,16,x+side*4,.368,z,"#f6f1d9"));return M.merge(...lines);})}));
       const n=S.createNode({geometry:net(),position:{x,y:.35,z}});S.addChild(root,n);
       // Only the posts collide; players can pass under the net and into each open court.
-      for(const side of [-1,1])S.addChild(solid,S.createNode({geometry:M.box({w:.1,h:2.45,d:.1,color:"#3599aa"}),position:{x:x+side*4.7,y:1.575,z}}));
+      for(const side of [-1,1])S.addChild(solid,S.createNode({geometry:keep("courtPost",()=>M.box({w:.1,h:2.45,d:.1,color:"#3599aa"})),position:{x:x+side*4.7,y:1.575,z}}));
       const players=[visitor(i,x-.7,z-4),visitor(i+1,x+.7,z+4)],node=S.createNode({geometry:ball()});S.addChild(root,node);courts.push({x,players,node,net:n,phase:i*.8});
     }
     for(let i=0;i<4;i++){
@@ -163,8 +178,8 @@
     }
     for(const q of layout.coastalTowers)S.addChild(solid,S.createNode({geometry:tower[q.variant](),position:{x:q.x,y:.35,z:q.z}}));
     for(const x of [-140,140])S.addChild(solid,S.createNode({geometry:BL.pierDetails.cafe(),position:{x,y:.35,z:15}}));
-    for(const x of [-250,-210,-160,45,85,165])S.addChild(root,S.createNode({geometry:M.box({w:1.3,h:.015,d:2,color:x<0?"#6baed0":"#e79baf"}),position:{x,y:.37,z:-18}}));
-    const rod=M.cached(()=>M.merge(M.beam(0,1.2,0,-4,2.4,0,.035,"#365c6d"),M.beam(-4,2.4,0,-6,layout.sea-layout.top+.04,0,.008,"#dbcead"),M.moved(M.turnedX(M.torus(.09,.025,"#d2ac6e",0,12,5),Math.PI/2),-.3,1.3,0)));
+    for(const x of [-250,-210,-160,45,85,165])S.addChild(root,S.createNode({geometry:keep(x<0?"towel|blue":"towel|rose",()=>M.box({w:1.3,h:.015,d:2,color:x<0?"#6baed0":"#e79baf"})),position:{x,y:.37,z:-18}}));
+    const rod=()=>keep("rod",()=>M.merge(M.beam(0,1.2,0,-4,2.4,0,.035,"#365c6d"),M.beam(-4,2.4,0,-6,layout.sea-layout.top+.04,0,.008,"#dbcead"),M.moved(M.turnedX(M.torus(.09,.025,"#d2ac6e",0,12,5),Math.PI/2),-.3,1.3,0)));
     for(let i=0;i<8;i++){
       if(i<layout.fishing.people.length){
         const [x,z]=layout.fishing.people[i],person=visitor(i,x,z);person.fisher=true;person.cave.root.position.y=layout.top+person.baseY;person.cave.root.rotation.y=-Math.PI/2;person.cave.parts.armL.rotation.x=person.cave.parts.armR.rotation.x=-1.3;
@@ -178,9 +193,10 @@
       if(Math.abs(p.y-player.baseY-.35)>.75)return null;
       for(const vendor of vendors)if(Math.hypot(p.x-vendor.x,p.z-vendor.z)<3)return vendor;return null;
     };
-    const act=(player,hud,fx)=>{const vendor=near(player);if(!vendor)return false;if(elapsed-serveAt<3)return true;serveAt=elapsed;if(gift.parent)S.removeChild(gift.parent,gift);S.addChild(player.parts.armL,gift);gift.visible=true;giftAge=8;hud.toast("A scoop of strawberry ice cream — on the house!");fx.say(vendor.person.cave,"Cool treats, ocean breeze!",3);return true;};
-    const update=(dt,time,player)=>{
+    const act=(player,hud,fx)=>{const vendor=near(player);if(!vendor)return false;if(elapsed-serveAt<3)return true;serveAt=elapsed;if(gift.parent)S.removeChild(gift.parent,gift);S.addChild(player.parts.armL,gift);gift.visible=true;giftAge=8;hud.toast("Strawberry scoop, paid over Lightning: settled before it reached your hand");fx.say(vendor.person.cave,"Cool treats, ocean breeze!",3);return true;};
+    const update=(dt,time,player,eye)=>{
       elapsed=time;
+      if(eye)for(let i=0;i<people.length;i++){const c=people[i].cave.root;c.visible=Math.abs(c.position.x-eye.x)<FAR&&Math.abs(c.position.z-eye.z)<FAR;}
       if(giftAge>0){giftAge=Math.max(0,giftAge-dt);if(!giftAge){gift.visible=false;S.removeChild(gift.parent,gift);}}
       for(const rider of cyclists){
         // Rounded rectangle: the two lanes never cross, and U-turns stay at the trail ends.
@@ -220,7 +236,7 @@
       for(const vendor of vendors)vendor.person.cave.parts.armL.rotation.x=-.6-Math.sin(time*1.5)*.15;
     };
     update(0,0,null);
-    return {root,solid,layout:LAYOUT,people,cyclists,courts,kites,vendors,near,act,update,liveGeometry:set=>{set.add(gift.geometry);for(const p of people)set.add(p.cave.headOpen).add(p.cave.headClosed);},dispose:()=>{if(gift.parent)S.removeChild(gift.parent,gift);if(root.parent)S.removeChild(root.parent,root);people.length=cyclists.length=courts.length=kites.length=vendors.length=0;}};
+    return {root,solid,layout:LAYOUT,people,cyclists,courts,kites,vendors,lamps,near,act,update,liveGeometry:set=>{set.add(gift.geometry);for(const p of people)set.add(p.cave.headOpen).add(p.cave.headClosed);},dispose:()=>{if(gift.parent)S.removeChild(gift.parent,gift);if(root.parent)S.removeChild(root.parent,root);people.length=cyclists.length=courts.length=kites.length=vendors.length=lamps.length=0;}};
   };
-  BL.pierBeach={LAYOUT,heightAt,build};
+  BL.pierBeach={LAYOUT,heightAt,build,parts:{bike,wheel,cart,umbrella}};
 })();

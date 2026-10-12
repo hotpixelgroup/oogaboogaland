@@ -6,6 +6,9 @@
 //                 { t: "hub", on }               this page shows the island and is visible (host candidates)
 //                 { t: "mute", on }              this page muted its own microphone, for everyone's roster
 //                 { t: "hp", v, ko }             the driven Ooga's health (0-100) and whether it is knocked out
+//                 { t: "st", v }                 how the driven Ooga carries itself (0 on foot, 1 seated, 2 swimming)
+//                 { t: "ev", k, v }              a moment for the players in the same zone group to see (a wave,
+//                                                a firework): a short kind and up to six numbers, relayed and gone
 //                 binary                         the NPC host's frame of every Ooga's pose, relayed as is
 // Room → client:  welcome { you, players, tickHz, now, loopEpoch }, join { p }, leave { id, reason },
 //                 body { id, name }, state { now, ps: [id, x, y, z, yaw, ...] }, kick { reason },
@@ -15,6 +18,10 @@
 //                 vstate { id, voice, muted }  a player's microphone went live or off, or they muted it; welcome
 //                                            and join carry the same two fields on every player, and hp and ko
 //                 hp { id, v, ko }           a player's driven Ooga's health changed
+//                 st { id, v }               a player's driven Ooga sat down, stood up or went swimming; welcome and
+//                                            join carry `st` on every player
+//                 ev { id, k, v }            a moment from a player in this page's zone group; never stored, so a
+//                                            page that arrives later does not see it
 //                 voice { peers, gens }      whom to hear, and each one's publication count (a new count is a
 //                                            microphone published again, to be pulled again)
 // Zones: `<group>` or `<group>.<place>`. Voice is shared within a group; who is shown is matched on the whole
@@ -42,6 +49,13 @@ export const OUTSIDE = "outside";
 export const NOWHERE = "none";
 // Health reports: a fight sends a few a second at most; at full health nothing is sent.
 export const HP_HZ = 4;
+// Stance changes a few times a ride at most. Events are for moments, not streams: two a second, and the
+// room keeps none of them, so they add no storage and no timer.
+export const STANCE_MAX = 7;
+export const STANCE_HZ = 4;
+export const EVENT_HZ = 2;
+export const EVENT_KIND = /^[a-z][a-z0-9-]{0,15}$/;
+export const EVENT_VALUES = 6;
 // Close codes: 4000 follows a `kick` (replaced, stale, full); 4400 is a message the room cannot read.
 export const CLOSE_KICK = 4000;
 // NPC frames: the host sends about 4 a second, only while a page follows; a frame of every Ooga's pose is a few kilobytes.
@@ -79,7 +93,22 @@ export const parseClientMessage = (text, zone = OUTSIDE) => {
   if (msg.t === "mute") return typeof msg.on === "boolean" ? { t: "mute", on: msg.on } : null;
   if (msg.t === "hp") return finite(msg.v) && typeof msg.ko === "boolean" ? { t: "hp", v: Math.max(0, Math.min(100, Math.round(msg.v))), ko: msg.ko } : null;
   if (msg.t === "zone") return typeof msg.name === "string" && ZONE_NAME.test(msg.name) ? { t: "zone", name: msg.name } : null;
+  if (msg.t === "st") return Number.isInteger(msg.v) && msg.v >= 0 && msg.v <= STANCE_MAX ? { t: "st", v: msg.v } : null;
+  if (msg.t === "ev") {
+    const v = msg.v === undefined ? [] : msg.v;
+    if (typeof msg.k !== "string" || !EVENT_KIND.test(msg.k) || !Array.isArray(v) || v.length > EVENT_VALUES || !v.every(finite)) return null;
+    return { t: "ev", k: msg.k, v: v.map(round) };
+  }
   return null;
+};
+
+/** Who sees a moment from `from`: every other player driving an Ooga in the same zone group. Nobody when the
+ *  sender drives none or is nowhere, so a page between scenes cannot reach a place it has left. */
+export const eventAudience = (players, from) => {
+  const out = [], group = zoneGroup(from.zone);
+  if (!from.body || group === NOWHERE) return out;
+  for (const q of players) if (q !== from && q.body && zoneGroup(q.zone) === group) out.push(q);
+  return out;
 };
 
 /** A token bucket per player: `rate` a second, bursting to `rate`. Mutates and answers whether one is spent. */

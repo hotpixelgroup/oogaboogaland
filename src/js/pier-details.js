@@ -174,5 +174,12 @@
     else {for(let x=-half+.25;x<half-.2;x+=.32)parts.push(M.beam(x,-.3,.13,x+.1,-.39,.13,.03,paint[1]),M.beam(x+.1,-.39,.13,x+.2,-.3,.13,.03,paint[1]));}
     const geometry=M.merge(...parts);geometry.signWidth=width;signCache.set(key,geometry);return geometry;
   };
-  BL.pierDetails={entrance,facade,lamp,shopDetail,cafe,piling,shopSign,smallFaces};
+  // A swimmer's way back up: two rails from the deck down past the waterline. Local +z faces the water.
+  const ladder=M.cached(()=>{
+    const parts=[];for(const x of [-.32,.32])parts.push(M.beam(x,1.05,.12,x,-2.9,.12,.07,"#d7d7c3"));
+    for(let y=-2.6;y<.2;y+=.4)parts.push(M.beam(-.32,y,.12,.32,y,.12,.05,"#d7d7c3"));
+    for(const x of [-.32,.32])parts.push(M.beam(x,1.05,.12,x,1.05,-.5,.07,"#d7d7c3"));return M.merge(...parts);
+  });
+  const droplet=M.cached(()=>{const g=M.box({w:.07,h:.09,d:.07,color:"#d6efe8"});g.castShadow=false;return g;});
+  BL.pierDetails={entrance,facade,lamp,shopDetail,cafe,piling,shopSign,smallFaces,ladder,droplet};
 })();

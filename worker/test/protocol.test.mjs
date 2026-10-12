@@ -1,7 +1,7 @@
 // Pure checks on the room's wire format and limits: no Durable Object, no sockets.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { BOUND_XZ, PIER_BOUND_XZ, MESSAGE_MAX, MOVE_HZ, parseClientMessage, playerFromHeaders, spawnPoint, takeToken } from "../src/protocol.js";
+import { BOUND_XZ, PIER_BOUND_XZ, MESSAGE_MAX, MOVE_HZ, EVENT_HZ, EVENT_VALUES, STANCE_MAX, eventAudience, parseClientMessage, playerFromHeaders, spawnPoint, takeToken } from "../src/protocol.js";
 
 test("poses inside the bounds are accepted, rounded and their yaw wrapped", () => {
   const m = parseClientMessage(JSON.stringify({ t: "pose", x: 1.23456, y: -7, z: 3, yaw: 7 }));
@@ -167,4 +167,39 @@ test("NPC followers: every other page showing the island, so a lone host sends n
   const two = [p(1, 10, true), p(2, 20, true), p(3, 30, false)];
   assert.equal(npcFollowers(two, electHost(two)), 1);
   assert.equal(npcFollowers(two, 0), 0, "no host, no followers");
+});
+
+test("a stance is a small whole number; anything else is ignored", () => {
+  assert.deepEqual(parseClientMessage('{"t":"st","v":1}'), { t: "st", v: 1 });
+  assert.deepEqual(parseClientMessage(`{"t":"st","v":${STANCE_MAX}}`), { t: "st", v: STANCE_MAX });
+  for (const bad of [-1, STANCE_MAX + 1, 1.5, "1", null]) assert.equal(parseClientMessage(JSON.stringify({ t: "st", v: bad })), null, String(bad));
+});
+
+test("an event is a short kind and a few numbers, rounded; anything else is ignored, not fatal", () => {
+  assert.deepEqual(parseClientMessage('{"t":"ev","k":"emote","v":[1,2.34567]}'), { t: "ev", k: "emote", v: [1, 2.346] });
+  assert.deepEqual(parseClientMessage('{"t":"ev","k":"bell"}'), { t: "ev", k: "bell", v: [] });
+  const many = Array.from({ length: EVENT_VALUES + 1 }, (_, i) => i);
+  for (const bad of [{ k: "Emote" }, { k: "" }, { k: "a-kind-far-too-long-to-relay" }, { k: "x", v: "1" }, { k: "x", v: ["1"] }, { k: "x", v: [Infinity] }, { k: "x", v: many }, { k: 5 }, { k: "<b>" }]) {
+    assert.equal(parseClientMessage(JSON.stringify({ t: "ev", ...bad })), null, JSON.stringify(bad));
+  }
+});
+
+test("an event reaches only the other players driving an Ooga in the sender's zone group", () => {
+  const a = { id: 1, body: "a", zone: "scene-pier" }, b = { id: 2, body: "b", zone: "scene-pier" }, c = { id: 3, body: "c", zone: "outside" };
+  const d = { id: 4, body: null, zone: "scene-pier" }, e = { id: 5, body: "e", zone: "factory.hall" }, f = { id: 6, body: "f", zone: "factory" };
+  const all = [a, b, c, d, e, f], ids = (from) => eventAudience(all, from).map((p) => p.id);
+  assert.deepEqual(ids(a), [2], "same zone, never the sender, never a page driving nobody");
+  assert.deepEqual(ids(e), [6], "a place and its group hear each other");
+  assert.deepEqual(ids(c), []);
+  assert.deepEqual(ids(d), [], "a page driving nobody reaches nobody");
+  assert.deepEqual(eventAudience(all, { id: 7, body: "g", zone: "none" }), [], "nowhere reaches nobody");
+});
+
+test("events are for moments: the bucket lets a burst of two through, then two a second", () => {
+  const bucket = { tokens: EVENT_HZ, at: 0 };
+  let sent = 0;
+  for (let i = 0; i < 20; i++) if (takeToken(bucket, EVENT_HZ, 0)) sent++;
+  assert.equal(sent, EVENT_HZ);
+  assert.equal(takeToken(bucket, EVENT_HZ, 500), true);
+  assert.equal(takeToken(bucket, EVENT_HZ, 500), false);
 });

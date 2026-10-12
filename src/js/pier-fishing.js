@@ -3,6 +3,9 @@
 (() => {
   "use strict";
   const BL=window.BL,SECONDS=75,CAST=1.6,REEL=.9,INTERVAL=3,PACE=8,MAX=4294967295,TICKET=5;
+  // The fish journal: a catch's kind is how many zeros its hash starts with, and each extra zero is sixteen times rarer.
+  const FISH=["Sardine","Mackerel","Halibut","Marlin","Orange whale"],RARE=["","one leading zero, 16 times rarer","two leading zeros, 256 times rarer","three leading zeros, 4,096 times rarer","four leading zeros, 65,536 times rarer"];
+  const kindOf=hash=>Math.min(FISH.length-1,Math.clz32(hash)>>2);
   const createRound=(random=()=>BL.math.randomInt(4294967296))=>{
     const state={phase:"idle",elapsed:0,remaining:SECONDS,age:0,casts:0,catches:0,score:0,hash:0,target:Math.floor(MAX*.32),castTarget:0,hit:false,retargets:0,direction:"",revision:0};
     let pending=false,windowStart=0;
@@ -32,23 +35,6 @@
     const close=()=>phase("idle");
     return {state,reset,start,cast,update,close};
   };
-  const audio=()=>{
-    let ctx=null,master=null,muted=false;const voices=[];
-    try{muted=localStorage.getItem("oogaboogaland.audio")==="off";}catch{}
-    const volume=()=>{if(master)master.gain.setTargetAtTime(muted||document.hidden?0:.2,ctx.currentTime,.025);};
-    const unlock=e=>{if(!e?.isTrusted)return;const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;
-      if(!ctx){ctx=new Audio();master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
-        for(let i=0;i<3;i++){const tone=ctx.createOscillator(),gain=ctx.createGain();tone.type=i?"sine":"triangle";gain.gain.value=0;tone.connect(gain);gain.connect(master);tone.start();voices.push({tone,gain});}volume();
-      }if(ctx.state==="suspended")ctx.resume().catch(()=>{});
-    };
-    const cue=name=>{if(!ctx||muted||document.hidden)return;const now=ctx.currentTime;
-      for(let i=0;i<voices.length;i++){const v=voices[i],t=now+(name==="win"?i*.13:0),f=name==="win"?[523.25,659.25,783.99][i]:name==="catch"?440*(i+1):name==="cast"?220:160;
-        v.tone.frequency.cancelScheduledValues(now);v.gain.gain.cancelScheduledValues(now);v.gain.gain.setValueAtTime(0,now);v.tone.frequency.setValueAtTime(f,t);v.tone.frequency.exponentialRampToValueAtTime(name==="cast"?80:f*1.1,t+.15);v.gain.gain.linearRampToValueAtTime(i&&name!=="win"?.035:.12,t+.015);v.gain.gain.exponentialRampToValueAtTime(.0001,t+(name==="win"?.38:.22));
-      }
-    };
-    document.addEventListener("visibilitychange",volume);
-    return {unlock,cue,setMuted:value=>{muted=!!value;volume();},dispose:()=>{document.removeEventListener("visibilitychange",volume);for(const v of voices)v.tone.stop();voices.length=0;if(ctx)ctx.close().catch(()=>{});ctx=master=null;}};
-  };
   const M=BL.models,S=BL.scene;
   const rod=M.cached(()=>M.merge(M.beam(0,0,0,0,1.8,-2.2,.055,"#b58252"),M.moved(M.turnedX(M.torus(.15,.035,"#e4c78a",0,12,5),Math.PI/2),.08,.12,-.14)));
   const bob=M.cached(()=>M.merge(M.lathe({profile:[[0,-.15],[.12,-.08],[.12,.08],[0,.18]],segments:10,color:"#f7931a"}),M.moved(M.box({w:.035,h:.3,d:.035,color:"#fff0d4"}),0,.22,0)));
@@ -65,26 +51,28 @@
     return {root,solid,tackle,pole,float,line,catchNode,haul};
   };
   const TIMES=Array.from({length:SECONDS+1},(_,i)=>`${i}s remaining`);
-  const create=({models,layout,water,camera,crew,pilot,hud,fx,game})=>{
-    const q=layout.fishing,sim=createRound(),state=sim.state,sound=audio(),sin=Math.sin(q.ry),cos=Math.cos(q.ry),G=BL.pilot.WALK.gravity;
+  const create=({models,layout,water,camera,crew,pilot,hud,fx,game,sound:engine})=>{
+    const q=layout.fishing,sim=createRound(),state=sim.state,sound=engine.channel(.8),sin=Math.sin(q.ry),cos=Math.cos(q.ry),G=BL.pilot.WALK.gravity;
     const ui={nav:document.querySelector(".pier-navigation"),panel:document.getElementById("pier-fishing-panel"),score:document.getElementById("pier-fishing-score"),time:document.getElementById("pier-fishing-time"),info:document.getElementById("pier-fishing-info"),hash:document.getElementById("pier-fishing-hash"),target:document.getElementById("pier-fishing-target"),lesson:document.getElementById("pier-fishing-lesson"),detail:document.getElementById("pier-fishing-more"),source:document.getElementById("pier-fishing-source"),act:document.getElementById("pier-fishing-act"),done:document.getElementById("pier-fishing-done")};
     const fact=BL.pierFacts.fishing;ui.lesson.textContent=fact.line;document.getElementById("pier-fishing-detail").textContent=fact.detail;ui.source.href=fact.source;ui.source.textContent=fact.sourceTitle;
-    let actor=null,paid=false,revision=-1,seconds=-1;const quiet=[hud.el.act,hud.el.hint,document.getElementById("joy-move"),document.getElementById("joy-look")],hidden=new Array(quiet.length);
+    let actor=null,paid=false,banked=0,revision=-1,seconds=-1;const quiet=[hud.el.act,hud.el.hint,document.getElementById("joy-move"),document.getElementById("joy-look")],hidden=new Array(quiet.length);
     const near=()=>{const a=crew.player;return !!a&&!a.jet&&!a.camp.seat&&Math.abs(a.root.position.y-a.baseY-layout.top)<.15&&Math.hypot(a.root.position.x-q.play.x,a.root.position.z-q.play.z)<2;};
     const close=()=>{if(ui.panel.contains(document.activeElement))document.activeElement.blur();const a=actor;actor=null;sim.close();models.tackle.visible=false;ui.panel.hidden=true;ui.nav.hidden=false;ui.detail.open=false;pilot.setExternalControl(false);pilot.setActive(true);pilot.controls.reset();crew.steer(0,0,0,0,0);if(a){for(let i=0;i<quiet.length;i++)quiet[i].hidden=hidden[i];if(crew.player===a)pilot.navigate({position:{x:a.root.position.x,y:a.root.position.y-a.baseY,z:a.root.position.z},yaw:q.ry,pitch:.28,dist:6});}pilot.showAct();};
     const refresh=()=>{
       revision=state.revision;ui.panel.dataset.phase=state.phase;ui.act.disabled=state.phase==="cast"||state.phase==="reel";ui.act.textContent=state.phase==="intro"?"Start · 75s":state.phase==="result"?"Fish again":state.phase==="ready"?"Cast · Space / tap":"Reeling…";
-      ui.score.textContent=`${state.catches} catches · ${state.score} tickets ${state.phase==="result"?"saved":"pending"} · best ${game.state.pier.fishing}`;
+      ui.score.textContent=`${state.catches} catches · ${state.score} tickets banked · best ${game.state.pier.fishing}`;
       ui.hash.textContent=state.casts?`0x${state.hash.toString(16).padStart(8,"0")}`:"Cast to try a hash";ui.target.textContent=`Target ≤ 0x${state.target.toString(16).padStart(8,"0")}`;
       ui.lesson.hidden=ui.detail.hidden=state.phase!=="intro"&&state.phase!=="result";
-      ui.info.textContent=state.phase==="intro"?"Cast, watch the bobber, and collect a fish when your hash meets the target.":state.phase==="result"?`Round complete · +${state.score} tickets banked at Tickets and Prizes.`:state.phase==="cast"?"Checking this cast against the target…":state.phase==="reel"?state.hit?`Fish caught! +5 pending tickets.${state.catches%INTERVAL===0?` Target adjusted ${state.direction}; aim for a catch every 8 seconds.`:""}`:"No catch — this hash was above the target.":"Space or tap casts again. The target adjusts after every three catches.";
+      ui.info.textContent=state.phase==="intro"?"Cast, watch the bobber, and collect a fish when your hash meets the target.":state.phase==="result"?`Round complete · +${state.score} tickets banked at Tickets and Prizes.`:state.phase==="cast"?"Checking this cast against the target…":state.phase==="reel"?state.hit?`${FISH[kindOf(state.hash)]} caught! +5 tickets banked.${state.catches%INTERVAL===0?` Target adjusted ${state.direction}; aim for a catch every 8 seconds.`:""}`:"No catch — this hash was above the target.":"Space or tap casts again. The target adjusts after every three catches.";
     };
     const act=()=>{
-      if(!actor){if(!near())return false;const a=crew.player;if(a.hopV>0){hud.toast("Land on the fishing pad first");return true;}document.activeElement.blur();actor=a;paid=false;crew.setWeaponTrigger(false);crew.steer(0,0,0,0,0);pilot.controls.reset();pilot.navigate({position:{x:q.play.x,y:layout.top,z:q.play.z},yaw:q.ry,pitch:.28,dist:6});pilot.setActive(false);pilot.setExternalControl(true);const v=q.camera;camera.position.x=q.play.x+sin*v.back;camera.position.y=layout.top+v.height;camera.position.z=q.play.z+cos*v.back;camera.target.x=q.play.x-sin*v.look;camera.target.y=layout.top+.7;camera.target.z=q.play.z-cos*v.look;camera.up=null;for(let i=0;i<quiet.length;i++){hidden[i]=quiet[i].hidden;quiet[i].hidden=true;}sim.reset();ui.panel.hidden=false;ui.nav.hidden=true;models.tackle.visible=true;ui.detail.open=false;seconds=-1;refresh();return true;}
-      if(state.phase==="intro"||state.phase==="result"){paid=false;sim.start();sound.cue("cast");refresh();return true;}
+      if(!actor){if(!near())return false;const a=crew.player;if(a.hopV>0){hud.toast("Land on the fishing pad first");return true;}document.activeElement.blur();actor=a;paid=false;banked=0;crew.setWeaponTrigger(false);crew.steer(0,0,0,0,0);pilot.controls.reset();pilot.navigate({position:{x:q.play.x,y:layout.top,z:q.play.z},yaw:q.ry,pitch:.28,dist:6});pilot.setActive(false);pilot.setExternalControl(true);const v=q.camera;camera.position.x=q.play.x+sin*v.back;camera.position.y=layout.top+v.height;camera.position.z=q.play.z+cos*v.back;camera.target.x=q.play.x-sin*v.look;camera.target.y=layout.top+.7;camera.target.z=q.play.z-cos*v.look;camera.up=null;for(let i=0;i<quiet.length;i++){hidden[i]=quiet[i].hidden;quiet[i].hidden=true;}sim.reset();ui.panel.hidden=false;ui.nav.hidden=true;models.tackle.visible=true;ui.detail.open=false;seconds=-1;refresh();return true;}
+      if(state.phase==="intro"||state.phase==="result"){paid=false;banked=0;sim.start();sound.cue("cast");refresh();return true;}
       if(sim.cast()){sound.cue("cast");refresh();}return true;
     };
     const onButtonKey=e=>{if(e.key===" "&&e.target.closest("button"))e.stopPropagation();};
+    // Space reaches the pilot's act; Tab and Enter keep the panel's own controls.
+    const onKey=e=>{if(!actor)return false;if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();close();}else if(e.key!==" "&&e.key!=="Tab"&&e.key!=="Enter"){e.preventDefault();e.stopImmediatePropagation();}return true;};
     ui.panel.addEventListener("keydown",onButtonKey);ui.act.addEventListener("click",act);ui.done.addEventListener("click",close);
     const update=dt=>{
       if(!actor)return;if(crew.player!==actor){close();return;}crew.steer(0,0,0,0,0);const before=state.phase;sim.update(dt);
@@ -92,8 +80,9 @@
         const p=models.float.position,x=q.play.x+sin*p.z+cos*p.x,z=q.play.z+cos*p.z-sin*p.x;
         for(let i=0;i<8;i++){const a=i*Math.PI/4;fx.spawnParticle(splash(),x,water.heightAt(x,z)+.08,z,Math.cos(a)*.7,1.1,Math.sin(a)*.7,.5,0,G,layout.sea);}
         sound.cue(state.hit?"catch":"miss");
+        if(state.hit){const kind=kindOf(state.hash);if(game.logPierFish(kind)===1)hud.toast(kind?`New in the fish journal: ${FISH[kind]} (${RARE[kind]})`:`New in the fish journal: ${FISH[kind]}`);}
       }
-      if(state.phase==="result"&&!paid){paid=true;game.addTickets(state.score);game.recordPierFishing(state.score);sound.cue("win");hud.toast(`Hash Fishing · +${state.score} tickets saved`);}
+      if(state.score>banked){game.addTickets(state.score-banked);banked=state.score;}if(state.phase==="result"&&!paid){paid=true;const best=game.recordPierFishing(state.score);sound.cue(best?"best":"win");if(best)hud.hint("New best!",2500);hud.toast(`Hash Fishing · +${state.score} tickets saved`);}
       if(revision!==state.revision)refresh();const time=Math.ceil(state.remaining);if(time!==seconds){seconds=time;ui.time.textContent=TIMES[time];}
       const p=models.float.position,age=state.age;let bend=0;
       if(state.phase==="cast"){
@@ -107,7 +96,7 @@
       models.float.visible=state.phase!=="intro"&&state.phase!=="result";line.visible=models.float.visible;models.catchNode.visible=state.phase==="reel"&&state.hit;Object.assign(models.catchNode.position,p);models.catchNode.rotation.z=Math.sin(age*9)*.15;
       for(let i=0;i<models.haul.length;i++)models.haul[i].visible=i<state.catches;
     };
-    return {act,close,near,update,state,unlock:sound.unlock,setMuted:sound.setMuted,get busy(){return !!actor;},dispose:()=>{close();ui.panel.removeEventListener("keydown",onButtonKey);ui.act.removeEventListener("click",act);ui.done.removeEventListener("click",close);sound.dispose();}};
+    return {act,close,near,onKey,update,state,unlock:sound.unlock,setMuted:sound.setMuted,get busy(){return !!actor;},dispose:()=>{close();ui.panel.removeEventListener("keydown",onButtonKey);ui.act.removeEventListener("click",act);ui.done.removeEventListener("click",close);sound.dispose();}};
   };
-  BL.pierFishing={build,create,createRound,SECONDS,MAX_SCORE:150};
+  BL.pierFishing={FISH,kindOf,build,create,createRound,SECONDS,MAX_SCORE:150};
 })();

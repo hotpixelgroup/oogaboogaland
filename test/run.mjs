@@ -3826,6 +3826,63 @@ const gameRulesChecks = async () => {
     record("Hash Fishing saves: only a better valid five-ticket score survives reload; malformed and older saves preserve the Passport",best&&sanitized&&make().state.pier.fishing===0,JSON.stringify({best,sanitized}));
   }
   {
+    // The Proof-of-Work Bell's rule on its own: one try a swing, a ring at or under the target, and a target that
+    // moves toward one ring in eight swings by at most a factor of two.
+    runInNewContext(await readFile(new URL("../src/js/pier-bell.js",import.meta.url),"utf8"),context);
+    const B=BL.pierBell,MAX=4294967295;let draws=[];const quick=B.createSwinger(()=>draws.shift()),t=quick.state.target;
+    draws=[t+1,t];const miss=!quick.swing()&&quick.state.height<1&&quick.state.height>.1&&quick.state.swings===1;
+    const ring=quick.swing()&&quick.state.height===1&&quick.state.rings===1&&quick.state.took===2&&quick.state.swings===0;
+    const harder=quick.state.target<t&&quick.state.target>=Math.floor(t/2)-1;
+    let n=0;const slow=B.createSwinger(()=>n++<20?MAX:0);for(let i=0;i<21;i++)slow.swing();
+    const easier=slow.state.rings===1&&slow.state.took===21&&slow.state.target>t&&slow.state.target<=t*2+1;
+    const steady=B.createSwinger(()=>0);for(let i=0;i<40;i++)steady.swing();const floor=steady.state.target>=Math.floor(MAX/64)&&steady.state.rings===40;
+    record("Proof-of-Work Bell rules: a swing above the target only lifts the puck, one at the target rings, quick rings tighten the target and slow ones loosen it, within bounds",t===Math.floor(MAX/B.EIGHT)&&miss&&ring&&harder&&easier&&floor,JSON.stringify({miss,ring,harder,easier,floor,target:quick.state.target}));
+  }
+  {
+    // Reasons to return, as rules: the day's three challenges are the same for everyone and change by the day, the
+    // streak forgives one missed day a week, and the hall of fame has three distinct places the visitor can take.
+    for (const name of ["pier-daily", "pier-fame"]) runInNewContext(await readFile(new URL(`../src/js/${name}.js`, import.meta.url), "utf8"), context);
+    const D = BL.pierDaily, F = BL.pierFame, days = Array.from({ length: 60 }, (_, i) => D.pick(20000 + i));
+    const shape = days.every((t) => t.length === 3 && D.WORLD.some((w) => w.id === t[0].id) && D.GAMES.some((g) => g.id === t[1].id) && D.GAMES.some((g) => g.id === t[2].id) && t[1].id !== t[2].id && t.every((x) => x.goal > 0 && x.text.includes(String(x.goal > 2 ? x.goal : ""))));
+    const same = JSON.stringify(D.pick(20123)) === JSON.stringify(D.pick(20123)), varied = new Set(days.map((t) => t.map((x) => x.id + x.goal).join())).size > 20;
+    const s = { last: 0, count: 0, best: 0, spared: 0 };
+    D.step(s, 100); D.step(s, 100); const once = s.count === 1;
+    D.step(s, 101); D.step(s, 102); const run = s.count === 3;
+    D.step(s, 104); const forgiven = s.count === 4 && s.spared === 103;
+    D.step(s, 106); const twice = s.count === 1 && s.best === 4;
+    const later = D.step({ last: 100, count: 5, best: 5, spared: 90 }, 102).count === 6, gap = D.step({ last: 100, count: 5, best: 9, spared: 0 }, 103), ended = gap.count === 1 && gap.best === 9;
+    const held = { last: 100, count: 5, best: 5, spared: 0 }, standing = D.standing(held, 101) === 5 && D.standing(held, 102) === 5 && D.standing(held, 103) === 0 && D.standing({ ...held, spared: 99 }, 102) === 0;
+    record("Pier daily rules: every day draws one challenge on the pier and two different games, the same for everyone and different day to day; a streak counts a day once, forgives one missed day a week and starts again after more", shape && same && varied && once && run && forgiven && twice && later && ended && standing, JSON.stringify({ shape, same, varied, once, run, forgiven, twice, later, ended, standing, day: D.pick(20123).map((x) => x.text) }));
+    const names = ["alice", "bob", "carol", "dave", "erin", "frank"], board = F.top("fishing", 15, 50, 5, 451, names, null, 0);
+    const places = board.length === 3 && board[0][1] > board[1][1] && board[1][1] > board[2][1] && board.every((r) => r[1] >= 15 && r[1] <= 50 && r[1] % 5 === 0 && !r[2]);
+    const steady = JSON.stringify(board) === JSON.stringify(F.top("fishing", 15, 50, 5, 451, names.slice().reverse(), null, 0)), fresh = [452, 453, 454].some((n) => JSON.stringify(F.top("fishing", 15, 50, 5, n, names, null, 0)) !== JSON.stringify(board));
+    const mine = F.top("fishing", 15, 50, 5, 451, [...names, "zed"], "zed", board[0][1]), tie = mine[0][0] === "ZED" && mine[0][2] && mine[1][1] === board[0][1] && mine.length === 3;
+    const low = F.top("fishing", 15, 50, 5, 451, names, "zed", board[2][1] - 5).every((r) => !r[2]), none = F.top("fishing", 15, 50, 5, 451, names, "zed", 0).every((r) => !r[2]);
+    record("Pier hall of fame: three roster names hold distinct places that are the same on every page and drawn afresh each season; the visitor takes a place they have earned, wins a tie, and is absent below third", places && steady && fresh && tie && low && none, JSON.stringify({ board, mine, places, steady, fresh, tie, low, none }));
+    // The pier's keepsakes in the save.
+    store.delete("oogaboogaland.v1"); const make = () => BL.game.create({ catalog: [] }), w = make(); w.stampPier("boardwalk"); w.addTickets(100);
+    const coin = w.findPierCoin(3) && !w.findPierCoin(3) && !w.findPierCoin(21) && !w.findPierCoin(-1) && !w.findPierCoin(1.5) && make().state.pier.coins === 8;
+    const before = w.state.arcade.tickets, refused = !w.buyPier("balloon-orange", before + 1) && !w.buyPier("jetpack", 1) && !w.buyPier("balloon-teal", 2.5) && !w.wearPierBalloon("balloon-orange") && w.state.arcade.tickets === before;
+    const bought = w.buyPier("balloon-orange", 40) && !w.buyPier("balloon-orange", 40) && w.state.arcade.tickets === before - 40 && w.wearPierBalloon("balloon-orange") && make().state.pier.balloon === "balloon-orange" && w.grantPier("balloon-gold") && !w.grantPier("balloon-gold") && w.state.arcade.tickets === before - 40 && w.wearPierBalloon("") && make().state.pier.balloon === "";
+    const season = w.recordPierSeason(451, "fishing", 20) && !w.recordPierSeason(451, "fishing", 15) && w.recordPierSeason(451, "volley", 9) && !w.recordPierSeason(450, "fishing", 50) && !w.recordPierSeason(451, "fishing", 155) && !w.recordPierSeason(0, "fishing", 30) && !w.recordPierSeason(451, "poker", 3) && make().state.pier.season.fishing === 20;
+    const turned = w.recordPierSeason(452, "whack", 44) && w.state.pier.season.fishing === 0 && w.state.pier.season.volley === 0 && make().state.pier.season.id === 452 && make().state.pier.season.whack === 44;
+    const journal = w.logPierFish(1) === 1 && w.logPierFish(1) === 2 && w.logPierFish(9) === 0 && w.logPierFish(-1) === 0 && make().state.pier.fish[1] === 2;
+    const midway = w.recordPierMidway("ring", 3) && !w.recordPierMidway("ring", 3) && !w.recordPierMidway("ring", 6) && !w.recordPierMidway("darts", 2) && w.recordPierMidway("hoops", 5) && make().state.pier.midway.ring === 3;
+    Object.assign(w.state.pier.daily, { day: 20123, bonus: false }); w.state.pier.daily.progress[1] = 7; w.state.pier.daily.done[0] = true; Object.assign(w.state.pier.streak, { last: 20123, count: 4, best: 6, spared: 20120 }); w.savePierDaily();
+    const kept = make().state.pier, today = kept.daily.day === 20123 && kept.daily.progress[1] === 7 && kept.daily.done[0] && !kept.daily.done[1] && kept.streak.count === 4 && kept.streak.best === 6 && kept.streak.spared === 20120;
+    const raw = JSON.parse(store.get("oogaboogaland.v1"));
+    Object.assign(raw.pier, { coins: 2 ** 21, owned: ["balloon-orange", "balloon-orange", "rocket"], balloon: "rocket", fish: [1, -2, 2.5, 99999, "4"], jobs: { dash: 12, run: 4.5e9, sweep: 70000 }, midway: { ring: 9, hoops: 2 }, season: { id: 452, fishing: 500, whack: 44, volley: -1 }, daily: { day: 20123, progress: [1, -1, 1e9], done: [true, "yes", true], bonus: true }, streak: { last: 20123, count: 9, best: 6, spared: 0 } });
+    store.set("oogaboogaland.v1", JSON.stringify(raw));
+    const clean = make().state.pier, sane = clean.coins === 0 && clean.owned.length === 1 && clean.balloon === "" && clean.fish.join() === "1,0,0,0,0" && clean.midway.ring === 0 && clean.midway.hoops === 2 && clean.season.fishing === 0 && clean.season.whack === 44 && clean.season.volley === 0
+      && clean.daily.progress.join() === "1,0,0" && clean.daily.done.join() === "true,false,true" && !clean.daily.bonus && clean.streak.count === 0 && clean.streak.best === 0 && clean.jobs.dash === 0 && clean.jobs.run === 0 && clean.jobs.sweep === 70000 && clean.stamps.join() === "boardwalk";
+    runInNewContext(await readFile(new URL("../src/js/pier-jobs.js", import.meta.url), "utf8"), context);
+    const J = BL.pierJobs, dash = J.JOBS[0], medals = J.medalFor(dash, dash.medals[0]) === 0 && J.medalFor(dash, dash.medals[0] + 0.01) === 1 && J.medalFor(dash, dash.medals[2]) === 2 && J.medalFor(dash, dash.medals[2] + 1) === -1 && J.JOBS.every((job) => job.medals[0] < job.medals[1] && job.medals[1] < job.medals[2] && job.gates.length <= 8);
+    const times = w.recordPierJob("dash", 52000) && !w.recordPierJob("dash", 52000) && !w.recordPierJob("dash", 60000) && w.recordPierJob("dash", 41000) && !w.recordPierJob("dash", 2999) && !w.recordPierJob("dash", 41000.5) && !w.recordPierJob("taxi", 41000) && make().state.pier.jobs.dash === 41000 && make().state.pier.jobs.run === 0;
+    record("Pier jobs: a time earns the best medal it is inside, and only a first or faster whole time of a known job is kept", medals && times, JSON.stringify({ medals, times }));
+    record("Pier keepsakes: a hidden coin is found once, a look costs its tickets once and is worn only when owned, a season keeps its bests until the next one, and malformed saves are cleaned without touching the Passport", coin && refused && bought && season && turned && journal && midway && today && sane, JSON.stringify({ coin, refused, bought, season, turned, journal, midway, today, sane }));
+    store.delete("oogaboogaland.v1");
+  }
+  {
     runInNewContext(await readFile(new URL("../src/js/pier-builder.js",import.meta.url),"utf8"),context);
     const P=BL.pierBuilder;let draw=0;const r=P.createRound(()=>draw++%2?5:0);r.reset();r.start();
     r.anchor(5,0);const edge=!r.place()&&r.state.used===0;r.rotate();const rotated=r.place()&&r.state.used===2&&r.state.fees===12;
@@ -3834,9 +3891,12 @@ const gameRulesChecks = async () => {
     record("Block Builder rules: a rotated transaction fits the edge; overlap and invalid coordinates cannot spend block space or add fees",edge&&rotated&&overlap&&bad,JSON.stringify({edge,rotated,overlap,bad}));
     const shapes=[];for(let shape=0;shape<6;shape++){let n=0;const tx=P.createRound(()=>n++%2?5:shape);tx.reset();tx.start();tx.anchor(2,1);let fits=true;for(let turn=0;turn<4;turn++){fits&&=tx.fits();tx.rotate();}const fee=tx.state.offers[0].fee,size=tx.state.offers[0].size;shapes.push(fits&&tx.place()&&tx.state.used===size&&tx.state.fees===fee&&Array.from(tx.state.board).filter(Boolean).length===size);}
     record("Block Builder rules: all six transaction shapes rotate through four orientations and pack exactly their displayed space and fees",shapes.every(Boolean),JSON.stringify(shapes));
-    const full=P.createRound(()=>draw++%2?5:0);draw=0;full.reset();full.start();for(let y=0;y<6;y++)for(let x=0;x<6;x+=2){full.anchor(x,y);full.place();}
-    const bounded=full.state.used===36&&full.state.fees===216&&full.state.tickets===54&&!full.place();full.update(NaN);full.update(75);const deadline=full.state.phase==="result"&&full.state.elapsed===75&&!full.place()&&!full.rotate()&&!full.skip();full.update(50);full.close();full.update(50);
-    record("Block Builder rules: a full block caps fees and tickets; the deadline seals once and closed or expired rounds cannot change it",bounded&&deadline&&full.state.fees===P.MAX_FEES&&full.state.elapsed===75,JSON.stringify({bounded,deadline,fees:full.state.fees}));
+    const full=P.createRound(()=>draw++%2?5:0);draw=0;full.reset();full.start();
+    const offers=full.state.skips===P.SKIPS&&full.skip()&&full.skip()&&full.skip()&&!full.skip()&&full.state.skips===0&&full.state.event==="spent"&&full.state.offers[0].fee===12;
+    for(let y=0;y<6;y++)for(let x=0;x<6;x+=2){full.anchor(x,y);full.place();}
+    const sealed=full.state.used===36&&full.state.fees===216&&full.state.tickets===54&&full.state.phase==="result"&&full.state.elapsed<1&&!full.place()&&!full.rotate()&&!full.skip();full.update(NaN);full.update(50);full.close();full.update(50);
+    const timed=P.createRound(()=>draw++%2?5:0);draw=0;timed.reset();timed.start();timed.anchor(0,0);timed.place();timed.update(75);const deadline=timed.state.phase==="result"&&timed.state.elapsed===75&&timed.state.fees===12&&!timed.place();
+    record("Block Builder rules: three new offers a round and no more; a full block caps fees and tickets and seals at once; the deadline seals the rest, and sealed or closed rounds cannot change",offers&&sealed&&deadline&&full.state.fees===P.MAX_FEES,JSON.stringify({offers,sealed,deadline,fees:full.state.fees}));
     store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);
     const best=g.recordPierBuilder(36)&&[36,20,-1,NaN,217,2.5].every(n=>!g.recordPierBuilder(n))&&make().state.pier.builder===36;
     const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.builder=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const cleaned=make().state.pier;delete saved.pier.builder;store.set("oogaboogaland.v1",JSON.stringify(saved));
@@ -3866,14 +3926,19 @@ const gameRulesChecks = async () => {
     runInNewContext(await readFile(new URL("../src/js/pier-whack.js",import.meta.url),"utf8"),context);
     const P=BL.pierWhack,makeRound=()=>{const r=P.createRound(()=>0);r.reset();r.start();return r;},r=makeRound();
     const slot=coin=>r.state.cells.findIndex(c=>c.active&&c.coin===coin);
-    r.select(slot(1));const first=r.whack()&&r.state.score===2&&!r.whack()&&r.state.rejected===1;r.select(slot(2));r.whack();r.select(slot(4));r.whack();
-    const classification=r.state.spent===14&&first&&r.state.rejected===2&&r.state.wrong===1&&r.state.score===2&&r.state.tickets===0;
-    const invalid=!r.select(-1)&&!r.select(9)&&!r.select(1.5)&&!r.start();r.update(2.5);r.update(2.5);
-    record("Double-Spend Whack rules: spent B and C reject once, unspent E loses points, invalid slots do nothing and missed rejections cannot make a negative score",classification&&invalid&&r.state.missed===2&&r.state.score===0,JSON.stringify({classification,invalid,missed:r.state.missed,score:r.state.score}));
-    const full=makeRound();for(let wave=0;wave<30;wave++){for(const coin of [1,2]){full.select(full.state.cells.findIndex(c=>c.active&&c.coin===coin));full.whack();}full.update(2.5);}
-    const finish=full.state.phase==="result"&&full.state.elapsed===75&&full.state.score===P.MAX_SCORE&&full.state.tickets===40&&full.state.allowed===30&&!full.whack();full.update(1000);full.close();full.update(1000);
+    // With identity dice the first wave spends B, C and D for the first time. Whacking B there is the mistake, and B stays unspent.
+    const honest=r.state.spent===0&&r.state.cells.filter(c=>c.active).length===3&&r.state.cells.every(c=>!c.double);
+    r.select(slot(1));const wrong=r.whack()&&r.state.wrong===1&&r.state.score===0;r.update(2.5);const ledger=r.state.spent===12&&r.state.allowed===2;
+    // The second wave names C and D again: those are the double spends. Rejecting C scores once; D left alone is a miss; B's first spend goes through.
+    const doubles=r.state.cells.filter(c=>c.active&&c.double).map(c=>c.coin).sort().join()==="2,3"&&!r.state.cells[slot(1)].double;
+    r.select(slot(2));const first=r.whack()&&r.state.score===2&&!r.whack()&&r.state.rejected===1;
+    const invalid=!r.select(-1)&&!r.select(9)&&!r.select(1.5)&&!r.start();r.update(2.5);
+    const classification=honest&&wrong&&ledger&&doubles&&first&&r.state.spent===14&&r.state.missed===1&&r.state.score===1&&r.state.allowed===3;
+    record("Double-Spend Whack rules: a first spend is honest and stays on the ledger, a later spend of the same coin rejects once, and wrong hits, misses and invalid slots cannot make a negative score",classification&&invalid,JSON.stringify({honest,wrong,ledger,doubles,first,invalid,spent:r.state.spent,missed:r.state.missed,score:r.state.score}));
+    const full=makeRound();for(let wave=0;wave<30;wave++){for(let i=0;i<9;i++)if(full.state.cells[i].active&&full.state.cells[i].double){full.select(i);full.whack();}full.update(2.5);}
+    const finish=full.state.phase==="result"&&full.state.elapsed===75&&full.state.score===88&&full.state.score<=P.MAX_SCORE&&full.state.tickets===29&&full.state.allowed===46&&full.state.sets===7&&full.state.missed===0&&!full.whack();full.update(1000);full.close();full.update(1000);
     const coarse=makeRound(),fine=makeRound();coarse.update(NaN);coarse.update(1000);for(let i=0;i<750;i++)fine.update(.1);
-    record("Double-Spend Whack rules: thirty timed waves cap tickets, valid transactions pass, frame sizes agree and expired or closed rounds cannot score",finish&&full.state.score===120&&coarse.state.phase===fine.state.phase&&coarse.state.wave===30&&fine.state.wave===30&&coarse.state.missed===fine.state.missed&&coarse.state.allowed===fine.state.allowed,JSON.stringify({finish,coarse:coarse.state.missed,fine:fine.state.missed}));
+    record("Double-Spend Whack rules: thirty timed waves with every double spend rejected stay under the cap, a new set of coins follows a full ledger, frame sizes agree and expired or closed rounds cannot score",finish&&coarse.state.phase===fine.state.phase&&coarse.state.wave===30&&fine.state.wave===30&&coarse.state.missed===fine.state.missed&&coarse.state.allowed===fine.state.allowed,JSON.stringify({finish,coarse:coarse.state.missed,fine:fine.state.missed}));
     store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);g.recordPierBuilder(36);g.recordPierMayhem(12);
     const best=g.recordPierWhack(10)&&[10,4,-1,NaN,121,2.5].every(n=>!g.recordPierWhack(n))&&make().state.pier.whack===10;const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.whack=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const clean=make().state.pier;delete saved.pier.whack;store.set("oogaboogaland.v1",JSON.stringify(saved));
     record("Double-Spend Whack saves: only a better bounded whole score survives reload; older or malformed saves retain prior games and Passport",best&&clean.whack===0&&clean.mayhem===12&&clean.builder===36&&clean.fishing===15&&clean.stamps.includes("boardwalk")&&make().state.pier.whack===0,JSON.stringify({best,clean}));
@@ -3884,11 +3949,13 @@ const gameRulesChecks = async () => {
     const memory=r.state.phase==="memorize"&&!r.select(0)&&!r.choose()&&!r.check()&&!r.start();r.update(11.9);const held=r.state.phase==="memorize";r.update(.1);
     const shuffled=r.state.phase==="recall"&&new Set(r.state.cards).size===12&&r.state.cards[0]===1&&r.state.cards[1]===0;
     r.select(0);r.choose();r.choose();const cancelled=r.state.held===-1&&r.state.swaps===0;r.select(0);r.choose();r.select(1);r.choose();r.check();
-    const secured=r.state.phase==="secured"&&r.state.correct===12&&r.state.swaps===1&&r.state.tickets===30&&!r.select(0)&&!r.choose();r.update(62.99);const pending=r.state.phase==="secured"&&r.state.remaining>0;r.update(.01);
-    record("Seed Phrase Match rules: twelve unique cards stay ordered for 12s, shuffle even with identity dice, swap once and secure the exact 30-ticket maximum at 75s",memory&&held&&shuffled&&cancelled&&secured&&pending&&r.state.phase==="result"&&r.state.elapsed===75&&r.state.score===12,JSON.stringify({memory,held,shuffled,cancelled,secured,pending}));
-    const partial=makeRound();partial.update(12);const invalid=!partial.select(-1)&&!partial.select(12)&&!partial.select(.5);partial.select(0);partial.choose();partial.select(2);partial.choose();partial.check();const wrong=partial.state.phase==="recall"&&partial.state.correct===9;partial.update(NaN);partial.update(1000);const payout=partial.state.score===9&&partial.state.tickets===18&&!partial.choose()&&!partial.check();partial.close();partial.update(1000);
+    const plate=r.state.steel&&r.state.plate;
+    const done=r.state.phase==="result"&&r.state.correct===12&&r.state.swaps===1&&r.state.tickets===30&&r.state.score===12&&r.state.elapsed<13&&!r.select(0)&&!r.choose()&&!r.check();r.update(100);const still=r.state.elapsed<13;
+    const sand=P.createRound(n=>n-1);sand.reset();sand.start(false);sand.update(P.SAND-.1);const quick=sand.state.phase==="memorize"&&!sand.state.steel;sand.update(.1);const copied=sand.state.phase==="recall"&&sand.state.plate;sand.update(P.WASH-.1);const lasts=sand.state.plate;sand.update(.2);const washed=!sand.state.plate&&sand.state.event==="washed"&&sand.state.phase==="recall";
+    record("Seed Phrase Match rules: twelve unique cards stay ordered for 12s and shuffle even with identity dice; a perfect order ends the round at once with the 30-ticket maximum; steel keeps its backup and sand loses it to the tide",memory&&held&&shuffled&&cancelled&&plate&&done&&still&&quick&&copied&&lasts&&washed,JSON.stringify({memory,held,shuffled,cancelled,plate,done,still,quick,copied,lasts,washed}));
+    const partial=makeRound();partial.update(12);const invalid=!partial.select(-1)&&!partial.select(12)&&!partial.select(.5);partial.select(0);partial.choose();partial.select(2);partial.choose();partial.check();const wrong=partial.state.phase==="recall"&&partial.state.correct===9&&partial.state.score===9&&partial.state.tickets===18;partial.update(NaN);partial.update(1000);const payout=partial.state.score===9&&partial.state.tickets===18&&!partial.choose()&&!partial.check();partial.close();partial.update(1000);
     const coarse=makeRound(),fine=makeRound();coarse.update(75);for(let i=0;i<750;i++)fine.update(.1);
-    record("Seed Phrase Match rules: misplaced words pay only their correct positions; invalid, expired and closed input cannot score, and different time steps agree",invalid&&wrong&&payout&&partial.state.tickets===18&&coarse.state.phase===fine.state.phase&&coarse.state.score===10&&fine.state.score===10&&coarse.state.tickets===20,JSON.stringify({invalid,wrong,payout,coarse:coarse.state.score,fine:fine.state.score}));
+    record("Seed Phrase Match rules: a check banks only the words in their places; invalid, expired and closed input cannot score, and different time steps agree",invalid&&wrong&&payout&&partial.state.tickets===18&&coarse.state.phase===fine.state.phase&&coarse.state.score===10&&fine.state.score===10&&coarse.state.tickets===20,JSON.stringify({invalid,wrong,payout,coarse:coarse.state.score,fine:fine.state.score}));
     store.delete("oogaboogaland.v1");const make=()=>BL.game.create({catalog:[]}),g=make();g.stampPier("boardwalk");g.recordPierFishing(15);g.recordPierBuilder(36);g.recordPierMayhem(12);g.recordPierWhack(10);
     const best=g.recordPierSeedMatch(9)&&[9,4,-1,NaN,13,2.5].every(n=>!g.recordPierSeedMatch(n))&&make().state.pier.seedMatch===9;const saved=JSON.parse(store.get("oogaboogaland.v1"));saved.pier.seedMatch=999;store.set("oogaboogaland.v1",JSON.stringify(saved));const clean=make().state.pier;delete saved.pier.seedMatch;store.set("oogaboogaland.v1",JSON.stringify(saved));
     record("Seed Phrase Match saves: only a better bounded whole score persists; older or malformed saves retain all prior games and Passport without saving card words",best&&clean.seedMatch===0&&clean.whack===10&&clean.mayhem===12&&clean.builder===36&&clean.fishing===15&&clean.stamps.includes("boardwalk")&&make().state.pier.seedMatch===0&&!Object.values(saved.pier).some(v=>Array.isArray(v)&&v.includes("OOGA")),JSON.stringify({best,clean}));
@@ -8453,6 +8520,350 @@ scene("factory", { query: "character=portlandhodl", steps: [factoryWalking, fact
 scene("factory", { label: "entrance", url: hubPage(src, "character=portlandhodl"), steps: [factoryFloor, factoryEntrance] });
 scene("factory", { label: "canvas2d", query: "canvas2d=1&character=portlandhodl", steps: [factoryCanvas, factoryGreeter] });
 scene("bifrost", { url: hubPage(src, "solo=1&character=portlandhodl"), steps: [bifrostEntrance, bifrostWalking, bifrostExit, trip("bifrost")] });
+// The pier greets a visitor once a page with its title card. Every pier step walks through it as a player
+// does, whichever step a filtered run starts with; the card itself is checked once, in "pier title card".
+// A phone folds the pier's toolbar behind its Menu button; a visitor opens it before choosing from it.
+const pierMenu = (b) => b.evaluate(`(() => { const menu = document.getElementById("pier-menu"); if (menu.offsetParent && menu.getAttribute("aria-expanded") !== "true") menu.click(); return new Promise(requestAnimationFrame); })()`);
+// The toolbar control a game panel must leave clear: the Menu handle on a phone, the mute button on a desktop.
+const PIER_NAV = (touch) => touch ? "#pier-menu" : "#pier-mute";
+// A round that runs on a wall clock (Whack's 2.5-second waves) keeps ticking on real frames between a check's
+// own commands, however long the machine takes over them. `pierFreeze` holds the pier still except inside
+// __ooga.advance, so those steps play the same on a busy machine as on an idle one; `pierThaw` hands it back.
+const pierFreeze = (b) => b.evaluate(`(() => { if (window.__pierThaw) return; const sc = BL.scenes.pier, update = sc.update, B = __ooga, advance = B.advance; let on = false;
+  sc.update = (dt, t) => { if (on) update(dt, t); }; B.advance = (s, dt) => { on = true; try { return advance(s, dt); } finally { on = false; } };
+  window.__pierThaw = () => { sc.update = update; B.advance = advance; delete window.__pierThaw; }; })()`);
+const pierThaw = (b) => b.evaluate(`window.__pierThaw && window.__pierThaw()`);
+// Every pier step also starts with the day's challenges parked and the hidden coins put away: both pay tickets for
+// things other checks do in passing (a finished round, a walk down the boardwalk), and those checks count tickets
+// exactly. The checks that are about them (`pier reasons to return`) bring them back out.
+const greeted = (step) => ({ ...step, run: async (b) => { await b.evaluate(`BL.pierDaily.hold(true); BL.pierCoins.hold(true)`); if (await b.evaluate(`!document.querySelector('[data-intro="pier"]').hidden`)) await b.key("Enter"); return step.run(b); } });
+const pierTitleCard = { name: "pier title card", why: "playthrough: the title card greets a first arrival, keeps keys from the scene until it is closed, and stays away on later arrivals in the same page", run: async (b) => {
+  const at = () => b.evaluate(`(() => { const B = __ooga, p = B.crew.player.root.position; return { card: !document.querySelector('[data-intro="pier"]').hidden, z: p.z }; })()`);
+  const shown = await at();
+  await holdKey(b, "w", 0.5);
+  const held = await at();
+  await b.key("Enter");
+  const closed = await at();
+  await holdKey(b, "w", 0.5);
+  const walked = await at();
+  await tourGo(b, "bifrost"); await tourGo(b, "pier");
+  const again = await at();
+  record("pier title card: it greets the first arrival, W does not walk behind it, Enter closes it and the walk starts, and a second arrival goes straight in", shown.card && held.card && Math.abs(held.z - shown.z) < 0.01 && !closed.card && Math.abs(walked.z - closed.z) > 1 && !again.card, JSON.stringify({ shown, held, closed, walked, again }));
+} };
+// Wave 0 of untracked/ooga-pier-plan.md: static scenery shares meshes (one draw per kind of thing) and the shadow
+// box moves in steps. A regression here costs nothing on a fast desktop and most of the frame on a phone.
+const PIER_RECORDS = 400;
+const pierFrameBudget = { name: "pier frame budget", why: "rule: the pier keeps its static scenery in shared meshes and moves its shadow box in steps, so a walk does not redraw every caster every frame", run: async (b) => {
+  const r = await b.evaluate(`(() => { const B = __ooga;
+    B.pilot.navigate({ position: { x: 0, y: BL.pierModels.LAYOUT.top, z: 60 }, yaw: 0, pitch: 0.3, dist: 7 }); B.advance(0.3, 1 / 60);
+    return { records: B.renderer.stats.records }; })()`);
+  await b.send("Input.dispatchKeyEvent", { type: "keyDown", key: "w", text: "w", code: "KeyW" });
+  const walk = await b.evaluate(`(() => { const B = __ooga, o = BL.scenes.pier.renderOpts.shadowCenter, seen = new Set(), from = B.crew.player.root.position.z;
+    for (let i = 0; i < 600; i++) { B.advance(1 / 60, 1 / 60); seen.add(o.x + "," + o.y + "," + o.z); }
+    return { boxes: seen.size, walked: Math.abs(B.crew.player.root.position.z - from) }; })()`);
+  await b.send("Input.dispatchKeyEvent", { type: "keyUp", key: "w", code: "KeyW" });
+  await b.evaluate(`__ooga.advance(0.2, 1 / 60)`);
+  record("pier frame budget: the scenery stays in shared meshes and a ten-second walk moves the shadow box only a few times", r.records > 0 && r.records <= PIER_RECORDS && walk.walked > 40 && walk.boxes <= Math.ceil(walk.walked / 12) + 2, JSON.stringify({ records: r.records, budget: PIER_RECORDS, ...walk }));
+} };
+const pierWheelsAndWater = { name: "pier wheels and water", why: "playthrough: a visitor takes a bike from the rack, steers it their way on screen and steps off, swims where the old pier sent them back to the avenue, and climbs out by a ladder", run: async (b) => {
+  const at = () => b.evaluate(`(() => { const B = __ooga, a = B.crew.player, p = a.root.position; return { name: a.traits.name, x: p.x, z: p.z, feet: p.y - a.baseY, seat: !!a.camp.seat, riding: B.pier.wheels.riding }; })()`);
+  // The first bike on the forecourt rack faces along -x with open pavement ahead; stand beside it and look where it points.
+  await b.evaluate(`(() => { const B = __ooga, v = B.pier.wheels.vehicles[0]; B.pilot.navigate({ position: { x: v.x - 1.3, y: v.y, z: v.z }, yaw: Math.PI / 2, pitch: 0.3, dist: 8 }); B.advance(0.3, 1 / 60); })()`);
+  await b.key("e"); await b.evaluate(`__ooga.advance(0.5, 1 / 60)`);
+  const mounted = await at(), turns = [];
+  for (const [key, side] of [["d", 1], ["a", -1]]) {
+    await b.evaluate(`(() => { const B = __ooga, v = B.pier.wheels.vehicle, c = B.camera, dx = c.target.x - c.position.x, dz = c.target.z - c.position.z, l = Math.hypot(dx, dz); window.__pierRide = { x: v.x, z: v.z, fx: dx / l, fz: dz / l }; })()`);
+    for (const k of ["w", key]) await b.send("Input.dispatchKeyEvent", { type: "keyDown", key: k, text: k, code: "Key" + k.toUpperCase() });
+    await b.evaluate(`__ooga.advance(1.2, 1 / 60)`);
+    for (const k of ["w", key]) await b.send("Input.dispatchKeyEvent", { type: "keyUp", key: k, code: "Key" + k.toUpperCase() });
+    const move = await b.evaluate(`(() => { const B = __ooga, v = B.pier.wheels.vehicle, q = window.__pierRide, dx = v.x - q.x, dz = v.z - q.z; B.advance(1.5, 1 / 60); return { right: dx * -q.fz + dz * q.fx, fwd: dx * q.fx + dz * q.fz }; })()`);
+    turns.push({ key, ...move, ok: move.right * side > 0.4 && Math.hypot(move.right, move.fwd) > 4 });
+    // Line the view up behind the bike again before the other turn.
+    await b.evaluate(`(() => { const B = __ooga, v = B.pier.wheels.vehicle; B.pilot.orbit.yaw = B.pilot.orbit.tYaw = Math.atan2(-Math.sin(v.yaw), -Math.cos(v.yaw)); B.advance(0.3, 1 / 60); })()`);
+  }
+  const top = await b.evaluate(`__ooga.pier.wheels.topSpeed`);
+  await b.key(" "); await b.evaluate(`__ooga.advance(0.3, 1 / 60)`);
+  // The ride can end on the bridge's slope, where the support under a body's width and the walk's bob differ by a few
+  // centimetres. The check is that the rider is back on the ground and not left at saddle height, 0.82 m up.
+  const off = await at(), floor = await b.evaluate(`(() => { const B = __ooga, a = B.crew.player, p = a.root.position; return B.pier.solids.supportAt(p.x, p.z, p.y - a.baseY + 0.3, 0.6, 0.4); })()`);
+  record("pier wheels: E takes the bike, W with D and with A steer it their way on screen faster than a walk, and Space steps the same Ooga off onto the ground", mounted.riding && mounted.seat && turns.every((t) => t.ok) && top > 9 && !off.riding && !off.seat && off.name === "portlandhodl" && Math.abs(off.feet - floor) < 0.2, JSON.stringify({ mounted, turns, top, off, floor }));
+  await b.evaluate(`(() => { const B = __ooga; B.pier.travel(40, 0.35, -30, 0); B.pilot.navigate({ position: { x: 40, y: 0.35, z: -30 }, yaw: 0, pitch: 0.3, dist: 7 }); B.advance(0.3, 1 / 60); })()`);
+  await holdKey(b, "w", 8);
+  const swim = await at();
+  record("pier water: walking into the sea leaves the same Ooga swimming there, held up by the water", swim.name === "portlandhodl" && swim.z < -75 && Math.abs(swim.x - 40) < 3 && swim.feet < -1 && swim.feet > -1.6 && !swim.seat, JSON.stringify(swim));
+  await b.evaluate(`(() => { const B = __ooga; B.pier.travel(11, -1.4, -200, 0); B.advance(0.5, 1 / 60); })()`);
+  await b.key("e"); await b.evaluate(`__ooga.advance(0.5, 1 / 60)`);
+  const out = await at();
+  record("pier water: E at a ladder puts the swimmer back on the deck", out.name === "portlandhodl" && Math.abs(out.feet - 1.35) < 0.05 && out.x < 7 && Math.abs(out.z + 200) < 2, JSON.stringify(out));
+} };
+const pierAfterDark = { name: "pier after dark", why: "rule: the pier lights itself at dusk within the renderer's light budget, nearest lamps first, and goes dark again by day", run: async (b) => {
+  const read = (hour) => b.evaluate(`(() => { const B = __ooga, P = B.pier, L = BL.pierModels.LAYOUT; B.setHour(${hour}); B.pilot.navigate({ position: { x: 0, y: L.top, z: 20 }, yaw: 0, pitch: 0.3, dist: 8 }); B.advance(1, 1 / 60);
+    const o = BL.scenes.pier.renderOpts, a = B.crew.player.root.position, near = []; for (let i = 3; i < o.lightCount; i++) near.push(Math.hypot(o.lights[i * 8] - a.x, o.lights[i * 8 + 2] - a.z));
+    // The slowest of the wheel's four programs changes every half second, so one of two looks 0.3 s apart must differ.
+    const arcs = P.land.ferris.arcs.map((n) => n.glow), differs = () => P.land.ferris.arcs.some((n, i) => Math.abs(n.glow - arcs[i]) > 0.05); B.advance(0.3, 1 / 60); let moved = differs(); B.advance(0.3, 1 / 60); moved = moved || differs();
+    return { lit: o.lightCount, sources: P.lights.sources, far: Math.max(0, ...near), sorted: near.every((d, i) => i === 0 || d >= near[i - 1] - 0.01), lamp: P.land.lamps[0].glow, sign: P.land.signs[0].glow,
+      panes: P.decor.feeFlags.length === 2, moved, cap: BL.glRenderer.POINT_LIGHT_CAPACITY }; })()`);
+  const night = await read(22), day = await read(12);
+  record("pier after dark: night lights the nearest lamps in order inside the light budget and runs the wheel's show; day leaves only the lighthouse's own", night.lit > 6 && night.lit <= 3 + 14 && night.lit <= night.cap && night.far < 80 && night.sorted && night.lamp > 1.5 && night.sign > 2.5 && night.moved && night.sources >= 30 && day.lit === 3 && day.lamp < 0.2, JSON.stringify({ night, day }));
+} };
+const pierParkRides = { name: "pier park rides", why: "playthrough: the ship, the scrambler and the drop tower load only at rest, carry the same Ooga through their program and pay a stub at the pad", run: async (b) => {
+  const rows = [];
+  for (const id of ["ship", "scrambler", "drop"]) {
+    rows.push(await b.evaluate(`(() => { const B = __ooga, P = B.pier, L = BL.pierModels.LAYOUT, m = P.land.park.rides.find((r) => r.id === "${id}"), before = B.game.state.arcade.tickets, a = B.crew.player;
+      B.pilot.navigate({ position: { x: m.board.x, y: L.top, z: m.board.z }, yaw: 0, pitch: 0.3, dist: 9 }); B.advance(0.3, 1 / 60);
+      let guard = 0; while (m.boardOpen && guard++ < 400) P.simulate(0.05);
+      const refused = (P.rides.tapBoard(), B.advance(0.4, 1 / 60), !P.rides.riding);
+      guard = 0; while (!m.boardOpen && guard++ < 4000) P.simulate(0.05);
+      B.advance(0.5, 1 / 60); P.rides.tapBoard(); B.advance(0.6, 1 / 60);
+      const boarded = P.rides.kind === "${id}" && a.camp.seat === m.seat;
+      let peak = 0, far = 0, seconds = 0; while (P.rides.riding && seconds < 80) { P.simulate(0.1); seconds += 0.1; peak = Math.max(peak, a.root.position.y); far = Math.max(far, Math.hypot(a.root.position.x - m.board.x, a.root.position.z - m.board.z)); }
+      const p = a.root.position;
+      return { id: "${id}", refused, boarded, seconds: +seconds.toFixed(1), peak, far, paid: B.game.state.arcade.tickets - before, stub: m.stub, off: !a.camp.seat && !a.root.quaternion && Math.abs(p.y - a.baseY - L.top) < 0.05 && Math.hypot(p.x - m.board.x, p.z - m.board.z) < 1.2, name: a.traits.name }; })()`));
+  }
+  record("pier park rides: each refuses a rider mid-program, boards at rest, moves them well off the pad, and sets the same Ooga down there with its stub paid", rows.every((r) => r.refused && r.boarded && r.off && r.paid === r.stub && r.name === "portlandhodl" && r.seconds > 15 && r.seconds < 60) && rows[0].far > 4 && rows[1].far > 6 && rows[2].peak > 15, JSON.stringify(rows));
+} };
+const pierPhotoAndFireworks = { name: "pier photo and fireworks", why: "playthrough: a show of fireworks stays inside the particle pool and ends, and photo mode clears the screen, saves a real frame and hands the controls back", run: async (b) => {
+  const show = await b.evaluate(`(() => { const B = __ooga, P = B.pier; P.fireworks.show(6); let peak = 0; for (let i = 0; i < 90; i++) { B.advance(0.1, 1 / 60); peak = Math.max(peak, B.stats().particles); } return { launched: P.fireworks.launched, bursts: P.fireworks.bursts, peak, left: B.stats().particles, active: P.fireworks.active }; })()`);
+  record("pier fireworks: six shells climb, burst and burn out without overrunning the particle pool", show.launched === 6 && show.bursts === 6 && show.peak > 40 && show.peak <= 240 && show.left === 0 && !show.active, JSON.stringify(show));
+  await pierMenu(b);
+  await b.evaluate(`document.querySelector('.presets[data-scene="pier"] [data-action="pier-photo"]').click()`);
+  const mode = await b.evaluate(`(() => { const hidden = (q) => getComputedStyle(document.querySelector(q)).visibility === "hidden"; return { on: __ooga.pier.photo.on, bar: !document.getElementById("pier-photo").hidden, topbar: hidden(".topbar"), map: hidden(".pier-navigation") }; })()`);
+  await b.evaluate(`document.getElementById("pier-photo-save").click()`);
+  let bytes = 0;
+  for (let i = 0; i < 40 && !bytes; i++) { await b.sleep(100); bytes = await b.evaluate(`__ooga.pier.photo.bytes`); }
+  await b.key("Escape");
+  const after = await b.evaluate(`({ on: __ooga.pier.photo.on, topbar: getComputedStyle(document.querySelector(".topbar")).visibility !== "hidden", driving: !!__ooga.crew.player })`);
+  record("pier photo: the screen clears to the pier, Save photo writes a real frame, and Escape gives the screen and the Ooga back", mode.on && mode.bar && mode.topbar && mode.map && bytes > 20000 && !after.on && after.topbar && after.driving, JSON.stringify({ mode, bytes, after }));
+} };
+const pierBlockParty = { name: "pier block party", why: "rule: a new block rings the pier once, pays double for ninety seconds, drops one coin at a place fixed by its height, and a repeated or older height changes nothing", run: async (b) => {
+  const r = await b.evaluate(`(() => { const B = __ooga, P = B.pier, C = P.chain, out = {}, draw = BL.math.randomInt, L = BL.pierModels.LAYOUT;
+    try {
+      out.quiet = { height: C.state.height, party: C.state.party, mult: C.multiplier, fill: C.fill, cars: P.land.coaster.coupled };
+      BL.mempool.emit({ type: "block", height: 900001, txCount: 2500 }); B.advance(0.5, 1 / 60);
+      out.rung = { height: C.state.height, party: C.state.party, mult: C.multiplier, coin: C.state.coin, at: C.state.coinAt.slice(), cars: P.land.coaster.coupled, fireworks: P.fireworks.active, fill: C.fill, burst: C.state.burst, banner: !document.getElementById("pier-party").hidden, pill: document.getElementById("pier-block-height").textContent };
+      BL.mempool.emit({ type: "block", height: 900001, txCount: 1 }); BL.mempool.emit({ type: "block", height: 899999, txCount: 1 }); B.advance(0.2, 1 / 60);
+      out.repeat = { blocks: C.state.blocks, height: C.state.height };
+      // The bell rings on its next swing; its three tickets arrive doubled.
+      BL.math.randomInt = () => 0; P.travel(L.bell.play.x, L.bell.y, L.bell.play.z, 0); B.advance(0.3, 1 / 60);
+      const before = B.game.state.arcade.tickets; P.bell.act(); B.advance(0.6, 1 / 60); out.doubled = B.game.state.arcade.tickets - before;
+      const at = C.state.coinAt, held = B.game.state.arcade.tickets; P.travel(at[0], at[1], at[2], 0); B.advance(0.5, 1 / 60);
+      out.coin = { paid: B.game.state.arcade.tickets - held, left: C.state.coin, collected: C.state.collected };
+      P.simulate(92, 1 / 30);
+      out.after = { party: C.state.party, mult: C.multiplier, banner: !document.getElementById("pier-party").hidden, fill: C.fill };
+      const single = B.game.state.arcade.tickets; P.travel(L.bell.play.x, L.bell.y, L.bell.play.z, 0); B.advance(0.3, 1 / 60); P.bell.act(); B.advance(0.6, 1 / 60); out.single = B.game.state.arcade.tickets - single;
+      // The same heights always drop their coins in the same places, and the places vary.
+      const places = []; for (let h = 900002; h < 900014; h++) { BL.mempool.emit({ type: "block", height: h, txCount: 1 }); places.push(C.state.coinAt.join()); }
+      out.places = new Set(places).size; out.sequence = places.join("|"); out.wagons = P.land.coaster.coupled;
+    } finally { BL.math.randomInt = draw; }
+    return out; })()`);
+  record("pier block party: a block starts ninety seconds of double tickets with one coin to find, wagons couple up to six, and the same height never rings twice", r.quiet.party === 0 && r.quiet.mult === 1 && r.quiet.fill === -1 && r.rung.height === 900001 && r.rung.party > 88 && r.rung.mult === 2 && r.rung.coin && r.rung.cars === 1 && r.rung.fireworks && r.rung.fill < 0.01 && r.rung.burst > 0.8 && r.rung.banner && r.rung.pill.includes("900,001") && r.repeat.blocks === 1 && r.repeat.height === 900001 && r.doubled === 6 && r.coin.paid === 21 && !r.coin.left && r.coin.collected === 1 && r.after.party === 0 && r.after.mult === 1 && !r.after.banner && r.after.fill > 0.1 && r.single === 3 && r.places >= 4 && r.wagons === 6, JSON.stringify(r));
+  await tourGo(b, "hub"); await tourGo(b, "pier");
+  const again = await b.evaluate(`(() => { const C = __ooga.pier.chain, places = []; for (let h = 900002; h < 900014; h++) { BL.mempool.emit({ type: "block", height: h, txCount: 1 }); places.push(C.state.coinAt.join()); } return places.join("|"); })()`);
+  record("pier block party: on a later visit the same blocks drop their coins in the same places", again === r.sequence, again);
+} };
+const pierWeather = { name: "pier weather", why: "rule: the backlog raises the swell, arriving transactions bring rain, the next block's fee flies the right flag and prints on the board, and a calm feed clears the sky again", run: async (b) => {
+  const read = (values, seconds) => b.evaluate(`(() => { const B = __ooga, P = B.pier; P.chain.set(${JSON.stringify(values)}); P.simulate(${seconds}, 1 / 30); B.advance(0.2, 1 / 30); P.boards.refresh();
+    return { rain: P.chain.state.rain, surf: P.chain.state.surf, fee: P.decor.fee, clouds: BL.scenes.pier.renderOpts.clouds, board: P.boards.text("fee"), halving: P.boards.text("halving"), webgl: B.renderer.kind === "webgl2" }; })()`);
+  const storm = await read({ soak: 0.9, gale: 0.95, nextFee: 44 }, 16), calm = await read({ soak: 0, gale: 0, nextFee: 3 }, 30);
+  await b.evaluate(`__ooga.pier.chain.set(null)`);
+  record("pier weather: a full, busy mempool brings swell, rain, cloud and the red flag; an empty one clears to calm and green", storm.rain > 0.7 && storm.surf > 0.6 && storm.fee === 2 && storm.clouds > 0.9 && storm.board.includes("44 SAT/VB") && storm.board.includes("CROWDED") && calm.rain < 0.1 && calm.surf < 0.1 && calm.fee === 0 && calm.clouds < 0.72 && calm.board.includes("CALM") && calm.halving.includes("BLOCKS"), JSON.stringify({ storm, calm }));
+} };
+const pierFerryCrossing = { name: "pier ferry crossing", why: "playthrough: the Block Ferry waits for a real block, carries the same Ooga to the lighthouse, where the crank lights their lantern once, and brings them home", run: async (b) => {
+  const r = await b.evaluate(`(() => { const B = __ooga, P = B.pier, F = P.ferry, L = BL.pierModels.LAYOUT, out = {}, a = () => B.crew.player, at = () => { const p = a().root.position; return { x: p.x, feet: p.y - a().baseY, z: p.z, seat: !!a().camp.seat, name: a().traits.name }; };
+    P.travel(F.pierPad.x, L.top, F.pierPad.z, Math.PI); B.advance(0.4, 1 / 60);
+    out.prompt = P.interactions.current && P.interactions.current.id; P.interactions.activate(); B.advance(0.6, 1 / 60);
+    out.aboard = { riding: F.riding, ...at() }; P.simulate(60, 1 / 30); out.waits = F.state.phase;
+    BL.mempool.emit({ type: "block", height: 910000, txCount: 2000 }); B.advance(1, 1 / 60); out.called = F.state.phase;
+    F.requestExit(); B.advance(0.2, 1 / 60); out.boarding = F.riding; P.interactions.activate(); B.advance(0.6, 1 / 60);
+    P.simulate(26, 1 / 30); out.sailing = { phase: F.state.phase, riding: F.riding }; F.requestExit(); B.advance(0.2, 1 / 60); out.held = F.riding;
+    P.simulate(22, 1 / 30); B.advance(0.2, 1 / 30); out.landed = { phase: F.state.phase, riding: F.riding, ...at() };
+    P.travel(F.door.x, F.landing.y, F.door.z, 0); B.advance(0.4, 1 / 60); out.door = P.interactions.current && P.interactions.current.id; P.interactions.activate(); B.advance(0.4, 1 / 60); out.gallery = at();
+    P.travel(F.gallery.x, F.gallery.y, F.gallery.z, 0); B.advance(0.3, 1 / 60); out.crank = P.interactions.current && P.interactions.current.id;
+    const tickets = B.game.state.arcade.tickets; P.interactions.activate(); B.advance(5, 1 / 30);
+    out.lit = { verified: F.state.verified, saved: BL.game.create({ catalog: BL.models.SWAG }).state.pier.lantern, paid: B.game.state.arcade.tickets - tickets, stamp: B.game.state.pier.stamps.includes("lighthouse") };
+    const again = B.game.state.arcade.tickets; P.interactions.activate(); B.advance(5, 1 / 30); out.once = B.game.state.arcade.tickets - again;
+    P.travel(F.hatch.x, F.gallery.y, F.hatch.z, 0); B.advance(0.3, 1 / 60); out.hatch = P.interactions.current && P.interactions.current.id; P.interactions.activate(); B.advance(0.4, 1 / 60); out.down = at();
+    out.home = { phase: F.state.phase, prompt: P.interactions.current && P.interactions.current.id }; P.interactions.activate(); B.advance(0.6, 1 / 60); out.back = { riding: F.riding, phase: F.state.phase };
+    P.simulate(70, 1 / 30); B.advance(0.2, 1 / 30); out.pier = { phase: F.state.phase, riding: F.riding, sailings: F.state.sailings, ...at() };
+    return out; })()`);
+  const lighthouse = await b.evaluate(`({ x: BL.pierLighthouse.LAYOUT.x, z: BL.pierLighthouse.LAYOUT.z })`), far = (p) => Math.hypot(p.x - lighthouse.x, p.z - lighthouse.z);
+  record("pier ferry: it stays tied up until a block is found, then sails after a short call and will not let a rider off mid-crossing", r.prompt === "ferry" && r.aboard.riding && r.aboard.seat && r.waits === "moored" && r.called === "boarding" && !r.boarding && r.sailing.phase === "out" && r.sailing.riding && r.held, JSON.stringify(r));
+  record("pier ferry: the same Ooga is set down on the lighthouse, climbs to the lantern, and the crank lights a saved lantern and pays once", r.landed.phase === "landed" && !r.landed.riding && !r.landed.seat && r.landed.name === "portlandhodl" && far(r.landed) < 9 && Math.abs(r.landed.feet - 1.4) < 0.1 && r.door === "lighthouse-door" && r.gallery.feet > 22 && far(r.gallery) < 4.4 && r.crank === "lighthouse-crank" && r.lit.verified && r.lit.saved && r.lit.paid === 42 && r.lit.stamp && r.once === 0, JSON.stringify({ landed: r.landed, gallery: r.gallery, lit: r.lit, once: r.once }));
+  record("pier ferry: the hatch leads back down and the waiting ferry carries the same Ooga home to the pier tip", r.hatch === "lighthouse-hatch" && Math.abs(r.down.feet - 1.4) < 0.1 && r.home.prompt === "ferry-home" && r.back.riding && r.pier.phase === "moored" && !r.pier.riding && !r.pier.seat && r.pier.name === "portlandhodl" && Math.abs(r.pier.feet - 1.35) < 0.05 && r.pier.z > -272 && r.pier.sailings === 1, JSON.stringify({ down: r.down, home: r.home, back: r.back, pier: r.pier }));
+} };
+const pierReasonsToReturn = { name: "pier reasons to return", why: "rule: the day's challenges count what the visitor really does and pay once, a new day brings three new ones and carries the streak, a hidden coin is found once, the Surf Shop sells a look for its price and nothing more, and the hall of fame gives the visitor the place they earned", run: async (b) => {
+  const touch = await b.evaluate(`matchMedia("(pointer: coarse)").matches`);
+  const click = async (selector) => { const p = await b.evaluate(`(() => { const el = document.querySelector(${JSON.stringify(selector)}), r = el.getBoundingClientRect(), x = r.x + r.width / 2, y = r.y + r.height / 2, hit = document.elementFromPoint(x, y); return { x, y, ok: r.width > 0 && !!hit && el.contains(hit) }; })()`); if (!p.ok) throw Error(`${selector} cannot be clicked`); if (touch) { await b.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: p.x, y: p.y }] }); await b.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] }); } else await b.click(p.x, p.y); };
+  // The challenges and the coins come back out for this step, on a day whose first challenge is the bell.
+  const r = await b.evaluate(`(() => { const B = __ooga, P = B.pier, L = BL.pierModels.LAYOUT, D = BL.pierDaily, out = {}, draw = BL.math.randomInt, tickets = () => B.game.state.arcade.tickets, saved = () => BL.game.create({ catalog: BL.models.SWAG }).state.pier, pill = () => document.getElementById("pier-daily").textContent;
+    try {
+      D.hold(false); BL.pierCoins.hold(false);
+      let day = 20000; while (D.pick(day)[0].id !== "rings") day++;
+      P.daily.pin(day);
+      const tasks = P.daily.tasks, start = tickets();
+      out.fresh = { pill: pill(), same: JSON.stringify(tasks) === JSON.stringify(D.pick(day)), items: [...document.querySelectorAll("#pier-daily-list li")].map((li) => li.textContent), streak: document.getElementById("pier-streak").textContent };
+      BL.math.randomInt = () => 0; P.travel(L.bell.play.x, L.bell.y, L.bell.play.z, 0); B.advance(0.3, 1 / 60);
+      for (let i = 0; i < tasks[0].goal; i++) { P.bell.act(); B.advance(0.6, 1 / 60); }
+      B.advance(2.5, 1 / 60);
+      out.rung = { paid: tickets() - start, due: tasks[0].goal * BL.pierBell.PRIZE + D.PRIZE, done: P.daily.done, pill: pill(), streak: P.daily.streak.count, item: document.querySelector("#pier-daily-list li").textContent, toast: document.getElementById("toast").textContent, kept: saved().daily.done[0] && saved().streak.count === 1 };
+      const again = tickets(); P.bell.act(); B.advance(1.2, 1 / 60); out.once = tickets() - again;
+      // A finished round reaches the challenges through the pier's own save: one short of the goal, then the goal, then the third for the bonus.
+      const round = (task, value) => P.purse[{ fishing: "recordPierFishing", builder: "recordPierBuilder", mayhem: "recordPierMayhem", whack: "recordPierWhack", seed: "recordPierSeedMatch", volley: "recordPierVolley" }[task.id]](task.id === "fishing" ? value * 5 : value);
+      const second = tickets(); round(tasks[1], tasks[1].goal - (tasks[1].id === "mayhem" ? 6 : 1)); out.short = { done: P.daily.done, paid: tickets() - second };
+      round(tasks[1], tasks[1].goal); out.second = { done: P.daily.done, paid: tickets() - second };
+      const third = tickets(); round(tasks[2], tasks[2].goal); B.advance(2.5, 1 / 60);
+      out.all = { done: P.daily.done, paid: tickets() - third, due: D.PRIZE + D.BONUS, fireworks: P.fireworks.active || P.fireworks.launched > 0, bonus: saved().daily.bonus, streak: P.daily.streak.count };
+      // The next day: three new ones, nothing carried but the streak, which the first finish extends.
+      P.daily.pin(day + 1); const next = P.daily.tasks;
+      out.next = { done: P.daily.done, same: JSON.stringify(next) === JSON.stringify(D.pick(day + 1)), progress: P.daily.save.progress.join(), streak: P.daily.streak.count };
+      round(next[1], next[1].goal); out.carried = { done: P.daily.done, streak: P.daily.streak.count, best: saved().streak.best };
+      // A hidden coin: drawn from near, found by walking into it, and gone for good.
+      const c = P.coins.coins[5], had = tickets();
+      P.travel(c.x + 6, c.y, c.z, 0); B.advance(0.5, 1 / 60); out.near = { found: P.coins.found, shown: c.node.visible };
+      P.travel(c.x, c.y, c.z, 0); B.advance(0.5, 1 / 60);
+      out.coin = { paid: tickets() - had, found: P.coins.found, shown: c.node.visible, kept: saved().coins === 32, line: document.getElementById("pier-collection").textContent };
+      P.travel(c.x + 6, c.y, c.z, 0); B.advance(0.3, 1 / 60); P.travel(c.x, c.y, c.z, 0); B.advance(0.5, 1 / 60); out.coinOnce = tickets() - had - out.coin.paid;
+      // The shop's pad.
+      P.travel(L.shop.play.x, L.top, L.shop.play.z, 0); B.advance(0.5, 1 / 60); out.prompt = P.interactions.current && P.interactions.current.id; out.tickets = tickets();
+    } finally { BL.math.randomInt = draw; }
+    return out; })()`);
+  record("pier daily three: the bell's rings finish the day's first challenge, which pays once, starts the streak and is saved; a finished round counts only at its goal, and the third pays the bonus with fireworks", r.fresh.pill === "Today 0/3" && r.fresh.same && r.fresh.items.length === 3 && r.fresh.items.every((t) => t.includes("15 tickets")) && r.fresh.streak.includes("start a streak")
+    && r.rung.paid === r.rung.due && r.rung.done === 1 && r.rung.pill === "Today 1/3" && r.rung.streak === 1 && r.rung.item.startsWith("Done") && r.rung.toast.includes("Today 1/3") && r.rung.kept && r.once === 3
+    && r.short.done === 1 && r.short.paid === 0 && r.second.done === 2 && r.second.paid === 15 && r.all.done === 3 && r.all.paid === r.all.due && r.all.fireworks && r.all.bonus && r.all.streak === 1, JSON.stringify(r));
+  record("pier streak: the next day brings three new challenges with nothing carried over but the streak, which the first one finished extends", r.next.done === 0 && r.next.same && r.next.progress === "0,0,0" && r.next.streak === 1 && r.carried.done === 1 && r.carried.streak === 2 && r.carried.best === 2, JSON.stringify({ next: r.next, carried: r.carried }));
+  record("pier hidden coins: a coin shows from near, pays its five tickets when walked into, and is saved as found for good", r.near.found === 0 && r.near.shown && r.coin.paid === 5 && r.coin.found === 1 && !r.coin.shown && r.coin.kept && r.coin.line.includes("Hidden coins 1/21") && r.coinOnce === 0, JSON.stringify({ near: r.near, coin: r.coin, once: r.coinOnce }));
+  // The Surf Shop through its own prompt and buttons.
+  if (touch) await click("#pier-prompt-use"); else await b.key("e");
+  const open = await b.evaluate(`(() => { const P = __ooga.pier, text = (id) => document.querySelector('[data-good="' + id + '"]').textContent, off = (id) => document.querySelector('[data-good="' + id + '"]').disabled; return { busy: P.shop.busy, panel: !document.getElementById("pier-shop").hidden, orange: text("balloon-orange"), stripe: text("balloon-stripe"), locked: off("balloon-stripe") && off("balloon-block") && !off("balloon-orange"), nav: document.querySelector(".pier-navigation").hidden }; })()`);
+  const layout = await b.evaluate(PHONE(["#pier-shop-fireworks", "#pier-shop-close", '[data-good="balloon-orange"]', '[data-good="balloon-block"]']));
+  await click('[data-good="balloon-orange"]'); await b.evaluate(`__ooga.advance(0.4, 1 / 60)`);
+  const bought = await b.evaluate(`(() => { const B = __ooga, P = B.pier; return { paid: ${r.tickets} - B.game.state.arcade.tickets, worn: P.shop.worn, flying: P.land.shop.balloon.visible, button: document.querySelector('[data-good="balloon-orange"]').textContent, kept: BL.game.create({ catalog: BL.models.SWAG }).state.pier.balloon }; })()`);
+  await click('[data-good="balloon-orange"]'); await b.evaluate(`__ooga.advance(0.4, 1 / 60)`);
+  const loose = await b.evaluate(`(() => { const B = __ooga, P = B.pier; return { paid: ${r.tickets} - B.game.state.arcade.tickets, worn: P.shop.worn, flying: P.land.shop.balloon.visible, owned: B.game.state.pier.owned.join() }; })()`);
+  await click("#pier-shop-fireworks"); await b.evaluate(`__ooga.advance(0.6, 1 / 60)`);
+  const show = await b.evaluate(`({ paid: ${r.tickets} - __ooga.game.state.arcade.tickets, up: __ooga.pier.fireworks.active })`);
+  if (touch) await click("#pier-shop-close"); else await b.key("Escape");
+  await holdKey(b, "a", 0.4);
+  const shut = await b.evaluate(`(() => { const B = __ooga, a = B.crew.player, L = BL.pierModels.LAYOUT; return { closed: !B.pier.shop.busy && document.getElementById("pier-shop").hidden, nav: !document.querySelector(".pier-navigation").hidden, name: a.traits.name, walked: Math.hypot(a.root.position.x - L.shop.play.x, a.root.position.z - L.shop.play.z) > 0.5 }; })()`);
+  record("pier Surf Shop: its prompt opens the counter with the earned balloons locked, a balloon costs its forty tickets once and flies behind the Ooga until let go, fireworks cost thirty and go up, and leaving hands the walk back", r.prompt === "shop" && open.busy && open.panel && open.orange === "40 tickets" && open.stripe === "3-day streak" && open.locked && open.nav && layout.length === 0
+    && bought.paid === 40 && bought.worn === "balloon-orange" && bought.flying && bought.button === "Let go" && bought.kept === "balloon-orange" && loose.paid === 40 && loose.worn === "" && !loose.flying && loose.owned === "balloon-orange" && show.paid === 70 && show.up
+    && shut.closed && shut.nav && shut.name === "portlandhodl" && shut.walked, JSON.stringify({ prompt: r.prompt, open, layout, bought, loose, show, shut }));
+  // The hall of fame, then a block that turns a difficulty period: a season begins and the party is the longer one.
+  const fame = await b.evaluate(`(() => { const B = __ooga, P = B.pier, L = BL.pierModels.LAYOUT, out = {};
+    P.travel(L.fame.x, L.top, L.fame.z + 6, 0); P.fame.show(0); B.advance(0.7, 1 / 60);
+    out.before = { rows: P.fame.rows(0), printed: P.fame.printed, season: P.fame.season() };
+    const third = out.before.rows[2][1]; P.purse.recordPierFishing(out.before.rows[0][1]); B.advance(0.7, 1 / 60);
+    out.mine = { rows: P.fame.rows(0), printed: P.fame.printed };
+    BL.mempool.emit({ type: "block", height: 909216, txCount: 1200 }); B.advance(0.7, 1 / 60);
+    out.season = { id: P.fame.season(), rows: P.fame.rows(0), party: P.chain.state.party, name: document.getElementById("pier-party-name").textContent };
+    P.purse.recordPierFishing(P.fame.rows(0)[1][1]); B.advance(0.7, 1 / 60);
+    out.placed = { rows: P.fame.rows(0), kept: BL.game.create({ catalog: BL.models.SWAG }).state.pier.season, best: B.game.state.pier.fishing, printed: P.fame.printed };
+    return out; })()`);
+  record("pier hall of fame: three roster names hold the board, the visitor's best takes first on a tie, and a block that turns the difficulty period starts a season with fresh places, its own bests and a longer party", fame.before.season === 0 && fame.before.rows.length === 3 && fame.before.rows.every((row) => !row[2]) && fame.before.printed.startsWith("HASH FISHING|0|")
+    && fame.mine.rows[0][0] === "PORTLANDHODL" && fame.mine.rows[0][2] && fame.mine.printed.includes("PORTLANDHODL") && fame.season.id === 451 && fame.season.rows.every((row) => !row[2]) && fame.season.party > 170 && fame.season.name === "Adjustment Party"
+    && fame.placed.rows.some((row) => row[2]) && fame.placed.kept.id === 451 && fame.placed.kept.fishing === fame.season.rows[1][1] && fame.placed.best === fame.before.rows[0][1] && fame.placed.printed.includes("|451|"), JSON.stringify(fame));
+} };
+const pierBetterTogether = { name: "pier better together", why: "rule: another player on the pier is seen sitting when they ride and swimming when they swim; their wave, fireworks and bell reach this page from the pier and from nowhere else; the visitor's own gesture shows on their Ooga; and the online board's names and lanterns take their places", run: async (b) => {
+  await b.key("g");
+  const r = await b.evaluate(`(() => { const B = __ooga, P = B.pier, out = {}, a = B.crew.player, p = a.root.position, near = (v, to, by) => Math.abs(v - to) <= by;
+    B.advance(0.2, 1 / 60); out.wave = { arm: a.parts.armL.rotation.x, head: a.parts.head.rotation.x };
+    B.advance(2, 1 / 60); out.rest = { arm: a.parts.armL.rotation.x, head: a.parts.head.rotation.x };
+    P.emote(1); B.advance(0.2, 1 / 60); out.cheer = { left: a.parts.armL.rotation.x, head: a.parts.head.rotation.x }; B.advance(2, 1 / 60);
+    // Another player, as the room would report them: three metres off, on foot.
+    const rec = { id: 72, login: "peer", display: "Peer", body: "w-s-bitcoin", zone: "scene-pier", voice: false, muted: false, hp: 100, ko: false, stance: 0, x: p.x + 3, y: p.y - a.baseY, z: p.z, yaw: 0 };
+    BL.net.remotes.set(72, rec); B.advance(0.3, 1 / 60);
+    P.moment(rec, "emote", [0]); const cave = P.remotes.emote(72, 0); B.advance(0.2, 1 / 60);
+    out.theirs = { shown: !!cave && cave.root.visible, arm: cave ? cave.parts.armL.rotation.x : 0, bodies: P.remotes.stats().reservedPlayers };
+    B.advance(2, 1 / 60); rec.stance = 1; B.advance(0.2, 1 / 60); out.seated = { legs: cave.parts.legL.rotation.x, y: cave.root.position.y };
+    rec.stance = 2; B.advance(0.2, 1 / 60); out.swim = { arm: cave.parts.armL.rotation.x, legs: cave.parts.legL.rotation.x };
+    // Moments: fireworks and the bell from the pier arrive; the same from another place do not.
+    const before = P.fireworks.launched + (P.fireworks.active ? 1 : 0);
+    B.advance(12, 1 / 30); const quiet = P.fireworks.launched;
+    P.moment({ ...rec, zone: "outside" }, "fireworks", [3]); B.advance(1.5, 1 / 30); out.elsewhere = P.fireworks.launched - quiet;
+    P.moment(rec, "fireworks", [3]); B.advance(2.5, 1 / 30); out.here = P.fireworks.launched - quiet;
+    P.moment(rec, "fireworks", [99]); B.advance(6, 1 / 30); out.capped = P.fireworks.launched - quiet;
+    P.moment(rec, "bell", []); out.bell = B.hud.el.hint.textContent;
+    BL.net.remotes.delete(72); B.advance(0.3, 1 / 60); out.left = P.remotes.stats().reservedPlayers;
+    // The online board: real names take their places by score; lanterns light for the count.
+    const lit = P.fame.lanterns; P.fame.answer({ boards: { fishing: [["Satoshi", 150], ["Hal Finney", 145], ["x<script>", 3]], builder: [], mayhem: [], whack: [], seedMatch: [], volley: [] }, lanterns: 5 });
+    P.fame.show(0); B.advance(0.7, 1 / 60);
+    out.online = { rows: P.fame.rows(0), printed: P.fame.printed, lanterns: P.fame.lanterns, before: lit, sent: BL.net.sendEvent("emote", [0]), posted: null };
+    P.fame.answer({ boards: {}, lanterns: 500 }); B.advance(0.7, 1 / 60); out.many = P.fame.lanterns;
+    return out; })()`);
+  record("pier gestures: G waves the visitor's own Ooga's free arm and a cheer lifts it again, each for a moment only", r.wave.arm < -2 && r.rest.arm > -1.5 && r.cheer.left < -2, JSON.stringify({ wave: r.wave, rest: r.rest, cheer: r.cheer }));
+  record("pier remote players: a player the room reports is shown, waves when they wave, sits when seated, swims when swimming and is gone when they leave", r.theirs.shown && r.theirs.arm < -2 && r.theirs.bodies === 1 && Math.abs(r.seated.legs + Math.PI / 2) < 0.01 && r.swim.arm < -0.9 && r.swim.arm > -2.1 && Math.abs(r.swim.legs) < 0.35 && r.left === 0, JSON.stringify({ theirs: r.theirs, seated: r.seated, swim: r.swim, left: r.left }));
+  record("pier shared moments: fireworks and the bell arrive from a player on the pier, never from another place, and no moment can ask for more than six shells", r.elsewhere === 0 && r.here === 3 && r.capped === 9 && r.bell.includes("Peer rang"), JSON.stringify({ elsewhere: r.elsewhere, here: r.here, capped: r.capped, bell: r.bell }));
+  record("pier online board: the Worker's names take their places by score with their text made safe, a lantern lights for every player counted up to the shore's forty-eight, and offline nothing is sent", r.online.rows[0][0] === "SATOSHI" && r.online.rows[0][1] === 150 && r.online.rows[1][0] === "HAL FINNEY" && !r.online.rows.some((row) => /[<>]/.test(row[0])) && r.online.printed.includes("SATOSHI:150") && r.online.lanterns === 5 && r.online.before <= 1 && r.online.sent === false && r.many === 48, JSON.stringify({ online: r.online, many: r.many }));
+} };
+const pierBoardwalkMayhem = { name: "pier boardwalk mayhem", why: "playthrough: a cart is driven with its radio on, bowling a person over raises the Heat and brings a lifeguard whose catch is a dunking and a small fine, the water cools it off, and a job from the board runs gate by gate to a medal that pays once", run: async (b) => {
+  await pierFreeze(b);
+  try {
+    // A cart, set on the boardwalk above a visitor leaning on the rail, and driven into them.
+    const set = await b.evaluate(`(() => { const B = __ooga, P = B.pier, L = BL.pierModels.LAYOUT, carts = P.wheels.vehicles.filter((v) => v.type === "cart"), v = carts[0], lean = P.crowd.people.find((q) => q.place.role === "lean" && q.place.z === -58);
+      B.game.addTickets(25); v.x = 4.9; v.z = -47; v.y = L.top; v.yaw = Math.PI; v.node.position.x = v.x; v.node.position.z = v.z; v.node.rotation.y = v.yaw;
+      P.travel(3.4, L.top, -47, 0); B.advance(0.3, 1 / 60); const near = P.wheels.nearest() === v; P.wheels.mount(); B.advance(0.6, 1 / 60);
+      return { carts: carts.length, near, riding: P.wheels.riding, kind: P.wheels.vehicle && P.wheels.vehicle.type, radio: P.radio.station, heat: P.heat.level, standing: lean.down <= 0, tickets: B.game.state.arcade.tickets }; })()`);
+    await b.key("n"); const dial = await b.evaluate(`({ station: __ooga.pier.radio.station, toast: document.getElementById("toast").textContent })`);
+    await b.key("n"); await b.key("n"); const off = await b.evaluate(`__ooga.pier.radio.station`);
+    await holdKey(b, "w", 1.6);
+    const hit = await b.evaluate(`(() => { const B = __ooga, P = B.pier, v = P.wheels.vehicle, lean = P.crowd.people.find((q) => q.place.role === "lean" && q.place.z === -58); return { z: v.z, down: lean.down > 0, flat: lean.cave.root.rotation.x < -1, heat: P.heat.level, pill: document.getElementById("pier-heat").textContent, shown: !document.getElementById("pier-heat").hidden, chasing: P.heat.state.chasing }; })()`);
+    record("pier carts: two pier carts stand ready, one is boarded and driven with a radio whose dial turns through its stations to off, and bowling a person over knocks them flat and raises the Heat a step", set.carts === 2 && set.near && set.riding && set.kind === "cart" && set.radio === 0 && set.heat === 0 && set.standing && dial.station === 1 && dial.toast.includes("Low Fee Radio") && off === -1 && hit.z < -52 && hit.down && hit.flat && hit.heat === 1 && hit.shown && hit.pill.startsWith("Heat ●○") && !hit.chasing, JSON.stringify({ set, dial, off, hit }));
+    await b.key("e");
+    const chase = await b.evaluate(`(() => { const B = __ooga, P = B.pier, H = P.heat, a = B.crew.player, out = {};
+      out.afoot = !P.wheels.riding; H.add(2); B.advance(0.3, 1 / 60);
+      const far = Math.hypot(H.state.x - a.root.position.x, H.state.z - a.root.position.z);
+      out.called = { level: H.level, chasing: H.state.chasing, shown: H.cave.root.visible, far };
+      let seconds = 0; while (!H.state.busts && seconds < 20) { P.simulate(0.25, 1 / 60); seconds += 0.25; }
+      B.advance(0.3, 1 / 60); const p = a.root.position;
+      out.bust = { busts: H.state.busts, seconds, level: H.level, hidden: !H.cave.root.visible && document.getElementById("pier-heat").hidden, tickets: B.game.state.arcade.tickets, x: p.x, z: p.z, feet: p.y - a.baseY, sea: BL.pierModels.LAYOUT.sea, toast: document.getElementById("toast").textContent };
+      // In the water the Heat cools fast and nobody is caught.
+      H.add(2); B.advance(0.3, 1 / 60); out.again = H.state.chasing; P.simulate(9, 1 / 30); B.advance(0.2, 1 / 60);
+      out.cooled = { chasing: H.state.chasing, busts: H.state.busts, level: H.level };
+      return out; })()`);
+    record("pier Heat: at two a lifeguard sets out from a post, catches a visitor who stands still, dunks them off the pier and fines ten tickets once; in the water it cools and they give up", chase.afoot && chase.called.level === 3 && chase.called.chasing && chase.called.shown && chase.called.far > 14 && chase.bust.busts === 1 && chase.bust.seconds < 20 && chase.bust.level === 0 && chase.bust.hidden && chase.bust.tickets === set.tickets - 10 && chase.bust.x > 10 && chase.bust.feet < chase.bust.sea - 0.5 && chase.bust.toast.includes("Dunked") && chase.again && !chase.cooled.chasing && chase.cooled.busts === 1 && chase.cooled.level <= 1, JSON.stringify(chase));
+    // The jobs board, through its own prompt and Start button.
+    await b.evaluate(`(() => { const B = __ooga, L = BL.pierModels.LAYOUT; B.pier.travel(L.jobs.play.x, L.top, L.jobs.play.z, Math.PI); B.advance(0.5, 1 / 60); })()`);
+    const prompt = await b.evaluate(`__ooga.pier.interactions.current && __ooga.pier.interactions.current.id`);
+    await b.key("e");
+    const open = await b.evaluate(`({ busy: __ooga.pier.jobs.busy, panel: !document.getElementById("pier-jobs").hidden, rows: document.querySelectorAll("#pier-jobs-list li").length, stop: document.getElementById("pier-jobs-stop").hidden })`);
+    const at = await b.evaluate(`(() => { const r = document.querySelector('[data-job="dash"]').getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })()`);
+    await b.click(at.x, at.y);
+    const job = await b.evaluate(`(() => { const B = __ooga, P = B.pier, J = P.jobs, L = BL.pierModels.LAYOUT, gates = BL.pierJobs.JOBS[0].gates, out = {}, tickets = () => B.game.state.arcade.tickets, lit = () => P.land.jobs.gates.filter((g) => g.visible).length;
+      out.started = { running: J.running, closed: !J.busy && document.getElementById("pier-jobs").hidden, banner: !document.getElementById("pier-job").hidden, name: document.getElementById("pier-job-name").textContent, lit: lit() };
+      const before = tickets(), go = (i) => { P.travel(gates[i][0], L.top, gates[i][1], 0); B.advance(0.7, 1 / 60); };
+      go(3); out.order = J.state.passed;
+      for (let i = 0; i < gates.length; i++) go(i);
+      out.done = { running: J.running, finished: J.state.finished, medal: J.state.medal, paid: tickets() - before, best: BL.game.create({ catalog: BL.models.SWAG }).state.pier.jobs.dash, result: document.getElementById("pier-job").textContent, lit: lit() };
+      B.advance(5.5, 1 / 30); out.done.cleared = document.getElementById("pier-job").hidden;
+      const again = tickets(); J.start(BL.pierJobs.JOBS[0]); B.advance(2, 1 / 60); for (let i = 0; i < gates.length; i++) go(i);
+      out.again = { paid: tickets() - again, best: B.game.state.pier.jobs.dash === out.done.best };
+      const late = tickets(); J.start(BL.pierJobs.JOBS[0]); P.simulate(BL.pierJobs.JOBS[0].medals[2] * 1.6 + 1, 1 / 15); B.advance(0.2, 1 / 60);
+      out.late = { running: J.running, paid: tickets() - late, lit: lit() };
+      return out; })()`);
+    record("pier jobs: the board's prompt opens it, Start sends the visitor out with the first gate lit, gates count only in order, the last one pays a first gold in full, saves the time and leaves the result on the banner for a moment, a second gold pays the small sum, and a job left too long ends unpaid", prompt === "jobs" && open.busy && open.panel && open.rows === 3 && open.stop && job.started.running && job.started.closed && job.started.banner && job.started.name === "Boardwalk dash" && job.started.lit === 6 && job.order === 0
+      && !job.done.running && job.done.finished === 1 && job.done.medal === 0 && job.done.paid === 30 && job.done.best >= 3000 && job.done.result.includes("Gold") && job.done.result.includes("+30 tickets") && job.done.cleared && job.done.lit === 0 && job.again.paid === 3 && job.again.best && !job.late.running && job.late.paid === 0 && job.late.lit === 0, JSON.stringify({ prompt, open, job }));
+  } finally { await pierThaw(b); }
+} };
+const pierMayhemLayout = { name: "pier mayhem layout", why: "rule: on a phone the jobs board fits, a running job's banner, the party banner and the Heat mark are whole and touch no control or each other, and the Wave button is in the menu", run: async (b) => {
+  const tap = async (selector) => { const p = await b.evaluate(`(() => { const r = document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 }; })()`); await b.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: p.x, y: p.y }] }); await b.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] }); };
+  await b.evaluate(`(() => { const B = __ooga, L = BL.pierModels.LAYOUT; B.pier.travel(L.jobs.play.x, L.top, L.jobs.play.z, Math.PI); B.advance(0.5, 1 / 60); })()`);
+  await tap("#pier-prompt-use");
+  const board = await b.evaluate(PHONE(["#pier-jobs-close", '[data-job="dash"]', '[data-job="run"]', '[data-job="sweep"]']));
+  await tap('[data-job="sweep"]');
+  await b.evaluate(`(() => { __ooga.pier.heat.add(1); BL.mempool.emit({ type: "block", height: 911232, txCount: 9 }); __ooga.advance(0.4, 1 / 60); })()`);
+  // The banner and the Heat mark are readouts, not controls: whole, on screen, and touching none of the controls.
+  const running = await b.evaluate(PHONE(["#pier-menu"]));
+  const clear = await b.evaluate(`(() => { const box = (q) => { const el = document.querySelector(q); return el && el.getClientRects().length ? el.getBoundingClientRect() : null; }, hit = (a, b) => a && b && a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom, out = [];
+    const readouts = ["#pier-job", "#pier-heat", "#pier-party"];
+    for (const q of readouts) { const r = box(q); if (!r || r.left < 0 || r.top < 0 || r.right > innerWidth || r.bottom > innerHeight) out.push("off screen " + q);
+      for (const other of ["#pier-menu", ".pier-navigation", "#equipment-hud", "#joy-move", "#joy-look", "#pier-prompt", ".topbar", ...readouts.filter((o) => o !== q)]) if (hit(r, box(other))) out.push(q + " touches " + other); }
+    return out; })()`);
+  const state = await b.evaluate(`({ running: __ooga.pier.jobs.running, banner: document.getElementById("pier-job").textContent, heat: document.getElementById("pier-heat").textContent, party: document.getElementById("pier-party-name").textContent })`);
+  await pierMenu(b);
+  const menu = await b.evaluate(PHONE(['.presets[data-scene="pier"] [data-action="pier-wave"]']));
+  await pierMenu(b);
+  record("pier mayhem layout: the jobs board's three jobs and its way out fit a phone; a running job's banner, the longest party banner and the Heat mark sit clear of every control and of each other; and Wave is in the menu", board.length === 0 && running.length === 0 && clear.length === 0 && menu.length === 0 && state.running && state.banner.includes("Park sweep") && state.heat.startsWith("Heat") && state.party === "Adjustment Party", JSON.stringify({ board, running, clear, menu, state }));
+} };
 const pierLandmarkReview={name:"pier landmark review",why:"contract: inspect the approved landmark cameras at sunset and night on both renderers and record tier frame costs without changing simulation",run:async b=>{
   const dir=join(root,"untracked","pier-phase1-review");mkdirSync(dir,{recursive:true});
   await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click()`);
@@ -8472,7 +8883,8 @@ const pierInteractionFlow={name:"pier Phase 2 exploration",why:"playthrough: nea
   const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,hit:hit?.id,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw new Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);await b.click(p.x,p.y);};
   await b.evaluate(`(()=>{const B=__ooga;B.pilot.navigate({position:{x:0,y:12.3228,z:284},yaw:0,pitch:.24,dist:7});B.advance(.3,1/60);window.__pierYaw=B.pilot.orbit.yaw;})()`);
   await holdKey(b,"e",.4);
-  record("pier interactions: E away from an attraction still turns the camera",await b.evaluate(`!__ooga.pier.interactions.busy&&Math.abs(__ooga.pilot.orbit.yaw-window.__pierYaw)>.1`));
+  // E means "use what is near" on the pier. With nothing near it starts nothing and leaves the view alone.
+  record("pier interactions: E away from an attraction starts nothing and leaves the view where it was",await b.evaluate(`(()=>{const B=__ooga,P=B.pier;return !P.interactions.busy&&!P.interactions.current&&!P.rides.riding&&!P.games.busy&&!P.wheels.riding&&!P.boats.riding&&Math.abs(B.pilot.orbit.yaw-window.__pierYaw)<.001;})()`));
   for(let i=0;i<2;i++){
     // Face the vendor from the trail side. S then walks along clear sand, rather than into the cart.
     await b.evaluate(`(()=>{const B=__ooga,v=B.pier.land.beach.vendors[${i}];B.pilot.navigate({position:{x:v.x-2,y:.35,z:v.z},yaw:0,pitch:.4,dist:10});B.advance(.3,1/60);window.__pierVendorPosition={...B.crew.player.root.position};})()`);
@@ -8501,7 +8913,9 @@ const pierInteractionFlow={name:"pier Phase 2 exploration",why:"playthrough: nea
   await b.evaluate(`__ooga.pilot.navigate({position:{x:0,y:12.3228,z:284},yaw:0,pitch:.24,dist:7});__ooga.advance(.3,1/60)`);
   await click("pier-passport-open");
   const book=await b.evaluate(`(()=>{const list=document.getElementById("pier-stamp-list"),dialog=document.getElementById("pier-guide"),r=dialog.getBoundingClientRect();return {open:dialog.open,rows:list.children.length,stamped:list.querySelectorAll('[data-stamped="true"]').length,fits:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight,noOverflow:dialog.scrollWidth<=dialog.clientWidth};})()`);
-  record("pier Passport: numbered landmark guide shows saved completion without horizontal clipping",book.open&&book.rows===10&&book.stamped===10&&book.fits&&book.noOverflow,JSON.stringify(book));await b.key("Escape");
+  record("pier Passport: numbered landmark guide shows saved completion without horizontal clipping",book.open&&book.rows===10&&book.stamped===10&&book.fits&&book.noOverflow,JSON.stringify(book));
+  const trip=await b.evaluate(`(()=>{const B=__ooga,buttons=[...document.querySelectorAll("#pier-stamp-list button[data-poi]")],offered=buttons.filter(x=>!x.hidden).length,q=B.pier.interactions.pois[8];buttons[8].click();B.advance(.4,1/60);const a=B.crew.player,p=a.root.position;return {offered,closed:!document.getElementById("pier-guide").open,name:a.traits.name,away:Math.hypot(p.x-q.x,p.z-q.z),feet:p.y-a.baseY-q.y};})()`);
+  record("pier Passport: every walked landmark offers travel, the lighthouse does not, and Go there puts the same Ooga on that landmark's floor",trip.offered===9&&trip.closed&&trip.name==="portlandhodl"&&trip.away<3&&Math.abs(trip.feet)<.1,JSON.stringify(trip));
 }};
 const pierNavigationFlow={name:"pier Phase 2 navigation",why:"regression: reselecting an Ooga after overview froze movement; first input started every minigame audio engine, and navigation must leave touch controls clear",run:async b=>{
   const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),rows=[];
@@ -8511,16 +8925,19 @@ const pierNavigationFlow={name:"pier Phase 2 navigation",why:"regression: resele
     const p=await b.evaluate(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2];})()`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p[0],y:p[1]}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p[0],p[1]);
   };
   await b.evaluate(`new Promise(requestAnimationFrame)`);
+  const folded=await b.evaluate(`(()=>{const menu=document.getElementById("pier-menu"),shown=[...document.querySelectorAll('.presets[data-scene="pier"] > button:not(.pier-menu)')].filter(x=>x.offsetParent).length;return {menu:!!menu.offsetParent,shown,map:document.getElementById("pier-minimap").hidden};})()`);
+  record("pier navigation: a phone folds the toolbar behind Menu and the map to a chip; a desktop shows both",touch?folded.menu&&folded.shown===0&&folded.map:!folded.menu&&folded.shown>=6&&!folded.map,JSON.stringify(folded));
+  await pierMenu(b);if(touch)await click("#pier-map-toggle");
   const nav=await b.evaluate(PHONE(["#pier-map-toggle","#pier-passport-open",'.presets[data-scene="pier"] [data-action="pier-overview"]','.presets[data-scene="pier"] [data-action="pier-beach-view"]','.presets[data-scene="pier"] [data-action="reset-view"]','.presets[data-scene="pier"] [data-action="pier-gate"]',"#pier-mute",'.presets[data-scene="pier"] [data-action="leave"]']));
   record("pier navigation: map and passport controls stay visible and uncovered",nav.length===0,JSON.stringify(nav));
   if(await b.evaluate(`matchMedia("(pointer: coarse)").matches`)){
     const sticks=await b.evaluate(PHONE(["#joy-move","#joy-look"]));record("pier navigation: minimap leaves both touch sticks clear",sticks.length===0,JSON.stringify(sticks));
   }
-  await click("#pier-map-toggle");record("pier navigation: map folds to keep the ocean view clear",await b.evaluate(`document.getElementById("pier-minimap").hidden`));await click("#pier-map-toggle");
+  await click("#pier-map-toggle");record("pier navigation: map folds to keep the ocean view clear",await b.evaluate(`document.getElementById("pier-minimap").hidden`));if(!touch)await click("#pier-map-toggle");
   await b.evaluate(`(()=>{const Audio=window.AudioContext;window.__navAudioOriginal=Audio;window.__navAudioStarts=0;if(Audio)window.AudioContext=new Proxy(Audio,{construct(target,args,newTarget){window.__navAudioStarts++;return Reflect.construct(target,args,newTarget);}});})()`);
   try{
     for(const view of ["pier-overview","pier-beach-view"]){
-      await click(`.presets[data-scene="pier"] [data-action="${view}"]`);
+      await pierMenu(b);await click(`.presets[data-scene="pier"] [data-action="${view}"]`);
       record(`pier navigation: native ${view} button releases walking for its overview`,await b.evaluate(`!__ooga.crew.player`));
       await b.evaluate(`__ooga.advance(.3,1/60);__ooga.pilot.hooks.onDoubleTap({owner:{kind:"caveman",cave:__ooga.pier.avatar}});`);
       for(const [key,x,y,right,fwd] of [["ArrowUp",0,-1,0,1],["ArrowLeft",-1,0,-1,0],["ArrowDown",0,1,0,-1],["ArrowRight",1,0,1,0]]){
@@ -8535,8 +8952,8 @@ const pierNavigationFlow={name:"pier Phase 2 navigation",why:"regression: resele
     record("pier navigation: ordinary movement starts at most the ambient locomotive audio, with dormant minigames silent",await b.evaluate(`__navAudioStarts<=1&&!__ooga.pier.volley.audioRunning&&!__ooga.pier.seedMatch.audioRunning&&!__ooga.pier.whack.audioRunning&&!__ooga.pier.mayhem.audioRunning`),String(await b.evaluate(`__navAudioStarts`)));
     const focus=await b.evaluate(`(()=>{const B=__ooga,hasFocus=document.hasFocus;try{document.hasFocus=()=>false;B.advance(9,1/30);return{walking:BL.scenes.pier.inMotion,interval:B.frameInterval};}finally{document.hasFocus=hasFocus;}})()`);
     record("pier navigation: a driven visitor keeps full-rate updates when the embedded browser reports no focus",focus.walking&&focus.interval===0,JSON.stringify(focus));
-    await b.evaluate(`(()=>{const B=__ooga,c=B.pier.avatar;B.pilot.release(true);B.pilot.hooks.onDoubleTap({owner:{kind:"caveman",cave:c}});B.pilot.navigate({position:{x:60,y:.35,z:100},yaw:0,pitch:.3,dist:7});B.advance(.3,1/60);})()`);await click('.presets[data-scene="pier"] [data-action="reset-view"]');await holdKey(b,"w",.3);
-    record("pier navigation: Walk preserves the selected Ooga and updates its own support and shadow focus",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player,p=a.root.position,s=BL.scenes.pier.renderOpts.shadowCenter;return a.traits.name==="portlandhodl"&&p.z<99&&Math.abs(p.y-a.baseY-.35)<.05&&Math.abs(s.x-p.x)<.2&&Math.abs(s.z-p.z)<.2;})()`));
+    await b.evaluate(`(()=>{const B=__ooga,c=B.pier.avatar;B.pilot.release(true);B.pilot.hooks.onDoubleTap({owner:{kind:"caveman",cave:c}});B.pilot.navigate({position:{x:60,y:.35,z:100},yaw:0,pitch:.3,dist:7});B.advance(.3,1/60);})()`);await pierMenu(b);await click('.presets[data-scene="pier"] [data-action="reset-view"]');await holdKey(b,"w",.3);
+    record("pier navigation: Walk preserves the selected Ooga and updates its own support and shadow focus",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player,p=a.root.position,s=BL.scenes.pier.renderOpts.shadowCenter;return a.traits.name==="portlandhodl"&&p.z<99&&Math.abs(p.y-a.baseY-.35)<.05&&Math.abs(s.x-p.x)<=6&&Math.abs(s.z-p.z)<=6;})()`));
     await b.evaluate(`__ooga.pilot.possess(__ooga.pier.avatar);__ooga.pilot.navigate({position:{x:0,y:1.35,z:-50},yaw:0,pitch:.3,dist:7});__ooga.advance(.3,1/60)`);
     const timing=await b.evaluate(`(async()=>{const B=__ooga,R=B.renderer,scene=BL.scenes.pier,originals=[],rows=[],gaps=[];let last=performance.now();for(const[o,k,n]of[[scene,"update","update"],[scene,"overlay","overlay"],[R,"render","render"]]){const f=o[k];originals.push(()=>o[k]=f);o[k]=function(...args){const t=performance.now();if(n==="update"){gaps.push(t-last);last=t;}const value=f.apply(this,args);rows.push([n,performance.now()-t]);return value;};}try{await new Promise(r=>setTimeout(r,1200));}finally{originals.forEach(f=>f());}const data={};for(const[n,t]of rows)(data[n]??=[]).push(t);for(const n in data){const a=data[n].sort((a,b)=>a-b);data[n]={median:a[Math.floor(a.length/2)],p95:a[Math.floor(a.length*.95)]};}gaps.sort((a,b)=>a-b);return{renderer:R.kind,quality:R.quality,frames:gaps.length,intervalMedian:gaps[Math.floor(gaps.length/2)],intervalP95:gaps[Math.floor(gaps.length*.95)],timings:data};})()`);
     if(process.env.DSB_REVIEW==="1"){const dir=join(root,"untracked/pier-navigation-review");mkdirSync(dir,{recursive:true});writeFileSync(join(dir,touch?"phone-performance.json":"desktop-performance.json"),JSON.stringify(timing,null,2)+"\n");await reviewShot(b,join(dir,touch?"phone-walking.png":"desktop-walking.png"));}console.log("PIER NAVIGATION "+JSON.stringify(timing));
@@ -8550,6 +8967,8 @@ const pierFishingFlow={name:"pier Hash Fishing",why:"playthrough: keyboard and t
   await place();
   await b.evaluate(`(()=>{const B=__ooga;window.__fishingRandom=BL.math.randomInt;window.__fishingDraws=0;BL.math.randomInt=n=>n===4294967296?(window.__fishingDraws++?0:4294967295):window.__fishingRandom(n);window.__fishingTickets=B.game.state.arcade.tickets;window.__fishingPosition={...B.crew.player.root.position};})()`);
   try {
+    // A cast lands and a bite comes on the clock: hold the pier still so each check reads the moment it set up.
+    await pierFreeze(b);
     await b.key("e");
     record("Hash Fishing: E opens the tip's lesson without starting the clock",await b.evaluate(`__ooga.pier.fishing.busy&&__ooga.pier.fishing.state.phase==="intro"&&__ooga.pier.fishing.state.remaining===75&&!document.getElementById("pier-fishing-panel").hidden&&document.getElementById("pier-fishing-lesson").textContent===BL.pierFacts.fishing.line`));
     const controls=await b.evaluate(PHONE(["#pier-fishing-act","#pier-fishing-done"]));
@@ -8567,7 +8986,7 @@ const pierFishingFlow={name:"pier Hash Fishing",why:"playthrough: keyboard and t
     await reviewShot(b,join(dir,touch?"fishing-touch.png":"fishing-keyboard.png"));
     await b.evaluate(`__ooga.advance(1.4,1/30)`);
     for(let i=0;i<32;i++){
-      const phase=await b.evaluate(`__ooga.pier.fishing.state.phase`);if(phase==="result")break;if(phase==="ready")await act();await b.evaluate(`__ooga.advance(2.5,1/30)`);
+      const phase=await b.evaluate(`__ooga.pier.fishing.state.phase`);if(phase==="result")break;if(phase==="ready")await act();await b.evaluate(`__ooga.pier.simulate(2.5,1/30)`);
     }
     const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.fishing.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,casts:s.casts,catches:s.catches,score:s.score,retargets:s.retargets,earned:tickets-window.__fishingTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.fishing,lesson:!document.getElementById("pier-fishing-lesson").hidden,info:document.getElementById("pier-fishing-info").textContent};})()`);
     record("Hash Fishing: a complete 75-second round retargets and saves its exact catch tickets and best once",result.phase==="result"&&result.time===75&&result.catches>3&&result.score===result.catches*5&&result.retargets>=1&&result.earned===result.score&&result.repeat===0&&result.saved&&result.best===result.score&&result.lesson&&result.info.includes("banked"),JSON.stringify(result));
@@ -8576,7 +8995,7 @@ const pierFishingFlow={name:"pier Hash Fishing",why:"playthrough: keyboard and t
     await place();await click("pier-prompt-use");await click("pier-fishing-act");await b.key(" ");await b.evaluate(`__ooga.advance(2.6,1/30)`);
     const pending=await b.evaluate(`(()=>{const B=__ooga;window.__fishingBeforeQuit=B.game.state.arcade.tickets;document.getElementById("pier-fishing-done").focus();return B.pier.fishing.state.catches===1&&B.pier.fishing.state.score===5;})()`);await b.key(" ");
     const quit=await b.evaluate(`({closed:!__ooga.pier.fishing.busy,unpaid:__ooga.game.state.arcade.tickets===window.__fishingBeforeQuit,navigation:!document.querySelector(".pier-navigation").hidden,focus:!document.getElementById("pier-fishing-panel").contains(document.activeElement)})`);
-    record("Hash Fishing: tap entry clears hidden focus; native Space casts and Back exits without banking an unfinished round",pending&&Object.values(quit).every(Boolean),JSON.stringify({pending,...quit}));
+    record("Hash Fishing: tap entry clears hidden focus; native Space casts, the catch is banked as it lands and Back exits with it kept",pending&&Object.values(quit).every(Boolean),JSON.stringify({pending,...quit}));
     if(!touch){
       await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-fishing");__ooga.setHour(18.8);__ooga.advance(1,1/60)`);
       await reviewShot(b,join(dir,"fishing-sunset.png"));
@@ -8585,7 +9004,7 @@ const pierFishingFlow={name:"pier Hash Fishing",why:"playthrough: keyboard and t
         writeFileSync(join(dir,"performance.json"),JSON.stringify(sample,null,2)+"\n");
       }
     }
-  }finally{await b.evaluate(`BL.math.randomInt=window.__fishingRandom;delete window.__fishingRandom;`);}
+  }finally{await pierThaw(b);await b.evaluate(`BL.math.randomInt=window.__fishingRandom;delete window.__fishingRandom;`);}
 }};
 const pierBuilderFlow={name:"pier Block Builder",why:"playthrough: keyboard and touch pack a block, reject overlaps, finish one saved round and return the same Ooga to clear beach access",run:async b=>{
   const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`);
@@ -8607,13 +9026,12 @@ const pierBuilderFlow={name:"pier Block Builder",why:"playthrough: keyboard and 
     record("Block Builder: lesson and active grid controls are wholly visible and uncovered",intro.length===0&&controls.length===0,JSON.stringify({intro,controls}));
     const dir=join(root,"untracked/pier-builder-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});await reviewShot(b,join(dir,touch?"builder-touch.png":"builder-keyboard.png"));
     for(let y=0;y<6;y++)for(let x=0;x<6;x+=2)if(x||y){await anchor(x,y);await act();}
-    await b.evaluate(`__ooga.advance(75,1/15)`);
     const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.builder.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,used:s.used,fees:s.fees,score:s.tickets,earned:tickets-window.__builderTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.builder,lesson:!document.getElementById("pier-builder-lesson").hidden};})()`);
-    record("Block Builder: the complete block seals at 75 seconds with its exact tickets and best saved once",result.phase==="result"&&result.time===75&&result.used===36&&result.fees===36&&result.score===9&&result.earned===9&&result.repeat===0&&result.saved&&result.best===36&&result.lesson,JSON.stringify(result));
+    record("Block Builder: a full block seals at once, with its exact tickets and best saved once",result.phase==="result"&&result.time<75&&result.used===36&&result.fees===36&&result.score===9&&result.earned===9&&result.repeat===0&&result.saved&&result.best===36&&result.lesson,JSON.stringify(result));
     await b.key("Escape");await holdKey(b,"s",.4);
     record("Block Builder: Escape restores walking on the sand with the same upright Ooga and navigation",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.builder.busy&&document.getElementById("pier-builder-panel").hidden&&!document.querySelector(".pier-navigation").hidden&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.builder.floor)<.05&&Math.hypot(a.root.position.x-window.__builderPosition.x,a.root.position.z-window.__builderPosition.z)>1;})()`));
     await position();await click("pier-prompt-use");await click("pier-builder-act");await click("pier-builder-cell-0");await click("pier-builder-act");await b.evaluate(`window.__builderBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-builder-done").focus();`);await b.key(" ");
-    record("Block Builder: a focused Back button exits an unfinished round without paying pending fees or retaining hidden focus",await b.evaluate(`!__ooga.pier.builder.busy&&__ooga.game.state.arcade.tickets===window.__builderBeforeQuit&&!document.getElementById("pier-builder-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden`));
+    record("Block Builder: a focused Back button exits an unfinished round with nothing more paid and no hidden focus",await b.evaluate(`!__ooga.pier.builder.busy&&__ooga.game.state.arcade.tickets===window.__builderBeforeQuit&&!document.getElementById("pier-builder-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden`));
     if(!touch){
       const access=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.builder,s=B.pier.solids;return {lane:s.segmentClear(q.x+4,q.floor+.45,q.z+10,q.x+4,q.floor+.45,q.z-10,.4,1.6),walk:s.segmentClear(q.x-20,.8,158,q.x+20,.8,158,.4,1.6),bike:s.segmentClear(q.x-20,.8,122,q.x+20,.8,122,.4,1.6),sameWater:B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater};})()`);
       record("Block Builder: the low table leaves beach circulation and both coastal trails clear while using the shared DSB ocean",Object.values(access).every(Boolean),JSON.stringify(access));
@@ -8627,34 +9045,38 @@ const pierVolleyFlow={name:"pier Lightning Volley",why:"playthrough: keyboard an
   const position=()=>b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.volley;B.pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:Math.PI,pitch:.28,dist:6});B.advance(.3,1/60);})()`);
   const pass=async to=>{if(touch)await click(to===1?"pier-volley-a":to===2?"pier-volley-b":"pier-volley-target");else {await b.key(String(to));await b.key(" ");}};
   const land=()=>b.evaluate(`__ooga.advance(.8,1/60)`);
+  // The fourteen rallies after the first are the same flight again: the scene's update alone, without frames.
+  const fly=()=>b.evaluate(`__ooga.pier.simulate(.8,1/60)`);
   const next=()=>b.evaluate(`__ooga.advance(Math.ceil((__ooga.pier.volley.state.next-__ooga.pier.volley.state.elapsed)*60)/60,1/60)`);
-  const required=["#pier-mute","#pier-volley-act","#pier-volley-done"],active=[...required,"#pier-volley-restart","#pier-volley-a","#pier-volley-b","#pier-volley-target"];
+  const required=[PIER_NAV(touch),"#pier-volley-act","#pier-volley-done"],active=[...required,"#pier-volley-restart","#pier-volley-a","#pier-volley-b","#pier-volley-target"];
   await position();await b.evaluate(`window.__volleyRandom=BL.math.randomInt;BL.math.randomInt=()=>0;window.__volleyTickets=__ooga.game.state.arcade.tickets;window.__volleyPosition={...__ooga.crew.player.root.position};`);
   try{
     if(touch)await click("pier-prompt-use");else await b.key("e");const intro=await b.evaluate(PHONE(required));
     record("Lightning Volley: the court prompt opens its sourced routing lesson without starting the round",await b.evaluate(`__ooga.pier.volley.busy&&__ooga.pier.volley.state.phase==="intro"&&__ooga.pier.volley.state.remaining===75&&!document.getElementById("pier-volley-lesson").hidden&&document.getElementById("pier-volley-lesson").textContent===BL.pierFacts.volley.line&&__ooga.pier.land.beach.people.length===32`));
-    if(touch)await click("pier-volley-act");else await b.key(" ");const activeLayout=await b.evaluate(PHONE(active));await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.volley.muted&&__ooga.pier.trainAudio.muted`);await click("pier-mute");
+    if(touch)await click("pier-volley-act");else await b.key(" ");const activeLayout=await b.evaluate(PHONE(active));await pierMenu(b);await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.volley.muted&&__ooga.pier.trainAudio.muted`);await pierMenu(b);await click("pier-mute");
     record("Lightning Volley: a real Start unlocks sound and the shared pier mute silences and restores it",muted&&await b.evaluate(`__ooga.pier.volley.audioRunning&&!__ooga.pier.volley.muted&&__ooga.pier.volley.state.phase==="ready"`));
+    // The rally bell rings every five seconds: hold the pier still so a slow command cannot cost a rally.
+    await pierFreeze(b);
     if(!touch){await b.key("1");const rows=[];for(const [key,direction] of [["ArrowRight",1],["a",-1],["s",1],["w",-1]]){const before=await b.evaluate(`document.querySelector('#pier-volley-choices [aria-pressed="true"]').getBoundingClientRect().x`);await b.key(key);const after=await b.evaluate(`document.querySelector('#pier-volley-choices [aria-pressed="true"]').getBoundingClientRect().x`);rows.push((after-before)*direction);}record("Lightning Volley: arrows and WASD move receiver selection in the displayed direction",rows.every(n=>n>10),JSON.stringify(rows));}
     await pass(3);record("Lightning Volley: a blocked direct-to-target channel explains the refusal without moving or scoring",await b.evaluate(`__ooga.pier.volley.state.event==="blocked"&&__ooga.pier.volley.state.current===0&&__ooga.pier.volley.state.passes===0&&document.getElementById("pier-volley-info").textContent.includes("Channel blocked")`));
     await pass(1);await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");await b.evaluate(`__ooga.advance(.4,1/60)`);
     const flight=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.volley.state,p=B.pier.land.volley.court.node.position;return {phase:s.phase,passes:s.passes,x:p.x,z:p.z,y:p.y,score:s.score,actor:Math.hypot(B.crew.player.root.position.x-window.__volleyPosition.x,B.crew.player.root.position.z-window.__volleyPosition.z)};})()`);
     record("Lightning Volley: the ball follows a raised physical arc, repeat Space and jetpack input cannot pass twice or move the Ooga",flight.phase==="flight"&&flight.passes===1&&flight.y>2.7&&flight.score===0&&flight.actor<.01&&await b.evaluate(`!__ooga.crew.player.jet&&!__ooga.pier.rides.riding`),JSON.stringify(flight));await reviewShot(b,join(dir,touch?"volley-phone.png":canvas?"volley-canvas.png":"volley-keyboard.png"));await b.evaluate(`__ooga.advance(.4,1/60)`);
     await pass(1);const visited=await b.evaluate(`__ooga.pier.volley.state.event==="blocked"&&__ooga.pier.volley.state.current===1`);if(touch)await click("pier-volley-restart");else await b.key("x");record("Lightning Volley: revisiting a teammate is refused and Restart returns to Serve without a payout",visited&&await b.evaluate(`__ooga.pier.volley.state.current===0&&__ooga.game.state.arcade.tickets===window.__volleyTickets`));
-    await pass(1);await land();await pass(3);const crossing=await b.evaluate(`(()=>{const B=__ooga;B.advance(Math.max(0,.2-B.pier.volley.state.flight),1/120);const c=B.pier.land.volley.court,net=BL.scene.boundsOf(c.net.geometry),ball=BL.scene.boundsOf(c.node.geometry);return{z:c.node.position.z,netZ:c.net.position.z,bottom:c.node.position.y+ball.min[1],top:c.net.position.y+net.max[1]};})()`);record("Lightning Volley: the shortest far-target pass clears the actual net mesh",Math.abs(crossing.z-crossing.netZ)<.1&&crossing.bottom>crossing.top+.1,JSON.stringify(crossing));await land();const pending=await b.evaluate(`__ooga.pier.volley.state.phase==="delivered"&&__ooga.pier.volley.state.score===1&&__ooga.pier.volley.state.tickets===4&&__ooga.game.state.arcade.tickets===window.__volleyTickets`);await next();
-    for(let rally=1;rally<15;rally++){await pass(1);await land();await pass(3);await land();await next();}
+    await pass(1);await land();await pass(3);const crossing=await b.evaluate(`(()=>{const B=__ooga;B.advance(Math.max(0,.2-B.pier.volley.state.flight),1/120);const c=B.pier.land.volley.court,net=BL.scene.boundsOf(c.net.geometry),ball=BL.scene.boundsOf(c.node.geometry);return{z:c.node.position.z,netZ:c.net.position.z,bottom:c.node.position.y+ball.min[1],top:c.net.position.y+net.max[1]};})()`);record("Lightning Volley: the shortest far-target pass clears the actual net mesh",Math.abs(crossing.z-crossing.netZ)<.1&&crossing.bottom>crossing.top+.1,JSON.stringify(crossing));await land();const pending=await b.evaluate(`__ooga.pier.volley.state.phase==="delivered"&&__ooga.pier.volley.state.score===1&&__ooga.pier.volley.state.tickets===4&&__ooga.game.state.arcade.tickets===window.__volleyTickets+4`);await next();
+    for(let rally=1;rally<15;rally++){await pass(1);await fly();await pass(3);await fly();await b.evaluate(`__ooga.pier.simulate(Math.ceil((__ooga.pier.volley.state.next-__ooga.pier.volley.state.elapsed)*60)/60,1/60)`);}
     const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.volley.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__volleyTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.volley,lesson:!document.getElementById("pier-volley-lesson").hidden};})()`);
-    record("Lightning Volley: fifteen deliveries bank exactly sixty tickets and best once at 75s, with the routing lesson restored",pending&&result.phase==="result"&&result.time===75&&result.score===15&&result.earned===60&&result.repeat===0&&result.saved&&result.best===15&&result.lesson,JSON.stringify(result));
+    record("Lightning Volley: each delivery banks its four tickets as it lands, fifteen bank exactly sixty and the best once, and the routing lesson is restored at 75s",pending&&result.phase==="result"&&result.time===75&&result.score===15&&result.earned===60&&result.repeat===0&&result.saved&&result.best===15&&result.lesson,JSON.stringify(result));
     const resultLayout=await b.evaluate(PHONE(required)),toastClear=await b.evaluate(`(()=>{const t=document.getElementById("toast").getBoundingClientRect(),p=document.getElementById("pier-volley-panel").getBoundingClientRect();return t.right<=p.left||t.left>=p.right||t.bottom<=p.top||t.top>=p.bottom;})()`);record("Lightning Volley: intro, play and result controls remain visible and uncovered, with the payout toast clear",intro.length===0&&activeLayout.length===0&&resultLayout.length===0&&toastClear,JSON.stringify({intro,activeLayout,resultLayout,toastClear}));await reviewShot(b,join(dir,touch?"volley-result-phone.png":canvas?"volley-result-canvas.png":"volley-result-keyboard.png"));
-    await click("pier-volley-act");await pass(1);await land();await pass(3);await land();await b.evaluate(`__ooga.advance(76,1/15)`);record("Lightning Volley: a single delivery pays four tickets, missed rallies pay nothing and the perfect best remains",await b.evaluate(`__ooga.pier.volley.state.score===1&&__ooga.pier.volley.state.missed===14&&__ooga.game.state.arcade.tickets===window.__volleyTickets+64&&__ooga.game.state.pier.volley===15`));
+    await click("pier-volley-act");await pass(1);await land();await pass(3);await land();await b.evaluate(`__ooga.pier.simulate(76,1/15)`);record("Lightning Volley: a single delivery pays four tickets, missed rallies pay nothing and the perfect best remains",await b.evaluate(`__ooga.pier.volley.state.score===1&&__ooga.pier.volley.state.missed===14&&__ooga.game.state.arcade.tickets===window.__volleyTickets+64&&__ooga.game.state.pier.volley===15`));
     if(touch)await click("pier-volley-done");else await b.key("Escape");await holdKey(b,"s",.4);record("Lightning Volley: exiting restores the same upright walking Ooga, sand height, equipment and navigation",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.volley.busy&&document.getElementById("pier-volley-panel").hidden&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden&&!B.pier.land.volley.court.playing&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&a.traits.name==="portlandhodl"&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.volley.floor)<.05&&Math.hypot(a.root.position.x-window.__volleyPosition.x,a.root.position.z-window.__volleyPosition.z)>1;})()`));
-    await position();await b.key(" ");await click("pier-volley-act");await pass(1);await land();await pass(3);await land();await b.evaluate(`window.__volleyBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-volley-done").focus();`);await b.key(" ");record("Lightning Volley: fresh Space opens at the pad, native Space on Back discards pending tickets and clears hidden focus",await b.evaluate(`!__ooga.pier.volley.busy&&__ooga.game.state.arcade.tickets===window.__volleyBeforeQuit&&!document.getElementById("pier-volley-panel").contains(document.activeElement)&&!document.getElementById("equipment-hud").hidden`));
+    await position();await b.key(" ");const entered=await b.evaluate(`__ooga.game.state.arcade.tickets`);await click("pier-volley-act");await pass(1);await land();await pass(3);await land();await b.evaluate(`window.__volleyBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-volley-done").focus();`);await b.key(" ");record("Lightning Volley: fresh Space opens at the pad, native Space on Back keeps the delivery's four tickets and clears hidden focus",await b.evaluate(`__ooga.game.state.arcade.tickets`)===entered+4&&await b.evaluate(`!__ooga.pier.volley.busy&&__ooga.game.state.arcade.tickets===window.__volleyBeforeQuit&&!document.getElementById("pier-volley-panel").contains(document.activeElement)&&!document.getElementById("equipment-hud").hidden`));
     if(!touch){const access=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.volley,s=B.pier.solids;return {walk:s.segmentClear(30,.95,158,100,.95,158,.4,1.6),bike:s.segmentClear(30,.95,122,100,.95,122,.4,1.6),pad:s.segmentClear(q.x,.95,20,q.x,.95,q.play.z,.4,1.6),water:B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater};})()`);record("Lightning Volley: both coastal trails and the beach pad approach remain clear with the shared DSB ocean",Object.values(access).every(Boolean),JSON.stringify(access));await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-volley");__ooga.setHour(18.8);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,canvas?"volley-court-canvas.png":"volley-court-sunset.png"));}
-  }finally{await b.evaluate(`BL.math.randomInt=window.__volleyRandom;delete window.__volleyRandom;`);}
+  }finally{await pierThaw(b);await b.evaluate(`BL.math.randomInt=window.__volleyRandom;delete window.__volleyRandom;`);}
 }};
-scene("pier",{label:"Lightning Volley desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierVolleyFlow,trip("pier")]});
-scene("pier",{label:"Lightning Volley phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierVolleyFlow]});
-scene("pier",{label:"Lightning Volley canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierVolleyFlow]});
+scene("pier",{label:"Lightning Volley desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierVolleyFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Lightning Volley phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierVolleyFlow].map(greeted)});
+scene("pier",{label:"Lightning Volley canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierVolleyFlow].map(greeted)});
 const pierSeedMatchFlow={name:"pier Seed Phrase Match",why:"playthrough: memorize twelve public cards, swap with keyboard or touch, bank exact full and partial payouts and return safely to the Playland porch",run:async b=>{
   const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),canvas=await b.evaluate(`location.search.includes("canvas2d=1")`),dir=join(root,"untracked/pier-seed-match-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
   const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit),hit:hit?.id};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
@@ -8667,39 +9089,38 @@ const pierSeedMatchFlow={name:"pier Seed Phrase Match",why:"playthrough: memoriz
   try{
     if(touch)await click("pier-prompt-use");else await b.key("e");
     record("Seed Phrase Match: its prompt opens the sourced backup lesson without starting the clock or collecting words",await b.evaluate(`__ooga.pier.seedMatch.busy&&__ooga.pier.seedMatch.state.phase==="intro"&&__ooga.pier.seedMatch.state.remaining===75&&!document.getElementById("pier-seed-lesson").hidden&&document.getElementById("pier-seed-lesson").textContent===BL.pierFacts.seedMatch.line&&document.getElementById("pier-seed-panel").querySelectorAll("input,textarea").length===0`));
-    const intro=await b.evaluate(PHONE(["#pier-mute","#pier-seed-act","#pier-seed-done"]));if(touch)await click("pier-seed-act");else await b.key(" ");const words=await remember();
+    const intro=await b.evaluate(PHONE([PIER_NAV(touch),"#pier-seed-act","#pier-seed-done"]));if(touch)await click("pier-seed-act");else await b.key(" ");const words=await remember();
     await b.key(" ");await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});
-    const memory=await b.evaluate(`__ooga.pier.seedMatch.state.phase==="memorize"&&__ooga.pier.seedMatch.state.held===-1&&__ooga.pier.seedMatch.state.swaps===0&&document.getElementById("pier-seed-act").disabled`);const memoryLayout=await b.evaluate(PHONE(["#pier-mute","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)]));
+    const memory=await b.evaluate(`__ooga.pier.seedMatch.state.phase==="memorize"&&__ooga.pier.seedMatch.state.held===-1&&__ooga.pier.seedMatch.state.swaps===0&&document.getElementById("pier-seed-act").disabled`);const memoryLayout=await b.evaluate(PHONE([PIER_NAV(touch),"#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)]));
     await reviewShot(b,join(dir,touch?"seed-memory-phone.png":canvas?"seed-memory-canvas.png":"seed-memory-keyboard.png"));
     if(process.env.DSB_REVIEW==="1"){const profile=await b.evaluate(`(()=>{const B=__ooga,q=B.pier.land.seedMatch;let faces=0;const count=n=>{faces+=n.geometry?.faces?.length||0;for(const c of n.children)count(c);};count(q.root);const t=performance.now();B.advance(.1,1/60);return {tableFaces:faces,cardFaces:q.cards[0].geometry.faces.length,sixStepsMs:performance.now()-t,renderer:{...B.renderer.stats}};})()`);writeFileSync(join(dir,touch?"performance-phone.json":canvas?"performance-canvas.json":"performance-keyboard.json"),JSON.stringify(profile,null,2)+"\n");}
-    await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.seedMatch.muted&&__ooga.pier.trainAudio.muted`);await click("pier-mute");
+    await pierMenu(b);await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.seedMatch.muted&&__ooga.pier.trainAudio.muted`);await pierMenu(b);await click("pier-mute");
     record("Seed Phrase Match: Start unlocks audio, shared mute toggles it, and memorize input cannot move cards",memory&&muted&&new Set(words).size===12&&await b.evaluate(`__ooga.pier.seedMatch.audioRunning&&!__ooga.pier.seedMatch.muted&&!__ooga.pier.trainAudio.muted`));
     await b.evaluate(`__ooga.advance(12,1/30)`);const recall=await remember();await click("pier-seed-act");
-    record("Seed Phrase Match: at 12s the order changes and a wrong Check gives a count without marking correct cards or paying early",words.join()!==recall.join()&&await b.evaluate(`__ooga.pier.seedMatch.state.phase==="recall"&&__ooga.pier.seedMatch.state.correct<12&&[...document.querySelectorAll("#pier-seed-grid button")].every(b=>b.dataset.correct==="")&&__ooga.game.state.arcade.tickets===window.__seedTickets`));
+    record("Seed Phrase Match: at 12s the order changes, the steel plate still reads the backup, and a wrong Check gives a count, marks no cards and banks two tickets for each word in place",words.join()!==recall.join()&&await b.evaluate(`(()=>{const B=__ooga,s=B.pier.seedMatch.state,plate=document.getElementById("pier-seed-plate");return s.phase==="recall"&&s.correct<12&&s.plate&&!plate.hidden&&${JSON.stringify(words)}.every((w,i)=>plate.textContent.includes((i+1)+" "+w))&&[...document.querySelectorAll("#pier-seed-grid button")].every(b=>b.dataset.correct==="")&&B.game.state.arcade.tickets===window.__seedTickets+2*s.correct;})()`));
     if(!touch){await select(4);const moves=[];for(const [key,x,y] of [["a",-1,0],["ArrowRight",1,0],["w",0,-1],["ArrowDown",0,1]]){const before=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.seedMatch.marker.position;return B.project(p.x,p.y,p.z,{});})()`);await b.key(key);await b.evaluate(`__ooga.advance(.02,1/60)`);const after=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.seedMatch.marker.position;return B.project(p.x,p.y,p.z,{});})()`);moves.push(x?(after.x-before.x)*x:(after.y-before.y)*y);}record("Seed Phrase Match: WASD and arrows select left, right, up and down on the displayed card table",moves.every(n=>n>3),JSON.stringify(moves));}
-    const controls=await b.evaluate(PHONE(["#pier-mute","#pier-seed-act","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)]));
+    const controls=await b.evaluate(PHONE([PIER_NAV(touch),"#pier-seed-act","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)]));
     await pick(0);await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");
     record("Seed Phrase Match: repeated Space and jetpack input cannot swap twice, move the actor or board another ride",await b.evaluate(`(()=>{const B=__ooga,s=B.pier.seedMatch.state,p=B.crew.player.root.position;return s.held===0&&s.swaps===0&&!B.crew.player.jet&&!B.pier.rides.riding&&!B.pier.whack.busy&&Math.hypot(p.x-window.__seedPosition.x,p.z-window.__seedPosition.z)<.01;})()`));await pick(0);
     await solve(words);if(touch)await click("pier-seed-act");else await b.key("c");
-    record("Seed Phrase Match: reordering all twelve observed words secures thirty pending tickets and locks edits",await b.evaluate(`__ooga.pier.seedMatch.state.phase==="secured"&&__ooga.pier.seedMatch.state.correct===12&&__ooga.pier.seedMatch.state.tickets===30&&document.getElementById("pier-seed-act").disabled&&__ooga.game.state.arcade.tickets===window.__seedTickets`));
-    // advance rounds to whole frames; cover the deadline rather than rounding the remaining time down.
-    await b.evaluate(`__ooga.advance(Math.ceil((75-__ooga.pier.seedMatch.state.elapsed)*15)/15,1/15)`);const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.seedMatch.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/15);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__seedTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.seedMatch,lesson:!document.getElementById("pier-seed-lesson").hidden,words:Object.hasOwn(saved.pier,"cards")||Object.hasOwn(saved.pier,"order")};})()`);
-    record("Seed Phrase Match: the full 75-second round saves exactly thirty tickets and its best once, restores the lesson and saves no words",result.phase==="result"&&result.time===75&&result.score===12&&result.earned===30&&result.repeat===0&&result.saved&&result.best===12&&result.lesson&&!result.words,JSON.stringify(result));
-    const resultControls=await b.evaluate(PHONE(["#pier-mute","#pier-seed-act","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)])),toastClear=await b.evaluate(`(()=>{const toast=document.getElementById("toast"),t=toast.getBoundingClientRect(),p=document.getElementById("pier-seed-panel").getBoundingClientRect();return !toast.classList.contains("show")||t.right<=p.left||t.left>=p.right||t.bottom<=p.top||t.top>=p.bottom;})()`);
+    record("Seed Phrase Match: reordering all twelve observed words ends the round there, with thirty tickets banked and nothing left to wait for",await b.evaluate(`__ooga.pier.seedMatch.state.phase==="result"&&__ooga.pier.seedMatch.state.correct===12&&__ooga.pier.seedMatch.state.tickets===30&&__ooga.pier.seedMatch.state.elapsed<75&&!document.getElementById("pier-seed-act").disabled&&__ooga.game.state.arcade.tickets===window.__seedTickets+30`));
+    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.seedMatch.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/15);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__seedTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.seedMatch,lesson:!document.getElementById("pier-seed-lesson").hidden,words:Object.hasOwn(saved.pier,"cards")||Object.hasOwn(saved.pier,"order")};})()`);
+    record("Seed Phrase Match: the finished round has saved exactly thirty tickets and its best once, restores the lesson and saves no words",result.phase==="result"&&result.time<75&&result.score===12&&result.earned===30&&result.repeat===0&&result.saved&&result.best===12&&result.lesson&&!result.words,JSON.stringify(result));
+    const resultControls=await b.evaluate(PHONE([PIER_NAV(touch),"#pier-seed-act","#pier-seed-done",...Array.from({length:12},(_,i)=>`#pier-seed-card-${i}`)])),toastClear=await b.evaluate(`(()=>{const toast=document.getElementById("toast"),t=toast.getBoundingClientRect(),p=document.getElementById("pier-seed-panel").getBoundingClientRect();return !toast.classList.contains("show")||t.right<=p.left||t.left>=p.right||t.bottom<=p.top||t.top>=p.bottom;})()`);
     record("Seed Phrase Match: intro, memorize, recall and results keep mute, Back and all cards uncovered, with the payout toast clear of the result text",intro.length===0&&memoryLayout.length===0&&controls.length===0&&resultControls.length===0&&toastClear,JSON.stringify({intro,memoryLayout,controls,resultControls,toastClear}));await reviewShot(b,join(dir,touch?"seed-result-phone.png":canvas?"seed-result-canvas.png":"seed-result-keyboard.png"));
     await click("pier-seed-act");await b.evaluate(`BL.math.randomInt=n=>n-1;`);await b.evaluate(`__ooga.advance(12,1/30)`);
     // The first restart already drew its order; identity recall swaps two cards and leaves ten correct.
-    await b.evaluate(`__ooga.advance(63,1/15)`);
+    await b.evaluate(`__ooga.pier.simulate(63,1/15)`);
     record("Seed Phrase Match: a partial round pays twenty tickets while retaining the perfect best",await b.evaluate(`__ooga.pier.seedMatch.state.score===10&&__ooga.pier.seedMatch.state.tickets===20&&__ooga.game.state.arcade.tickets===window.__seedTickets+50&&__ooga.game.state.pier.seedMatch===12`));
     await b.key("Escape");await holdKey(b,"s",.4);record("Seed Phrase Match: Escape restores the same upright walking Ooga, equipment and navigation at deck height",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.seedMatch.busy&&document.getElementById("pier-seed-panel").hidden&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&a.traits.name==="portlandhodl"&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__seedPosition.x,a.root.position.z-window.__seedPosition.z)>1;})()`));
     await position();await click("pier-prompt-use");await click("pier-seed-act");const again=await remember();await b.evaluate(`__ooga.advance(12,1/30)`);await solve(again);await click("pier-seed-act");await b.evaluate(`window.__seedBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-seed-done").focus();`);await b.key(" ");
-    record("Seed Phrase Match: native Space on Back discards secured pending tickets and clears hidden focus",await b.evaluate(`!__ooga.pier.seedMatch.busy&&__ooga.game.state.arcade.tickets===window.__seedBeforeQuit&&!document.getElementById("pier-seed-panel").contains(document.activeElement)&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden`));
+    record("Seed Phrase Match: native Space on Back leaves a finished round with its tickets kept and clears hidden focus",await b.evaluate(`!__ooga.pier.seedMatch.busy&&__ooga.game.state.arcade.tickets===window.__seedBeforeQuit&&!document.getElementById("pier-seed-panel").contains(document.activeElement)&&!document.getElementById("equipment-hud").hidden&&!document.querySelector(".pier-navigation").hidden`));
     if(!touch){const lanes=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.seedMatch,s=B.pier.solids;return s.segmentClear(-37,q.floor+.45,33,-37,q.floor+.45,59,.4,1.6)&&s.segmentClear(-41,q.floor+.45,38,-41,q.floor+.45,59,.4,1.6)&&s.segmentClear(-38,q.floor+.45,q.z,q.play.x,q.floor+.45,q.z,.4,1.6)&&B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater;})()`);record("Seed Phrase Match: both porch lanes and the approach stay clear, beside Whack and the shared DSB ocean",lanes);await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-seed-match");__ooga.setHour(18.8);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,canvas?"seed-frontage-canvas.png":"seed-frontage-sunset.png"));}
   }finally{await b.evaluate(`BL.math.randomInt=window.__seedRandom;delete window.__seedRandom;`);}
 }};
-scene("pier",{label:"Seed Phrase Match desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierSeedMatchFlow,trip("pier")]});
-scene("pier",{label:"Seed Phrase Match phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierSeedMatchFlow]});
-scene("pier",{label:"Seed Phrase Match canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierSeedMatchFlow]});
+scene("pier",{label:"Seed Phrase Match desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierSeedMatchFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Seed Phrase Match phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierSeedMatchFlow].map(greeted)});
+scene("pier",{label:"Seed Phrase Match canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierSeedMatchFlow].map(greeted)});
 const pierWhackFlow={name:"pier Double-Spend Whack",why:"playthrough: keyboard and touch compare pop-up inputs to a spent ledger, bank a complete timed round and return safely to the Playland promenade",run:async b=>{
   const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),canvas=await b.evaluate(`location.search.includes("canvas2d=1")`),dir=join(root,"untracked/pier-whack-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
   const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
@@ -8709,31 +9130,41 @@ const pierWhackFlow={name:"pier Double-Spend Whack",why:"playthrough: keyboard a
   try{
     if(touch)await click("pier-prompt-use");else await b.key("e");
     record("Double-Spend Whack: Playland's prompt opens the sourced lesson without starting the clock",await b.evaluate(`__ooga.pier.whack.busy&&__ooga.pier.whack.state.phase==="intro"&&__ooga.pier.whack.state.remaining===75&&!document.getElementById("pier-whack-lesson").hidden&&document.getElementById("pier-whack-lesson").textContent===BL.pierFacts.whack.line`));
-    const intro=await b.evaluate(PHONE(["#pier-mute","#pier-whack-act","#pier-whack-done"]));if(touch)await click("pier-whack-act");else await b.key(" ");
-    await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.whack.muted&&__ooga.pier.trainAudio.muted`);await click("pier-mute");record("Double-Spend Whack: real Start unlocks its sound and the shared pier mute silences and restores it",muted&&await b.evaluate(`__ooga.pier.whack.state.phase==="ready"&&__ooga.pier.whack.audioRunning&&!__ooga.pier.whack.muted&&!__ooga.pier.trainAudio.muted`));
+    const intro=await b.evaluate(PHONE([PIER_NAV(touch),"#pier-whack-act","#pier-whack-done"]));if(touch)await click("pier-whack-act");else await b.key(" ");
+    await pierMenu(b);await click("pier-mute");const muted=await b.evaluate(`__ooga.pier.whack.muted&&__ooga.pier.trainAudio.muted`);await pierMenu(b);await click("pier-mute");record("Double-Spend Whack: real Start unlocks its sound and the shared pier mute silences and restores it",muted&&await b.evaluate(`__ooga.pier.whack.state.phase==="ready"&&__ooga.pier.whack.audioRunning&&!__ooga.pier.whack.muted&&!__ooga.pier.trainAudio.muted`));
     if(!touch){const moves=[];for(const [key,x,y] of [["ArrowLeft",-1,0],["d",1,0],["ArrowUp",0,-1],["s",0,1]]){await b.key("5");const before=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.whack.marker.position;return B.project(p.x,p.y,p.z,{});})()`);await b.key(key);await b.evaluate(`__ooga.advance(.02,1/60)`);const after=await b.evaluate(`(()=>{const B=__ooga,p=B.pier.land.whack.marker.position;return B.project(p.x,p.y,p.z,{});})()`);moves.push(x?(after.x-before.x)*x:(after.y-before.y)*y);}record("Double-Spend Whack: arrows and WASD move the cabinet cursor left, right, up and down on screen",moves.every(n=>n>3),JSON.stringify(moves));}
-    const controls=await b.evaluate(PHONE(["#pier-mute","#pier-whack-act","#pier-whack-done",...Array.from({length:9},(_,i)=>`#pier-whack-cell-${i}`)]));record("Double-Spend Whack: mute, Start, Back and all nine transaction slots fit the viewport and remain uncovered",intro.length===0&&controls.length===0,JSON.stringify({intro,controls}));
+    const controls=await b.evaluate(PHONE([PIER_NAV(touch),"#pier-whack-act","#pier-whack-done",...Array.from({length:9},(_,i)=>`#pier-whack-cell-${i}`)]));record("Double-Spend Whack: mute, Start, Back and all nine transaction slots fit the viewport and remain uncovered",intro.length===0&&controls.length===0,JSON.stringify({intro,controls}));
     await reviewShot(b,join(dir,touch?"whack-active-touch.png":canvas?"whack-active-canvas.png":"whack-active-keyboard.png"));
-    await hit(1);const first=await b.evaluate(`__ooga.pier.whack.state.score`);
-    if(touch){const slot=await b.evaluate(`__ooga.pier.whack.state.cells.findIndex(c=>c.coin===1)`);await click(`pier-whack-cell-${slot}`);}else await b.key(" ");
+    // Start the round again with the pier held still, so the waves below fall where the checks expect them.
+    await b.key("Escape");await pierFreeze(b);await position();if(touch)await click("pier-prompt-use");else await b.key("e");if(touch)await click("pier-whack-act");else await b.key(" ");
+    // With these dice the first wave spends B, C and D for the first time: nothing there is a double spend.
+    const doubles=async()=>{const slots=await b.evaluate(`__ooga.pier.whack.state.cells.map((c,i)=>c.active&&c.double?i:-1).filter(i=>i>=0)`);for(const slot of slots){if(touch)await click(`pier-whack-cell-${slot}`);else {await b.key(String(slot+1));await b.key(" ");}}return slots.length;};
+    const opening=await b.evaluate(`(()=>{const s=__ooga.pier.whack.state;return {spent:s.spent,doubles:s.cells.filter(c=>c.active&&c.double).length,active:s.cells.filter(c=>c.active).length,ledger:document.getElementById("pier-whack-ledger").textContent};})()`);
+    await hit(1);
+    record("Double-Spend Whack: the first three spends are honest, and whacking one costs points, explains the mistake and leaves that coin unspent",opening.spent===0&&opening.doubles===0&&opening.active===3&&opening.ledger.includes("none yet")&&await b.evaluate(`__ooga.pier.whack.state.score===0&&__ooga.pier.whack.state.wrong===1&&document.getElementById("pier-whack-info").textContent.includes("not been spent")`),JSON.stringify(opening));
+    // The next wave names C and D again. Those are the double spends; B's first spend is honest.
+    await b.evaluate(`__ooga.advance(__ooga.pier.whack.state.next-__ooga.pier.whack.state.elapsed+.1,1/15)`);
+    const second=await b.evaluate(`(()=>{const s=__ooga.pier.whack.state;return {spent:s.spent,doubles:s.cells.filter(c=>c.active&&c.double).map(c=>c.coin).sort().join(),ledger:document.getElementById("pier-whack-ledger").textContent};})()`);
+    await hit(2);const first=await b.evaluate(`__ooga.pier.whack.state.score`);
+    if(touch){const slot=await b.evaluate(`__ooga.pier.whack.state.cells.findIndex(c=>c.coin===2)`);await click(`pier-whack-cell-${slot}`);}else await b.key(" ");
     await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});await b.key("j");
-    record("Double-Spend Whack: one repeat-spend hit scores once; repeated Space, empty taps and jetpack keys cannot add points or move the Ooga",first===2&&await b.evaluate(`(()=>{const B=__ooga,s=B.pier.whack.state,p=B.crew.player.root.position;return s.score===2&&s.rejected===1&&!B.crew.player.jet&&!B.pier.rides.riding&&Math.hypot(p.x-window.__whackPosition.x,p.z-window.__whackPosition.z)<.01&&B.game.state.arcade.tickets===window.__whackTickets;})()`));
-    await hit(4);record("Double-Spend Whack: rejecting an unspent coin costs points and explains the mistake",await b.evaluate(`__ooga.pier.whack.state.score===0&&__ooga.pier.whack.state.wrong===1&&document.getElementById("pier-whack-info").textContent.includes("unspent")`));await hit(2);
+    record("Double-Spend Whack: a coin spent in the last wave is a double spend in this one and rejecting it scores once; repeated Space, empty taps and jetpack keys cannot add points or move the Ooga",second.spent===12&&second.doubles==="2,3"&&second.ledger.includes("C")&&second.ledger.includes("D")&&first===2&&await b.evaluate(`(()=>{const B=__ooga,s=B.pier.whack.state,p=B.crew.player.root.position;return s.score===2&&s.rejected===1&&!B.crew.player.jet&&!B.pier.rides.riding&&Math.hypot(p.x-window.__whackPosition.x,p.z-window.__whackPosition.z)<.01&&B.game.state.arcade.tickets===window.__whackTickets;})()`),JSON.stringify({second,first}));
+    await doubles();
     await reviewShot(b,join(dir,touch?"whack-touch.png":canvas?"whack-canvas.png":"whack-keyboard.png"));
-    for(let wave=0;wave<29;wave++){await b.evaluate(`__ooga.advance(__ooga.pier.whack.state.next-__ooga.pier.whack.state.elapsed+.1,1/15)`);await hit(1);await hit(2);}
+    for(let wave=2;wave<30;wave++){await b.evaluate(`__ooga.pier.simulate(__ooga.pier.whack.state.next-__ooga.pier.whack.state.elapsed+.1,1/15)`);await doubles();}
     await b.evaluate(`__ooga.advance(3,1/15)`);
-    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.whack.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/15);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__whackTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.whack,allowed:s.allowed,lesson:!document.getElementById("pier-whack-lesson").hidden};})()`);
-    record("Double-Spend Whack: 75 seconds bank the exact payout and best once, let valid inputs pass and restore the result lesson",result.phase==="result"&&result.time===75&&result.score===118&&result.earned===39&&result.repeat===0&&result.saved&&result.best===118&&result.allowed===29&&result.lesson,JSON.stringify(result));
+    const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.whack.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/15);return {phase:s.phase,time:s.elapsed,score:s.score,earned:tickets-window.__whackTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.whack,allowed:s.allowed,missed:s.missed,sets:s.sets,lesson:!document.getElementById("pier-whack-lesson").hidden};})()`);
+    record("Double-Spend Whack: a whole round with every double spend rejected banks its exact payout and best once, lets every first spend through, starts fresh coins when all are spent and restores the lesson",result.phase==="result"&&result.time===75&&result.score===88&&result.earned===29&&result.repeat===0&&result.saved&&result.best===88&&result.allowed===45&&result.missed===0&&result.sets>=6&&result.lesson,JSON.stringify(result));
     await b.key("Escape");await holdKey(b,"s",.4);
     record("Double-Spend Whack: Escape restores walking, navigation and the same upright Ooga on the deck",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.whack.busy&&document.getElementById("pier-whack-panel").hidden&&!document.querySelector(".pier-navigation").hidden&&!document.getElementById("equipment-hud").hidden&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__whackPosition.x,a.root.position.z-window.__whackPosition.z)>1;})()`));
-    await position();await click("pier-prompt-use");await click("pier-whack-act");await hit(1);await hit(2);await b.evaluate(`window.__whackBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-whack-done").focus();`);await b.key(" ");
-    record("Double-Spend Whack: native Space on Back discards pending tickets and clears hidden focus",await b.evaluate(`!__ooga.pier.whack.busy&&__ooga.game.state.arcade.tickets===window.__whackBeforeQuit&&!document.getElementById("pier-whack-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden&&!document.getElementById("equipment-hud").hidden`));
+    await position();await click("pier-prompt-use");await click("pier-whack-act");const entered=await b.evaluate(`__ooga.game.state.arcade.tickets`);await b.evaluate(`__ooga.advance(__ooga.pier.whack.state.next-__ooga.pier.whack.state.elapsed+.1,1/15)`);await doubles();await b.evaluate(`__ooga.advance(.1,1/15);window.__whackBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-whack-done").focus();`);await b.key(" ");
+    record("Double-Spend Whack: native Space on Back leaves an unfinished round with the ticket it had banked and clears hidden focus",await b.evaluate(`__ooga.game.state.arcade.tickets`)===entered+1&&await b.evaluate(`!__ooga.pier.whack.busy&&__ooga.game.state.arcade.tickets===window.__whackBeforeQuit&&!document.getElementById("pier-whack-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden&&!document.getElementById("equipment-hud").hidden`));
     if(!touch){const lane=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.whack,s=B.pier.solids;return s.segmentClear(-37,q.floor+.45,33,-37,q.floor+.45,55,.4,1.6)&&s.segmentClear(-41,q.floor+.45,38,-41,q.floor+.45,50,.4,1.6)&&s.segmentClear(-38,q.floor+.45,44,q.play.x,q.floor+.45,44,.4,1.6)&&B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater;})()`);record("Double-Spend Whack: both porch lanes and the play-pad approach stay clear beside the cabinet with the shared DSB ocean",lane);await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-whack");__ooga.setHour(18.8);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,canvas?"whack-frontage-canvas.png":"whack-frontage-sunset.png"));if(!canvas){await b.evaluate(`__ooga.setHour(23);__ooga.advance(.5,1/30)`);await reviewShot(b,join(dir,"whack-frontage-night.png"));}}
-  }finally{await b.evaluate(`BL.math.randomInt=window.__whackRandom;delete window.__whackRandom;`);}
+  }finally{await pierThaw(b);await b.evaluate(`BL.math.randomInt=window.__whackRandom;delete window.__whackRandom;`);}
 }};
-scene("pier",{label:"Double-Spend Whack desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierWhackFlow,trip("pier")]});
-scene("pier",{label:"Double-Spend Whack phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierWhackFlow]});
-scene("pier",{label:"Double-Spend Whack canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierWhackFlow]});
+scene("pier",{label:"Double-Spend Whack desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierWhackFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Double-Spend Whack phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierWhackFlow].map(greeted)});
+scene("pier",{label:"Double-Spend Whack canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierWhackFlow].map(greeted)});
 const pierMayhemFlow={name:"pier Mempool Mayhem",why:"playthrough: real keyboard and touch driving reaches the fee gate, banks one saved payout and returns the same seated Ooga to the pavilion pad",run:async b=>{
   const touch=await b.evaluate(`matchMedia("(pointer: coarse)").matches`),dir=join(root,"untracked/pier-mayhem-review");if(process.env.DSB_REVIEW==="1")mkdirSync(dir,{recursive:true});
   const click=async id=>{const p=await b.evaluate(`(()=>{const button=document.getElementById(${JSON.stringify(id)}),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return {x,y,visible:r.width>0&&r.height>0,uncovered:!!hit&&button.contains(hit)};})()`);if(!p.visible||!p.uncovered)throw Error(`${id} cannot be clicked: ${JSON.stringify(p)}`);if(touch){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:p.x,y:p.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);};
@@ -8754,35 +9185,43 @@ const pierMayhemFlow={name:"pier Mempool Mayhem",why:"playthrough: real keyboard
   record("Mempool Mayhem: WASD and the touch stick drive up, down, left and right on screen and release or cancellation clears steering",rows.every(r=>r.released)&&(rows[0].y<-3&&rows[1].y>3&&rows[2].x<-3&&rows[3].x>3)&&rows[0].pickups>0,JSON.stringify(rows));
   await b.key("j");await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",autoRepeat:true});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" "});
   record("Mempool Mayhem: held Space and jetpack keys cannot reboard another ride, bypass the gate or pay tickets",await b.evaluate(`__ooga.pier.mayhem.state.phase==="driving"&&!__ooga.crew.player.jet&&!__ooga.pier.rides.riding&&__ooga.game.state.arcade.tickets===window.__mayhemTickets`));
-  await gateWin();const pending=await b.evaluate(`({winner:__ooga.pier.mayhem.state.lastWinner,score:__ooga.pier.mayhem.state.tickets,unpaid:__ooga.game.state.arcade.tickets===window.__mayhemTickets})`);record("Mempool Mayhem: the fee gate admits the highest-fee queued player and holds its six tickets until the finish",pending.winner===0&&pending.score===6&&pending.unpaid,JSON.stringify(pending));
+  await gateWin();const pending=await b.evaluate(`({winner:__ooga.pier.mayhem.state.lastWinner,score:__ooga.pier.mayhem.state.tickets,banked:__ooga.game.state.arcade.tickets-window.__mayhemTickets})`);record("Mempool Mayhem: the fee gate admits the highest-fee queued player and banks its six tickets at once",pending.winner===0&&pending.score===6&&pending.banked===6,JSON.stringify(pending));
   await reviewShot(b,join(dir,touch?"mayhem-touch.png":await b.evaluate(`location.search.includes("canvas2d=1")`)?"mayhem-canvas.png":"mayhem-keyboard.png"));
   if(!touch&&process.env.DSB_REVIEW==="1"&&!await b.evaluate(`location.search.includes("canvas2d=1")`)){
     const sample=await b.evaluate(`(async()=>{const B=__ooga,R=B.renderer,samples=[],draw=R.render;R.render=function(...args){const t=performance.now(),result=draw.apply(this,args);samples.push(performance.now()-t);return result;};await new Promise(r=>requestAnimationFrame(r));const frames=B.renderedFrames,t=performance.now();try{await new Promise(r=>setTimeout(r,1000));}finally{R.render=draw;}const ms=performance.now()-t;samples.sort((a,c)=>a-c);return {quality:R.quality,fps:(B.renderedFrames-frames)*1000/ms,renderMedian:samples[Math.floor(samples.length/2)],renderP95:samples[Math.floor(samples.length*.95)],stats:{...R.stats}};})()`);writeFileSync(join(dir,"performance.json"),JSON.stringify(sample,null,2)+"\n");
   }
-  await b.evaluate(`__ooga.advance(76,1/30)`);
+  await b.evaluate(`__ooga.pier.simulate(76,1/30)`);
   const result=await b.evaluate(`(()=>{const B=__ooga,s=B.pier.mayhem.state,saved=BL.game.create({catalog:BL.models.SWAG}).state,tickets=B.game.state.arcade.tickets;B.advance(3,1/30);return {phase:s.phase,time:s.elapsed,score:s.tickets,earned:tickets-window.__mayhemTickets,repeat:B.game.state.arcade.tickets-tickets,saved:saved.arcade.tickets===tickets,best:saved.pier.mayhem,lesson:!document.getElementById("pier-mayhem-lesson").hidden,seated:B.pier.mayhem.ownsSeat(B.crew.player.camp.seat)};})()`);
   record("Mempool Mayhem: its 75-second result saves the exact earned tickets and best once and restates the lesson",result.phase==="result"&&result.time===75&&result.score===6&&result.earned===6&&result.repeat===0&&result.saved&&result.best===6&&result.lesson&&result.seated,JSON.stringify(result));
   await b.key("Escape");await holdKey(b,"s",.4);
   record("Mempool Mayhem: Escape restores the same upright Ooga, walking, roof and navigation at the exterior pad",await b.evaluate(`(()=>{const B=__ooga,a=B.crew.player;return !B.pier.mayhem.busy&&document.getElementById("pier-mayhem-panel").hidden&&!document.querySelector(".pier-navigation").hidden&&B.pier.land.park.bumperRoof.visible&&a.traits.name==="portlandhodl"&&!a.camp.seat&&!a.jet&&!a.root.quaternion&&Math.abs(a.root.position.y-a.baseY-BL.pierModels.LAYOUT.top)<.05&&Math.hypot(a.root.position.x-window.__mayhemPosition.x,a.root.position.z-window.__mayhemPosition.z)>1;})()`));
-  await position();await click("pier-prompt-use");await click("pier-mayhem-act");await b.evaluate(`__ooga.advance(.3,1/60)`);await gateWin();await b.evaluate(`window.__mayhemBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-mayhem-done").focus();`);await b.key(" ");
-  record("Mempool Mayhem: native Space on Back exits safely and discards unfinished tickets without hidden focus",await b.evaluate(`!__ooga.pier.mayhem.busy&&!__ooga.crew.player.camp.seat&&__ooga.game.state.arcade.tickets===window.__mayhemBeforeQuit&&!document.getElementById("pier-mayhem-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden`));
+  await position();await click("pier-prompt-use");const entered=await b.evaluate(`__ooga.game.state.arcade.tickets`);await click("pier-mayhem-act");await b.evaluate(`__ooga.advance(.3,1/60)`);await gateWin();await b.evaluate(`window.__mayhemBeforeQuit=__ooga.game.state.arcade.tickets;document.getElementById("pier-mayhem-done").focus();`);await b.key(" ");
+  record("Mempool Mayhem: native Space on Back exits safely, keeping the six tickets its admission banked, without hidden focus",await b.evaluate(`__ooga.game.state.arcade.tickets`)===entered+6&&await b.evaluate(`!__ooga.pier.mayhem.busy&&!__ooga.crew.player.camp.seat&&__ooga.game.state.arcade.tickets===window.__mayhemBeforeQuit&&!document.getElementById("pier-mayhem-panel").contains(document.activeElement)&&!document.querySelector(".pier-navigation").hidden`));
   if(!touch){
     const access=await b.evaluate(`(()=>{const B=__ooga,q=BL.pierModels.LAYOUT.mayhem,s=B.pier.solids;return {lane:s.segmentClear(q.play.x+3.5,BL.pierModels.LAYOUT.top+.45,q.z-10,q.play.x+3.5,BL.pierModels.LAYOUT.top+.45,q.z+8,.4,1.6),sameWater:B.pier.life.ocean===BL.scenes.pier.renderOpts.dsbWater};})()`);record("Mempool Mayhem: the pavilion preserves its adjacent walking lane and shared DSB ocean",Object.values(access).every(Boolean),JSON.stringify(access));
     if(!await b.evaluate(`location.search.includes("canvas2d=1")`)){await b.evaluate(`document.querySelector('[data-action="pier-overview"]').click();__ooga.pilot.goPreset("pier-mayhem");__ooga.setHour(18.8);__ooga.advance(1,1/60)`);await reviewShot(b,join(dir,"mayhem-pavilion-sunset.png"));await b.evaluate(`__ooga.setHour(23);__ooga.advance(1,1/60)`);await reviewShot(b,join(dir,"mayhem-pavilion-night.png"));}
   }
 }};
-scene("pier",{label:"Mempool Mayhem desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierMayhemFlow,trip("pier")]});
-scene("pier",{label:"Mempool Mayhem phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierMayhemFlow]});
-scene("pier",{label:"Mempool Mayhem canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierMayhemFlow]});
-scene("pier",{label:"Block Builder desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierBuilderFlow,trip("pier")]});
-scene("pier",{label:"Block Builder phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierBuilderFlow]});
-scene("pier",{label:"Hash Fishing desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierFishingFlow,trip("pier")]});
-scene("pier",{label:"Hash Fishing phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierFishingFlow]});
-scene("pier",{label:"Phase 2 desktop",query:"character=portlandhodl",steps:[pierNavigationFlow,pierInteractionFlow,trip("pier")]});
-scene("pier",{label:"Phase 2 phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierNavigationFlow,pierInteractionFlow]});
-scene("pier",{label:"landmark review",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierLandmarkReview]});
-scene("pier",{label:"landmark canvas",query:"character=portlandhodl&day=172&canvas2d=1",steps:[pierLandmarkReview]});
-scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk and gateway", why: "playthrough: a canonical Ooga walks the full pier and crosses both destination gates without losing identity", run: async b => {
+scene("pier",{label:"Mempool Mayhem desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierMayhemFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Mempool Mayhem phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierMayhemFlow].map(greeted)});
+scene("pier",{label:"Mempool Mayhem canvas",query:"character=portlandhodl&canvas2d=1",steps:[pierMayhemFlow].map(greeted)});
+scene("pier",{label:"Block Builder desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierBuilderFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Block Builder phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierBuilderFlow].map(greeted)});
+scene("pier",{label:"Hash Fishing desktop",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierFishingFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Hash Fishing phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierFishingFlow].map(greeted)});
+scene("pier",{label:"Phase 2 desktop",query:"character=portlandhodl",steps:[pierNavigationFlow,pierInteractionFlow,trip("pier")].map(greeted)});
+scene("pier",{label:"Phase 2 phone",query:"character=portlandhodl",opts:PHONE_SIZE,steps:[pierNavigationFlow,pierInteractionFlow].map(greeted)});
+scene("pier",{label:"landmark review",query:"character=portlandhodl&day=172",opts:{perf:true},steps:[pierLandmarkReview].map(greeted)});
+scene("pier",{label:"landmark canvas",query:"character=portlandhodl&day=172&canvas2d=1",steps:[pierLandmarkReview].map(greeted)});
+// The pier's own world: its frame budget, wheels and water, night, park rides, fireworks and photos.
+scene("pier", { label: "world", query: "character=portlandhodl", steps: [pierFrameBudget, pierWheelsAndWater, pierAfterDark, pierPhotoAndFireworks].map(greeted) });
+scene("pier", { label: "park rides", query: "character=portlandhodl", steps: [pierParkRides].map(greeted) });
+scene("pier", { label: "chain", query: "character=portlandhodl", steps: [pierBlockParty, pierWeather].map(greeted) });
+scene("pier", { label: "ferry", query: "character=portlandhodl", steps: [pierFerryCrossing].map(greeted) });
+scene("pier", { label: "returns", query: "character=portlandhodl", steps: [pierReasonsToReturn, pierBetterTogether].map(greeted) });
+scene("pier", { label: "mayhem", query: "character=portlandhodl", steps: [pierBoardwalkMayhem].map(greeted) });
+scene("pier", { label: "returns phone", query: "character=portlandhodl", opts: PHONE_SIZE, steps: [pierReasonsToReturn, pierMayhemLayout].map(greeted) });
+scene("pier", { query: "character=portlandhodl", steps: [pierTitleCard].concat([{ name: "pier boardwalk and gateway", why: "playthrough: a canonical Ooga walks the full pier and crosses both destination gates without losing identity", run: async b => {
   await tourGo(b, "bifrost");
   const direction=await b.evaluate(`(() => { const B=__ooga,w=B.bifrost.scene.windows.find(w=>w.row.scene==="pier"),r=BL.bifrostModels.HALL.r-2.8,x=w.sn*r,z=w.c*r;B.pilot.navigate({position:{x,y:0,z},yaw:Math.atan2(w.sn,w.c)+Math.PI,pitch:.2,dist:5});B.advance(.5,1/60);return [w.sn,w.c]; })()`);
   await walkToward(b,direction[0],direction[1],1.2);
@@ -8804,6 +9243,8 @@ scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk
     ["west beach ramp",[-72,1.35,92],-1,0,3,"x",93,.35],
     ["east beach ramp",[4,1.35,92],1,0,3,"x",25,.35]
   ]){
+    // A key is held from one command to the next: hold the pier still so a slow command adds no distance.
+    await pierFreeze(b);
     await b.evaluate(`__ooga.pilot.navigate({position:{x:${start[0]},y:${start[1]},z:${start[2]}},yaw:${Math.atan2(-dx,-dz)},pitch:.22,dist:7});__ooga.advance(.3,1/60)`);
     await holdKey(b,"w",seconds);
     const there=await b.evaluate(`(()=>{const A=__ooga.crew.player;return {x:A.root.position.x,z:A.root.position.z,feet:A.root.position.y-A.baseY};})()`);
@@ -8812,6 +9253,7 @@ scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk
     const sign=axis==="x"?dx:dz,returned=Math.hypot(back.x-start[0],back.z-start[2])<1&&Math.abs(back.feet-start[1])<.05;
     coastal.push({name,there,back,pass:there[axis]*sign>limit&&Math.abs(there.feet-floor)<.05&&returned});
   }
+  await pierThaw(b);
   record("pier coastal access: the widest Ooga walks the bridge, full trails, lower road and all three beach ramps in both directions",coastal.every(row=>row.pass),JSON.stringify(coastal));
   await b.evaluate(`__ooga.pilot.navigate({position:BL.pierModels.LAYOUT.spawn,yaw:0,pitch:.22,dist:7});__ooga.advance(.3,1/60);`);
   const walkingSeconds=await b.evaluate(`(BL.pierModels.LAYOUT.spawn.z-BL.pierModels.LAYOUT.tip-5)/BL.pilot.WALK.speed`);
@@ -8854,7 +9296,8 @@ scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk
   await b.key(" ");await b.evaluate(`__ooga.advance(15,1/60)`);
   const dock=await b.evaluate(`(()=>{const B=__ooga,A=B.crew.player,p=A.root.position;return {riding:B.pier.boats.riding,seated:!!A.camp.seat,tilt:A.root.quaternion,feet:p.y-A.baseY,distance:Math.hypot(p.x-24.5,p.z+267),name:A.traits.name};})()`);
   record("pier landmarks: existing launch sails on DSB water and returns the same upright Ooga to its dock",sailing.riding&&sailing.seated&&sailing.x>40&&!dock.riding&&!dock.seated&&!dock.tilt&&Math.abs(dock.feet-1.35)<.05&&dock.distance<1&&dock.name==="portlandhodl",JSON.stringify({sailing,dock}));
- } }, { name: "pier carnival circuits", why: "regression: Space while walking failed to board; every ride must carry the widest Ooga through its circuit and restore it at a safe platform", run: async b => {
+ } }].map(greeted)) });
+scene("pier", { label: "rides and midway", query: "character=portlandhodl", steps: [{ name: "pier carnival circuits", why: "regression: Space while walking failed to board; every ride must carry the widest Ooga through its circuit and restore it at a safe platform", run: async b => {
   await tourGo(b,"pier");
   await b.evaluate(`(() => {const B=__ooga,q=BL.pierModels.LAYOUT.wheel.board;B.pilot.navigate({position:{x:q.x,y:BL.pierModels.LAYOUT.top,z:q.z},yaw:Math.PI,pitch:.22,dist:7});B.advance(.3,1/60);})()`);
   await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:"w",code:"KeyW"});
@@ -8866,7 +9309,7 @@ scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk
   record("pier wheel: action boards the physical gondola",boarded);
   await holdKey(b,"w",1);
   await b.evaluate(`__ooga.advance(23,1/30)`);
-  const top=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,c=B.pier.land.ferris.cars[0];return {seated:!!a.camp.seat,height:a.root.position.y,carY:c.position.y,tilt:c.rotation.z};})()`);
+  const top=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,cars=B.pier.land.ferris.cars,c=cars.reduce((best,car)=>car.position.y>best.position.y?car:best);return {seated:!!a.camp.seat,height:a.root.position.y,carY:c.position.y,tilt:c.rotation.z};})()`);
   record("pier wheel: movement keeps the rider in an upright ocean-view gondola",top.seated && top.height>20 && top.carY>9 && top.tilt===0,JSON.stringify(top));
   await b.key(" ");
   const held=await b.evaluate(`__ooga.pier.rides.riding && __ooga.pier.rides.exitRequested`);
@@ -8878,21 +9321,21 @@ scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk
     if(id==="coaster"){
       const moving=await b.evaluate(`(() => {const B=__ooga,m=B.pier.land.coaster,p=m.train.position,x=p.x,z=p.z;B.advance((m.seconds+2-m.phase)%m.seconds,1/60);return {moved:Math.hypot(p.x-x,p.z-z)>1,open:m.boardOpen,name:m.label,window:m.boardingSeconds};})()`);
       record("pier train: empty locomotive runs continuously with a one-second window",moving.moved&&!moving.open&&moving.name==="Nothing Stops This Train"&&moving.window===1,JSON.stringify(moving));
-      await b.key(" ");
-      record("pier train: early Space is rejected without queuing",await b.evaluate(`!__ooga.pier.rides.riding`));
+      await b.key(" ");await b.key("e");await b.evaluate(`document.getElementById("pier-prompt-use").click();document.getElementById("pier-ride").click()`);
+      record("pier train: Space, E, the prompt and the ride button are all refused before the window, without queuing",await b.evaluate(`!__ooga.pier.rides.riding`));
       await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",code:"Space"});
       await b.evaluate(`(() => {const B=__ooga,m=B.pier.land.coaster;B.advance(m.untilBoard+.15,1/60);})()`);
       await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",code:"Space",autoRepeat:true});
       record("pier train: holding early Space through arrival cannot board",await b.evaluate(`!__ooga.pier.rides.riding && __ooga.pier.land.coaster.boardOpen`));
       await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" ",code:"Space"});
-      await b.evaluate(`document.getElementById("pier-ride").click()`);
-      record("pier train: clicking during the window cannot bypass Space timing",await b.evaluate(`!__ooga.pier.rides.riding && __ooga.pier.land.coaster.boardOpen`));
-    }
-    if(id==="coaster"){await b.key("e");await b.evaluate(`document.getElementById("pier-prompt-use").click()`);record("pier train: E and the shared prompt cannot bypass fresh Space",await b.evaluate(`!__ooga.pier.rides.riding`));}
-    await b.key(" ");await b.evaluate(`__ooga.advance(.3,1/60)`);
-    record(`pier ${id}: Space boards its own seat`,await b.evaluate(`__ooga.pier.rides.kind === "${id}" && __ooga.crew.player.camp.seat === __ooga.pier.land.${id}.seat`));
+      // A tap is a fresh press: inside the window it jumps aboard, which is how a phone rides the train.
+      await b.evaluate(`document.getElementById("pier-prompt-use").click()`);
+    } else await b.key(" ");
+    await b.evaluate(`__ooga.advance(.3,1/60)`);
+    record(`pier ${id}: ${id==="coaster"?"a tap inside the window":"Space"} boards its own seat`,await b.evaluate(`__ooga.pier.rides.kind === "${id}" && __ooga.crew.player.camp.seat === __ooga.pier.land.${id}.seat`));
     await holdKey(b,"w",1);
-    await b.evaluate(`__ooga.advance(${seconds/2-1.3},1/60)`);
+    // The carousel lets a rider off whenever their horse is at the pad, so ask it mid-turn, away from the pad and the ring.
+    await b.evaluate(`__ooga.advance(${(id==="carousel"?seconds/4:seconds/2)-1.3},1/60)`);
     const middle=await b.evaluate(`(() => {const B=__ooga,a=B.crew.player,m=B.pier.land.${id},p=a.root.position;return {seated:a.camp.seat===m.seat,height:p.y,attached:Math.hypot(p.x-m.seat.x,p.z-m.seat.z)<.01,orientation:a.root.quaternion===m.tilt};})()`);
     record(`pier ${id}: movement retains the seated rider and ride orientation`,middle.seated&&middle.attached&&middle.orientation&&middle.height>(id==="coaster"?12:2),JSON.stringify(middle));
     await b.key(" ");
@@ -8925,7 +9368,7 @@ scene("pier", { query: "character=portlandhodl", steps: [{ name: "pier boardwalk
   await b.evaluate(`document.getElementById("pier-prize-close").focus()`);await b.key(" ");
   await b.evaluate(`window.__pierBeforeWalk={x:__ooga.crew.player.root.position.x,z:__ooga.crew.player.root.position.z}`);await holdKey(b,"s",.4);
   record("pier prize counter: Space on Back restores boardwalk movement",await b.evaluate(`!__ooga.pier.games.busy && Math.hypot(__ooga.crew.player.root.position.x-window.__pierBeforeWalk.x,__ooga.crew.player.root.position.z-window.__pierBeforeWalk.z)>1`));
-} }, trip("pier")] });
+} }, trip("pier")].map(greeted) });
 scene("bifrost", { label: "dsb round trip", query: "character=portlandhodl", steps: [bifrostDsb] });
 scene("bifrost", { label: "poker round trip", query: "character=portlandhodl", steps: [bifrostPoker] });
 scene("bifrost", { label: "canvas2d", url: hubPage(src, "canvas2d=1"), steps: [bifrostCanvas] });
@@ -11080,6 +11523,17 @@ const integrationChecks = async BL => {
   record("integration network: account, owned body, DSB zone and pose share one room",f.sockets.length===1&&f.net.ownCharacter()?.handle==="YellowBrokeIt"&&f.net.mayDrive("w-s-bitcoin",false)!==null&&f.sent.some(m=>m.t==="zone"&&m.name==="dsb-studio")&&f.sent.some(m=>m.t==="body"&&m.name==="YellowBrokeIt")&&f.sent.some(m=>m.t==="pose"&&m.x===-45));
   message({t:"zone",id:72,name:"dsb-outside"});
   record("integration network: remote zones change through the shared wire contract",f.net.remotes.get(72).zone==="dsb-outside");
+  // Stance and moments: a remote's stance is kept on its record and cleared with its body; this page reports its
+  // own only on a change; a moment goes out for an Ooga in the room, not twice in one breath, and one that comes
+  // in reaches the subscribers with the sender's record.
+  const heard=[];const unhear=f.net.subscribeEvents((rec,kind,values)=>heard.push([rec.id,kind,values.join()]));
+  message({t:"st",id:72,v:1});const seated=f.net.remotes.get(72).stance===1;
+  message({t:"ev",id:72,k:"emote",v:[2]});message({t:"ev",id:99,k:"emote",v:[1]});message({t:"ev",id:72,k:7,v:[1]});message({t:"ev",id:72,k:"bell"});
+  message({t:"body",id:72,name:"w-s-bitcoin"});const stood=f.net.remotes.get(72).stance===0;
+  f.net.setStance(0);f.net.setStance(1);f.net.setStance(1);f.net.setStance(9);f.net.setStance(1.5);
+  const first=f.net.sendEvent("emote",[1]),again=f.net.sendEvent("emote",[2]),odd=f.net.sendEvent("Bad Kind",[1]);
+  const stances=f.sent.filter(m=>m.t==="st"),events=f.sent.filter(m=>m.t==="ev");unhear();message({t:"ev",id:72,k:"emote",v:[0]});
+  record("integration network: a remote's stance and a relayed moment arrive on its record, and this page sends a stance once per change and a moment no faster than the room relays",seated&&stood&&heard.length===1&&heard[0].join("|")==="72|emote|2"&&stances.length===1&&stances[0].v===1&&first&&!again&&!odd&&events.length===1&&events[0].k==="emote"&&events[0].v[0]===1,JSON.stringify({seated,stood,heard,stances,events,first,again,odd}));
   message({t:"join",p:{id:71,login:"YellowBrokeIt",body:"YellowBrokeIt",zone:"dsb-outside"}});
   record("integration network: the local identity never becomes a remote",!f.net.remotes.has(71)&&f.net.remotes.size===1);
   f.net.setBody(null);f.net.setZone("scene-bifrost");

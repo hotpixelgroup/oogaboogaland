@@ -58,15 +58,18 @@
       const node=S.createNode({geometry:body()}),left=S.createNode({geometry:wings[0]()}),right=S.createNode({geometry:wings[1]()});
       S.addChild(node,left);S.addChild(node,right);S.addChild(group,node);birds.push({node,left,right,phase:i*2.39996,side:i%2?1:-1});
     }
-    const crests=[];for(let i=0;i<24;i++){const node=S.createNode({geometry:crest()});S.addChild(group,node);crests.push(node);}
-    const update=(time,warm=0,night=0,eye)=>{
-      lighthouse.update(time,Math.max(night,warm*.55),eye);
+    const canvas=renderer.kind==="canvas2d",crests=[];for(let i=0;i<24;i++){const node=S.createNode({geometry:crest(),visible:canvas});S.addChild(group,node);crests.push(node);}
+    let frame=0;
+    // flash: a new block lights the beacon whatever the hour. surf and rain: the backlog's swell and the arrivals' weather.
+    const update=(time,warm=0,night=0,eye,flash=0,surf=0,rain=0)=>{
+      lighthouse.update(time,Math.max(night,warm*.55,flash),eye);
       // Low geographic silhouettes remain visible beyond the sailing boundary, through coastal haze.
       lighting.fogFar=Math.max(lighting.fogFar,1800);
       cloudDeck.visible=warm>.2;for(let i=0;i<clouds.length;i++)clouds[i].node.position.x=clouds[i].x+Math.sin(time*.008+i)*5;
       // Broaden the existing sun reflection at golden hour; spectrum, wave energy and waterline stay DSB's.
-      oceanMood.roughness=warm*.85;ocean.setEnvironment(oceanMood);
-      ocean.update(time);
+      oceanMood.roughness=Math.max(warm*.85,rain*.5);oceanMood.waveEnergy=1+surf*1.6+rain*.4;oceanMood.foam=1+surf*1.2+rain*.6;ocean.setEnvironment(oceanMood);
+      // The low tier and Canvas refresh the wave normals every other frame; the surface reads the same.
+      if(!(canvas||renderer.quality==="low")||(frame++&1)===0)ocean.update(time);
       const cap=renderer.kind==="canvas2d"||renderer.quality==="low"?6:renderer.quality==="medium"?9:12;
       for(let i=0;i<birds.length;i++){
         const b=birds[i],p=b.node.position,a=b.phase+time*(.065+i*.002),r=19+(i%4)*7;
@@ -74,8 +77,8 @@
         b.node.rotation.y=Math.atan2(-Math.sin(a),Math.cos(a)*1.9);b.node.rotation.z=Math.sin(a)*-.12;
         const flap=Math.sin(time*4.8+b.phase)*.28*Math.max(0,Math.sin(time*.28+b.phase));b.left.rotation.z=flap;b.right.rotation.z=-flap;
       }
-      for(let i=0;i<crests.length;i++){
-        const n=crests[i];n.visible=renderer.kind==="canvas2d";const t=(time*.65+i*9)%180;n.position.x=i%2?80:-110;n.position.z=t+edge-180;n.position.y=-.22+Math.sin(time*.9+i)*.035;n.rotation.y=.12*Math.sin(i);n.scale.z=.4+.6*Math.sin(Math.PI*t/180)**2;
+      if(canvas)for(let i=0;i<crests.length;i++){
+        const n=crests[i],t=(time*.65+i*9)%180;n.position.x=i%2?80:-110;n.position.z=t+edge-180;n.position.y=-.22+Math.sin(time*.9+i)*.035;n.rotation.y=.12*Math.sin(i);n.scale.z=.4+.6*Math.sin(Math.PI*t/180)**2;
       }
     };
     update(0);

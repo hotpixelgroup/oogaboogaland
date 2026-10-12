@@ -4,18 +4,30 @@
   const BL=window.BL,M=BL.models,S=BL.scene,SECONDS=75,INTERVAL=2.5,WAVES=30,MAX_SCORE=120;
   const COINS=["A","B","C","D","E","F"];
   const createRound=(random=n=>BL.math.randomInt(n))=>{
-    const cells=Array.from({length:9},()=>({coin:-1,active:false,verdict:""})),coins=new Uint8Array(6),slots=new Uint8Array(9);
-    const state={phase:"idle",elapsed:0,remaining:SECONDS,next:INTERVAL,wave:0,spent:0,selected:4,score:0,tickets:0,rejected:0,wrong:0,missed:0,allowed:0,event:"",revision:0,cells};
+    const cells=Array.from({length:9},()=>({coin:-1,active:false,verdict:"",double:false})),coins=new Uint8Array(6),slots=new Uint8Array(9),old=new Uint8Array(6),fresh=new Uint8Array(6);
+    const state={phase:"idle",elapsed:0,remaining:SECONDS,next:INTERVAL,wave:0,spent:0,selected:4,sets:0,score:0,tickets:0,rejected:0,wrong:0,missed:0,allowed:0,event:"",revision:0,cells};
     const changed=event=>{state.event=event;state.revision++;};
-    const clear=()=>{for(const c of cells){c.coin=-1;c.active=false;c.verdict="";}};
+    const clear=()=>{for(const c of cells){c.coin=-1;c.active=false;c.verdict="";c.double=false;}};
     const shuffle=a=>{for(let i=0;i<a.length;i++)a[i]=i;for(let i=a.length-1;i>0;i--){const j=random(i+1),n=a[i];a[i]=a[j];a[j]=n;}};
-    const spawn=()=>{clear();shuffle(coins);shuffle(slots);state.spent=(1<<coins[0])|(1<<coins[1])|(1<<coins[2]);const third=random(4);for(let i=0;i<3;i++){const c=cells[slots[i]];c.coin=coins[i===0?0:i===1?3:third<2?third+1:third+2];c.active=true;}state.wave++;state.next=state.wave*INTERVAL;changed("wave");};
-    const reset=()=>{state.phase="intro";state.elapsed=state.wave=state.spent=state.score=state.tickets=state.rejected=state.wrong=state.missed=state.allowed=0;state.remaining=SECONDS;state.next=INTERVAL;state.selected=4;clear();changed("intro");};
+    // The ledger lasts: a coin a transaction spent stays spent, so a later transaction naming it is a real double
+    // spend. Each wave shows three transactions: with coins already spent, one repeats a spent coin, one spends a
+    // fresh coin, and the third is either; with none spent yet (a new set of six), all three are honest.
+    const spawn=()=>{
+      clear();if(state.spent===63){state.spent=0;state.sets++;}
+      shuffle(coins);shuffle(slots);let s=0,f=0;
+      for(let i=0;i<6;i++)if(state.spent&(1<<coins[i]))old[s++]=coins[i];else fresh[f++]=coins[i];
+      const put=(slot,coin,double)=>{const c=cells[slots[slot]];c.coin=coin;c.double=double;c.active=true;};
+      if(s===0)for(let i=0;i<3;i++)put(i,fresh[i],false);
+      else {put(0,old[0],true);put(1,fresh[0],false);const pick=random(s+f-2);if(pick<s-1)put(2,old[1+pick],true);else put(2,fresh[1+pick-(s-1)],false);}
+      state.wave++;state.next=state.wave*INTERVAL;changed("wave");
+    };
+    const reset=()=>{state.phase="intro";state.elapsed=state.wave=state.spent=state.sets=state.score=state.tickets=state.rejected=state.wrong=state.missed=state.allowed=0;state.remaining=SECONDS;state.next=INTERVAL;state.selected=4;clear();changed("intro");};
     const start=()=>{if(state.phase!=="intro"&&state.phase!=="result")return false;reset();state.phase="ready";spawn();return true;};
     const select=i=>{if(state.phase!=="ready"||!Number.isInteger(i)||i<0||i>=cells.length)return false;state.selected=i;changed("select");return true;};
     const move=(dx,dy)=>select(Math.max(0,Math.min(2,state.selected%3+dx))+Math.max(0,Math.min(2,Math.floor(state.selected/3)+dy))*3);
-    const whack=()=>{if(state.phase!=="ready")return false;const c=cells[state.selected];if(!c.active){changed("empty");return false;}c.active=false;const bad=!!(state.spent&(1<<c.coin));c.verdict=bad?"rejected":"wrong";if(bad){state.rejected++;state.score+=2;}else {state.wrong++;state.score=Math.max(0,state.score-2);}state.tickets=Math.floor(state.score/3);changed(c.verdict);return true;};
-    const settle=()=>{for(const c of cells)if(c.active){c.active=false;if(state.spent&(1<<c.coin)){c.verdict="missed";state.missed++;state.score=Math.max(0,state.score-1);}else {c.verdict="allowed";state.allowed++;}}state.tickets=Math.floor(state.score/3);};
+    const whack=()=>{if(state.phase!=="ready")return false;const c=cells[state.selected];if(!c.active){changed("empty");return false;}c.active=false;const bad=c.double;c.verdict=bad?"rejected":"wrong";if(bad){state.rejected++;state.score+=2;}else {state.wrong++;state.score=Math.max(0,state.score-2);}state.tickets=Math.max(state.tickets,Math.floor(state.score/3));changed(c.verdict);return true;};
+    // A transaction left alone goes through: an honest one spends its coin for good, a repeat is a missed rejection.
+    const settle=()=>{for(const c of cells)if(c.active){c.active=false;if(c.double){c.verdict="missed";state.missed++;state.score=Math.max(0,state.score-1);}else {c.verdict="allowed";state.allowed++;state.spent|=1<<c.coin;}}state.tickets=Math.max(state.tickets,Math.floor(state.score/3));};
     const update=dt=>{if(state.phase!=="ready"||!Number.isFinite(dt)||dt<=0)return;const end=Math.min(SECONDS,state.elapsed+dt);while(state.next<=end+1e-9){state.elapsed=state.next;settle();if(state.wave===WAVES){state.elapsed=SECONDS;state.remaining=0;state.phase="result";changed("result");return;}spawn();}state.elapsed=end;state.remaining=SECONDS-end;};
     const close=()=>{state.phase="idle";clear();changed("close");};
     return {state,reset,start,select,move,whack,update,close};
@@ -57,41 +69,34 @@
     S.addChild(root,S.createNode({geometry:M.box({w:1.6,h:.012,d:1.6,color:"#eac66f"}),position:{x:q.play.x,y:q.floor+.01,z:q.play.z}}));
     for(const variants of tiles)for(const cached of variants)cached();spark();return {root,solid,targets,marker,mallet};
   };
-  const audio=()=>{
-    let ctx=null,master=null,muted=false;const voices=[];try{muted=localStorage.getItem("oogaboogaland.audio")==="off";}catch{}
-    const volume=()=>{if(master)master.gain.setTargetAtTime(muted||document.hidden?0:.16,ctx.currentTime,.025);};
-    const unlock=e=>{if(!e?.isTrusted)return;const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return;if(!ctx){ctx=new Audio();master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);for(let i=0;i<3;i++){const tone=ctx.createOscillator(),gain=ctx.createGain();tone.type="triangle";gain.gain.value=0;tone.connect(gain);gain.connect(master);tone.start();voices.push({tone,gain});}volume();}if(ctx.state==="suspended")ctx.resume().catch(()=>{});};
-    const cue=event=>{if(!ctx||muted||document.hidden)return;const now=ctx.currentTime;for(let i=0;i<voices.length;i++){const v=voices[i],t=now+(event==="win"?i*.1:0);v.gain.gain.cancelScheduledValues(now);v.gain.gain.setValueAtTime(0,now);v.tone.frequency.setValueAtTime(event==="win"?[523,659,784][i]:event==="rejected"?440*(i+1):110,t);v.gain.gain.linearRampToValueAtTime(i&&event!=="win"?.02:.1,t+.01);v.gain.gain.exponentialRampToValueAtTime(.0001,t+(event==="win"?.35:.13));}};
-    document.addEventListener("visibilitychange",volume);return {unlock,cue,get running(){return ctx?.state==="running";},get muted(){return muted;},setMuted:value=>{muted=!!value;volume();},dispose:()=>{document.removeEventListener("visibilitychange",volume);for(const v of voices)v.tone.stop();voices.length=0;if(ctx)ctx.close().catch(()=>{});ctx=master=null;}};
-  };
   const TIMES=Array.from({length:SECONDS+1},(_,i)=>`${i}s`),LABELS=COINS.map(c=>`Spend ${c}`);
-  const create=({models,layout,camera,crew,pilot,hud,fx,game})=>{
-    const q=layout.whack,sim=createRound(),state=sim.state,sound=audio(),touch=matchMedia("(pointer: coarse)").matches;
+  const create=({models,layout,camera,crew,pilot,hud,fx,game,sound:engine})=>{
+    const q=layout.whack,sim=createRound(),state=sim.state,sound=engine.channel(.8),touch=matchMedia("(pointer: coarse)").matches;
     const id=name=>document.getElementById(`pier-whack-${name}`),ui={panel:id("panel"),time:id("time"),score:id("score"),info:id("info"),ledger:id("ledger"),grid:id("grid"),lesson:id("lesson"),more:id("more"),act:id("act"),done:id("done"),play:id("play"),nav:document.querySelector(".pier-navigation")};
     const fact=BL.pierFacts.whack;ui.lesson.textContent=fact.line;id("detail").textContent=fact.detail;id("source").href=fact.source;id("source").textContent=fact.sourceTitle;
     const buttons=[],quiet=[hud.el.act,hud.el.hint,document.getElementById("joy-move"),document.getElementById("joy-look"),document.getElementById("equipment-hud")],hidden=new Array(quiet.length);
     for(let i=0;i<9;i++){const b=document.createElement("button");b.type="button";b.id=`pier-whack-cell-${i}`;b.dataset.cell=String(i);ui.grid.append(b);buttons.push(b);}
-    let actor=null,paid=false,revision=-1,seconds=-1,strike=0;
+    let actor=null,paid=false,banked=0,revision=-1,seconds=-1,strike=0;
     const near=()=>{const a=crew.player;return !!a&&!a.jet&&!a.camp.seat&&Math.abs(a.root.position.y-a.baseY-q.floor)<.15&&Math.hypot(a.root.position.x-q.play.x,a.root.position.z-q.play.z)<2;};
     const close=()=>{if(ui.panel.contains(document.activeElement))document.activeElement.blur();const a=actor;actor=null;sim.close();ui.panel.hidden=true;ui.more.open=false;for(const n of models.targets)n.visible=false;models.marker.visible=models.mallet.visible=false;strike=0;if(!a)return;ui.nav.hidden=false;for(let i=0;i<quiet.length;i++)quiet[i].hidden=hidden[i];pilot.setExternalControl(false);pilot.setActive(true);pilot.controls.reset();crew.steer(0,0,0,0,0);if(crew.player===a)pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:Math.PI/2,pitch:.28,dist:6});pilot.showAct();};
     const refresh=()=>{
       revision=state.revision;const playing=state.phase==="ready",result=state.phase==="result";ui.panel.dataset.phase=state.phase;ui.play.hidden=!playing;ui.lesson.hidden=ui.more.hidden=playing;ui.act.textContent=playing?(touch?"Whack selected":"Whack · Space"):result?"Play again":"Start · 75s";
-      ui.score.textContent=`${state.score} points · ${state.tickets} tickets ${result?"saved":"pending"}`;
-      ui.info.textContent=playing?(state.event==="wrong"?"That coin was unspent. Let valid transactions pass. −2 points.":state.event==="rejected"?"Already spent! Rejected. +2 points.":state.event==="empty"?"Empty slot. Watch for the next transactions.":touch?"Tap a transaction using a spent coin to whack it.":"Arrows / WASD select · Space whacks · 1–9 select"):result?`${state.rejected} rejected · ${state.wrong} wrong · ${state.missed} missed · best ${game.state.pier.whack} points.`:"Check the ledger. Whack repeat spends; leave unspent coins alone. Each wave lasts 2.5 seconds.";
-      ui.ledger.textContent=`Spent coins: ${COINS.filter((_,i)=>state.spent&(1<<i)).join(" · ")} · wave ${state.wave}/30`;
+      ui.score.textContent=`${state.score} points · ${state.tickets} tickets banked`;
+      ui.info.textContent=playing?(state.event==="wrong"?"That coin had not been spent. A first spend is honest. −2 points.":state.event==="rejected"?"Already spent! Rejected. +2 points.":state.event==="empty"?"Empty slot. Watch for the next transactions.":touch?"Tap a transaction using a spent coin to whack it.":"Arrows / WASD select · Space whacks · 1–9 select"):result?`${state.rejected} rejected · ${state.wrong} wrong · ${state.missed} missed · best ${game.state.pier.whack} points.`:"A coin can be spent once. Let a first spend through; whack any later one that names the same coin.";
+      ui.ledger.textContent=`Spent so far: ${state.spent?COINS.filter((_,i)=>state.spent&(1<<i)).join(" · "):"none yet"} · wave ${state.wave}/30`;
       for(let i=0;i<9;i++){const c=state.cells[i],b=buttons[i],n=models.targets[i];b.textContent=c.active?LABELS[c.coin]:c.verdict==="rejected"?"Rejected":c.verdict==="wrong"?"Unspent!":"—";b.dataset.verdict=c.verdict;b.setAttribute("aria-pressed",String(state.selected===i));b.setAttribute("aria-label",`Slot ${i+1}: ${c.active?LABELS[c.coin]:c.verdict||"empty"}`);n.visible=playing&&c.coin>=0;if(n.visible)n.geometry=tiles[c.coin][c.verdict==="rejected"?1:c.verdict==="wrong"?2:0]();}
       models.marker.visible=playing;const selected=models.targets[state.selected];models.marker.position.x=selected.position.x;models.marker.position.y=q.floor+1.16;models.marker.position.z=selected.position.z;
     };
     const whack=()=>{strike=.22;if(sim.whack()){sound.cue(state.event);if(state.event==="rejected"){const n=models.targets[state.selected];for(let i=0;i<6;i++){const a=i*Math.PI/3;fx.spawnParticle(spark(),n.position.x,q.floor+1.7,n.position.z,Math.cos(a)*.6,1.1,Math.sin(a)*.6,.4,0,BL.pilot.WALK.gravity,q.floor);}}}else sound.cue("empty");refresh();};
     const act=()=>{
       if(!actor){if(!near())return false;const a=crew.player;if(a.hopV>0){hud.toast("Land on the Playland pad first");return true;}document.activeElement.blur();actor=a;crew.setWeaponTrigger(false);crew.steer(0,0,0,0,0);pilot.controls.reset();pilot.navigate({position:{x:q.play.x,y:q.floor,z:q.play.z},yaw:Math.PI/2,pitch:.28,dist:6});pilot.setActive(false);pilot.setExternalControl(true);camera.position.x=q.x+7;camera.position.y=q.floor+6;camera.position.z=q.z+3.5;camera.target.x=q.x;camera.target.y=q.floor+1;camera.target.z=q.z;camera.up=null;for(let i=0;i<quiet.length;i++){hidden[i]=quiet[i].hidden;quiet[i].hidden=true;}ui.nav.hidden=true;ui.panel.hidden=false;ui.more.open=false;sim.reset();seconds=-1;refresh();return true;}
-      if(state.phase==="intro"||state.phase==="result"){paid=false;sim.start();refresh();}else whack();return true;
+      if(state.phase==="intro"||state.phase==="result"){paid=false;banked=0;sim.start();refresh();}else whack();return true;
     };
     const onKey=e=>{if(!actor)return false;if(e.metaKey||e.ctrlKey||e.altKey)return true;if(e.key==="Escape"){e.preventDefault();e.stopImmediatePropagation();close();return true;}if(e.key==="Tab"||e.key==="Enter"&&e.target.closest?.("button, a, summary"))return true;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return true;const key=e.key.toLowerCase();if(key===" "||key==="enter")act();else if(/^[1-9]$/.test(key)){sim.select(Number(key)-1);refresh();}else if(key==="arrowleft"||key==="a"){sim.move(-1,0);refresh();}else if(key==="arrowright"||key==="d"){sim.move(1,0);refresh();}else if(key==="arrowup"||key==="w"){sim.move(0,-1);refresh();}else if(key==="arrowdown"||key==="s"){sim.move(0,1);refresh();}return true;};
     const onPanelKey=e=>{if(e.key===" "&&e.target.closest("button")){e.stopPropagation();if(e.repeat)e.preventDefault();}};
     const onGrid=e=>{const b=e.target.closest("[data-cell]");if(b&&sim.select(Number(b.dataset.cell)))whack();};
     ui.panel.addEventListener("keydown",onPanelKey);ui.grid.addEventListener("click",onGrid);ui.act.addEventListener("click",act);ui.done.addEventListener("click",close);
-    const update=dt=>{if(!actor)return;if(crew.player!==actor){close();return;}crew.steer(0,0,0,0,0);sim.update(dt);if(state.phase==="result"&&!paid){paid=true;game.addTickets(state.tickets);game.recordPierWhack(state.score);sound.cue("win");hud.toast(`Double-Spend Whack · +${state.tickets} tickets saved`);}if(revision!==state.revision)refresh();const time=Math.ceil(state.remaining);if(time!==seconds){seconds=time;ui.time.textContent=TIMES[time];}for(let i=0;i<9;i++)models.targets[i].position.y=q.floor+(state.cells[i].active?1.52+Math.sin(state.elapsed*6+i)*.06:1.18);strike=Math.max(0,strike-dt);models.mallet.visible=strike>0;const p=models.targets[state.selected].position;models.mallet.position.x=p.x+.35;models.mallet.position.z=p.z;models.mallet.position.y=q.floor+1.7;models.mallet.rotation.z=-.9+Math.sin(strike/.22*Math.PI)*1.5;};
+    const update=dt=>{if(!actor)return;if(crew.player!==actor){close();return;}crew.steer(0,0,0,0,0);sim.update(dt);if(state.tickets>banked){game.addTickets(state.tickets-banked);banked=state.tickets;}if(state.phase==="result"&&!paid){paid=true;const best=game.recordPierWhack(state.score);sound.cue(best?"best":"win");if(best)hud.hint("New best!",2500);hud.toast(`Double-Spend Whack · +${state.tickets} tickets saved`);}if(revision!==state.revision)refresh();const time=Math.ceil(state.remaining);if(time!==seconds){seconds=time;ui.time.textContent=TIMES[time];}for(let i=0;i<9;i++)models.targets[i].position.y=q.floor+(state.cells[i].active?1.52+Math.sin(state.elapsed*6+i)*.06:1.18);strike=Math.max(0,strike-dt);models.mallet.visible=strike>0;const p=models.targets[state.selected].position;models.mallet.position.x=p.x+.35;models.mallet.position.z=p.z;models.mallet.position.y=q.floor+1.7;models.mallet.rotation.z=-.9+Math.sin(strike/.22*Math.PI)*1.5;};
     return {act,close,near,onKey,update,state,unlock:sound.unlock,setMuted:sound.setMuted,get audioRunning(){return sound.running;},get muted(){return sound.muted;},get busy(){return !!actor;},dispose:()=>{close();ui.panel.removeEventListener("keydown",onPanelKey);ui.grid.removeEventListener("click",onGrid);ui.act.removeEventListener("click",act);ui.done.removeEventListener("click",close);ui.grid.replaceChildren();sound.dispose();}};
   };
   BL.pierWhack={build,create,createRound,SECONDS,MAX_SCORE};
