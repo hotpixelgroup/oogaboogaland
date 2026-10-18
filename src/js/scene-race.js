@@ -14,7 +14,6 @@
   const { createNode, addChild, removeChild, createCamera, stepTweens, tweenCount, traverseVisible } = BL.scene;
   const { CONFETTI } = fxMod;
   const COARSE = window.matchMedia("(pointer: coarse)").matches;
-  const METER_CAPACITY = 60;
   const FIXED = 1 / 120, MAX_SUBSTEPS = 4;
   const COUNTDOWN = 3.4, RESULTS_AFTER = 1.4;
   const CHASE = { dist: 6.4, up: 2.1, ahead: 2.2, lookUp: 1.1, distMin: 3.5, distMax: 11, yawRate: 7, eyeRate: 14, targetRate: 18 };
@@ -62,7 +61,7 @@
   let home = "hub";
   let renderer, game, world, go, lootEnabled, testBananas, root, camera, hud, rhud, hooks, input, fx, controls, track, racers, items, audio, weather, agent;
   let phase = "garage", countdown = 0, accumulator = 0, sceneTime = 0, finishedAt = 0;
-  let meterTimer = 0, stateTimer = 0, hintTimer = 0;
+  let stateTimer = 0, hintTimer = 0;
   // revAt is the countdown time the throttle was first held through; -1 while it is off.
   let revAt = -1, crowdSwell = 0, driftTaught = 0;
   const cam = { yaw: 0, offset: 0, dist: CHASE.dist, shake: 0, lookBack: false, x: 0, y: 0, z: 0, tx: 0, ty: 0, tz: 0, warm: false, garageYaw: 0, garageLift: 0 };
@@ -145,7 +144,9 @@
         w.z[i] = (Math.random() - 0.5) * WEATHER_RANGE * 2;
       }
       const sway = w.snow ? Math.sin(sceneTime * 1.3 + w.phase[i]) * 0.6 : 0;
-      raceTrack.writeInstance(data, i * 20, w.snow ? sceneTime + w.phase[i] : 0, 1, cx + w.x[i] + sway, cy + w.y[i], cz + w.z[i], 1);
+      // Rain stands bolt upright, so its fixed yaw comes precomputed as the exact cos(0)/sin(0) pair.
+      if (w.snow) raceTrack.writeInstance(data, i * 20, sceneTime + w.phase[i], 1, cx + w.x[i] + sway, cy + w.y[i], cz + w.z[i], 1);
+      else raceTrack.writeInstance(data, i * 20, 0, 1, cx + w.x[i] + sway, cy + w.y[i], cz + w.z[i], 1, 1, 0);
     }
     w.node.instanceVersion++;
   };
@@ -594,14 +595,16 @@
   };
   const onGesture = () => audio.unlock();
 
-  const onDonation = (donation) => {
-    game.recordDonation(donation);
-    const bananas = gameMod.bananasFor(donation.sats);
-    world.level = Math.min(pileMod.MAX_BANANAS, world.level + bananas);
+  // In real mode `counted` is the API's `{ exact, rounded }`: the tally counts the exact bananas and the toasts the
+  // rounded ones (the pile itself follows the API's).
+  const onDonation = (donation, counted = null) => {
+    game.recordDonation(donation, counted && counted.exact);
+    const bananas = gameMod.bananasFor(donation.sats), shown = counted ? counted.rounded : bananas;
+    world.level = Math.min(pileMod.MAX_BANANAS, world.level + (counted ? counted.exact : bananas));
     const who = donation.handle ? `@${donation.handle}` : "anon";
     const loot = lootEnabled ? game.lootFor(donation) : null;
-    hud.toast(`+${gameMod.formatLarge(donation.sats)} sats · ${bananas} banana${bananas > 1 ? "s" : ""} · ${who}${loot ? ` · ${loot.tier} ${loot.item.name}` : ""}`);
-    fx.showTicker(`THANKS ${donation.handle ? "@" + donation.handle.toUpperCase() : "ANON"} · ${bananas} BANANAS`, 4.5);
+    hud.toast(`+${gameMod.formatLarge(donation.sats)} sats · ${gameMod.formatLarge(shown)} banana${shown === 1 ? "" : "s"} · ${who}${loot ? ` · ${loot.tier} ${loot.item.name}` : ""}`);
+    fx.showTicker(`THANKS ${donation.handle ? "@" + donation.handle.toUpperCase() : "ANON"} · ${gameMod.formatLarge(shown)} BANANAS`, 4.5);
     const p = racers.player;
     if (p) fx.burst(p.x, p.y + 1.6, p.z, 20, CONFETTI, 2.2);
     // Set taken to 0.01, not 0: race-items' countdown branch must run once to make the banana visible again.
@@ -611,13 +614,9 @@
       renderLocker();
     }
     hud.setStats(game.state);
-    meterTimer = 0;
   };
   const renderLocker = () => hud.renderInventory(game.state.inventory, game.assignedTo, () => null);
 
-  const updateMeter = () => {
-    hud.setMeter(world.level, METER_CAPACITY, phase === "racing" ? `${racers.rankLabel(racers.player.rank)} of ${racers.racers.length}` : "stable");
-  };
   const tooltipFor = (hit) => {
     const o = hit.owner;
     if (o.kind === "racer") return BL.characters.displayOf(o.racer.name);
@@ -625,13 +624,16 @@
   };
   const simulate = (dt) => {
     accumulator = Math.min(accumulator + dt, FIXED * MAX_SUBSTEPS);
-    let first = true;
+    let first = true, stepped = false;
     while (accumulator >= FIXED) {
       accumulator -= FIXED;
       racers.substep(FIXED);
       items.update(FIXED, sceneTime, first);
       first = false;
+      stepped = true;
     }
+    // The pickups' spin, bob and pad glow are posed once a frame, from the last substep's spinT.
+    if (stepped) items.pose();
   };
   const update = (dt, elapsed) => {
     sceneTime = elapsed;
@@ -693,11 +695,6 @@
       rhud.setPips(p.bananas, p.meterFull);
       rhud.setSpeed(Math.abs(p.speed) * 2.6);
     }
-    meterTimer -= dt;
-    if (meterTimer <= 0) {
-      meterTimer = 0.25;
-      updateMeter();
-    }
   };
   const drawExtra = (ctx2d) => {
     if (phase !== "racing" && phase !== "finished" && phase !== "paused") return;
@@ -713,7 +710,10 @@
     renderLocker();
     hud.toast("Loot locker cleared");
   };
-  const demoTip = (sats) => onDonation({ id: `demo-${Date.now()}`, sats, handle: game.state.handle, message: game.state.message, at: Date.now() });
+  // A demo tip is the simulation's alone: in real mode it would count a tip nobody paid.
+  const demoTip = (sats) => {
+    if (!donations.real) onDonation({ id: `demo-${Date.now()}`, sats, handle: game.state.handle, message: game.state.message, at: Date.now() });
+  };
   const onKey = (e) => {
     if (e.key === "Escape") {
       if (phase === "racing") pause(true);
@@ -843,7 +843,6 @@
     hud.el.sheet.dataset.open = "false";
     rhud.el.joyLook.hidden = true;
     rhud.el.help.textContent = COARSE ? "Drag to look round the garage · left stick steers · hold Drift · tap Throw" : "Drag to look round the garage · W A S D or arrows drive · hold Space to drift, tap to hop · E throws · Q looks back · Escape pauses";
-    meterTimer = 0;
     phase = "garage";
     cam.garageYaw = cam.garageLift = 0;
     toGarage();
@@ -879,12 +878,13 @@
           get phase() {
             return phase;
           },
-          selection, startRace, startCup, nextRace, toGarage, pause, finishRace, cup, simulate: (seconds) => {
+          selection, startRace, startCup, nextRace, toGarage, pause, finishRace, cup,           simulate: (seconds) => {
             for (let t = 0; t < seconds; t += FIXED) {
               sceneTime += FIXED;
               racers.substep(FIXED);
               items.update(FIXED, sceneTime);
             }
+            items.pose();
           },
           get cam() {
             return cam;

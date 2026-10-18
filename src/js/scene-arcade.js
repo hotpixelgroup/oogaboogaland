@@ -82,7 +82,7 @@
   let ambientT = 0, wheelTick = 0, cheerT = 0, powerT = 99;
   // Who walked in, kept across a game so they come back out as themselves, and the ticket balance at the last visit,
   // so the wheel knows when to celebrate.
-  let lastPlayer = null, lastTickets = null, unsubscribeAccount = null, remotes = null;
+  let lastPlayer = null, lastTickets = null, unsubscribeAccount = null, remotes = null, footsteps = null;
   const NO_ACTORS = [];
   // An Ooga a signed-in player drives here is not also in the crowd or out strolling.
   const hideCrowd = (name, on) => {
@@ -862,7 +862,10 @@
     }
     return false;
   };
-  const onDonation = () => {};
+  const onDonation = (donation, counted = null) => {
+    game.recordDonation(donation, counted && counted.exact);
+    world.level = Math.min(BL.pile.MAX_BANANAS, world.level + (counted ? counted.exact : BL.game.bananasFor(donation.sats)));
+  };
   const onLootCleared = () => {};
 
   // Point lights, most important first so the lowest tier (ten) keeps them, warm lamp light first and the games'
@@ -1739,6 +1742,8 @@
     seatCrowd(playerName);
     // Other signed-in players in the hall, as the Oogas they drive (after the crowd, which they may stand in for).
     remotes = BL.remotePlayers.create({ root, crew: people, hide: hideCrowd });
+    // The driven Ooga's own footsteps, heard by this page alone (footsteps.js).
+    footsteps = BL.footsteps.create();
     hireCrew();
     hangFame(playerName);
     showShelf();
@@ -1848,6 +1853,7 @@
       BL.net.setHealth(drivenHere.health.value, drivenHere.health.stunned);
     }
     remotes.update(dt);
+    footsteps.update(drivenHere);
     // The loop, then PRESS START blinking, then the loop again; the best line shows with the loop.
     const frame = Math.floor(elapsed * FPS) % (FRAMES + AM.START_FRAMES);
     if (frame !== shownFrame) {
@@ -1928,6 +1934,8 @@
     audio.dispose();
     remotes.dispose();
     remotes = null;
+    footsteps.dispose();
+    footsteps = null;
     if (people) people.dispose();
     fx.dispose();
     pilot.dispose();

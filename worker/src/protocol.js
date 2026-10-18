@@ -9,6 +9,7 @@
 //                 { t: "st", v }                 how the driven Ooga carries itself (0 on foot, 1 seated, 2 swimming)
 //                 { t: "ev", k, v }              a moment for the players in the same zone group to see (a wave,
 //                                                a firework): a short kind and up to six numbers, relayed and gone
+//                 { t: "chat", text, clientId? }            a line for Ooga Chat (see Chat below)
 //                 binary                         the NPC host's frame of every Ooga's pose, relayed as is
 // Room → client:  welcome { you, players, tickHz, now, loopEpoch }, join { p }, leave { id, reason },
 //                 body { id, name }, state { now, ps: [id, x, y, z, yaw, ...] }, kick { reason },
@@ -24,9 +25,19 @@
 //                                            page that arrives later does not see it
 //                 voice { peers, gens }      whom to hear, and each one's publication count (a new count is a
 //                                            microphone published again, to be pulled again)
+//                 chat { id, at, login, name, text }  a line someone said, to everyone, the sender too
+//                 chat-ack { clientId }     the sender's line was accepted, including a recognized retry
+//                 chat-rejected { clientId?, reason }  refused; rate retries keep the same id
+//                 chat-history { messages }  after welcome: the lines the room still holds, oldest first
 // Zones: `<group>` or `<group>.<place>`. Voice is shared within a group; who is shown is matched on the whole
 // name, since a place inside a group can have coordinates of its own (the Factory's tunnel on the island and
 // its hall). `none` is nowhere: off the island's edge, or between scenes; it shares voice with nobody.
+// Chat: one conversation for the whole island. The room names the speaker from the session (`login`, and
+// `name`, their display name), never from the frame, keeps the last CHAT_KEEP lines in memory alone (never
+// storage: a room that sleeps, restarts or is redeployed has forgotten them) and hands them to each socket
+// that joins. A line is CHAT_MAX characters at most after `sanitizeChat`. A chat frame gets its own size
+// limit: one that starts with CHAT_PREFIX, as the page sends it, may run to CHAT_FRAME_MAX and is ignored past
+// it, so a long line is dropped rather than closing the socket; every other frame keeps MESSAGE_MAX.
 // "ping" answers "pong" without waking the room (setWebSocketAutoResponse).
 
 export const TICK_HZ = 15;
@@ -64,13 +75,33 @@ export const CLOSE_KICK = 4000;
 export const NPC_FRAME_MAX = 128 * 112 * 4 + 131072;
 export const NPC_HZ = 20;
 export const CLOSE_PROTOCOL = 4400;
+export const CHAT_MAX = 160;
+export const CHAT_KEEP = 100;
+// Accepted retry ids survive reconnects while this room instance holds them; oldest ids expire at the cap.
+export const CHAT_RETRY_KEEP = CHAT_KEEP * MAX_PLAYERS;
+// About one line a second per player, three in a burst.
+export const CHAT_HZ = 1;
+export const CHAT_BURST = 3;
+// Active accounts plus bounded reconnect debt, held only while the room is awake.
+export const CHAT_BUCKET_KEEP = MAX_PLAYERS * 2;
+// The page sends `{"t":"chat","text":…}` with its text already sanitized, under MESSAGE_MAX; the margin is
+// for a page that sends it raw (every character escaped as \uXXXX is six).
+export const CHAT_PREFIX = '{"t":"chat",';
+export const CHAT_FRAME_MAX = 1024;
+// The character set of donation messages (`donations.sanitize` in src/js/donations.js), checked against it in worker/test.
+export const CHAT_STRIP = /[^\w .,!?'@#:-]/g;
+export const sanitizeChat = (text) => String(text).replace(CHAT_STRIP, "").trim();
 
 const finite = (v) => typeof v === "number" && Number.isFinite(v);
 const round = (v) => Math.round(v * 1000) / 1000;
 
 /** A parsed client message, `null` for one to ignore, or `false` for one that should close the socket. */
 export const parseClientMessage = (text, zone = OUTSIDE) => {
-  if (typeof text !== "string" || text.length > MESSAGE_MAX) return false;
+  if (typeof text !== "string") return false;
+  if (text.length > MESSAGE_MAX) {
+    if (!text.startsWith(CHAT_PREFIX)) return false;
+    if (text.length > CHAT_FRAME_MAX) return null;
+  }
   let msg;
   try {
     msg = JSON.parse(text);
@@ -78,6 +109,8 @@ export const parseClientMessage = (text, zone = OUTSIDE) => {
     return false;
   }
   if (!msg || typeof msg !== "object" || Array.isArray(msg)) return false;
+  // Only chat earns the longer frame: a repeated key could make a chat-prefixed frame parse as anything.
+  if (text.length > MESSAGE_MAX && msg.t !== "chat") return false;
   if (msg.t === "pose") {
     const { x, y, z, yaw } = msg;
     if (!finite(x) || !finite(y) || !finite(z) || !finite(yaw)) return null;
@@ -99,6 +132,14 @@ export const parseClientMessage = (text, zone = OUTSIDE) => {
     if (typeof msg.k !== "string" || !EVENT_KIND.test(msg.k) || !Array.isArray(v) || v.length > EVENT_VALUES || !v.every(finite)) return null;
     return { t: "ev", k: msg.k, v: v.map(round) };
   }
+  if (msg.t === "chat") {
+    if (typeof msg.text !== "string") return null;
+    const line = sanitizeChat(msg.text);
+    if (!line || line.length > CHAT_MAX) return null;
+    if (msg.clientId === undefined) return { t: "chat", text: line };
+    return typeof msg.clientId === "string" && msg.clientId.length > 0 && msg.clientId.length <= 64 && !/[^\w-]/.test(msg.clientId)
+      ? { t: "chat", text: line, clientId: msg.clientId } : null;
+  }
   return null;
 };
 
@@ -111,13 +152,32 @@ export const eventAudience = (players, from) => {
   return out;
 };
 
-/** A token bucket per player: `rate` a second, bursting to `rate`. Mutates and answers whether one is spent. */
-export const takeToken = (bucket, rate, now) => {
-  bucket.tokens = Math.min(rate, bucket.tokens + (now - bucket.at) * rate / 1000);
+/** A token bucket per player: `rate` a second, bursting to `burst`. Mutates and answers whether one is spent. */
+export const takeToken = (bucket, rate, now, burst = rate) => {
+  bucket.tokens = Math.min(burst, bucket.tokens + (now - bucket.at) * rate / 1000);
   bucket.at = now;
   if (bucket.tokens < 1) return false;
   bucket.tokens -= 1;
   return true;
+};
+
+/** The chat's last `keep` lines in a fixed ring: `push` is constant time, `list` copies them out oldest first. */
+export const chatLog = (keep = CHAT_KEEP) => {
+  const slots = new Array(keep);
+  let start = 0, size = 0;
+  return {
+    push(line) {
+      slots[(start + size) % keep] = line;
+      if (size < keep) size++;
+      else start = (start + 1) % keep;
+    },
+    list() {
+      const out = new Array(size);
+      for (let i = 0; i < size; i++) out[i] = slots[(start + i) % keep];
+      return out;
+    },
+    get size() { return size; },
+  };
 };
 
 /** Eight spawn slots on a ring round the pile, so arrivals do not stand in one another. */

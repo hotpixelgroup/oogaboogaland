@@ -17,6 +17,7 @@ The two share code and nothing else: each has its own D1 database, room, OAuth A
 | Rate limiters | `AUTH_LIMITER` 10 sign-ins a minute per IP; `ROOM_LIMITER` 20 room connections, `VOICE_LIMITER` 120 voice calls and `SCORE_LIMITER` 30 Ooga Pier scores a minute per player | `ratelimits` (staging namespaces 2001–2004, production 1001–1004) |
 | Durable Object | `Room`, one named `island` | `durable_objects`, `migrations` |
 | Cron | daily 04:00 UTC, purges expired sessions | `triggers` |
+| Service binding | `DONATIONS` → `bananapayserver-staging`'s `PageApi` on staging, `bananapayserver-production`'s on production | `services`, with `/donations/*` in `run_worker_first`. The bound Worker must exist before a deploy carries the binding |
 | Vars | `SITE_ORIGIN`, `GITHUB_CLIENT_ID`, `REALTIME_APP_ID` | `vars` |
 | Worker secrets | `GITHUB_CLIENT_SECRET`, `REALTIME_SECRET` | `wrangler secret put` |
 | Realtime SFU app | `oogaboogaland-staging`, `oogaboogaland-production` | Realtime → Serverless SFU |
@@ -49,6 +50,10 @@ The zone `oogabooga.land` is in this account. Production serves the apex as a Wo
 
 Both `cloudflare-staging.yml` and `cloudflare-production.yml` run by hand on `rock`: Actions → Deploy Cloudflare staging (or production) → Run workflow. Merging does not deploy either Worker. Each takes a fresh jumbotron snapshot, runs `npm run build:site` and the Worker's checks, applies D1 migrations and deploys. Every deploy drops live sockets, and clients reconnect on their own. These workflows are the normal deploy path: keep Workers Builds (a Worker's Settings → Build) disconnected and don't deploy from the dashboard, or a second deploy can replace the Worker and drop its secrets. If GitHub Actions is unavailable, the README documents the emergency laptop deployment procedure.
 
+Production's `DONATIONS` binding to `bananapayserver-production`'s `PageApi` and `/donations/*` in `assets.run_worker_first` must be committed to `rock` before deploying; a live-only binding is replaced by the checked-out config. The Worker's donation checks enforce both before the workflow deploys.
+
+On `bananapayserver-production`, keep `PILE_START=0` and `PILE_EAT_PER_HOUR=0` as Cloudflare secrets, set with `wrangler secret put` in that repository. Normal Wrangler deploys preserve secrets absent from the config, so these settings stay out of `vars` and need no deploy-time reset. Donation records and donor totals live in its D1 database, and the corrected pile lives in its existing Durable Object namespace; keep both resource identities and migrations intact. `PILE_START` initializes a new pile only, so never use it to re-credit a donation already recorded.
+
 ## Local development
 
 ```sh
@@ -59,3 +64,22 @@ npm run dev                             # http://localhost:8787, with the stagin
 ```
 
 The local OAuth App has homepage `http://localhost:8787` and callback `http://localhost:8787/auth/callback`. `npm run dev` builds `_site/` and passes `--local-upstream localhost:8787`, so the Origin check sees the local address. Local D1 and the room live in `.wrangler/` and never touch staging.
+
+To show production donation totals and the leaderboard with the local page, sign in to
+Wrangler and run this from the repository root:
+
+```sh
+npm --prefix worker run dev:live-donations
+```
+
+Open `http://localhost:8787`. `wrangler.local-donations.jsonc` serves the current local build
+and connects only `DONATIONS` remotely, to `bananapayserver-production`'s `PageApi`. Sign-in
+and the room use local storage; optional local OAuth and voice credentials still come from
+`.dev.vars`. Viewing totals does not require sign-in. The donation kiosk in this preview
+uses real production invoices. Use this config only with `wrangler dev`, never deploy it.
+If using local sign-in, first apply its local schema with
+`wrangler d1 migrations apply DB --local --config wrangler.local-donations.jsonc`.
+
+The feed reflects the currently deployed backend. The independent sats leaderboard requires
+bananapayserver's donor-sats migration and updated feed to be deployed; starting this local
+preview does not deploy either.

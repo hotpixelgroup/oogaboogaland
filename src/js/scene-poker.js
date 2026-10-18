@@ -6,10 +6,10 @@
     direct: [0.88, 0.77, 0.58], directStrength: 0.38, ambientFloor: 0.48, sun: { x: 0.2, y: 1, z: 0.3 },
     shadowCenter: { x: 0, y: 1.5, z: 0 }, shadowExtent: 35, bloomStrength: 0.24,
     lights: new Float32Array(BL.glRenderer.POINT_LIGHT_CAPACITY * 8), lightCount: 13 };
-  let root, camera, input, hud, panel, pilot, fx, people, avatar, room, mirror, world, session, go;
+  let root, camera, input, hud, panel, pilot, fx, people, avatar, room, mirror, game, world, session, go;
   let leaving = false, timer = 0, selected = 0, pendingStand = false, seatTable = -1, shownCountdown = -1;
   const targets = [], snapshots = new Array(10);
-  let HERO = "local-player", connecting = false, unsubscribeAccount = null, remotes = null;
+  let HERO = "local-player", connecting = false, unsubscribeAccount = null, remotes = null, footsteps = null;
   const NO_ACTORS = [];
   // On the Worker's page the island's driving rules hold in here too, and the Ooga driven is reported to the room
   // every frame, so signed-in players on the floor hear each other (voice needs a driven Ooga).
@@ -185,7 +185,7 @@
     } catch (error) { panel.notice(error.message); }
   };
   const enter = ctx => {
-    world = ctx.world; go = ctx.go; leaving = false; timer = 0; HERO = "local-player"; connecting = false;
+    game = ctx.game; world = ctx.world; go = ctx.go; leaving = false; timer = 0; HERO = "local-player"; connecting = false;
     if (ctx.from === "bifrost") document.querySelector('[data-intro="poker"]').hidden = true;
     session = world.poker || (world.poker = { tables: Array.from({ length: 10 }, () => R.create()), selected: 0, pendingStand: false });
     if (!session.autoDeal) session.autoDeal = new Array(10).fill(true);
@@ -238,6 +238,8 @@
     unsubscribeAccount = BL.net.subscribe(accountChanged);
     // Other signed-in players on the floor, as the Oogas they drive.
     remotes = BL.remotePlayers.create({ root, crew: people });
+    // The driven Ooga's own footsteps, heard by this page alone (footsteps.js).
+    footsteps = BL.footsteps.create();
     mirror.body.track(avatar.root, avatar.traits.height * 2, Math.max(avatar.headOpen.verts.length, avatar.headClosed.verts.length));
     if (seatTable >= 0 && !pendingStand) sit(session.tables[seatTable].snapshot().seats.findIndex(s => s?.id === HERO));
     panel = BL.pokerHud.create(action, select); setTheme(theme.id); refresh(); setView(seatTable >= 0 && !pendingStand);
@@ -254,6 +256,7 @@
     BL.net.setBody(drivenHere ? drivenHere.traits.name : null);
     if (drivenHere) { const p = drivenHere.root.position; BL.net.sendPose(p.x, p.y - drivenHere.baseY, p.z, drivenHere.root.rotation.y); BL.net.setHealth(drivenHere.health.value, drivenHere.health.stunned); }
     remotes.update(dt);
+    footsteps.update(drivenHere);
     mirror.phase.update(dt, elapsed); mirror.body.update(dt); mirror.body.time = mirror.phase.ripples.time;
     if (!leaving && (seatTable < 0 || pendingStand) && Math.abs(avatar.root.position.x) < BL.bifrostModels.WINDOW.halfW
       && avatar.root.position.z > PM.EXIT_Z) leaveFloor();
@@ -313,7 +316,7 @@
     world.pilot = avatar.traits.name;
     unsubscribeAccount(); unsubscribeAccount = null; BL.net.setBody(null);
     for (const t of room.tables) t.agent.dispose();
-    remotes.dispose(); remotes = null;
+    remotes.dispose(); remotes = null; footsteps.dispose(); footsteps = null;
     people.dispose(); fx.dispose(); pilot.dispose();
     for (const n of targets) input.remove(n); targets.length = 0;
     mirror.phase.dispose(); mirror.body.dispose(); mirror.glass.mirrorRipples = null;
@@ -323,15 +326,18 @@
     document.body.removeAttribute("data-poker-seated");
     document.body.removeAttribute("data-poker-table-view");
     scene.input = scene.debug = null;
-    hud = panel = pilot = fx = people = avatar = room = mirror = input = session = world = go = null;
+    hud = panel = pilot = fx = people = avatar = room = mirror = input = session = game = world = go = null;
     snapshots.fill(null);
     return { targets: count };
   };
   const liveGeometry = set => { if (room) for (const t of room.tables) t.agent.liveGeometry(set); if (avatar) set.add(avatar.headOpen).add(avatar.headClosed); if (remotes) remotes.liveGeometry(set); };
   const stats = () => { let allNodes = 0, visibleNodes = 0; const walk = n => { allNodes++; for (const c of n.children) walk(c); }; walk(root); S.traverseVisible(root, () => visibleNodes++); return { allNodes, visibleNodes, targets: input.targetCount, tweens: S.tweenCount(), ...fx.stats(), ...(remotes ? remotes.stats() : {}) }; };
   // Voice zone: the Ember Den, a portal of its own off the Bifrost chamber.
-  const scene = { id: "poker", voiceZone: "ember-den", enter, update, overlay: dt => fx.drawOverlay(dt, extra), onKey, leave, liveGeometry, stats, renderOpts,
-    onDonation() {}, onLootCleared() {}, root: null, camera: null, input: null, debug: null,
+  const scene = { id: "poker", voiceZone: "ember-den", micKey: true, enter, update, overlay: dt => fx.drawOverlay(dt, extra), onKey, leave, liveGeometry, stats, renderOpts,
+    onDonation(donation, counted = null) {
+      game.recordDonation(donation, counted && counted.exact);
+      world.level = Math.min(BL.pile.MAX_BANANAS, world.level + (counted ? counted.exact : BL.game.bananasFor(donation.sats)));
+    }, onLootCleared() {}, root: null, camera: null, input: null, debug: null,
     agent: null, agentView: null, agentControls: null, agentHandoff: null, get inMotion() { return !!room; } };
   BL.scenes.poker = scene;
 })();

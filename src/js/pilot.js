@@ -483,7 +483,10 @@
         // A wall in front of the orbit eye is an obstruction to navigation,
         // not an instruction to turn the character back toward that wall.
         orbit.yaw = orbit.tYaw = aimBodyYaw + aimBodyHeadYaw + Math.PI;
-        orbit.pitch = orbit.tPitch = aimBodyPitch;
+        // A near-body cursor hit keeps the actor's facing, but an overhead
+        // exit must retain the displayed viewing angle instead of sinking to its head angle.
+        orbit.pitch = orbit.tPitch = overheadExit
+          ? clamp(Math.atan2(-dy, Math.hypot(dx, dz)), TRAILING_PITCH[0], TRAILING_PITCH[1]) : aimBodyPitch;
       } else if (aimAtCursor) {
         const h = cave.traits.height, p = cave.root.position;
         const x = cursorPoint.x - p.x, z = cursorPoint.z - p.z, horizontal = Math.hypot(x, z);
@@ -920,8 +923,8 @@
       // Assistance may choose an item's centre, but never move the pointer.
       const visible = !overheadPointerMoved || projectAim(point);
       positionReticle(overheadX, overheadY);
-      reticle.dataset.close = "false";
-      reticle.dataset.occluded = String(!visible);
+      if (reticle.dataset.close !== "false") reticle.dataset.close = "false";
+      if (reticle.dataset.occluded !== String(!visible)) reticle.dataset.occluded = String(!visible);
       if (reticleRadius !== AIM_RETICLE_RADIUS) {
         reticleRadius = AIM_RETICLE_RADIUS;
         reticle.style.setProperty("--reticle-radius", `${AIM_RETICLE_RADIUS}px`);
@@ -1311,8 +1314,19 @@
       }
       for (const child of node.children) includeHeadPart(child);
     };
+    // Distance past which hiding work is provably idle: hats and floating swag
+    // keep the head subtree within ~3.5 m of the root even on the tallest Ooga
+    // (height 1.16) under step lift, and the widest near-plane corner (near
+    // 0.5 m at MAX_FOV on an ultrawide) reaches ~1.3 m beyond the eye, so
+    // neither can touch the head from 6 m out. Judged fresh each frame from
+    // the placed camera; a hidden head never skips, so it always restores.
+    const HEAD_HIDE_RANGE = 6;
     const syncHeadVisibility = (cave) => {
       if (!cave) { restoreHead(); return; }
+      if (!hiddenHead) {
+        const dx = camera.position.x - cave.root.position.x, dy = camera.position.y - cave.root.position.y, dz = camera.position.z - cave.root.position.z;
+        if (dx * dx + dy * dy + dz * dz > HEAD_HIDE_RANGE * HEAD_HIDE_RANGE) return;
+      }
       // The near plane can expose interior faces before the eye enters.
       // Include the whole head subtree so hats and masks cannot flash either.
       updateWorld(cave.root, cave.root.parent ? cave.root.parent.world : undefined);
@@ -1499,7 +1513,7 @@
     let reloadPrompt = false;
     const syncWeaponHud = () => {
       const cave = player(), weapon = cave && cave.weapon;
-      const ready = !!weapon && !crew.sleeping && (!cave.camp.seat || cave.camp.seat.allowWeapons) && !cave.bedTravel.mode;
+      const ready = !!weapon && !cave.grabbedBy && !crew.sleeping && (!cave.camp.seat || cave.camp.seat.allowWeapons) && !cave.bedTravel.mode;
       const primaryReady = ready && weapon.primaryOwned;
       const secondaryReady = ready && weapon.secondaryOwned;
       if (primaryButtonCave && (primaryButtonCave !== cave || !primaryReady || !weapon.primaryEquipped)) {
@@ -1540,7 +1554,7 @@
         return true;
       }
       const cave = player();
-      if (!active || !cave || crew.sleeping) return false;
+      if (!active || !cave || cave.grabbedBy || crew.sleeping) return false;
       resumePose();
       if (action === "weapon-primary" || action === "weapon-primary-down") {
         const alreadyHeld = !cave.weapon.equipped;
@@ -1858,6 +1872,7 @@
     };
     // Nearby actions consume a press; a ready jetpack leaves Space as throttle.
     const action = () => {
+      if (player()?.grabbedBy) return true;
       if (ctx.onPlayerAction && ctx.onPlayerAction()) return true;
       if (!active) return true;
       if (externalControl) return false;
@@ -2147,6 +2162,7 @@
     // The camera moves only on input: no drift, auto-orbit or inertia.
 
     const poseAim = () => {
+      if (player()?.grabbedBy) return;
       if (aimPreserveFacing) {
         crew.look(aimBodyYaw, aimBodyPitch, 1);
         player().parts.head.rotation.y = aimBodyHeadYaw;
@@ -2768,6 +2784,15 @@
       orbit.dist = orbit.tDist = destination.dist;
       if (cave) {
         crew.relocatePlayer(position, destination.yaw + Math.PI);
+        if (birdsEye()) {
+          // Navigation is a new arrival: an old floor's cursor anchor must
+          // not pull the next shoulder handoff back toward that upper level.
+          overheadAim.x = cave.root.position.x;
+          overheadAim.y = cave.root.position.y - cave.baseY;
+          overheadAim.z = cave.root.position.z;
+          overheadPointerMoved = false;
+          assistedTargetWait = 0;
+        }
         followTarget.x = position.x;
         followTarget.y = position.y + follow.y;
         followTarget.z = position.z;
@@ -3002,7 +3027,7 @@
     }, get moving() {
       // A press can arrive between frames, before readInput updates crew steer.
       const cave = player(), a = controls.read();
-      return !!cave && (Math.hypot(a.x, a.y) > 0.05 || cave.hop > 0 || cave.hopV > 0);
+      return !!cave && !cave.grabbedBy && (Math.hypot(a.x, a.y) > 0.05 || cave.hop > 0 || cave.hopV > 0);
     }, get mode() {
       return viewMode();
     }, get closeMix() {

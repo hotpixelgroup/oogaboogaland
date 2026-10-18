@@ -38,7 +38,7 @@
 
   // The zones the hub itself reports, which share its coordinates: the island, its bridged lands and its caves
   // (`cave-<id>` for a mouth with no name of its own). Never a separate scene's zone, such as the Ember Den.
-  const ISLAND_ZONES = new Set(["outside", "sphere", "rainforest", "bifrost", "lab", "factory", "arcade", "mirror", "hq"]);
+  const ISLAND_ZONES = new Set(["outside", "sphere", "rainforest", "bifrost", "lab", "bca", "factory", "arcade", "mirror", "hq"]);
   const onIsland = (zone) => ISLAND_ZONES.has(zone) || typeof zone === "string" && zone.startsWith("cave-");
   const sameZone = (rec) => rec.zone === BL.net.state.zone;
   // Gestures, by the number an `emote` event carries, and how long one lasts.

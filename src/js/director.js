@@ -7,6 +7,8 @@
   const { clearTweens, tweenCount } = scene;
   const params = new URLSearchParams(location.search);
   const DEBUG = params.has("debug");
+  // Local play-tests can run the donation show without emitting a paid event or changing the tally.
+  const TEST_DONATIONS = params.get("testdonations") === "1" && ["localhost", "127.0.0.1", "[::1]"].includes(location.hostname);
   // A game still being built sets `wip: true` on its scene and stays unregistered, so nothing can enter it
   // and its cave seals, unless the page opts in: ?wip=<scene id> opens that game and lands in it, wip=1 opens
   // every one. No debug needed, so anyone can play a shared link. Its saves are left alone for the day it opens.
@@ -37,6 +39,14 @@
   let sceneCanvas = $("scene");
   const overlayCanvas = $("overlay");
   const overlayCtx = overlayCanvas.getContext("2d");
+  // The overlay's CSS size, read on resize rather than in drawFade: a read there follows the HUD
+  // writes of the scenes' overlays and forces a synchronous layout every faded frame (as in fx.js).
+  let overlayCssW = overlayCanvas.clientWidth, overlayCssH = overlayCanvas.clientHeight;
+  const overlayObserver = new ResizeObserver(() => {
+    overlayCssW = overlayCanvas.clientWidth;
+    overlayCssH = overlayCanvas.clientHeight;
+  });
+  overlayObserver.observe(overlayCanvas);
   const qualityLabel = $("quality");
   const curtain = $("curtain");
   const worldBlock = $("world-block"), worldBlockHeight = $("world-block-height");
@@ -67,6 +77,8 @@
   };
   showQuality();
   const game = gameMod.create({ catalog: models.SWAG });
+  window.BL.donationPopup = window.BL.donationPopup.create(game);
+  window.BL.hud.setDonationStats(game.state);
   // world survives scene swaps: banana level, equipment ownership, and the Ooga handed from hub to scene.
   const world = { level: START_BANANAS, pilot: null, mirrorBroken: false };
   const debugMagazines = DEBUG ? (params.get("mag") === "2" ? 2 : params.get("mag") === "1" ? 1 : 0) : 0;
@@ -194,6 +206,8 @@
   const coarse = window.matchMedia("(pointer: coarse)").matches;
   if (coarse) for (const n of document.querySelectorAll("[data-intro] [data-coarse]")) n.textContent = n.dataset.coarse;
   const openIntro = () => intros.find((el) => !el.hidden) || null;
+  // The microphone's note, which names M only in a scene whose M mutes the microphone (`micKey`).
+  const showMic = () => window.BL.hud.showMic(window.BL.voice.stats, !!(active && active.micKey));
   const enter = (next, place = null) => {
     ctx.from = active ? active.id : null;
     ctx.place = place;
@@ -208,6 +222,7 @@
     next.enter(ctx);
     activeMeshRigs = next.renderOpts?.meshRigs === true;
     active = next;
+    showMic();
     sceneTime = 0;
     router.arrive(next.id, place, ctx.from === null);
     if (POSITION_DEBUG && next.id !== "hub") {
@@ -272,11 +287,11 @@
     fade = 1 - Math.min(1, transition.t / FADE);
     if (fade === 0) transition = null;
   };
-  // Fills in CSS pixels (clientWidth/clientHeight), not backing-store pixels.
+  // Fills in CSS pixels (clientWidth/clientHeight, cached above), not backing-store pixels.
   const drawFade = () => {
     overlayCtx.globalAlpha = fade;
     overlayCtx.fillStyle = "#000000";
-    overlayCtx.fillRect(0, 0, overlayCanvas.clientWidth, overlayCanvas.clientHeight);
+    overlayCtx.fillRect(0, 0, overlayCssW, overlayCssH);
     overlayCtx.globalAlpha = 1;
   };
 
@@ -346,6 +361,9 @@
     elapsed += dt;
     if (transition) stepTransition(dt);
     sceneTime += dt;
+    // In real mode the API owns the pile, so every browser shows the same one: its last count less what has been
+    // eaten since it arrived, in whole bananas.
+    if (pileFeed.at) world.level = Math.min(pileMod.MAX_BANANAS, Math.max(0, Math.floor(pileFeed.bananas - pileFeed.eatPerHour * (performance.now() - pileFeed.at) / 36e5)));
     active.update(dt, sceneTime);
     if (POSITION_DEBUG && active.id !== "hub" && elapsed >= positionDebugNext) {
       positionDebugNext = elapsed + 0.1;
@@ -413,6 +431,15 @@
       konamiAt = 0;
       feedPanel.toggle();
     }
+    if (TEST_DONATIONS && key === "l" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (transition) return;
+      const shown = active.previewDonation && active.previewDonation();
+      window.BL.hud.toast(shown ? "Test donation animation · real totals unchanged"
+        : active.previewDonation ? "Waiting for the local donation backend" : "Enter the mainland or Lightning Factory to preview a donation");
+      return;
+    }
     if (LOOT_ENABLED && e.shiftKey && (e.key === "Delete" || e.key === "Backspace")) {
       e.preventDefault();
       game.clearLoot();
@@ -436,6 +463,15 @@
       location.reload();
       return;
     }
+    // M mutes and unmutes the microphone while in voice, in the scenes that share voice and leave M free
+    // (`micKey`); a game's or a hall's own M still mutes its sound.
+    if (key === "m" && active.micKey && window.BL.voice.stats.enabled && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      e.preventDefault();
+      window.BL.voice.toggle();
+      return;
+    }
+    // Every scene's B shortcut adds demo bananas; ordinary visits leave donations to the feed.
+    if (key === "b" && !DEBUG) return;
     active.onKey(e);
   };
   const onVisibility = () => {
@@ -474,6 +510,7 @@
   showBlockHeight(chain.snapshot);
   if (!params.has("nosim") && params.get("mempool") !== "0") mempool.start();
   if (!params.has("nosim") && params.get("oogatron") !== "0") window.BL.oogatronLive.start();
+  if (!params.has("nosim") && params.get("totems") !== "0") window.BL.totemFeed.start();
   // `?chain=esplora` or `?chain=https://host/api` pins the provider; otherwise mempool.space leads
   // and three consecutive failures hand the session to Esplora on its own.
   if (!params.has("nosim") && params.get("chain") !== "0") chain.start({ source: params.get("chain") });
@@ -484,13 +521,44 @@
   // The roster's host dot and voice marks follow the room and voice, on whichever scene's roster is up.
   const unsubscribeRosterMarks = net.subscribeRoster(window.BL.hud.showVoices);
   const unsubscribeVoiceMarks = window.BL.voice.subscribe(window.BL.hud.showVoices);
+  const unsubscribeMic = window.BL.voice.subscribe(showMic);
   const accountReady = !params.has("nosim") && params.get("net") !== "0" ? net.start() : Promise.resolve();
   // A tab opened in the background waits for its first look before it holds any socket.
   if (document.hidden) {
     mempool.setHidden(true);
     chain.setHidden(true);
   }
-  const unsubscribeDonations = donations.subscribe((donation) => { if (active) active.onDonation(donation); }, { identity: () => game.state });
+  // Each donation goes to the active scene with the API's banana count (null when simulated); in real mode the pile
+  // follows the API's. The page's own Worker turns real mode on in the account's look at /api/me, so the subscription
+  // waits for that look (bounded, as the boot's wait is) and a page about to go real never plays a simulated tip. A
+  // donation pushed before the first scene is ready still counts in the saved tally. An on-chain tip the visitor left
+  // the kiosk waiting on says it was theirs, in whatever scene they are, in place of the scene's own toast.
+  const pileFeed = { bananas: 0, eatPerHour: 0, at: 0 };
+  let unsubscribeDonations = null;
+  accountReady.then(() => {
+    if (destroyed) return;
+    if (net.state.donations) donations.useOrigin();
+    unsubscribeDonations = donations.subscribe((donation, bananas) => {
+      window.BL.donationPopup.receive(donation, bananas);
+      if (active) active.onDonation(donation, bananas);
+      else game.recordDonation(donation, bananas && bananas.exact);
+      window.BL.hud.setDonationStats(game.state);
+      if (donations.waited(donation.id)) {
+        const n = bananas && bananas.rounded;
+        window.BL.hud.toast(`Your on-chain tip confirmed · ${gameMod.formatLarge(donation.sats)} sats${n ? ` · ${gameMod.formatLarge(n)} banana${n === 1 ? "" : "s"}` : ""}`);
+      }
+    }, {
+      identity: () => game.state,
+      // An on-chain payment seen before its block: the active scene shows it where it can (the kiosk that made the
+      // invoice), and otherwise one the visitor left the kiosk waiting on says it is on its way, or what is still owed.
+      onSeen: (id, sats, due, left, pricing) => {
+        if (window.BL.donationPopup.seen(id, sats, due, left, pricing)) return;
+        if (active && active.onSeen && active.onSeen(id, sats, due, left, pricing)) return;
+        if (donations.waitingOn(id)) window.BL.hud.toast(left ? `Your on-chain tip arrived short · send ${gameMod.formatLarge(left)} more sats to the same address` : "Your on-chain tip is on its way · waiting for a block");
+      },
+      onPile: ({ bananas, eatPerHour }) => Object.assign(pileFeed, { bananas, eatPerHour, at: performance.now() })
+    });
+  });
   // The feed panel: the Konami code toggles a page-wide readout of the socket, its counters and its last events.
   // It subscribes and ticks only while open, and its text nodes change only with their value.
   const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
@@ -608,7 +676,7 @@
         return world.level;
       }
     };
-    for (const key of ["slots", "drops", "core", "shell", "delivery", "spillEffect", "cavemen", "crates", "lab", "headquarters", "hud", "applyAllSwag", "renderLocker", "demoTip", "setPileLevel", "refreshStates", "trimPool", "shown", "island", "mouths", "labels", "camera", "cameraCave", "crew", "fx", "controls", "props", "altar", "path", "scenery", "jetpack", "magazine", "mirrorCave", "matrixCave", "matrixGate", "pilot", "renderOpts", "lamps", "entranceLights", "lighting", "fireSeats", "critters", "storm", "daylight", "setHour", "track", "racers", "items", "race", "audio", "weather", "drop", "diver", "plane", "course", "jumbotron", "fireworks", "fireworksPending", "orbit", "flight", "site", "agent", "poolIsland", "mine", "dsb", "pier", "clankers", "clankerPlay", "factory", "bifrost", "arcade", "carnival", "npcSync", "cloudFloorAt"]) {
+    for (const key of ["slots", "drops", "core", "shell", "delivery", "spillEffect", "cavemen", "crates", "lab", "headquarters", "hud", "applyAllSwag", "renderLocker", "demoTip", "setPileLevel", "refreshStates", "trimPool", "shown", "island", "mouths", "labels", "camera", "cameraCave", "crew", "fx", "controls", "props", "altar", "path", "scenery", "jetpack", "magazine", "mirrorCave", "matrixCave", "matrixGate", "pilot", "renderOpts", "lamps", "entranceLights", "lighting", "fireSeats", "critters", "storm", "daylight", "setHour", "track", "racers", "items", "race", "audio", "weather", "drop", "diver", "plane", "course", "jumbotron", "totems", "fireworks", "fireworksPending", "orbit", "flight", "site", "agent", "poolIsland", "mine", "dsb", "pier", "clankers", "clankerPlay", "factory", "bifrost", "arcade", "carnival", "npcSync", "cloudFloorAt", "footsteps"]) {
       Object.defineProperty(ooga, key, { get: () => active.debug && active.debug[key], enumerable: true });
     }
     window.__ooga = ooga;
@@ -617,18 +685,22 @@
     destroyed = true;
     window.cancelAnimationFrame(raf);
     window.clearInterval(housekeepTimer);
-    unsubscribeDonations();
+    overlayObserver.disconnect();
+    if (unsubscribeDonations) unsubscribeDonations();
     unsubscribeBlockFeed();
     unsubscribeBlockHeight();
     feedPanel.close();
+    window.BL.donationPopup.dispose();
     router.dispose();
     mempool.dispose();
     chain.dispose();
     window.BL.oogatronLive.dispose();
+    window.BL.totemFeed.dispose();
     unsubscribeAccount();
     unsubscribeVoice();
     unsubscribeRosterMarks();
     unsubscribeVoiceMarks();
+    unsubscribeMic();
     window.BL.voice.dispose();
     net.dispose();
     window.removeEventListener("keydown", onKeyDown);

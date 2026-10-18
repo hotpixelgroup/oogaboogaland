@@ -4,7 +4,8 @@
 // written again; the queries are exact local-space visibility, proximity, occlusion and actor tests:
 // `register`, `collect`, `refresh`, `cameraClear`, `perceptionClear`, `perceived`, `concealed`, `distance`,
 // `inView`, `actorVisible`, `ownerBoundaryAt`. Providers (the pile, the platform, the mirror) join the same
-// registry through `create({ providers })`. sight-guides.js draws the result.
+// registry through `create({ providers })`. Faces tagged `visibility: false`
+// are render-only decoration, omitted from all registry queries. sight-guides.js draws the result.
 (() => {
   "use strict";
   const BL = window.BL = window.BL || {};
@@ -19,7 +20,7 @@
       providerOwners.set(provider.owner, provider);
       for (const node of provider.roots) aliases.set(node, provider.owner);
     }
-    const sceneRoot = roots.length ? roots[0].parent : null, stack = new Int32Array(64), boundaryView = new Float64Array(16);
+    const sceneRoot = roots.length ? roots[0].parent : null, stack = new Int32Array(64), boundaryView = new Float64Array(16), boundaryCorners = new Float64Array(9);
     let candidates = [], occluders = [], cameraOccluders = [], targetOccluders = [], perceptionOccluders = [];
     let lines = new Float32Array(0), owners = [], nearOwners = [], nearDistances = new Float64Array(0);
     const result = { lines, owners, count: 0, contours: 0, capacity: 0, version: 0, occlusionVersion: 0, structuralVersion: 0, perceptionVersion: 0, nearOwners, nearDistances, nearCount: 0, nearVersion: 0, ownerCapacity: 0 };
@@ -32,6 +33,13 @@
     let cameraCoverEntry = null, cameraCoverSource = null, cameraCoverFace = -1;
     let activeCamera = null, cameraAspect = 1, hasCamera = false, near = 0, far = Infinity, tanX = 1, tanY = 1, planeX = 1, planeY = 1, cameraX = 0, cameraY = 0, cameraZ = 0;
     let lineUsed = 0, linesChanged = false, edgeLo = 0, edgeHi = 1;
+    let boundarySpan = 0, boundaryFirstDepth = 0, boundaryLastDepth = 0;
+    // Emission is a pure function of the collected frame: while the camera, the actor anchor, the
+    // retained set, candidate membership and every entry's collected state are unchanged since the
+    // last emission, the existing lines already are the output, so the emission block is skipped.
+    const emissionView = BL.math.mat4.create(), emissionMembership = [], emissionRetained = [];
+    let emissionDirty = true, emissionHasCamera = false, emissionActor = null, emissionMembers = 0, emissionRetainedCount = 0;
+    let emissionX = 0, emissionY = 0, emissionZ = 0, emissionTanX = NaN, emissionTanY = NaN, emissionNear = NaN, emissionFar = NaN;
     const cameraIncludes = (x, y, z, radius) => {
       if (!hasCamera) return true;
       const m = cameraView, cx = m[0] * x + m[4] * y + m[8] * z + m[12], cy = m[1] * x + m[5] * y + m[9] * z + m[13], depth = -(m[2] * x + m[6] * y + m[10] * z + m[14]);
@@ -64,7 +72,7 @@
       if (cached) return cached;
       let triangles = 0, edges = 0, resolved = null;
       const v = geometry.verts;
-      for (const face of geometry.faces) if (face.i.length > 2) {
+      for (const face of geometry.faces) if (face.visibility !== false && face.i.length > 2) {
         const a = face.i[0] * 3, b = face.i[1] * 3, c = face.i[2] * 3;
         const ux = v[b] - v[a], uy = v[b + 1] - v[a + 1], uz = v[b + 2] - v[a + 2], vx = v[c] - v[a], vy = v[c + 1] - v[a + 1], vz = v[c + 2] - v[a + 2];
         // Match the bake's degenerate-face rejection so grid sizing stays identical.
@@ -101,7 +109,7 @@
       const baked = bakes.get(geometry.verts);
       if (baked) for (const bake of baked) {
         let same = bake.faces.length === geometry.faces.length;
-        for (let n = 0; same && n < bake.faces.length; n++) same = bake.faces[n] === geometry.faces[n].i;
+        for (let n = 0; same && n < bake.faces.length; n++) same = bake.faces[n] === (geometry.faces[n].visibility === false ? null : geometry.faces[n].i);
         if (!same) continue;
         cached = bake.record;
         stats.triangles += cached.triangleIndices.length / 3; stats.triangleBytes += cached.triangleIndices.byteLength; stats.samples += cached.samples.length / 3;
@@ -110,7 +118,7 @@
       // Triangle buffers take every face's fan up front (skipped faces leave their slots unused) and the witnesses
       // grow a typed buffer, so the bake does not grow JS arrays through the island's hundreds of thousands of faces.
       let slots = 0;
-      for (const face of geometry.faces) if (face.i.length > 2) slots += face.i.length - 2;
+      for (const face of geometry.faces) if (face.visibility !== false && face.i.length > 2) slots += face.i.length - 2;
       const v = geometry.verts, triangleIndices = new Uint32Array(slots * 3), triangleBounds = new Float64Array(slots * 6), triangleCoverFaces = new Int32Array(slots), coverFaces = [], edgeMap = new Map(), planes = new Map();
       let count = 0;
       // Witnesses dedupe by rounded coordinates, first point kept, in insertion order: an open-addressing table of
@@ -160,7 +168,7 @@
       };
       for (let faceIndex = 0; faceIndex < geometry.faces.length; faceIndex++) {
         face = geometry.faces[faceIndex];
-        if (face.i.length < 3) continue;
+        if (face.visibility === false || face.i.length < 3) continue;
         a = face.i[0] * 3;
         const b = face.i[1] * 3, c = face.i[2] * 3;
         const ux = v[b] - v[a], uy = v[b + 1] - v[a + 1], uz = v[b + 2] - v[a + 2], vx = v[c] - v[a], vy = v[c + 1] - v[a + 1], vz = v[c + 2] - v[a + 2];
@@ -329,7 +337,7 @@
       };
       if (count) build(0, count);
       cached = { lines: edgeLines, samples, sampleBounds, coverFaces: new Uint32Array(coverFaces), triangleCoverFaces: count === slots ? triangleCoverFaces : triangleCoverFaces.slice(0, count), edgeStarts, edgeNormals: new Float64Array(edgeNormals), vertices: v, triangleIndices: count === slots ? triangleIndices : triangleIndices.slice(0, count * 3), indices, bounds: new Float64Array(bounds), left: new Int32Array(left), right: new Int32Array(right), starts: new Uint32Array(starts), counts: new Uint32Array(counts), sphere: BL.scene.boundsOf(geometry) };
-      const bake = { faces: geometry.faces.map((face) => face.i), record: cached };
+      const bake = { faces: geometry.faces.map((face) => face.visibility === false ? null : face.i), record: cached };
       if (baked) baked.push(bake); else bakes.set(geometry.verts, [bake]);
       stats.triangles += count; stats.triangleBytes += cached.triangleIndices.byteLength; stats.samples += samples.length / 3;
       return cached;
@@ -354,6 +362,8 @@
         group.stamp = group.retained = group.revision = 0; group.near = group.active = false; group.providerVersion = -1; group.providerActive = false;
         group.cacheActor = group.cacheTerrain = null; group.cachePerception = group.cacheRevision = -1; group.cacheResult = false; group.observer = new Float64Array(6);
         group.perceptionBounds = new Float64Array(6); group.perceptionDirty = false;
+        group.actorMode = 0; group.actorTerrain = null; group.actorRevision = -1; group.actorOcclusion = -1; group.actorResult = false;
+        group.actorView = new Float64Array(20); group.actorView.fill(NaN);
         group.witnessEntry = group.witnessSource = null; group.witnessAt = -1;
         group.cameraWitnessEntry = group.cameraWitnessSource = null; group.cameraWitnessAt = -1;
         group.boundaryStamp = -1; group.boundaryDepth = 0; group.boundaryEntries = [null, null]; group.boundaryGrid = null;
@@ -415,7 +425,7 @@
         if (!grid) grid = entry.boundaryGrid = { active: false, capacity: 0, size: 0, offsets: null, cursors: null, spans: null, indices: null, scaleX: 0, scaleY: 0 };
         const size = count >= 512 ? 32 : 16;
         if (grid.size < size) { grid.size = size; grid.offsets = new Uint32Array(size * size + 1); grid.cursors = new Uint32Array(size * size); }
-        if (grid.capacity < count) { grid.capacity = count; grid.indices = new Uint32Array(count * 16); grid.spans = new Uint8Array(count * 4); }
+        if (grid.capacity < count) { grid.capacity = count; grid.indices = new Uint32Array(count * 32); grid.spans = new Uint8Array(count * 4); }
       }
     };
     const resize = () => {
@@ -449,6 +459,7 @@
       cameraCoverEntry = cameraCoverSource = null; cameraCoverFace = -1;
       result.count = result.contours = result.nearCount = candidateCount = occluderCount = cameraOccluderCount = perceptionOccluderCount = 0;
       result.version++; result.nearVersion++; result.occlusionVersion++; result.structuralVersion++; result.perceptionVersion++;
+      emissionDirty = true;
     };
     for (const provider of providers) groupOf(provider.owner);
     let characterIndex = 0;
@@ -544,6 +555,27 @@
           && entry.z + entry.hz >= b[2] - EPS && entry.z - entry.hz <= b[5] + EPS) group.perceptionDirty = true;
       }
     };
+    const emitContours = () => {
+      lineUsed = 0; linesChanged = false;
+      for (let n = 0; n < candidateCount; n++) {
+        const entry = candidates[n], geometry = entry.geometry, v = geometry.lines, w = entry.node.world, inverse = entry.inverse;
+        const eyeX = inverse[0] * cameraX + inverse[4] * cameraY + inverse[8] * cameraZ + inverse[12], eyeY = inverse[1] * cameraX + inverse[5] * cameraY + inverse[9] * cameraZ + inverse[13], eyeZ = inverse[2] * cameraX + inverse[6] * cameraY + inverse[10] * cameraZ + inverse[14];
+        for (let j = 0; j < v.length; j += 6) {
+          const start = geometry.edgeStarts[j / 6], end = geometry.edgeStarts[j / 6 + 1], normals = geometry.edgeNormals;
+          if (hasCamera && end - start > 3) {
+            let front = false, back = false;
+            for (let at = start; at < end; at += 3) {
+              const facing = normals[at] * (eyeX - v[j]) + normals[at + 1] * (eyeY - v[j + 1]) + normals[at + 2] * (eyeZ - v[j + 2]);
+              if (facing > EPS) front = true; else back = true;
+            }
+            if (!front || !back) continue;
+          }
+          appendLine(entry, w[0] * v[j] + w[4] * v[j + 1] + w[8] * v[j + 2] + w[12], w[1] * v[j] + w[5] * v[j + 1] + w[9] * v[j + 2] + w[13], w[2] * v[j] + w[6] * v[j + 1] + w[10] * v[j + 2] + w[14],
+            w[0] * v[j + 3] + w[4] * v[j + 4] + w[8] * v[j + 5] + w[12], w[1] * v[j + 3] + w[5] * v[j + 4] + w[9] * v[j + 5] + w[13], w[2] * v[j + 3] + w[6] * v[j + 4] + w[10] * v[j + 5] + w[14]);
+        }
+        appendClipLines(entry, entry.worldMinY); appendClipLines(entry, entry.worldMaxY);
+      }
+    };
     const collect = (actor, ex, ey, ez, camera = null, aspect = 1, retainedOwners = null, retainedCount = 0) => {
       const actorRoot = actor && actor.root;
       let changed = false, occlusionChanged = false, structuralChanged = false, perceptionChanged = false, providerChanged = false;
@@ -578,6 +610,8 @@
       }
       for (let n = 0; n < registered.length; n++) {
         const entry = registered[n], node = entry.node, geometry = geometries.get(node.geometry), w = node.world;
+        // Initialized hidden entries cannot block rays; reappearing ones refresh through the shown transition.
+        if (!entry.shown && entry.source === node.geometry && entry.boundsGeometry === geometry && !visible(node)) continue;
         let worldChanged = false;
         for (let i = 0; i < 16; i++) if (entry.world[i] !== w[i]) { worldChanged = true; entry.world[i] = w[i]; }
         // Scale and vertical bounds follow the matrix and geometry only; visibility is still read every frame.
@@ -597,6 +631,7 @@
         const shown = !!geometry && centerY + halfY >= worldMinY && centerY - halfY <= worldMaxY && worldMinY <= worldMaxY && !node.mirrorPortal && reveal < 1 && scaleX * scaleY * scaleZ > 1e-12 && visible(node) && (!entry.group.provider || !entry.group.provider.includes || entry.group.provider.includes(node)), active = shown && entry.owner !== actorRoot;
         const wasActive = entry.visible, wasShown = entry.shown;
         const moved = worldChanged || wasShown !== shown || entry.source !== node.geometry || entry.clipMinY !== clipMinY || entry.worldMinY !== worldMinY || entry.worldMaxY !== worldMaxY;
+        if ((moved || active !== wasActive) && entry.owner !== actorRoot) emissionDirty = true;
         if (node.sightSolid && (moved || active !== wasActive) && (active || wasActive)) structuralChanged = true;
         // Both the departed and newly occupied volumes can affect cached sight rays; distant moving scenery cannot
         // invalidate either.
@@ -661,29 +696,34 @@
         if (entry.group.provider || !entry.group.near || !cameraIncludes(entry.x, entry.y, entry.z, entry.radius)) continue;
         candidates[candidateCount++] = entry;
       }
-      lineUsed = 0; linesChanged = false;
-      for (let n = 0; n < candidateCount; n++) {
-        const entry = candidates[n], geometry = entry.geometry, v = geometry.lines, w = entry.node.world, inverse = entry.inverse;
-        const eyeX = inverse[0] * cameraX + inverse[4] * cameraY + inverse[8] * cameraZ + inverse[12], eyeY = inverse[1] * cameraX + inverse[5] * cameraY + inverse[9] * cameraZ + inverse[13], eyeZ = inverse[2] * cameraX + inverse[6] * cameraY + inverse[10] * cameraZ + inverse[14];
-        for (let j = 0; j < v.length; j += 6) {
-          const start = geometry.edgeStarts[j / 6], end = geometry.edgeStarts[j / 6 + 1], normals = geometry.edgeNormals;
-          if (hasCamera && end - start > 3) {
-            let front = false, back = false;
-            for (let at = start; at < end; at += 3) {
-              const facing = normals[at] * (eyeX - v[j]) + normals[at + 1] * (eyeY - v[j + 1]) + normals[at + 2] * (eyeZ - v[j + 2]);
-              if (facing > EPS) front = true; else back = true;
-            }
-            if (!front || !back) continue;
-          }
-          appendLine(entry, w[0] * v[j] + w[4] * v[j + 1] + w[8] * v[j + 2] + w[12], w[1] * v[j] + w[5] * v[j + 1] + w[9] * v[j + 2] + w[13], w[2] * v[j] + w[6] * v[j + 1] + w[10] * v[j + 2] + w[14],
-            w[0] * v[j + 3] + w[4] * v[j + 4] + w[8] * v[j + 5] + w[12], w[1] * v[j + 3] + w[5] * v[j + 4] + w[9] * v[j + 5] + w[13], w[2] * v[j + 3] + w[6] * v[j + 4] + w[10] * v[j + 5] + w[14]);
+      let emit = emissionDirty || hasCamera !== emissionHasCamera || actorRoot !== emissionActor
+        || ex !== emissionX || ey !== emissionY || ez !== emissionZ
+        || tanX !== emissionTanX || tanY !== emissionTanY || near !== emissionNear || far !== emissionFar;
+      for (let i = 0; !emit && i < 16; i++) if (emissionView[i] !== cameraView[i]) emit = true;
+      if (!emit) {
+        const kept = retainedOwners ? retainedCount : 0;
+        if (kept !== emissionRetainedCount || candidateCount !== emissionMembers) emit = true;
+        else {
+          for (let n = 0; n < kept && !emit; n++) if (retainedOwners[n] !== emissionRetained[n]) emit = true;
+          for (let n = 0; n < candidateCount && !emit; n++) if (candidates[n] !== emissionMembership[n]) emit = true;
         }
-        appendClipLines(entry, entry.worldMinY); appendClipLines(entry, entry.worldMaxY);
       }
-      const used = lineUsed; changed = changed || linesChanged;
-      if (result.count !== used) changed = true;
-      for (let i = used; i < result.count; i++) owners[i] = null;
-      result.count = result.contours = used; if (changed) result.version++; if (occlusionChanged) result.occlusionVersion++;
+      if (emit) {
+        emitContours();
+        const used = lineUsed; changed = changed || linesChanged;
+        if (result.count !== used) changed = true;
+        for (let i = used; i < result.count; i++) owners[i] = null;
+        result.count = result.contours = used; if (changed) result.version++;
+        emissionDirty = false;
+        emissionHasCamera = hasCamera; emissionActor = actorRoot;
+        emissionX = ex; emissionY = ey; emissionZ = ez;
+        emissionTanX = tanX; emissionTanY = tanY; emissionNear = near; emissionFar = far;
+        emissionView.set(cameraView);
+        emissionRetainedCount = retainedOwners ? retainedCount : 0; emissionMembers = candidateCount;
+        for (let n = 0; n < emissionRetainedCount; n++) emissionRetained[n] = retainedOwners[n];
+        for (let n = 0; n < candidateCount; n++) emissionMembership[n] = candidates[n];
+      }
+      if (occlusionChanged) result.occlusionVersion++;
       if (structuralChanged) result.structuralVersion++;
       if (perceptionChanged) {
         const before = result.perceptionVersion++;
@@ -1079,17 +1119,16 @@
       }
       return hidden;
     };
-    const actorView = new Float64Array(20);
-    let lastActor = null, lastActorTerrain = null, lastActorRevision = -1, lastActorOcclusion = -1, actorViewMode = 0, actorVisibleResult = false;
-    actorView.fill(NaN);
-    const actorViewChanged = (actor, group, segmentClear, mode) => {
-      const occlusion = propsBlockActor || mode === 2 ? result.occlusionVersion : result.structuralVersion;
-      let changed = actorViewMode !== mode || lastActor !== actor || lastActorTerrain !== segmentClear || lastActorRevision !== group.revision || lastActorOcclusion !== occlusion;
-      for (let i = 0; i < 16; i++) if (actorView[i] !== cameraView[i]) { actorView[i] = cameraView[i]; changed = true; }
-      if (actorView[16] !== near || actorView[17] !== far || actorView[18] !== tanX || actorView[19] !== tanY) changed = true;
-      actorView[16] = near; actorView[17] = far; actorView[18] = tanX; actorView[19] = tanY;
+    // Memo per group: hubs interleave per-Ooga UI occlusion queries with the player check,
+    // so one shared slot would recompute on every alternation.
+    const actorViewChanged = (group, segmentClear, mode) => {
+      const occlusion = propsBlockActor || mode === 2 ? result.occlusionVersion : result.structuralVersion, view = group.actorView;
+      let changed = group.actorMode !== mode || group.actorTerrain !== segmentClear || group.actorRevision !== group.revision || group.actorOcclusion !== occlusion;
+      for (let i = 0; i < 16; i++) if (view[i] !== cameraView[i]) { view[i] = cameraView[i]; changed = true; }
+      if (view[16] !== near || view[17] !== far || view[18] !== tanX || view[19] !== tanY) changed = true;
+      view[16] = near; view[17] = far; view[18] = tanX; view[19] = tanY;
       if (!changed) return false;
-      lastActor = actor; lastActorTerrain = segmentClear; lastActorRevision = group.revision; lastActorOcclusion = occlusion; actorViewMode = mode; actorVisibleResult = false;
+      group.actorTerrain = segmentClear; group.actorRevision = group.revision; group.actorOcclusion = occlusion; group.actorMode = mode; group.actorResult = false;
       return true;
     };
     const section = new Float64Array(6);
@@ -1340,14 +1379,14 @@
     const actorVisible = (actor, segmentClear) => {
       const group = actor && ownerEntries.get(actor.root);
       if (!hasCamera || !group) return false;
-      if (!actorViewChanged(actor, group, segmentClear, 1)) return actorVisibleResult;
+      if (!actorViewChanged(group, segmentClear, 1)) return group.actorResult;
       for (let n = 0; n < group.length; n++) {
         const entry = group[n];
         if (!entry.shown || !cameraBoxIncludes(entry)) continue;
         if (entryCameraRockBlocked(entry, segmentClear) || boundsCameraPropBlocked(entry.x, entry.y, entry.z, entry.hx, entry.hy, entry.hz, actor)) continue;
         // A finite sample grid cannot rule out a tiny visible sliver: only complete occlusion certificates enable
         // outlines; uncertainty hides them, including a bound that just grazes the camera frustum.
-        actorVisibleResult = true;
+        group.actorResult = true;
         return true;
       }
       return false;
@@ -1355,7 +1394,7 @@
     const actorFullyVisible = (actor, segmentClear) => {
       const group = actor && ownerEntries.get(actor.root);
       if (!hasCamera || !group) return false;
-      if (!actorViewChanged(actor, group, segmentClear, 2)) return actorVisibleResult;
+      if (!actorViewChanged(group, segmentClear, 2)) return group.actorResult;
       let present = false;
       for (let n = 0; n < group.length; n++) {
         const entry = group[n];
@@ -1376,8 +1415,8 @@
           if (cameraPointState(w[0] * x + w[4] * y + w[8] * z + w[12], w[1] * x + w[5] * y + w[9] * z + w[13], w[2] * x + w[6] * y + w[10] * z + w[14], actor.root, actor, segmentClear, false, false) === 2) return false;
         }
       }
-      actorVisibleResult = present;
-      return actorVisibleResult;
+      group.actorResult = present;
+      return group.actorResult;
     };
     const boundaryBounds = (entry) => {
       stats.boundaryBuilds++;
@@ -1409,23 +1448,35 @@
           data[out + 6 + axis] = qx * ray[i] + qy * ray[i + 1] + qz * ray[i + 2];
         }
         data[out + 9] = v[6] * qx + v[7] * qy + v[8] * qz;
-        // Thousands of adjacent contour rays share these projected triangles.
-        // A conservative screen box rejects most leaf misses before the exact
-        // barycentric query. Near-plane crossings retain the full query.
-        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        // Bound the portion in front of the near plane. A triangle wholly
+        // behind it cannot meet a union ray; clipping crossings keeps the
+        // screen BVH finite instead of making every ancestor unbounded.
+        const corners = boundaryCorners;
         for (let corner = 0; corner < 3; corner++) {
-          const x = v[0] + (corner ? v[corner * 3] : 0), y = v[1] + (corner ? v[corner * 3 + 1] : 0), z = v[2] + (corner ? v[corner * 3 + 2] : 0);
-          const depth = -(m[2] * x + m[6] * y + m[10] * z + m[14]);
-          if (depth <= near) { minX = minY = -Infinity; maxX = maxY = Infinity; break; }
-          const px = (m[0] * x + m[4] * y + m[8] * z + m[12]) / depth, py = (m[1] * x + m[5] * y + m[9] * z + m[13]) / depth;
-          minX = Math.min(minX, px); minY = Math.min(minY, py); maxX = Math.max(maxX, px); maxY = Math.max(maxY, py);
+          const x = v[0] + (corner ? v[corner * 3] : 0), y = v[1] + (corner ? v[corner * 3 + 1] : 0), z = v[2] + (corner ? v[corner * 3 + 2] : 0), i = corner * 3;
+          corners[i] = m[0] * x + m[4] * y + m[8] * z + m[12];
+          corners[i + 1] = m[1] * x + m[5] * y + m[9] * z + m[13];
+          corners[i + 2] = -(m[2] * x + m[6] * y + m[10] * z + m[14]);
         }
-        const pad = Math.max(1, Math.abs(minX), Math.abs(minY), Math.abs(maxX), Math.abs(maxY)) * EPS, box = out / 10 * 4, boxes = entry.boundaryBoxes;
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (let corner = 0, previous = 6; corner < 9; previous = corner, corner += 3) {
+          const depth = corners[corner + 2], prior = corners[previous + 2];
+          if (depth > near) {
+            const px = corners[corner] / depth, py = corners[corner + 1] / depth;
+            minX = Math.min(minX, px); minY = Math.min(minY, py); maxX = Math.max(maxX, px); maxY = Math.max(maxY, py);
+          }
+          if ((depth > near) !== (prior > near)) {
+            const t = (near - prior) / (depth - prior), px = (corners[previous] + (corners[corner] - corners[previous]) * t) / near,
+              py = (corners[previous + 1] + (corners[corner + 1] - corners[previous + 1]) * t) / near;
+            minX = Math.min(minX, px); minY = Math.min(minY, py); maxX = Math.max(maxX, px); maxY = Math.max(maxY, py);
+          }
+        }
+        const pad = minX <= maxX ? Math.max(1, Math.abs(minX), Math.abs(minY), Math.abs(maxX), Math.abs(maxY)) * EPS : 0, box = out / 10 * 4, boxes = entry.boundaryBoxes;
         boxes[box] = minX - pad; boxes[box + 1] = minY - pad; boxes[box + 2] = maxX + pad; boxes[box + 3] = maxY + pad;
       }
       // Reuse the mesh BVH in screen space. Its children follow their parent,
       // so a reverse pass unions conservative triangle boxes without sorting
-      // or allocating. Near-plane crossings remain unbounded at every level.
+      // or allocating. Clipped near-plane crossings keep finite bounds.
       const nodes = entry.boundaryNodes, boxes = entry.boundaryBoxes;
       for (let id = geometry.counts.length - 1; id >= 0; id--) {
         const at = id * 4;
@@ -1460,6 +1511,7 @@
       let references = 0;
       for (let i = 0; i < count; i++) {
         const at = i * 4;
+        if (boxes[at] > boxes[at + 2] || boxes[at + 1] > boxes[at + 3]) { spans[at] = size; continue; }
         const x0 = Math.min(size - 1, Math.floor((boxes[at] - b[0]) * scaleX)), x1 = Math.min(size - 1, Math.floor((boxes[at + 2] - b[0]) * scaleX));
         const y0 = Math.min(size - 1, Math.floor((boxes[at + 1] - b[1]) * scaleY)), y1 = Math.min(size - 1, Math.floor((boxes[at + 3] - b[1]) * scaleY));
         references += (x1 - x0 + 1) * (y1 - y0 + 1);
@@ -1475,9 +1527,10 @@
       offsets[cursors.length] = used; cursors.fill(0);
       for (let i = 0; i < count; i++) {
         const at = i * 4;
+        if (spans[at] === size) continue;
         for (let y = spans[at + 1]; y <= spans[at + 3]; y++) for (let x = spans[at]; x <= spans[at + 2]; x++) {
           const cell = y * size + x;
-          grid.indices[offsets[cell] + cursors[cell]++] = i * 10;
+          grid.indices[offsets[cell] + cursors[cell]++] = i;
         }
       }
       grid.active = true; stats.boundaryGridBuilds++;
@@ -1510,12 +1563,10 @@
       }
       grid.active = true;
     };
-    const boundaryTriangle = (entry, at, sx, sy, endDepth) => {
-      const boxes = entry.boundaryBoxes, box = at / 10 * 4;
-      if (sx < boxes[box] || sx > boxes[box + 2] || sy < boxes[box + 1] || sy > boxes[box + 3]) return false;
+    const boundaryTriangle = (entry, at, sx, sy) => {
       stats.boundaryTriangles++;
-      const v = entry.boundaryTriangles, det = v[at] * sx + v[at + 1] * sy + v[at + 2], span = endDepth - near;
-      if (Math.abs(det * span) < 1e-10) return false;
+      const v = entry.boundaryTriangles, det = v[at] * sx + v[at + 1] * sy + v[at + 2];
+      if (Math.abs(det * boundarySpan) < 1e-10) return false;
       // Test barycentric numerators before dividing. Almost every union-ray
       // candidate misses, so only a triangle containing the ray needs depth.
       const sign = det < 0 ? -1 : 1, magnitude = det * sign, tolerance = magnitude * 1e-7;
@@ -1524,26 +1575,47 @@
       const w = (v[at + 6] * sx + v[at + 7] * sy + v[at + 8]) * sign;
       if (w < -tolerance || u + w > magnitude + tolerance) return false;
       const depth = v[at + 9] / det;
-      if (depth <= near + span * 1e-5 || depth >= endDepth - span * 1e-5) return false;
+      if (depth <= boundaryFirstDepth || depth >= boundaryLastDepth) return false;
       if (entry.clipMinY === -Infinity && entry.worldMinY === -Infinity && entry.worldMaxY === Infinity) return true;
       const ray = entry.boundaryRay, y = ray[1] + (ray[4] * sx + ray[7] * sy + ray[10]) * depth;
       const worldY = cameraY + (cameraView[4] * sx + cameraView[5] * sy - cameraView[6]) * depth;
       return y >= entry.clipMinY && worldY >= entry.worldMinY && worldY <= entry.worldMaxY;
     };
-    const entryBoundaryHit = (e, sx, sy, endDepth, side) => {
+    const entryBoundaryHit = (e, sx, sy, side) => {
       stats.boundaryEntries++;
       if (!e.visible) return false;
       const b = e.boundaryBounds, g = e.geometry;
       if (sx < b[0] || sx > b[2] || sy < b[1] || sy > b[3]) return false;
-      const nodes = e.boundaryNodes, previous = e.boundaryHits[side];
-      if (previous >= 0 && boundaryTriangle(e, previous, sx, sy, endDepth)) return true;
+      const nodes = e.boundaryNodes, boxes = e.boundaryBoxes, previous = e.boundaryHits[side];
+      // Most candidates miss their projected box. Reject them in the scan
+      // before calling the exact triangle predicate.
+      if (previous >= 0) {
+        const box = previous * 4;
+        if (!(sx < boxes[box] || sx > boxes[box + 2] || sy < boxes[box + 1] || sy > boxes[box + 3]) && boundaryTriangle(e, previous * 10, sx, sy)) return true;
+      }
+      // The two union rays are a fraction of a pixel apart. The other side's
+      // triangle is another exact hint when this side crosses a triangle edge.
+      const opposite = e.boundaryHits[1 - side];
+      if (opposite >= 0 && opposite !== previous) {
+        const box = opposite * 4;
+        if (!(sx < boxes[box] || sx > boxes[box + 2] || sy < boxes[box + 1] || sy > boxes[box + 3]) && boundaryTriangle(e, opposite * 10, sx, sy)) { e.boundaryHits[side] = opposite; return true; }
+      }
       const grid = e.boundaryGrid;
       if (grid && grid.active) {
         stats.boundaryGridQueries++;
         const size = grid.size, x = Math.min(size - 1, Math.floor((sx - b[0]) * grid.scaleX)), y = Math.min(size - 1, Math.floor((sy - b[1]) * grid.scaleY)), cell = y * size + x;
         for (let n = grid.offsets[cell], end = grid.offsets[cell + 1]; n < end; n++) {
           const triangle = grid.indices[n];
-          if (triangle !== previous && boundaryTriangle(e, triangle, sx, sy, endDepth)) { e.boundaryHits[side] = triangle; return true; }
+          if (triangle === previous) continue;
+          const box = triangle * 4;
+          if (sx < boxes[box] || sx > boxes[box + 2] || sy < boxes[box + 1] || sy > boxes[box + 3]) continue;
+          if (boundaryTriangle(e, triangle * 10, sx, sy)) {
+            // Keep this cell's latest hit first for nearby rays from other edges.
+            const first = grid.offsets[cell];
+            if (n !== first) { grid.indices[n] = grid.indices[first]; grid.indices[first] = triangle; }
+            e.boundaryHits[side] = triangle;
+            return true;
+          }
         }
         return false;
       }
@@ -1556,18 +1628,21 @@
         // The exact triangle query checks finite depth and every clip plane;
         // a second local-space ray/box query adds no hit information here.
         for (let n = g.starts[id], end = n + g.counts[id]; n < end; n++) {
-          const triangle = g.indices[n] * 10;
-          if (triangle !== previous && boundaryTriangle(e, triangle, sx, sy, endDepth)) { e.boundaryHits[side] = triangle; return true; }
+          const triangle = g.indices[n];
+          if (triangle === previous) continue;
+          const box = triangle * 4;
+          if (sx < boxes[box] || sx > boxes[box + 2] || sy < boxes[box + 1] || sy > boxes[box + 3]) continue;
+          if (boundaryTriangle(e, triangle * 10, sx, sy)) { e.boundaryHits[side] = triangle; return true; }
         }
       }
       return false;
     };
-    const ownerHit = (group, sx, sy, endDepth, side) => {
+    const ownerHit = (group, sx, sy, side) => {
       const previous = group.boundaryEntries[side];
       // Adjacent union rays usually cross the same part. This is only a hint:
       // its current visibility, clipping and triangles are still tested. Each
       // side keeps its own hint so the two offset rays cannot evict each other.
-      if (previous && entryBoundaryHit(previous, sx, sy, endDepth, side)) return true;
+      if (previous && entryBoundaryHit(previous, sx, sy, side)) return true;
       const grid = group.boundaryGrid;
       if (grid && grid.active) {
         const b = grid.bounds;
@@ -1575,13 +1650,13 @@
         const x = Math.min(BOUNDARY_GRID - 1, Math.floor((sx - b[0]) * grid.scaleX)), y = Math.min(BOUNDARY_GRID - 1, Math.floor((sy - b[1]) * grid.scaleY)), cell = y * BOUNDARY_GRID + x;
         for (let n = cell * grid.stride, end = n + grid.counts[cell]; n < end; n++) {
           const entry = group[grid.indices[n]];
-          if (entry !== previous && entryBoundaryHit(entry, sx, sy, endDepth, side)) { group.boundaryEntries[side] = entry; return true; }
+          if (entry !== previous && entryBoundaryHit(entry, sx, sy, side)) { group.boundaryEntries[side] = entry; return true; }
         }
         return false;
       }
       for (let i = 0; i < group.length; i++) {
         const entry = group[i];
-        if (entry !== previous && entryBoundaryHit(entry, sx, sy, endDepth, side)) { group.boundaryEntries[side] = entry; return true; }
+        if (entry !== previous && entryBoundaryHit(entry, sx, sy, side)) { group.boundaryEntries[side] = entry; return true; }
       }
       return false;
     };
@@ -1611,8 +1686,21 @@
         group.boundaryDepth = Math.min(far, endDepth); group.boundaryStamp = collectStamp;
       }
       const endDepth = group.boundaryDepth;
-      return endDepth > near && ownerHit(group, (rx + px) / depth, (ry + py) / depth, endDepth, 0)
-        !== ownerHit(group, (rx - px) / depth, (ry - py) / depth, endDepth, 1);
+      // Both rays and every triangle share these limits; this query has no callbacks.
+      boundarySpan = endDepth - near;
+      boundaryFirstDepth = near + boundarySpan * 1e-5; boundaryLastDepth = endDepth - boundarySpan * 1e-5;
+      if (!(endDepth > near)) return false;
+      const left = ownerHit(group, (rx + px) / depth, (ry + py) / depth, 0);
+      const sx = (rx - px) / depth, sy = (ry - py) / depth;
+      if (left) {
+        // The first ray already validated this entry. Test its triangle directly for the adjacent ray.
+        const entry = group.boundaryEntries[0], triangle = entry.boundaryHits[0], b = entry.boundaryBounds, boxes = entry.boundaryBoxes, at = triangle * 4;
+        if (!(sx < b[0] || sx > b[2] || sy < b[1] || sy > b[3] || sx < boxes[at] || sx > boxes[at + 2] || sy < boxes[at + 1] || sy > boxes[at + 3]) && boundaryTriangle(entry, triangle * 10, sx, sy)) {
+          group.boundaryEntries[1] = entry; entry.boundaryHits[1] = triangle;
+          return false;
+        }
+      }
+      return left !== ownerHit(group, sx, sy, 1);
     };
     const refresh = () => {
       // Registration boundaries size every reused buffer from actual scene contents; the frame path never grows
@@ -1657,10 +1745,11 @@
       registered.length = ownerGroups.length = 0; seen.clear(); entries.clear(); ownerEntries.clear(); aliases.clear(); providerOwners.clear(); geometries.clear(); characterRoots.clear();
       cameraCoverEntry = cameraCoverSource = null; cameraCoverFace = -1;
       cameraPropEntry = cameraPropSource = null; cameraPropFace = cameraPropStamp = -1; cameraPropCount = 0;
-      lastActor = lastActorTerrain = ignoredPerceptionOwner = null;
+      ignoredPerceptionOwner = null;
       targetOccluders.fill(null); targetOwnerCache = null; targetStamp = -1; targetCount = 0; activeCamera = null;
       candidates.fill(null); occluders.fill(null); cameraOccluders.fill(null); perceptionOccluders.fill(null); owners.fill(null); nearOwners.fill(null);
       result.count = result.contours = result.nearCount = candidateCount = occluderCount = cameraOccluderCount = perceptionOccluderCount = 0;
+      emissionDirty = true; emissionActor = null;
       stats.geometries = stats.registered = stats.candidates = stats.occluders = stats.cameraOccluders = stats.triangles = stats.triangleBytes = stats.samples = stats.owners = stats.nearOwners = 0;
       stats.boundaryGridBytes = stats.boundaryGridReferences = 0;
     };
