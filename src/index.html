@@ -1635,6 +1635,34 @@ Then run npm run build and ONLY=characters node test/run.mjs.</pre>
         <button type="button" data-action="recipe-copy">Copy prompt</button>
       </div>
     </dialog>
+    <dialog class="modal pepi-modal" id="pepi-modal" data-mode="catalog" aria-labelledby="pepi-title" aria-describedby="pepi-help">
+      <div class="panel-head">
+        <h2 id="pepi-title" tabindex="-1">Pepi's Peptides</h2>
+        <button type="button" class="modal-close" data-action="pepi-close" aria-label="Close Pepi's Peptides">&times;</button>
+      </div>
+      <p class="help pepi-intro" id="pepi-help">Pick one free syringe. Each fictional code has the game effect shown below.</p>
+      <section class="pepi-offer" id="pepi-offer" hidden>
+        <p class="help" id="pepi-question">Looking for some pep?</p>
+        <div class="actions">
+          <button type="button" data-action="pepi-yes">Yes</button>
+          <button type="button" data-action="pepi-no" id="pepi-no">No</button>
+        </div>
+      </section>
+      <div class="pepi-catalog" id="pepi-catalog" aria-label="Twelve free game effects"></div>
+      <section class="pepi-confirm" id="pepi-confirmation" aria-label="Confirm game effect" hidden>
+        <p class="pepi-code" id="pepi-code"></p>
+        <h3 id="pepi-name"></h3>
+        <p id="pepi-description"></p>
+        <p class="help pepi-caution" id="pepi-caution"></p>
+        <p class="pepi-duration" id="pepi-duration"></p>
+        <p class="pepi-sequence">Play a first-person cartoon injection and gorilla yell, then apply this effect. Escape cancels the sequence.</p>
+        <div class="actions">
+          <button type="button" data-action="pepi-confirm">Inject Yourself</button>
+          <button type="button" data-action="pepi-close">Keep for later</button>
+        </div>
+      </section>
+      <p class="help pepi-rules" id="pepi-rules">Hub only · One held syringe · One effect at a time · 60 seconds between claims. Leaving the Hub ends the effect. No item or score rewards.</p>
+    </dialog>
     <dialog class="chalk-modal" id="chalk-modal" aria-labelledby="chalk-title">
       <div class="chalk-head">
         <h2 id="chalk-title">EntropyLab chalkboard</h2>
@@ -1702,6 +1730,10 @@ Then run npm run build and ONLY=characters node test/run.mjs.</pre>
         <output class="toast" id="reload-notice" data-reload="true" hidden></output>
         <output class="toast" id="toast" hidden></output>
         <div class="hint" id="hint" hidden></div>
+        <div class="pepi-status" id="pepi-status" hidden>
+          <span id="pepi-status-text" role="status"></span>
+          <button type="button" data-action="pepi-discard" id="pepi-discard" hidden>Discard</button>
+        </div>
       </div>
       <!-- Reading the whitepaper's poster (scene-hub.js shows it): the help line, or, on a touch screen, its buttons. -->
       <div class="wp-nav" id="wp-nav" hidden>
@@ -1915,6 +1947,11 @@ Then run npm run build and ONLY=characters node test/run.mjs.</pre>
   <script src="js/solid-props.js"></script>
   <script src="js/breakables.js"></script>
   <script src="js/agent.js"></script>
+  <script src="js/pepi-effects.js"></script>
+  <script src="js/pepi-models.js"></script>
+  <script src="js/pepi-cinematic.js"></script>
+  <script src="js/pepi-roaming.js"></script>
+  <script src="js/pepi.js"></script>
   <script src="js/remote-players.js"></script>
   <script src="js/npc-sync.js"></script>
   <script src="js/footsteps.js"></script>

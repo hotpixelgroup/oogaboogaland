@@ -338,7 +338,12 @@
       inventory: $("inventory"),
       inventoryEmpty: $("inventory-empty"),
       recipe: $("recipe"),
-      recipeText: $("recipe-text")
+      recipeText: $("recipe-text"),
+      pepi: $("pepi-modal"), pepiTitle: $("pepi-title"), pepiHelp: $("pepi-help"), pepiCatalog: $("pepi-catalog"),
+      pepiOffer: $("pepi-offer"), pepiNo: $("pepi-no"), pepiRules: $("pepi-rules"),
+      pepiConfirmation: $("pepi-confirmation"), pepiCode: $("pepi-code"), pepiName: $("pepi-name"),
+      pepiDescription: $("pepi-description"), pepiCaution: $("pepi-caution"), pepiDuration: $("pepi-duration"),
+      pepiStatus: $("pepi-status"), pepiStatusText: $("pepi-status-text"), pepiDiscard: $("pepi-discard")
     };
     const favicon = new Image();
     favicon.onload = () => {
@@ -1831,6 +1836,85 @@
       e.preventDefault();
       closeRecipe();
     });
+    const closePepi = () => {
+      if (el.pepi.open) el.pepi.close();
+    };
+    const dismissPepi = () => {
+      if (!el.pepi.open) return;
+      const action = el.pepi.dataset.mode === "offer" ? "pepi-no" : "pepi-close";
+      closePepi();
+      if (actionHandler) actionHandler(action);
+    };
+    const openPepiOffer = () => {
+      el.pepi.dataset.mode = "offer";
+      el.pepiTitle.textContent = "Pepi's Peptides";
+      el.pepi.setAttribute("aria-describedby", "pepi-question");
+      el.pepiHelp.hidden = el.pepiCatalog.hidden = el.pepiConfirmation.hidden = el.pepiRules.hidden = true;
+      el.pepiOffer.hidden = false;
+      if (!el.pepi.open) el.pepi.showModal();
+      // Approaching Pepi never selects Yes: a fresh, deliberate button activation is required.
+      el.pepiNo.focus({ preventScroll: true });
+    };
+    const openPepi = (items, selectedIndex = -1) => {
+      const item = selectedIndex >= 0 ? items[selectedIndex] : null;
+      const confirmation = !!item;
+      el.pepi.dataset.mode = confirmation ? "confirm" : "catalog";
+      el.pepi.setAttribute("aria-describedby", "pepi-help");
+      el.pepiOffer.hidden = true;
+      el.pepiHelp.hidden = el.pepiRules.hidden = false;
+      el.pepiTitle.textContent = confirmation ? "Inject Yourself?" : "Pepi's Peptides";
+      el.pepiHelp.textContent = confirmation ? "You choose the effect. Nothing is applied until this sequence finishes."
+        : "Pick one free syringe. Each fictional code has the game effect shown below.";
+      el.pepiCatalog.hidden = confirmation;
+      el.pepiConfirmation.hidden = !confirmation;
+      if (confirmation) {
+        el.pepiCode.textContent = item.code;
+        el.pepiName.textContent = item.name;
+        el.pepiDescription.textContent = item.description;
+        el.pepiCaution.textContent = item.caution;
+        el.pepiCaution.hidden = !item.caution;
+        el.pepiDuration.textContent = `${item.duration} seconds · Hub only`;
+      } else {
+        const choices = document.createDocumentFragment();
+        for (let i = 0; i < items.length; i++) {
+          const entry = items[i], button = document.createElement("button"), code = document.createElement("span");
+          const name = document.createElement("strong"), description = document.createElement("span"), caution = document.createElement("span"), duration = document.createElement("span");
+          button.type = "button"; button.className = "pepi-choice"; button.dataset.action = `pepi-claim-${i}`;
+          code.className = "pepi-code"; code.textContent = entry.code;
+          name.textContent = entry.name;
+          description.className = "pepi-description"; description.textContent = entry.description;
+          caution.className = "pepi-caution"; caution.textContent = entry.caution; caution.hidden = !entry.caution;
+          duration.className = "pepi-duration"; duration.textContent = `Free · ${entry.duration} seconds`;
+          button.append(code, name, description, caution, duration);
+          choices.append(button);
+        }
+        el.pepiCatalog.replaceChildren(choices);
+        el.pepiCatalog.scrollTop = 0;
+      }
+      if (!el.pepi.open) el.pepi.showModal();
+      // Browsing focuses the heading, so opening the stock never highlights or takes a syringe.
+      const focus = confirmation ? el.pepi.querySelector('[data-action="pepi-confirm"]') : el.pepiTitle;
+      if (focus) focus.focus({ preventScroll: true });
+    };
+    on(el.pepiCatalog, "click", (e) => {
+      const button = e.target.closest("button[data-action]");
+      if (!button || !el.pepiCatalog.contains(button)) return;
+      button.blur();
+      if (actionHandler) actionHandler(button.dataset.action);
+    });
+    on(el.pepi, "cancel", (e) => { e.preventDefault(); dismissPepi(); });
+    on(el.pepi, "keydown", (e) => {
+      // The dialog owns its keys; native Tab and button activation remain available.
+      e.stopPropagation();
+      if (e.repeat && (e.key === " " || e.key === "Enter")) e.preventDefault();
+      if (e.key === "Escape") { e.preventDefault(); dismissPepi(); }
+    });
+    const setPepiStatus = (text, held = false) => {
+      text = text || "";
+      if (el.pepiStatusText.textContent !== text) el.pepiStatusText.textContent = text;
+      el.pepiStatus.hidden = !text;
+      el.pepiDiscard.hidden = !held || !text;
+    };
     // Every popup closes when the visitor presses outside it, in every scene: a modal dialog on its
     // backdrop (the press lands on the dialog itself, outside its box), a card or a pause box anywhere
     // else on the page. The island's dialogs are registered here; a scene adds its own.
@@ -1848,6 +1932,7 @@
       }
     }, true);
     dismissOutside(el.recipe, closeRecipe);
+    dismissOutside(el.pepi, dismissPepi);
     dismissOutside(el.board, () => mainBoard.close());
     dismissOutside($("donation-popup"), () => BL.donationPopup.closeOutside());
     // The prompt is written to be pasted, so it leaves in one click.
@@ -1957,6 +2042,7 @@
       if (b === el.mode && e.detail !== 0) return;
       b.blur();
       if (b.dataset.action === "feed") openFeed();
+      else if (b.dataset.action === "pepi-close") dismissPepi();
       else if (b.dataset.action === "recipe-close") closeRecipe();
       else if (b.dataset.action === "recipe-copy") copyRecipe(b);
       else if (b.dataset.action === "intro-go") b.closest("[data-intro]").hidden = true;
@@ -2311,6 +2397,9 @@
       setMagazine(0, 0, 0, false);
       setJetpack(false, false, 0);
       closeRecipe();
+      closePepi();
+      setPepiStatus("");
+      el.pepiCatalog.replaceChildren();
       closeBoard(true);
       destinationNames = [];
       destinationIndex = -1;
@@ -2330,7 +2419,7 @@
         Object.defineProperties(this, Object.getOwnPropertyDescriptors(next));
         return this;
       },
-      el, openFeed, openRecipe, closeRecipe, dismissOutside, openBoard, closeBoard, updateBoard, restoreBoards, setPanelsHidden, foldPanels, setRosterRow, setStats, setAct, setMode, setDestinations, setOwnOoga, get retakeActor() { return retake.actor ? retake : null; }, setGorilla, setGorillaSmashPower, setDetachedView, fadeDetachedName, setAreaLabel, setPrimary, setWeapon, setMagazine, setJetpack, setSubtitle, onAction, toast, tooltip, hint, hideHint, whitepaperNav, letterSign, selectTab, onPreset, setPileValueVisible, onAssign, onUnassign, renderInventory, dispose };
+      el, openFeed, openRecipe, closeRecipe, openPepiOffer, openPepi, closePepi, setPepiStatus, get pepiOpen() { return el.pepi.open; }, dismissOutside, openBoard, closeBoard, updateBoard, restoreBoards, setPanelsHidden, foldPanels, setRosterRow, setStats, setAct, setMode, setDestinations, setOwnOoga, get retakeActor() { return retake.actor ? retake : null; }, setGorilla, setGorillaSmashPower, setDetachedView, fadeDetachedName, setAreaLabel, setPrimary, setWeapon, setMagazine, setJetpack, setSubtitle, onAction, toast, tooltip, hint, hideHint, whitepaperNav, letterSign, selectTab, onPreset, setPileValueVisible, onAssign, onUnassign, renderInventory, dispose };
   };
   // The account line in the sheet's foot is page-level: shown only when a backend answered, and
   // the director hands every change of `BL.net.state` here, whichever scene is active.

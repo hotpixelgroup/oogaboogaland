@@ -178,8 +178,11 @@
       if (!pressActions) { held.boost = 1; return; }
       if (boostPointer !== null) return;
       boostPointer = e.pointerId;
+      const consumed = onAction && onAction();
+      // An action can release a scripted hold and reset these controls from
+      // inside the callback. Its physical click must still be consumed once.
       boostClick = !!onAction;
-      held.boost = onAction && onAction() ? 0 : 1;
+      if (boostPointer === e.pointerId) held.boost = consumed ? 0 : 1;
     };
     const onBoostUp = (e) => {
       if (!pressActions) { held.boost = 0; return; }

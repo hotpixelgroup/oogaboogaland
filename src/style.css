@@ -4611,6 +4611,196 @@ body.tess-touring #joy-look {
   width: min(620px, calc(100vw - 32px));
 }
 
+.pepi-modal {
+  width: 440px;
+  max-height: calc(100dvh - 24px - var(--safe-top) - var(--safe-bottom));
+  overflow: hidden;
+}
+
+.pepi-modal[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pepi-modal[data-mode="offer"] {
+  width: 340px;
+}
+
+.pepi-offer .help { margin-top: 0; }
+.pepi-offer .actions button { min-height: 44px; }
+.pepi-modal[data-mode="catalog"]::backdrop { background: rgba(0, 0, 0, 0.12); }
+
+/* Browsing leaves the framed coat visible beside the stock list. */
+.pepi-modal[data-mode="catalog"] {
+  position: fixed;
+  inset: auto;
+  top: calc(72px + var(--safe-top));
+  right: calc(16px + var(--safe-right));
+  width: min(420px, 45vw);
+  max-height: calc(100dvh - 96px - var(--safe-top) - var(--safe-bottom));
+  margin: 0;
+}
+
+.pepi-modal[data-mode="catalog"] .pepi-catalog { grid-template-columns: minmax(0, 1fr); }
+
+.pepi-modal .panel-head,
+.pepi-intro,
+.pepi-modal .pepi-rules {
+  flex: none;
+  margin: 0;
+}
+
+.pepi-modal .panel-head h2 { margin: 0; white-space: nowrap; }
+.pepi-intro { color: var(--paper); font-size: 11px; line-height: 1.5; }
+
+.pepi-catalog {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: max-content;
+  align-content: start;
+  align-items: start;
+  flex: 1 1 auto;
+  gap: 10px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 2px 4px 4px 2px;
+}
+
+.pepi-choice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 12px;
+  min-width: 0;
+  min-height: 44px;
+  height: max-content;
+  max-height: none;
+  align-self: start;
+  border: 2px solid var(--stone-dk);
+  border-radius: 8px;
+  background: var(--tablet);
+  box-shadow: var(--tablet-shadow);
+  color: var(--paper);
+  text-align: left;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.pepi-choice > * { flex: none; max-width: 100%; }
+.pepi-choice:hover { border-color: var(--wood-edge); background: var(--stone-lt); }
+.pepi-choice:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 1px; }
+.pepi-choice strong { font-size: 12px; white-space: nowrap; }
+.pepi-code { margin: 0; color: var(--accent-text); font-size: 10px; letter-spacing: 0.08em; }
+.pepi-description { font-size: 11px; line-height: 1.5; overflow-wrap: anywhere; }
+.pepi-caution { margin: 0; color: var(--accent-text); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+.pepi-duration { margin: 0; color: var(--accent-text); font-size: 10px; }
+.pepi-choice .pepi-duration { margin-top: 4px; }
+.pepi-confirm { min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.pepi-confirm h3 { margin: 8px 0; font-size: 14px; white-space: nowrap; }
+.pepi-confirm p { line-height: 1.55; }
+.pepi-confirm .pepi-duration { margin-top: 12px; }
+.pepi-sequence { color: var(--paper); font-size: 11px; }
+.pepi-confirm .actions button { min-height: 44px; }
+.pepi-modal .pepi-rules { font-size: 10px; line-height: 1.5; }
+
+.pepi-status {
+  position: absolute;
+  z-index: 13;
+  left: 50%;
+  bottom: calc(120px + var(--safe-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: max-content;
+  max-width: min(460px, calc(100vw - 32px));
+  padding: 8px 10px;
+  border: 2px solid var(--stone-dk);
+  border-radius: 7px;
+  background: var(--tablet);
+  color: var(--paper);
+  font-size: 11px;
+  line-height: 1.5;
+  pointer-events: auto;
+}
+
+.pepi-status span { min-width: 0; overflow-wrap: anywhere; }
+.pepi-status button {
+  flex: none;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 2px solid var(--wood-edge);
+  border-radius: 5px;
+  background: var(--plank);
+  color: var(--ink);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.pepi-status button:focus-visible { outline: 2px solid var(--accent-text); outline-offset: 2px; }
+body:not([data-active-scene="hub"]) .pepi-status { display: none; }
+
+@media (max-width: 720px) {
+  .pepi-modal[data-mode="catalog"] {
+    top: auto;
+    left: calc(8px + var(--safe-left));
+    right: calc(8px + var(--safe-right));
+    bottom: calc(8px + var(--safe-bottom));
+    width: auto;
+    max-width: none;
+    max-height: 50dvh;
+    padding: 12px;
+    gap: 8px;
+  }
+  .pepi-modal[data-mode="catalog"] .pepi-rules { padding: 6px 8px; font-size: 9.5px; }
+  .message-stack > .pepi-status {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 8px;
+    transform: none;
+    font-size: 10px;
+  }
+}
+
+@media (pointer: coarse) {
+  .pepi-modal .modal-close { min-width: 44px; min-height: 44px; }
+}
+
+@media (max-width: 720px) and (max-height: 540px) {
+  .pepi-modal[data-mode="catalog"] { max-height: 75dvh; }
+}
+
+/* Compact views scroll the whole stock sheet, leaving room to read a complete card. */
+@media (max-height: 720px), (max-width: 720px) {
+  .pepi-modal[data-mode="catalog"] {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-padding-top: 56px;
+  }
+  .pepi-modal[data-mode="catalog"] .panel-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    border-bottom: 2px solid var(--wood-edge);
+    background: var(--planks);
+  }
+  .pepi-modal[data-mode="catalog"] .pepi-catalog {
+    flex: none;
+    overflow: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .pepi-modal { max-width: calc(100vw - 20px); padding: 12px; }
+  .pepi-catalog { grid-template-columns: 1fr; }
+  .pepi-choice { padding: 10px; }
+}
+
 .recipe {
   max-height: min(46vh, 420px);
   margin: 10px 0 0;

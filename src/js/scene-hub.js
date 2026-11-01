@@ -523,7 +523,7 @@
   // the shield before a slow switch.
   const factoryWalk = { phase: 0, cave: null, t: 0, x: 0, z: 0, seen: false, through: false, beat: 0, grab: false, still: 0, hold: 0, settle: false };
   // Tess, the island's guide, for the visit (`hub-guide.js`).
-  let islandGuide = null;
+  let islandGuide = null, pepi = null;
   let reuseHub = false, heldHub = false, heldDebug = null;
   let stateTimer = 0, hintTimer = 0, now = 0, hour = 12, unsubscribeActivity = null, unsubscribeAccount = null, ownOogaClaimed = false;
   // The daylight inputs as last sampled; sampledDay starts at a never-true 0 so the first frame always samples.
@@ -5478,6 +5478,8 @@
   const tooltipFor = (hit) => {
     const o = hit.owner;
     switch (o.kind) {
+      case "pepi":
+        return o.index === 0 ? "Pepi · talk about a free sample" : "A navy-coated baboon · doom enthusiast";
       case "tess":
         return COARSE ? `${BL.hubGuide.NAME} the guide · tap for a tour` : `${BL.hubGuide.NAME} the guide · click for a tour`;
       case "halloween": // HALLOWEEN
@@ -5756,6 +5758,7 @@
     if (player && player.camp.burning) return ROLL_ACTION;
     if (player && player.camp.seat) return STAND_ACTION;
     if (player && crew.sleeping) return WAKE_ACTION;
+    if (pepi?.actionAvailable()) return pepi.action;
     if (player && pilot.moving) return null;
     if (player && player.hop < 0.03 && player.hopV <= 0 && headquarters) {
       const feet = player.root.position.y - player.baseY;
@@ -5779,7 +5782,8 @@
     return null;
   };
   const useNearbyAction = (action) => {
-    if (action === cloudHopper?.action) cloudHopper.launch();
+    if (action === pepi?.action) pepi.use();
+    else if (action === cloudHopper?.action) cloudHopper.launch();
     else if (action === WAKE_ACTION) crew.wakePlayer();
     else if (action === ROLL_ACTION) crew.dropRoll();
     else if (action === STAND_ACTION) crew.standPlayer();
@@ -6152,6 +6156,7 @@
       TAP_RAY.ox + TAP_RAY.dx * depth, TAP_RAY.oy + TAP_RAY.dy * depth, TAP_RAY.oz + TAP_RAY.dz * depth);
   };
   const onTap = (hit, p) => {
+    if (pepi?.busy) return;
     if (cloudHopper?.active) return;
     // A tap on the page itself leaves the reading view alone; one beside it closes it, as Escape does.
     if (wpRead) {
@@ -6170,6 +6175,9 @@
     if (!hit) return;
     const o = hit.owner;
     switch (o.kind) {
+      case "pepi":
+        pepi.tap(o.index);
+        break;
       case "tess":
         islandGuide.tap();
         break;
@@ -6340,16 +6348,26 @@
     if (!matrixControl) return;
     const subject = player ? player.root.position : camera.position;
     const action = nearbyAction(subject.x, subject.y + (player ? 1.1 - player.baseY : 0), subject.z, player ? MATRIX_BUTTON_USE_REACH : MATRIX_BUTTON_REACH);
+    const pepiLabel = action === pepi?.action ? pepi.label : null;
+    if (action === pepi?.action) { hud.setAct(pepi.label); hud.el.act.hidden = false; }
     const equipped = !!(player && player.jet);
     const recovering = !!(player && player.jetRecovering);
-    if (action === matrixControl.promptAction && player === matrixControl.promptPlayer && equipped === matrixControl.promptJet && recovering === matrixControl.promptRecovering) return;
+    if (action === matrixControl.promptAction && player === matrixControl.promptPlayer && equipped === matrixControl.promptJet && recovering === matrixControl.promptRecovering && pepiLabel === matrixControl.promptPepiLabel) return;
     const hadPlayerPrompt = matrixControl.promptAction && matrixControl.promptPlayer;
     matrixControl.promptAction = action;
     matrixControl.promptPlayer = player;
     matrixControl.promptJet = equipped;
     matrixControl.promptRecovering = recovering;
+    matrixControl.promptPepiLabel = pepiLabel;
     if (action) {
-      if (action === cloudHopper?.action) {
+      if (action === pepi?.action) {
+        hud.hint(pepi.effects.autonomous ? COARSE ? "Tap STOP CRASH OUT to take control" : "Space or Escape · Stop Crash Out"
+          : pepi.cinematic.active ? COARSE ? "Tap CANCEL INJECTION to stop" : "Space or Escape · Cancel injection"
+            : pepi.held >= 0 ? COARSE ? "Tap Inject Yourself when ready" : "Space · Inject Yourself"
+              : COARSE ? "Tap the action button to talk to Pepi" : "Space · Talk to Pepi");
+        hud.setAct(pepi.label);
+        hud.el.act.hidden = false;
+      } else if (action === cloudHopper?.action) {
         hud.hint(COARSE ? "Tap CLOUD HOPPER to play" : "Space · Play Cloud Hopper");
         hud.setAct("CLOUD HOPPER");
       } else if (action === WAKE_ACTION) {
@@ -8489,6 +8507,7 @@
       if (clankerPlay.active) clankerPlay.readInput(dt);
       else pilot.readInput(dt);
     }
+    pepi?.beforeUpdate(dt);
     mirrorCave.ripples.update(dt, elapsed);
     updatePortalEffects(entropyLab.phase, dt);
     for (const veil of caveVeils) updatePortalEffects(veil.phase, dt);
@@ -8638,6 +8657,7 @@
     if (!cloudPlaying()) timechainIsland.gate.view(dt);
     // Tess moves after the view is set, so a tour's glide has the last word on it.
     if (!cloudHopper.active) islandGuide.update(dt, elapsed);
+    pepi?.update(dt);
     timechainIsland.site.view(camera.position);
     for (let i = 0; i < signDetails.length; i++) {
       const sign = signDetails[i], dx = camera.position.x - sign.x, dy = camera.position.y - sign.y, dz = camera.position.z - sign.z;
@@ -9121,6 +9141,39 @@
     if (inRainforest(p.x, feet, p.z)) return "rainforest";
     if (onBifrostIsle(p.x, feet, p.z)) return "bifrost";
     return island.onLand(p.x, p.z) ? "outside" : "none";
+  };
+  const CRASH_ZONE_COLUMN = { caveIndex: 0, floor: 0, ceiling: 0 };
+  const crashZoneOf = (actor) => {
+    if (!actor.root) {
+      const rec = BL.net.remotes.get(actor.id);
+      return rec && rec.bodyKind === "ooga" ? rec.zone : null;
+    }
+    const p = actor.root.position, feet = p.y - actor.baseY;
+    // This effect belongs to the open Hub meadow; a nearby cave is a different conversation.
+    if (island.cavityAt(p.x, p.z, CRASH_ZONE_COLUMN, 0, feet)
+      && feet >= CRASH_ZONE_COLUMN.floor - 1e-6 && feet < CRASH_ZONE_COLUMN.ceiling) return null;
+    return zoneOf(actor);
+  };
+  const crashCanYell = (cave, target) => {
+    const p = cave.root.position, q = target.root ? target.root.position : target;
+    const y = p.y - cave.baseY + cave.bodyHeight * 0.65;
+    const ty = q.y - (target.root ? target.baseY : 0) + (target.bodyHeight || target.height || REMOTE_BODY_HEIGHT) * 0.65;
+    // The addressed Ooga is the endpoint, so test scenery rather than treating its body as a wall.
+    return island.voxelSegmentClearAt(p.x, y, p.z, q.x, ty, q.z, 0.05, 0.1)
+      && (!solids || solids.segmentClear(p.x, y, p.z, q.x, ty, q.z, 0.05, 0.1));
+  };
+  const crashWalkable = (x, z, tx, tz, feet, height, cave) => {
+    const steps = Math.max(1, Math.ceil(Math.hypot(tx - x, tz - z) / 0.35));
+    let px = x, pz = z, floor = feet;
+    for (let i = 1; i <= steps; i++) {
+      const nx = lerp(x, tx, i / steps), nz = lerp(z, tz, i / steps);
+      const ny = playerSupportAt(nx, nz, floor, floor, cave);
+      if (Math.hypot(nx, nz) >= island.meadowRadius || !Number.isFinite(ny) || Math.abs(ny - floor) > STEP_MAX
+        || npcClosedCaveAt(nx, nz, ny, height) || !npcFireClear(px, floor, pz, nx, ny, nz, height)
+        || !walkable(px, pz, nx, nz, floor, height, cave)) return false;
+      px = nx; pz = nz; floor = ny;
+    }
+    return true;
   };
   // A new zone holds ZONE_HOLD seconds before it is reported, so a bridge's foot does not flicker voice.
   let zoneHeld = null, zoneHeldFor = 0;
@@ -11083,6 +11136,7 @@
     location.reload();
   };
   const onKey = (e) => {
+    if (pepi?.key(e)) return;
     if (cloudHopper?.active) {
       if (e.key === "Escape") { e.preventDefault(); if (!e.repeat) cloudHopper.exit(); }
       else if (!cloudHopper.held && (e.key === "j" || e.key === "J") && !e.repeat) toggleJetpack();
@@ -11157,6 +11211,7 @@
   };
   const onTotem = (event) => { if (event.fresh) flareTotem(event.index); };
   const suspendHub = () => {
+    pepi?.suspend();
     stopLazyBedding();
     // A kept island ends its hunt and its game as a full leave does, and lowers the ring at once.
     if (ghostEntry) { ghostEntry.dispose(); ghostEntry = null; }
@@ -11258,6 +11313,7 @@
     hubScene.root = root; hubScene.camera = camera; hubScene.input = input; hubScene.debug = heldDebug;
     heldDebug = null;
     hud.renew(ctx.signal);
+    pepi?.resume();
     hud.restoreBoards(jumbotronBoard);
     hud.setDestinations(["pile", "lab", "mirror", "underground", "basement", "mempool", "factory", "arcade", "bca", "gate", "bifrost", "timechain"]);
     input.resume(); pilot.resume(); clankerPlay.resume(); chalkboard.resume();
@@ -11455,7 +11511,7 @@
       wpContextOn = true;
     }
     presets = { pile: PILE_VIEW, gate: GATE_VIEW };
-    pilot = pilotMod.create({ renderer, canvas: ctx.canvas, camera, hud, presets, landing: "pile", pitch: [PITCH_MIN, PITCH_MAX], dist: [DIST_MIN, DIST_MAX], follow: FOLLOW, fly: FLY, clampTarget, clampCamera, observeOrbit: (position, dt) => clampCamera(position, 0, CLEARANCE, false, dt), ceilingAt: (x, z, y, cave) => cloudPlaying() ? Infinity : ceilingAt(x, z, y, cave), birdsEyeMin: BIRDS_EYE_MIN, birdsEyeCeiling, releaseView: releaseCameraView, enterFreeView: enterFreeCameraView, coarse: COARSE, onFreeAction: freeAction, jetpackStatus: jetpackHudStatus, mayPossess: mayDriveOoga, combatOnly: () => gameCombatOnly, cameraTargets: () => !cloudPlaying(), fixedFollow: cloudPlaying, close: { ...CLOSE_VIEW, maxStep: STEP_MAX, groundAt: playerSupportAt, visualGroundAt: visualSupportAt, sleepEyeFloorAt, zone: () => playerCaveIndex } });
+    pilot = pilotMod.create({ renderer, canvas: ctx.canvas, camera, hud, presets, landing: "pile", pitch: [PITCH_MIN, PITCH_MAX], dist: [DIST_MIN, DIST_MAX], follow: FOLLOW, fly: FLY, clampTarget, clampCamera, observeOrbit: (position, dt) => clampCamera(position, 0, CLEARANCE, false, dt), ceilingAt: (x, z, y, cave) => cloudPlaying() ? Infinity : ceilingAt(x, z, y, cave), birdsEyeMin: BIRDS_EYE_MIN, birdsEyeCeiling, releaseView: releaseCameraView, enterFreeView: enterFreeCameraView, coarse: COARSE, onFreeAction: freeAction, onHeldAction: () => !!pepi?.stopAction(), jetpackStatus: jetpackHudStatus, mayPossess: mayDriveOoga, combatOnly: () => gameCombatOnly, cameraTargets: () => !cloudPlaying(), fixedFollow: cloudPlaying, close: { ...CLOSE_VIEW, maxStep: STEP_MAX, groundAt: playerSupportAt, visualGroundAt: visualSupportAt, sleepEyeFloorAt, zone: () => playerCaveIndex } });
     chalkboard = BL.chalkboard.create({
       renderer,
       onOpen: () => { pilot.setActive(false); pilot.controls.reset(); input.reset(); hud.tooltip.hide(); },
@@ -11916,8 +11972,16 @@
     shared.residentName = "SaniExp";
     shared.residentPose = (cave, dt) => grabbedOogaPose(cave) || timechainResidentPose(cave, dt);
     shared.releaseGrabbed = (cave) => cave.grabbedBy && finishClankerRider(cave.grabbedBy, false);
-    // Signed-in visitors elsewhere, as the Oogas they drive; the crew walks round them.
-    shared.outsideActors = () => cloudPlaying() ? CLOUD_NO_ACTORS : remotes.actors();
+    // Signed-in visitors and the two local baboons share the crew's ordinary shoulder passing and body gaps.
+    const outsideWalkers = [];
+    shared.outsideActors = () => {
+      if (cloudPlaying()) return CLOUD_NO_ACTORS;
+      const remoteActors = remotes.actors();
+      outsideWalkers.length = 0;
+      for (let i = 0; i < remoteActors.length; i++) outsideWalkers.push(remoteActors[i]);
+      pepi?.appendBodies(outsideWalkers);
+      return outsideWalkers;
+    };
     shared.outsideActorHeight = REMOTE_BODY_HEIGHT;
     shared.characterModel = takePreparedCharacter;
     yield* pause(slice);
@@ -12179,10 +12243,12 @@
     entering = false;
     enteringTween = null;
     now = 0;
-    hud.onPreset(name => { if (!cloudHopper?.active && !factoryDeparting && !bifrostDeparting && !islandGuide.holding) navigate(name); });
+    hud.onPreset(name => { if (!pepi?.busy && !cloudHopper?.active && !factoryDeparting && !bifrostDeparting && !islandGuide.holding) navigate(name); });
     hud.setDetachedView("pile");
     hud.setDestinations(["pile", "lab", "mirror", "underground", "basement", "mempool", "factory", "arcade", "bca", "gate", "bifrost", "timechain"]);
     hud.onAction((action, value) => {
+      if (pepi?.handleAction(action)) return true;
+      if (pepi?.busy) return false;
       if (cloudHopper?.active) {
         if (cloudHopper.held) return false;
         if (action === "act") pilot.action();
@@ -12402,7 +12468,7 @@
       parent: root, input, fx, camera, pilot, visitor: () => crew.player, world, hud, coarse: COARSE,
       landing: !ctx.place && !preloadedView && !returningCharacter && ctx.from !== "bifrost",
       prepareStop: wpTourStop,
-      quality: () => renderer.quality, busy: () => wpTime >= 0 || wpRead || wpReturn >= 0 || wpEventPending() || chalkboard.openNow || clankerPlay.active || factoryDeparting || bifrostDeparting || !!(ghosts && ghosts.busy), // HALLOWEEN: ghosts
+      quality: () => renderer.quality, busy: () => !!pepi?.busy || wpTime >= 0 || wpRead || wpReturn >= 0 || wpEventPending() || chalkboard.openNow || clankerPlay.active || factoryDeparting || bifrostDeparting || !!(ghosts && ghosts.busy), // HALLOWEEN: ghosts
       // What her beam sweeps across on the totems' line: their eyes, west to east.
       targets: { totems: totems.map((t) => { const p = t.owner.node.position; return { x: p.x, y: p.y + t.eyeTop, z: p.z }; }).sort((a, b) => a.x - b.x) }
     });
@@ -12430,6 +12496,40 @@
     solids.add(cloudHopper.cabinet);
     hubScene.debug.cloudHopper = cloudHopper;
     hubScene.debug.tess = islandGuide;
+    yield* pause(slice);
+    const pepiNodeStart = root.children.length;
+    pepi = BL.pepi.create({ root, pilot, crew, hud, camera, renderer, world, groundAt: island.surfaceAt,
+      paths: (walkable) => BL.npcPaths.create({ island, walkable,
+        pointAllowed: (x, z) => !npcClosedCaveAt(x, z) && !npcRampRoofAt(x, island.surfaceAt(x, z), z),
+        surfaceAt: island.surfaceAt }),
+      peers: remotes.actors, speech: { say: fx.say, hush: fx.hush, read: fx.speech },
+      crashOut: { actors: crew.list, remotes: remotes.actors, zoneOf: crashZoneOf, walkable: crashWalkable, canYell: crashCanYell,
+        yell: (cave, text) => fx.say(cave, text, 2.4), hush: fx.hush },
+      eligible: (cave) => !!BL.net.state.me && BL.net.ownCharacter()?.handle === cave.traits.name
+        && !BL.net.mayDrive(cave.traits.name) && !playerCaveIndex && Math.hypot(cave.root.position.x, cave.root.position.z) < island.meadowRadius
+        && !cave.health.stunned && !cave.grabbedBy && !cave.bedTravel.mode && !cave.camp.seat && !crew.sleeping,
+      busy: () => entering || factoryHeld || factoryDeparting || bifrostDeparting || gameMode || !!cloudHopper?.active || !!clankerPlay?.active
+        || wpTime >= 0 || wpRead || wpReturn >= 0 || chalkboard.openNow || !!islandGuide?.holding || !!timechainIsland.gate?.busy || !!ghosts?.busy,
+      spotOk: (x, y, z, radius, height) => Number.isFinite(y) && Math.hypot(x, z) < island.meadowRadius - radius
+        && !npcRampRoofAt(x, y, z) && !npcClosedCaveAt(x, z, y, height) && !npcPileAt(x, y, z, height)
+        && npcFireClear(x, y, z, x, y, z, height) && physicalClearAt(x, y + 0.04, z, radius, height, null),
+      viewClear: (x, y, z, tx, ty, tz, cave) => physicalClearAt(x, y - 0.15, z, 0.15, 0.3, cave)
+        && island.voxelSegmentClearAt(x, y - 0.08, z, tx, ty - 0.08, tz, 0.08, 0.16)
+        && propSegmentClear(x, y - 0.08, z, tx, ty - 0.08, tz, 0.08, 0.16, cave),
+      clear: (x, y, z, nx, ny, nz, radius, height) => Math.abs(ny - y) <= STEP_MAX
+        && island.voxelSegmentClearAt(x, y + 0.04, z, nx, ny + 0.04, nz, radius, height)
+        && propSegmentClear(x, y + 0.04, z, nx, ny + 0.04, nz, radius, height, null)
+        && npcFireClear(x, y, z, nx, ny, nz, height), onRecover: respawnAtPile });
+    cloudRememberNodes(pepiNodeStart);
+    for (let i = 0; i < pepi.list.length; i++) {
+      const owner = { kind: "pepi", index: i, priority: 1, weaponType: "none" };
+      const visit = (node) => {
+        if (node.geometry) addTarget(node, owner);
+        for (const child of node.children) visit(child);
+      };
+      visit(pepi.list[i].root);
+    }
+    hubScene.debug.pepi = pepi;
     // Tess wears every tier of her detail in her first frames, so each is on the GPU before she comes close: build
     // them here, a mesh a slice, rather than in her first frame.
     const tessTiers = new Set();
@@ -12469,6 +12569,7 @@
     rememberCharacterLocations();
     stopLazyBedding();
     if (reuseHub && !destroy) return suspendHub();
+    pepi?.dispose(); pepi = null;
     // Restore the lens before dropping a fly-back; a retained hub does the same in suspendHub.
     if (wpReturn >= 0) camera.fov = WP_FROM.toFov;
     wpReturn = -1;
@@ -12700,6 +12801,7 @@
     if (cloudHopper) for (const geometry of cloudHopper.cabinet.frames) set.add(geometry);
     cloudHopper?.liveGeometry(set);
     if (islandGuide) islandGuide.liveGeometry(set);
+    if (pepi) pepi.liveGeometry(set);
     if (ghosts) ghosts.liveGeometry(set); // HALLOWEEN
     else if (ghostEntry) ghostEntry.liveGeometry(set); // HALLOWEEN
     mempoolIsland.water.liveGeometry(set);

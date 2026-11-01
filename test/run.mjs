@@ -7792,6 +7792,564 @@ if (!ONLY || onlyMatches(signedInArrival.name)) tasks.push({ name: "hub signed-i
       [[signedInRouted.name, signedInRouted.run]], { initScript: `(${signedInArrivalWire.toString()})("sleeping", false)` });
   } finally { await new Promise(resolve => server.close(resolve)); }
 } });
+const pepiSpace=async b=>{await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:" ",code:"Space",windowsVirtualKeyCode:32,text:" "});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:" ",code:"Space",windowsVirtualKeyCode:32});};
+const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi asks before showing stock, No returns to play unchanged, and an authenticated owner can choose, cancel or inject one disclosed sample with reversible controls and effects", run: async (b, signIn, mobile = false) => {
+  // nosim keeps all public feeds and the donation simulator off. Opt only the real account module into this local
+  // HTTP fixture, then recheck it when the fixture changes account; production authentication is not bypassed.
+  await b.evaluate('BL.net.start()');
+  const signedOut = await b.evaluate(`(() => {
+    const P = BL.scenes.hub.debug.pepi;
+    return { signedOut: !BL.net.state.me, count: P.list.length, offered: P.actionAvailable(), used: P.use(), open: document.getElementById("pepi-modal").open };
+  })()`);
+  record("Pepi: signed-out visitors see two trench-coat NPCs but cannot take or inject a sample",
+    signedOut.signedOut && signedOut.count === 2 && !signedOut.offered && !signedOut.used && !signedOut.open, JSON.stringify(signedOut));
+  const speech = await b.evaluate(`(() => {
+    const B=__ooga,P=BL.scenes.hub.debug.pepi,fx=BL.scenes.hub.debug.fx,quotes=[BL.pepi.PEPI_QUOTES,BL.pepi.QUOTES],eye={...B.camera.position},seen=[],indices=[],speakers=[];
+    const saved=P.list.map(entry=>({entry,position:{...entry.root.position},yaw:entry.gorilla.heading,visible:entry.root.visible}));
+    const before=P.speech.spoken,send=BL.net.sendChat;let messages=0,bubbles=true,bounded=true;
+    BL.net.sendChat=()=>{messages++;};
+    try {
+      for(let i=0;i<P.list.length;i++){P.list[i].gorilla.place(8+i*6,8,0);P.list[i].root.visible=true;}
+      Object.assign(B.camera.position,{x:11,y:B.island.surfaceAt(11,8)+3,z:14});
+      // Controlled game time advances the actual controller and fx.say, without a two-minute wall-clock wait.
+      for(let i=0;i<20;i++){
+        P.update(P.speech.wait+0.1);const bubble=P.speechBubble,speaker=P.speech.speaker,entry=P.list[speaker];
+        speakers.push(speaker);indices.push(P.speech.indices[speaker]);seen.push(bubble?.beats.flat().join(" ")||"");
+        bubbles&&=!!entry&&!!bubble&&bubble.cave===entry&&bubble===fx.speech(entry)&&!!entry.parts.head;
+        bounded&&=P.list.filter(actor=>!!fx.speech(actor)).length===1;
+      }
+      const spoken=P.speech.spoken-before;
+      const quiet=()=>P.list.every(entry=>!fx.speech(entry));
+      P.suspend();const cleared=quiet();P.update(30);const staysQuiet=quiet();
+      P.resume();P.update(P.speech.wait+0.1);const resumed=!!P.speechBubble&&P.speech.speaker!==speakers.at(-1);
+      const beforeTap=P.speech.spoken;P.tap(1);P.tap(1);
+      for(let i=0;i<20;i++){P.beforeUpdate(0.05);P.update(0.05);}
+      const tapped=P.list[1].gorilla.posture>0.99&&P.list[0].gorilla.posture<0.01&&!P.busy&&P.phase==="idle"&&P.held===-1;
+      for(let i=0;i<100;i++){P.beforeUpdate(0.05);P.update(0.05);}
+      const tapReturned=P.list[1].gorilla.posture<0.01,noTapSpam=P.speech.spoken===beforeTap;
+      const recipe=document.getElementById("recipe");recipe.showModal();P.update(0);const dialogQuiet=quiet();recipe.close();
+      for(const entry of P.list)entry.root.visible=false;P.update(0);const hiddenQuiet=quiet();
+      return {counts:quotes.map(lines=>lines.length),unique:new Set(quotes.flat()).size,spoken,all:seen.every((text,i)=>text===quotes[speakers[i]]?.[indices[i]]),
+        cycled:quotes.every((_,speaker)=>new Set(indices.filter((_,i)=>speakers[i]===speaker)).size===10),alternating:speakers.every((speaker,i)=>(speaker===0||speaker===1)&&(!i||speaker!==speakers[i-1])),
+        bubbles,bounded,cleared,staysQuiet,resumed,tapped,tapReturned,noTapSpam,dialogQuiet,hiddenQuiet,noChat:messages===0};
+    } finally {BL.net.sendChat=send;Object.assign(B.camera.position,eye);for(const state of saved){state.entry.gorilla.place(state.position.x,state.position.z,state.yaw);state.entry.root.visible=state.visible;state.entry.roaming.reset();}P.resume();}
+  })()`);
+  record("Pepi and his companion: twenty distinct doom lines alternate through one existing Ooga speech bubble, stay local and clear on suspension or hiding",
+    speech.counts.every(count=>count===10)&&speech.unique===20&&speech.spoken===20&&speech.all&&speech.cycled&&speech.alternating&&speech.bubbles&&speech.bounded&&speech.cleared&&speech.staysQuiet&&speech.resumed&&speech.tapped&&speech.tapReturned&&speech.noTapSpam&&speech.dialogQuiet&&speech.hiddenQuiet&&speech.noChat,JSON.stringify(speech));
+  signIn(true);
+  await b.evaluate('BL.net.state.resolved = false; BL.net.recheck()');
+  const selected = await untilPage(b, '__ooga.pilot.player?.traits.name === "portlandhodl" && BL.net.state.me?.login === "portlandhodl"');
+  record("Pepi: the real account lookup selects the signed-in owner's Ooga", selected);
+  const meshTarget=await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot,S=BL.scene,owner=Q.player;window.__pepiMeshOwner=owner;Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});Q.release(true);owner.root.visible=false;for(let i=0;i<2;i++){const entry=P.list[i],x=i?8:-18,z=i?4:-12;entry.gorilla.place(x,z,0);entry.tx=x;entry.tz=z;entry.wait=1000;entry.roaming.reset();entry.roaming.setDestination(x,z);}S.updateWorld(BL.scenes.hub.root);const head=P.list[1].parts.head,w=head.world,center=S.boundsOf(head.geometry).center,o=Q.orbit;o.target.x=o.tx=w[12];o.target.y=o.ty=w[13]+0.2;o.target.z=o.tz=w[14];o.yaw=o.tYaw=0;o.pitch=o.tPitch=0.15;o.dist=o.tDist=6;B.advance(0.5,0.05);S.updateWorld(BL.scenes.hub.root);const point=BL.math.mat4.transformPoint(new Float64Array(3),head.world,center[0],center[1],center[2]),screen=B.project(point[0],point[1],point[2],{}),hit=screen&&B.input.pick(screen.x,screen.y);return{x:screen?.x??-1,y:screen?.y??-1,kind:hit?.owner.kind,index:hit?.owner.index,weapon:hit?.owner.weaponType};})()`);
+  if(mobile){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:meshTarget.x,y:meshTarget.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(meshTarget.x,meshTarget.y);
+  const meshInteraction=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi;B.advance(1,0.05);const stood=P.list[1].gorilla.posture>0.99,unpossessed=!B.pilot.player;B.advance(5,0.05);const down=P.list[1].gorilla.posture<0.01;__pepiMeshOwner.root.visible=true;B.pilot.possess(__pepiMeshOwner);return{stood,unpossessed,down,restored:B.pilot.player===__pepiMeshOwner};})()');
+  record("Pepi's companion: an actual visible head mesh is pickable and a real pointer or touch interaction stands him briefly without possessing him",meshTarget.kind==="pepi"&&meshTarget.index===1&&meshTarget.weapon==="none"&&Object.values(meshInteraction).every(Boolean),JSON.stringify({meshTarget,meshInteraction}));
+  if(!mobile){
+    const roaming=await b.evaluate(`(() => {
+      const B=__ooga,P=BL.scenes.hub.debug.pepi,S=BL.scene,solids=B.headquarters.solids.props,cave=B.cavemen.get(__arrivalWire.otherAway),rows=[];
+      const saved=P.list.map(entry=>({entry,position:{...entry.root.position},yaw:entry.gorilla.heading,visible:entry.root.visible,tx:entry.tx,tz:entry.tz,wait:entry.wait,repick:entry.repick}));
+      const actors=B.crew.list.map(actor=>({actor,visible:actor.root.visible})),prior={override:cave.override,position:{...cave.root.position},yaw:cave.root.rotation.y,walk:cave.walk,kind:cave.act.kind,until:cave.act.until,puppet:cave.puppet,lastCommit:cave.contributor.lastCommitAt,lastContribution:cave.contributor.lastContributionAt};
+      const clear=(x,z,nx,nz,radius=1.3,height=2.6)=>{const y=B.island.surfaceAt(x,z),ny=B.island.surfaceAt(nx,nz);return B.island.voxelSegmentClearAt(x,y+0.04,z,nx,ny+0.04,nz,radius,height)&&solids.segmentClear(x,y+0.04,z,nx,ny+0.04,nz,radius,height);};
+      const lane=[12,-12,8,-8].find(z=>[-3.5,0,3.5].every(offset=>clear(-5,z+offset,5,z+offset))&&clear(-5,z-3.5,-5,z+3.5)&&clear(5,z-3.5,5,z+3.5));
+      let box=null,normal=0;
+      try {
+        if(lane===undefined)return {lane:false,normal,rows};
+        for(const actor of actors)actor.actor.root.visible=false;
+        for(const {entry}of saved){entry.gorilla.place(-18,-12,0);entry.root.visible=false;}
+        cave.contributor.lastCommitAt=cave.contributor.lastContributionAt=Date.now()-12*3600000;cave.override="chilling";B.crew.refreshStates(true);
+        for(const actor of actors)actor.actor.root.visible=false;
+        cave.root.visible=true;cave.puppet=false;cave.walk=null;cave.act.kind="wander";cave.act.until=Infinity;
+        Object.assign(cave.root.position,{x:-5,y:B.island.surfaceAt(-5,lane)+cave.baseY,z:lane});cave.root.rotation.y=Math.PI/2;
+        cave.hop=cave.hopV=0;cave.bedTravel.mode="";cave.avoidance.tx=NaN;cave.avoidance.navigation.mode=0;
+        Object.assign(cave.shoulder,{phase:0,other:null,outside:null,motionX:0,motionZ:0});
+        Object.assign(cave.act.spot,{x:5,z:lane,ry:NaN});cave.walk={tx:5,tz:lane,speed:BL.crew.NPC_WALK_SPEED,phase:0,heading:Math.PI/2,to:"spot"};
+        let time=BL.scenes.hub.elapsed;
+        for(let frame=0;frame<20;frame++){const x=cave.root.position.x,z=cave.root.position.z;B.crew.update(0.05,time+=0.05);normal+=Math.hypot(cave.root.position.x-x,cave.root.position.z-z);}
+        cave.root.visible=false;
+        for(const {entry}of saved){
+          entry.root.visible=true;entry.gorilla.place(-5,lane,Math.PI/2);entry.roaming.reset();entry.roaming.setDestination(5,lane);entry.roaming.pause(0,Math.PI/2);
+          // A free approach can turn onto a painted road. Compare a complete second of steady travel,
+          // rather than letting that ordinary turn's braking masquerade as the visitor's cruising speed.
+          const window=new Float64Array(20);let distance=0,rolling=0;
+          for(let frame=0;frame<160;frame++){const x=entry.root.position.x,z=entry.root.position.z;entry.roaming.update(0.05);const step=Math.hypot(entry.root.position.x-x,entry.root.position.z-z),slot=frame%20;rolling+=step-window[slot];window[slot]=step;if(frame>=19)distance=Math.max(distance,rolling);}
+          rows.push({index:entry.index,speed:distance,ratio:distance/normal,quadruped:entry.gorilla.posture<0.01});entry.root.visible=false;
+        }
+        // Register a real mesh with the Hub's production collision registry. Every accepted physical step
+        // must clear both current island terrain and props; the route's own state is not the oracle.
+        box=S.createNode({geometry:BL.models.box({w:0.6,h:3,d:2.4,color:"#777777"}),position:{x:0,y:B.island.surfaceAt(0,lane)+1.5,z:lane}});
+        S.addChild(BL.scenes.hub.root,box);solids.add(box);S.updateWorld(BL.scenes.hub.root);solids.sync();
+        for(const row of rows){
+          const entry=P.list[row.index];entry.root.visible=true;entry.gorilla.place(-5,lane,Math.PI/2);entry.roaming.reset();entry.roaming.setDestination(5,lane);entry.roaming.pause(0,Math.PI/2);
+          let frames=0,intersections=0,maximumStep=0,distance=0;
+          while(entry.roaming.active&&frames++<1200){const x=entry.root.position.x,z=entry.root.position.z;entry.roaming.update(0.05);const step=Math.hypot(entry.root.position.x-x,entry.root.position.z-z);maximumStep=Math.max(maximumStep,step);distance+=step;if(!clear(x,z,entry.root.position.x,entry.root.position.z))intersections++;}
+          Object.assign(row,{arrived:entry.roaming.state.phase==="arrived",remaining:Math.hypot(entry.root.position.x-5,entry.root.position.z-lane),frames,intersections,maximumStep,distance,recoveries:entry.roaming.state.recoveries,phase:entry.roaming.state.phase,reason:entry.roaming.state.reason});entry.root.visible=false;
+        }
+        return {lane,normal,rows};
+      }finally{
+        if(box){solids.remove(box);S.removeChild(BL.scenes.hub.root,box);solids.sync();}
+        cave.override=prior.override;cave.contributor.lastCommitAt=prior.lastCommit;cave.contributor.lastContributionAt=prior.lastContribution;B.crew.refreshStates(true);
+        Object.assign(cave.root.position,prior.position);cave.root.rotation.y=prior.yaw;cave.walk=prior.walk;cave.act.kind=prior.kind;cave.act.until=prior.until;cave.puppet=prior.puppet;
+        for(const state of actors)state.actor.root.visible=state.visible;
+        for(const state of saved){const entry=state.entry;entry.gorilla.place(state.position.x,state.position.z,state.yaw);entry.root.visible=state.visible;entry.tx=state.tx;entry.tz=state.tz;entry.wait=state.wait;entry.repick=state.repick;entry.roaming.reset();entry.roaming.setDestination(state.tx,state.tz);}
+      }
+    })()`);
+    record("Pepi roaming: both real visitors walk at half an awake Ooga's ordinary speed and reach the far side of registered Hub scenery with supported, collision-clear steps instead of stalling",
+      roaming.lane!==false&&roaming.normal>0.1&&roaming.rows.length===2&&roaming.rows.every(row=>row.quadruped&&row.ratio>0.45&&row.ratio<0.55&&row.arrived&&row.remaining<0.25&&row.intersections===0&&row.maximumStep<0.1&&row.distance>10),JSON.stringify(roaming));
+  }
+  const point = async (selector) => b.evaluate(`(() => { const node = document.querySelector(${JSON.stringify(selector)}); node.scrollIntoView({ block: "nearest", behavior: "instant" }); const r = node.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,hit=document.elementFromPoint(x,y),P=BL.scenes.hub.debug.pepi,c=__ooga.pilot.player;window.__pepiLastPress={selector:${JSON.stringify(selector)},hit:hit?.outerHTML.slice(0,220),visible:r.width>0&&r.height>0,covered:!node.contains(hit),before:P.phase,held:P.held,hop:c?.hop,hopV:c?.hopV,stunned:c?.health.stunned,reloading:c?.weapon.reloading,refusal:__ooga.pilot.travelRefusal()};if(!__pepiLastPress.visible||__pepiLastPress.covered)throw Error("Pepi control is not available: "+JSON.stringify(__pepiLastPress));return {x,y}; })()`);
+  const press = async (selector) => {
+    const p = await point(selector);
+    if (mobile) {
+      await b.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [p] });
+      await b.evaluate('window.__pepiLastPress.afterDown=BL.scenes.hub.debug.pepi.phase');
+      await b.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    } else await b.click(p.x, p.y);
+    await b.evaluate('new Promise(resolve=>requestAnimationFrame(()=>resolve()))');
+    await b.evaluate('window.__pepiLastPress.afterEnd=BL.scenes.hub.debug.pepi.phase');
+  };
+  const reach = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi, c = B.pilot.player;
+    const at = distance => { const p = B.pilot.player.root.position, visitor = BL.scenes.hub.debug.pepi.list[0]; visitor.gorilla.place(p.x, p.z + distance, Math.PI); visitor.tx = p.x; visitor.tz = p.z + distance; visitor.wait = 100; visitor.roaming.reset();visitor.roaming.setDestination(p.x,p.z+distance);BL.scenes.hub.debug.pepi.beforeUpdate(0); };
+    B.pilot.navigate({ position: { x: 8, y: B.island.surfaceAt(8, 0), z: 0 }, yaw: 0, pitch: 0.4, dist: 7 });
+    at(4); B.advance(0.1, 0.05);
+    const far = !P.actionAvailable() && !P.use() && !document.getElementById("pepi-modal").open;
+    const baselineJump = B.crew.jumpPlayer(), impulse = c.hopV; B.advance(2, 0.05);
+    B.pilot.navigate({ position: { x: 8, y: B.island.surfaceAt(8, 0), z: 0 }, yaw: 0, pitch: 0.4, dist: 7 });
+    B.advance(0.2, 0.05);
+    const view = () => [B.camera.position.x, B.camera.position.y, B.camera.position.z, B.camera.target.x, B.camera.target.y, B.camera.target.z, B.camera.fov, B.camera.near];
+    window.__pepiProof = { impulse, near: B.camera.near, hidden: [c.parts.head, c.parts.armL, c.parts.armR, c.parts.gun].map(part => part.cameraHidden),
+      economy: JSON.stringify([B.game.state.inventory, B.game.state.arcade.tickets, B.game.state.bananas]), controller: P, at, view, before: view(), position: { ...c.root.position } };
+    at(2.7); B.advance(0.05, 0.05);
+    window.__pepiProof.visitor={...P.list[0].root.position};P.list[0].roaming.setDestination(P.list[0].root.position.x+4,P.list[0].root.position.z);
+    const dialog = document.getElementById("pepi-modal");
+    return { far, baselineJump, impulse, open: dialog.open && dialog.dataset.mode === "offer", question: document.getElementById("pepi-question").textContent,
+      noFocused: document.activeElement?.dataset.action === "pepi-no", held: P.held, effect: P.effects.active,
+      quiet:P.list.every(entry=>!BL.scenes.hub.debug.fx.speech(entry)),
+      standing:P.list[0].gorilla.posture>0,companionDown:P.list[1].gorilla.posture<0.01,
+      closedCoat: Math.abs(P.list[0].coat.panel.rotation.y) < 0.01, distance: Math.hypot(c.root.position.x - P.list[0].root.position.x, c.root.position.z - P.list[0].root.position.z),
+      samples: P.list[0].coat.syringes.length, companion: P.list[1].coat.syringes.length };
+  })()`);
+  record("Pepi: approach stops before crowding and asks Looking for some pep with No focused, a closed coat and no selected or applied sample",
+    reach.far && reach.baselineJump && reach.impulse > 0 && reach.open && reach.question === "Looking for some pep?" && reach.noFocused && reach.quiet && reach.standing && reach.companionDown
+      && reach.closedCoat && reach.held === -1 && !reach.effect && reach.distance > 2.6 && reach.samples === 12 && reach.companion === 0, JSON.stringify(reach));
+  await b.send("Input.dispatchKeyEvent", { type: "keyDown", key: "w", code: "KeyW" });
+  const offerStill=await b.evaluate('(()=>{__ooga.advance(0.2,0.05);const p=BL.scenes.hub.debug.pepi.list[0].root.position,q=__pepiProof.visitor;return Math.hypot(p.x-q.x,p.z-q.z)<0.001;})()');
+  await press('[data-action="pepi-no"]');
+  const declined = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi, c = B.pilot.player, proof = __pepiProof;
+    B.advance(0.1,0.05);
+    return { closed: !document.getElementById("pepi-modal").open, idle: P.phase === "idle" && !P.presentation, held: P.held, effect: P.effects.active,
+      noMove: Math.hypot(c.root.position.x - proof.position.x, c.root.position.z - proof.position.z) < 0.01,
+      view: proof.view().every((value, i) => Math.abs(value - proof.before[i]) < 0.001), free: !B.pilot.travelRefusal(),
+      coat: Math.abs(P.list[0].coat.panel.rotation.y) < 0.01, noCost: P.cooldown === 0 && proof.economy === JSON.stringify([B.game.state.inventory, B.game.state.arcade.tickets, B.game.state.bananas]) };
+  })()`);
+  record("Pepi: No releases the held movement keys and unchanged camera without opening the coat, taking an item, starting a claim cooldown or applying an effect",
+    offerStill && declined.closed && declined.idle && declined.held === -1 && !declined.effect && declined.noMove && declined.view && declined.free && declined.coat && declined.noCost, JSON.stringify({offerStill,...declined}));
+  await b.send("Input.dispatchKeyEvent", { type: "keyUp", key: "w", code: "KeyW" });
+  const quiet = await b.evaluate(`(() => { __pepiClock.offset += 9000; __ooga.advance(0.2,0.05); return !document.getElementById("pepi-modal").open; })()`);
+  record("Pepi: declining does not repeat the offer while the visitor stays nearby, even after the brief cooldown", quiet);
+  await b.evaluate('__pepiProof.at(4);__pepiProof.at(2.7);__ooga.advance(0.05,0.05)');
+  await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:"Tab",code:"Tab",windowsVirtualKeyCode:9});
+  await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:"Tab",code:"Tab",windowsVirtualKeyCode:9});
+  const escapedFromBody=await b.evaluate('document.activeElement===document.body');
+  await b.key("Escape");
+  const escaped = await b.evaluate(`(() => { const P = BL.scenes.hub.debug.pepi; __pepiProof.at(4); __pepiProof.at(2.7); return { closed: !document.getElementById("pepi-modal").open, held: P.held, idle:P.phase==="idle"&&!P.effects.active, claimCooldown:P.cooldown===0, free: !__ooga.pilot.travelRefusal() }; })()`);
+  record("Pepi: Escape from the native Tab body-focus cycle declines the offer, and immediately leaving and re-entering cannot bypass its brief cooldown", escapedFromBody && escaped.closed && escaped.held === -1 && escaped.idle && escaped.claimCooldown && escaped.free, JSON.stringify({escapedFromBody,...escaped}));
+  await b.evaluate('__pepiProof.at(4);__pepiClock.offset+=9000;__pepiProof.at(2.7);__ooga.advance(0.05,0.05)');
+  if (mobile) {
+    await b.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: 2, y: 2 }] });
+    await b.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  } else await b.click(2, 2);
+  const outside = await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return !document.getElementById("pepi-modal").open&&P.held===-1&&!P.presentation&&!__ooga.pilot.travelRefusal();})()');
+  record("Pepi: pressing the offer dialog's backdrop declines without acquiring a sample or retaining camera/input ownership", outside);
+  await b.evaluate('__pepiProof.at(4);__pepiClock.offset+=9000;__pepiProof.at(2.7);__ooga.advance(0.05,0.05)');
+  if (mobile) await press('[data-action="pepi-yes"]');
+  else {
+    await b.key("Tab", 8);
+    const yesFocused = await b.evaluate('document.activeElement?.dataset.action === "pepi-yes"');
+    record("Pepi: keyboard navigation reaches Yes without selecting it implicitly", yesFocused);
+    await b.send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, text: "\r" });
+    await b.send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13 });
+  }
+  await b.evaluate('(()=>{const entry=BL.scenes.hub.debug.pepi.list[0];__pepiProof.visitor={...entry.root.position};entry.roaming.setDestination(entry.root.position.x+4,entry.root.position.z);__ooga.advance(0.6,0.05);})()');
+  const catalogue = await b.evaluate(`(() => {
+    const P = BL.scenes.hub.debug.pepi, dialog = document.getElementById("pepi-modal"), choices = [...dialog.querySelectorAll(".pepi-choice")], box = dialog.getBoundingClientRect();
+    const visibleChoices = choices.every(button => { button.scrollIntoView({ block: "nearest" }); const r = button.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth + 1 && r.width > 0 && r.height > 0; });
+    const textFits = choices.every(button => { const r = button.getBoundingClientRect(); return [...button.children].filter(node => !node.hidden).every(node => { const text = node.getBoundingClientRect(); return text.left >= r.left - 1 && text.right <= r.right + 1 && text.top >= r.top - 1 && text.bottom <= r.bottom + 1 && node.scrollHeight <= node.clientHeight + 1; }); });
+    return { open: dialog.open && dialog.dataset.mode === "catalog", rawOpen: dialog.open, mode: dialog.dataset.mode, phase: P.phase, title:document.getElementById("pepi-title").textContent,count: choices.length, codes: new Set(choices.map(button => button.querySelector(".pepi-code").textContent)).size,
+      disclosed: choices.every(button => button.querySelector(".pepi-description").textContent && button.querySelector(".pepi-caution").textContent && button.querySelector(".pepi-duration").textContent.startsWith("Free · ")),
+      fits: box.left >= 0 && box.right <= innerWidth + 1 && box.top >= 0 && box.bottom <= innerHeight + 1 && visibleChoices, textFits, focused: dialog.contains(document.activeElement),
+      presented: P.presentation && P.list[0].coat.panel.rotation.y > 1, unselected: P.held === -1 && !P.effects.active, stationary:Math.hypot(P.list[0].root.position.x-__pepiProof.visitor.x,P.list[0].root.position.z-__pepiProof.visitor.z)<0.001,
+      quiet:P.list.every(entry=>!BL.scenes.hub.debug.fx.speech(entry)),
+      upright:P.list[0].gorilla.posture>0.99,companionDown:P.list[1].gorilla.posture<0.01,
+      viewAvailable: innerWidth <= 720 ? box.height <= innerHeight * 0.51 : box.left >= innerWidth * 0.5 };
+  })()`);
+  record("Pepi: Yes opens the coat and twelve disclosed, unselected free choices beside the desktop view or below the phone view",
+    catalogue.open && catalogue.title === "Pepi's Peptides" && catalogue.count === 12 && catalogue.codes === 12 && catalogue.disclosed && catalogue.fits && catalogue.textFits && catalogue.focused && catalogue.presented && catalogue.stationary && catalogue.quiet && catalogue.upright && catalogue.companionDown && catalogue.unselected && catalogue.viewAvailable, JSON.stringify(catalogue));
+  await press('[data-action="pepi-close"]');
+  const returned = await b.evaluate(`(() => { const B=__ooga,P=BL.scenes.hub.debug.pepi,proof=__pepiProof; return {closed:!document.getElementById("pepi-modal").open,unselected:P.held===-1&&!P.effects.active,presentation:!P.presentation,visible:!B.pilot.player.root.cameraHidden,view:proof.view().every((value,i)=>Math.abs(value-proof.before[i])<0.001),free:!B.pilot.travelRefusal()};})()`);
+  returned.onAllFours=await b.evaluate('(()=>{__ooga.advance(1.5,0.05);const P=BL.scenes.hub.debug.pepi;return P.list.every(entry=>entry.gorilla.posture<0.01)&&!document.getElementById("pepi-modal").open;})()');
+  record("Pepi: closing the unselected stock restores the visitor's body, camera and controls without consuming or rerolling a sample", Object.values(returned).every(Boolean), JSON.stringify(returned));
+  if (!mobile) {
+    const views = await b.evaluate(`(() => {
+      const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot,rows=[];
+      for(const mode of ["shoulder","first-person","birds-eye"]){
+        __pepiProof.at(4); Q.enterClose(); Q.exitClose(false); if(Q.aiming)Q.modeAction("mode-toggle");
+        Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});
+        if(mode==="first-person")Q.enterClose();
+        else {Q.modeAction("mode-toggle");if(mode==="birds-eye")Q.hooks.onZoom(1.2,{});}
+        B.advance(1,0.05); const before=__pepiProof.view(),actual=Q.view,hidden=Q.player.root.cameraHidden;
+        __pepiClock.offset+=9000;__pepiProof.at(2.7);P.handleAction("pepi-yes");B.advance(0.6,0.05);
+        const held=P.presentation&&Q.player.root.cameraHidden;
+        P.handleAction("pepi-close");
+        rows.push({mode,actual,held,restored:Q.view===actual&&!P.presentation&&Q.player.root.cameraHidden===hidden&&__pepiProof.view().every((value,i)=>Math.abs(value-before[i])<0.001),free:!Q.travelRefusal(),empty:P.held===-1&&!P.effects.active});
+      }
+      __pepiProof.at(4);Q.enterClose();Q.exitClose(false);if(Q.aiming)Q.modeAction("mode-toggle");
+      Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});B.advance(1,0.05);
+      __pepiProof.before=__pepiProof.view();__pepiProof.near=B.camera.near;
+      __pepiProof.hidden=[Q.player.parts.head,Q.player.parts.armL,Q.player.parts.armR,Q.player.parts.gun].map(part=>part.cameraHidden);
+      return rows;
+    })()`);
+    record("Pepi: stock browsing from shoulder, first person and birds-eye restores each real camera family and its body visibility without moving or consuming the owner", views.every(row=>row.mode===row.actual&&row.held&&row.restored&&row.free&&row.empty),JSON.stringify(views));
+  }
+  await b.evaluate('__pepiProof.at(4);__pepiClock.offset+=9000;__pepiProof.at(2.7);__ooga.advance(0.05,0.05)');
+  await press('[data-action="pepi-yes"]');
+  await b.evaluate('__ooga.advance(0.6,0.05)');
+  await press('[data-action="pepi-claim-0"]');
+  const held = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi, c = B.pilot.player;
+    P.list[0].gorilla.place(c.root.position.x, c.root.position.z + 6, Math.PI); B.advance(0.05, 0.05);
+    return { held: P.held === 0 && !document.getElementById("pepi-modal").open && !P.presentation && P.actionAvailable() && P.label === "Inject Yourself" };
+  })()`);
+  if (mobile) await press("#act"); else await pepiSpace(b);
+  held.confirmation = await b.evaluate('!document.getElementById("pepi-confirmation").hidden && document.getElementById("pepi-code").textContent === "OBL-01"');
+  held.action=await b.evaluate('window.__pepiLastPress');
+  await press('#pepi-confirmation [data-action="pepi-close"]');
+  Object.assign(held, await b.evaluate(`(() => {const B=__ooga,P=BL.scenes.hub.debug.pepi;return {later:P.held===0&&!P.cinematic.active&&!P.effects.active&&!B.pilot.travelRefusal(),free:__pepiProof.economy===JSON.stringify([B.game.state.inventory,B.game.state.arcade.tickets,B.game.state.bananas])};})()`));
+  record("Pepi: taking one sample spends no inventory, tickets or bananas; Inject Yourself stays available away from him and Keep for later preserves it",
+    held.held && held.confirmation && held.later && held.free, JSON.stringify(held));
+  const inject = async (seconds) => {
+    if (mobile) await press("#act"); else await pepiSpace(b);
+    const ready=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return{phase:P.phase,held:P.held,open:document.getElementById("pepi-modal").open,focus:document.activeElement?.outerHTML.slice(0,180),refusal:__ooga.pilot.travelRefusal(),press:window.__pepiLastPress};})()');
+    if(ready.phase!=="confirm"||!ready.open)throw Error("Real injection action did not open confirmation: "+JSON.stringify(ready));
+    await press('[data-action="pepi-confirm"]');
+    if(!await b.evaluate('BL.scenes.hub.debug.pepi.cinematic.active'))throw Error("Real confirmation did not start injection: "+JSON.stringify(await b.evaluate('window.__pepiLastPress')));
+    await b.evaluate(`__ooga.advance(${seconds},0.05)`);
+  };
+  await inject(1.5);
+  const shot = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi, c = B.pilot.player, D = P.cinematic.debug, color = BL.math.hexToRgb(c.traits.skin);
+    __pepiProof.position = { ...c.root.position };
+    return { active: P.cinematic.active, foreground: D.foreground.visible, left: D.left.name, right: D.right.name,
+      ownSkin: D.left.children[0].geometry.faces[0].color.every((value, i) => value === color[i]),
+      bodyHidden: c.parts.head.cameraHidden && c.parts.armL.cameraHidden && c.parts.armR.cameraHidden, pending: !P.effects.active && P.held === 0 };
+  })()`);
+  record("Pepi: the voluntary first-person shot presents the owner's palm-up left arm and syringe-holding right hand before applying an effect",
+    shot.active && shot.foreground && shot.left === "pepi-left-palm-up" && shot.right === "pepi-right-hand" && shot.ownSkin && shot.bodyHidden && shot.pending, JSON.stringify(shot));
+  await b.send("Input.dispatchKeyEvent", { type: "keyDown", key: "w", code: "KeyW" });
+  await b.evaluate('__ooga.advance(0.2,0.05)');
+  await b.send("Input.dispatchKeyEvent", { type: "keyUp", key: "w", code: "KeyW" });
+  const heldStill = await b.evaluate('Math.hypot(__ooga.pilot.player.root.position.x-__pepiProof.position.x,__ooga.pilot.player.root.position.z-__pepiProof.position.z)<0.01');
+  await b.key("Escape");
+  const cancelled = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi, c = B.pilot.player;
+    return { active: P.cinematic.active, effect: P.effects.active, held: P.held, near: B.camera.near === __pepiProof.near,
+      hidden: JSON.stringify([c.parts.head, c.parts.armL, c.parts.armR, c.parts.gun].map(part => part.cameraHidden)) === JSON.stringify(__pepiProof.hidden), free: !B.pilot.travelRefusal() };
+  })()`);
+  record("Pepi: real movement keys are held during the shot, and Escape restores controls, camera and body visibility without consuming the sample",
+    heldStill && !cancelled.active && !cancelled.effect && cancelled.held === 0 && cancelled.near && cancelled.hidden && cancelled.free, JSON.stringify(cancelled));
+  await inject(0.5);
+  const interrupted=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player,recipe=document.getElementById("recipe");B.hud.openRecipe();B.advance(0.05,0.05);return{cancelled:!P.cinematic.active&&!P.effects.active,held:P.held===0,recipe:recipe.open,near:B.camera.near===__pepiProof.near,hidden:JSON.stringify([c.parts.head,c.parts.armL,c.parts.armR,c.parts.gun].map(part=>part.cameraHidden))===JSON.stringify(__pepiProof.hidden)};})()');
+  await press('#recipe [data-action="recipe-close"]');
+  interrupted.free=await b.evaluate('__ooga.advance(0.05,0.05);!__ooga.pilot.travelRefusal()');
+  record("Pepi: a native Recipe dialog interrupts an injection once, keeps the sample and the new dialog, and restores the owner's view and controls",Object.values(interrupted).every(Boolean),JSON.stringify(interrupted));
+  await inject(0.5);
+  const displaced=await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;c.root.position.x+=2;const forced={...c.root.position};B.advance(0.1,0.05);return{cancelled:!P.cinematic.active&&!P.effects.active,held:P.held===0,position:Math.hypot(c.root.position.x-forced.x,c.root.position.y-forced.y,c.root.position.z-forced.z)<0.001,replay:!B.pilot.poseHeld,free:!B.pilot.travelRefusal(),near:B.camera.near===__pepiProof.near,hidden:JSON.stringify([c.parts.head,c.parts.armL,c.parts.armR,c.parts.gun].map(part=>part.cameraHidden))===JSON.stringify(__pepiProof.hidden)};})()`);
+  record("Pepi: forced movement during injection cancels without replaying the old body position, consuming the sample or retaining camera/input ownership",Object.values(displaced).every(Boolean),JSON.stringify(displaced));
+  const claimCooldown=await b.evaluate('BL.scenes.hub.debug.pepi.cooldown');await press("#pepi-discard");
+  const discarded=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;__ooga.advance(0.05,0.05);return{empty:P.held===-1&&!P.effects.active&&!P.cinematic.active,closed:!document.getElementById("pepi-modal").open,free:!__ooga.pilot.travelRefusal(),cooldown:P.cooldown,economy:__pepiProof.economy===JSON.stringify([__ooga.game.state.inventory,__ooga.game.state.arcade.tickets,__ooga.game.state.bananas])};})()');
+  record("Pepi: the real Discard control empties a held sample without an effect, refund, cooldown bypass or stranded controls",discarded.empty&&discarded.closed&&discarded.free&&discarded.cooldown>0&&discarded.cooldown<=claimCooldown&&discarded.economy,JSON.stringify(discarded));
+  if(!mobile){await b.evaluate('__pepiProof.at(4);__pepiClock.offset+=61000;__pepiProof.at(2.7);__ooga.advance(0.05,0.05)');await press('[data-action="pepi-yes"]');await b.evaluate('__ooga.advance(0.6,0.05)');await press('[data-action="pepi-claim-0"]');await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;P.list[0].gorilla.place(c.root.position.x,c.root.position.z+6,Math.PI);P.list[0].roaming.reset();P.list[0].roaming.setDestination(c.root.position.x,c.root.position.z+6);})()');}
+  const runCrash = async (pointerStop) => {
+    const started = await b.evaluate(`(() => {
+      const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player,target=B.cavemen.get(__arrivalWire.otherAway),q=c.root.position;
+      __pepiProof.messages=0;__pepiProof.sendChat=BL.net.sendChat;BL.net.sendChat=()=>{__pepiProof.messages++;};
+      __pepiProof.gear=JSON.stringify([c.health.value,c.weapon.ammo,c.weapon.spareAmmo]);
+      __pepiProof.crashActors=B.crew.list.map(actor=>({actor,visible:actor.root.visible}));
+      __pepiProof.crashTarget={actor:target,override:target.override,position:{...target.root.position},kind:target.act.kind,until:target.act.until,walk:target.walk,health:target.health.value,lastCommit:target.contributor.lastCommitAt,lastContribution:target.contributor.lastContributionAt};
+      // Non-owned actors whose activity is away deliberately ignore overrides. Wake this named fixture through
+      // the same contribution dates that created its original away state, rather than weakening target filtering.
+      target.contributor.lastCommitAt=target.contributor.lastContributionAt=Date.now()-12*3600000;
+      target.override="chilling";B.crew.refreshStates(true);
+      for(const actor of B.crew.list)actor.root.visible=actor===c||actor===target;
+      target.root.position.x=q.x+5;target.root.position.y=B.island.surfaceAt(q.x+5,q.z)+target.baseY;target.root.position.z=q.z;
+      target.walk=null;target.act.kind="idle";target.act.until=Infinity;
+      const pose=JSON.parse(document.getElementById("position-debug").dataset.pose);B.pilot.capturePose(pose);B.pilot.restorePose(pose);
+      const heldBefore=B.pilot.poseHeld,x=q.x,z=q.z,accepted=P.effects.activate(10,c);B.advance(1.5,0.05);
+      return {accepted,heldBefore,released:!B.pilot.poseHeld,active:P.effects.active,autonomous:P.effects.autonomous,owner:P.effects.owner===c,code:P.effects.status.code,name:P.effects.status.name,remaining:P.effects.status.remaining,knockout:P.effects.locked,moved:Math.hypot(q.x-x,q.z-z),yells:P.effects.crash.yells,targetState:target.state,targetVisible:target.root.visible,crashPhase:P.effects.crash.phase};
+    })()`);
+    if (pointerStop) await press("#act"); else await b.key("Escape");
+    const stopped = await b.evaluate(`(() => {
+      const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;B.advance(0.05,0.05);
+      __pepiProof.crashRefusal=B.pilot.travelRefusal();
+      const result={stopped:!P.effects.active&&!P.effects.autonomous,free:!B.pilot.travelRefusal(),noChat:__pepiProof.messages===0,gear:__pepiProof.gear===JSON.stringify([c.health.value,c.weapon.ammo,c.weapon.spareAmmo]),targetHealth:__pepiProof.crashTarget.actor.health.value===__pepiProof.crashTarget.health};
+      BL.net.sendChat=__pepiProof.sendChat;
+      const saved=__pepiProof.crashTarget;saved.actor.override=saved.override;saved.actor.contributor.lastCommitAt=saved.lastCommit;saved.actor.contributor.lastContributionAt=saved.lastContribution;B.crew.refreshStates(true);Object.assign(saved.actor.root.position,saved.position);saved.actor.act.kind=saved.kind;saved.actor.act.until=saved.until;saved.actor.walk=saved.walk;
+      for(const row of __pepiProof.crashActors)row.actor.root.visible=row.visible;
+      return result;
+    })()`);
+    return {started,stopped,refusal:await b.evaluate('__pepiProof.crashRefusal')};
+  };
+  if (mobile) {
+    const crash=await runCrash(true);
+    record("Pepi: real touch STOP ends a moving, shouting Crash Out after a held replay pose, restoring control without chat, damage or gear loss",
+      crash.started.accepted&&crash.started.heldBefore&&crash.started.released&&crash.started.active&&crash.started.autonomous&&crash.started.owner&&crash.started.moved>0.05&&crash.started.moved<5.5&&crash.started.yells>0&&Object.values(crash.stopped).every(Boolean),JSON.stringify(crash));
+    return;
+  }
+  await inject(2.4);
+  const pressing = await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return {active:P.cinematic.active,pressed:P.cinematic.debug.syringe.plunger.position.y<0.1,pending:!P.effects.active&&P.held===0};})()');
+  await b.evaluate('__ooga.advance(3,0.05)');
+  const applied = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi, c = B.pilot.player;
+    const jumped = B.crew.jumpPlayer(), impulse = c.hopV;
+    return { active: P.effects.active, owner: P.effects.owner === c, code: P.effects.status.code, left: P.effects.status.remaining,
+      consumed: P.held === -1 && !P.cinematic.active, jumped, higher: impulse > __pepiProof.impulse * 1.1,
+      free: __pepiProof.economy === JSON.stringify([B.game.state.inventory, B.game.state.arcade.tickets, B.game.state.bananas]) };
+  })()`);
+  record("Pepi: the plunger presses before completion, then Moon Knees consumes the sample and increases the real crew's jump for its disclosed duration",
+    pressing.active && pressing.pressed && pressing.pending && applied.active && applied.owner && applied.code === "OBL-01" && applied.left > 0 && applied.left <= 30
+      && applied.consumed && applied.jumped && applied.higher && applied.free, JSON.stringify({ pressing, applied }));
+  const expiry = await b.evaluate(`(() => {
+    const B = __ooga, P = BL.scenes.hub.debug.pepi;
+    B.advance(2,0.05); P.effects.update(P.effects.status.remaining + 1); P.update(0);
+    const jumped = B.crew.jumpPlayer(), normal = B.pilot.player.hopV === __pepiProof.impulse;
+    B.advance(2,0.05);
+    __pepiProof.at(2.7); P.use();
+    return { inactive: !P.effects.active, jumped, normal, cooldown: P.cooldown > 0, closed: !document.getElementById("pepi-modal").open };
+  })()`);
+  record("Pepi: expiry restores the ordinary jump, and the cooldown refuses a second free sample", expiry.inactive && expiry.jumped && expiry.normal && expiry.cooldown && expiry.closed, JSON.stringify(expiry));
+  const crash=await runCrash(false),crashStarted=crash.started,crashStopped=crash.stopped;
+  record("Pepi: Crash Out uses the real owner's temporary autonomy, and Escape immediately returns control without sending chat, attacking or losing gear",
+    crashStarted.accepted&&crashStarted.heldBefore&&crashStarted.released&&crashStarted.active&&crashStarted.autonomous&&crashStarted.owner&&crashStarted.code==="OBL-11"&&crashStarted.name==="Crash Out"&&crashStarted.remaining>0&&!crashStarted.knockout&&crashStarted.moved>0.05&&crashStarted.moved<5.5&&crashStarted.yells>0&&Object.values(crashStopped).every(Boolean),JSON.stringify(crash));
+  await b.evaluate(`(() => {
+    __pepiProof.at(4);
+    __pepiClock.offset += 61000;
+    const P = BL.scenes.hub.debug.pepi;
+    __pepiProof.at(2.7); P.handleAction("pepi-yes"); document.querySelector('[data-action="pepi-claim-3"]').click();
+  })()`);
+  signIn(false);
+  await b.evaluate('BL.net.state.resolved=false; BL.net.recheck()');
+  await b.evaluate('__ooga.advance(0.1,0.05)');
+  record("Pepi: signing out invalidates a held sample and restores the ordinary controls",
+    await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return !BL.net.state.me&&P.held===-1&&!P.cinematic.active&&!P.effects.active&&!document.getElementById("pepi-modal").open;})()'));
+  signIn(true);
+  await b.evaluate('BL.net.state.resolved=false; BL.net.recheck()');
+  await untilPage(b, '__ooga.pilot.player?.traits.name === "portlandhodl"');
+  await b.evaluate(`(() => {
+    const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;
+    P.handleAction("pepi-no"); __pepiProof.at(4); __pepiClock.offset += 61000;
+    B.pilot.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7}); B.advance(0.1,0.05);
+    __pepiProof.at(2.7); P.handleAction("pepi-yes"); document.querySelector('[data-action="pepi-claim-0"]').click();
+    P.use(); document.querySelector('[data-action="pepi-confirm"]').click(); B.advance(1,0.05); B.go("lab"); B.advance(0.6,0.05);
+  })()`);
+  await untilPage(b, '__ooga.scene === "lab"');
+  record("Pepi: leaving mid-cinematic clears the held item, foreground rig, effect and modal",
+    await b.evaluate('(()=>{const P=__pepiProof.controller;return __ooga.scene==="lab"&&P.held===-1&&!P.cinematic.active&&!P.cinematic.debug.foreground.visible&&!P.effects.active&&!document.getElementById("pepi-modal").open;})()'));
+  await b.evaluate('__ooga.go("hub");__ooga.advance(0.6,0.05)');
+  await untilPage(b, '__ooga.scene === "hub"');
+  record("Pepi: returning to the Hub keeps one NPC pair and no stale item, effect or modal",
+    await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return P.list.length===2&&P.held===-1&&!P.effects.active&&!P.cinematic.active&&!document.getElementById("pepi-modal").open;})()'));
+} };
+for (const mobile of [false, true]) if (PICKED.includes("hub") && (!ONLY || onlyMatches(pepiPlaythrough.name))) tasks.push({ name: `hub pepi ${mobile ? "phone" : "desktop"}`, scene: "hub", perf: false, exclusive: !mobile, run: async () => {
+  const html = await readFile(join(root, "oogaboogaland.html")); let signedIn = false;
+  const server = createServer((req, res) => {
+    const account = req.url === "/api/me";
+    res.setHeader("content-type", account ? "application/json" : "text/html; charset=utf-8");
+    res.end(account ? JSON.stringify({ player: signedIn ? { id: 71, login: "portlandhodl", display: "Pepi fixture" } : null, donations: true }) : html);
+  });
+  await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
+  try {
+    const wire = `(${signedInArrivalWire.toString()})("chilling",false); window.__pepiClock={offset:0}; const pepiNow=Date.now.bind(Date); Date.now=()=>pepiNow()+__pepiClock.offset;`;
+    await fold(`http://127.0.0.1:${server.address().port}/?debug=1&nosim=1&character=portlandhodl&mempool=0&chain=0&oogatron=0&totems=0&halloween=0&hour=12&day=80`,
+      [[pepiPlaythrough.name + (mobile ? " phone" : ""), b => pepiPlaythrough.run(b, on => { signedIn = on; }, mobile)]],
+      { ...(mobile ? PHONE_SIZE : { motion: true }), initScript: wire });
+  } finally { await new Promise(resolve => { server.close(resolve); server.closeAllConnections(); }); }
+} });
+// Rule: observe the real Web Audio graph without replacing any sound operation. The sample gauntlet checks
+// scheduling and the environment mute gate; hearing and judging the sound remains a human review.
+const pepiAudioWire = () => {
+  window.__pepiAudio=[];
+  const Native=window.AudioContext||window.webkitAudioContext;if(!Native)return;
+  const Observed=function(...args){
+    const context=new Native(...args),record={context,ramps:0,oscillators:0,closed:false};window.__pepiAudio.push(record);
+    const gain=context.createGain.bind(context),oscillator=context.createOscillator.bind(context),close=context.close.bind(context);
+    context.createGain=(...values)=>{const node=gain(...values),ramp=node.gain.linearRampToValueAtTime.bind(node.gain);node.gain.linearRampToValueAtTime=(...values)=>{record.ramps++;return ramp(...values);};return node;};
+    context.createOscillator=(...values)=>{record.oscillators++;return oscillator(...values);};
+    context.close=(...values)=>{record.closed=true;return close(...values);};return context;
+  };
+  Observed.prototype=Native.prototype;Object.setPrototypeOf(Observed,Native);window.AudioContext=Observed;
+  if(window.webkitAudioContext)window.webkitAudioContext=Observed;
+};
+const pepiSamples={name:"hub pepi samples",why:"playthrough: every disclosed sample is selected through the catalog, confirmed and injected once, produces its actual game behavior, expires cleanly and leaves no movement, camera, audio or economy residue",run:async(b,mobile,indices,signIn)=>{
+  await b.evaluate('BL.net.start()');
+  if(!await untilPage(b,'BL.net.state.me?.login==="portlandhodl"&&B.pilot.player?.traits.name==="portlandhodl"'))throw Error("Pepi sample owner did not resolve");
+  const point=async selector=>b.evaluate(`(()=>{const node=document.querySelector(${JSON.stringify(selector)});if(!node)throw Error("Missing sample control");node.scrollIntoView({block:"nearest",behavior:"instant"});const r=node.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;if(!node.contains(document.elementFromPoint(x,y)))throw Error("Covered sample control: "+${JSON.stringify(selector)});return{x,y};})()`);
+  const press=async selector=>{const p=await point(selector);if(mobile){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[p]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(p.x,p.y);await b.evaluate('new Promise(resolve=>requestAnimationFrame(()=>resolve()))');};
+  const key=async(name,code,down)=>b.send("Input.dispatchKeyEvent",{type:down?"keyDown":"keyUp",key:name,code});
+  const move=async(axis="forward",seconds=0.35,sprint=false)=>{
+    let keys=[];
+    if(sprint)await key("Shift","ShiftLeft",true);
+    if(mobile){const p=await point("#joy-move"),to={x:p.x+(axis==="side"?55:axis==="diagonal"?40:0),y:p.y-(axis==="forward"?55:axis==="diagonal"?40:axis==="back"?-55:0)};await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[p]});await b.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[to]});}
+    else{keys=axis==="side"?[["d","KeyD"]]:axis==="diagonal"?[["w","KeyW"],["d","KeyD"]]:axis==="back"?[["s","KeyS"]]:[["w","KeyW"]];for(const[name,code]of keys)await key(name,code,true);}
+    try{
+      // Native input is already held. Both positions and the fixed game interval share one synchronous task,
+      // so compositor frames while CDP delivers input never enter the measured movement distance.
+      return await b.evaluate(`(()=>{const B=__ooga,p=B.pilot.player.root.position,x=p.x,z=p.z;B.advance(${seconds},0.05);return{distance:Math.hypot(p.x-x,p.z-z),dx:p.x-x,dz:p.z-z};})()`);
+    }finally{
+      if(mobile)await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});else for(const[name,code]of keys)await key(name,code,false);
+      if(sprint)await key("Shift","ShiftLeft",false);
+    }
+  };
+  const jump=async()=>{if(mobile)await press("#act");else await pepiSpace(b);};
+  const flight=async()=>{await jump();return b.evaluate('(()=>{const B=__ooga,c=B.pilot.player,launch=c.hopV;let peak=c.hop,frames=0;for(;frames<160;frames++){B.advance(0.05,0.05);peak=Math.max(peak,c.hop);if(frames>1&&c.hop<0.001&&Math.abs(c.hopV)<0.001)break;}return{launch,peak,seconds:frames*0.05,landed:c.hop<0.001&&Math.abs(c.hopV)<0.001};})()');};
+  await b.evaluate(`(()=>{
+    const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot,c=Q.player;
+    const gear=()=>JSON.stringify([c.health.value,c.weapon.ammo,c.weapon.spareAmmo,B.game.state.inventory,B.game.state.bananas,B.game.state.arcade.tickets]);
+    const view=()=>[Q.view,B.camera.position.x,B.camera.position.y,B.camera.position.z,B.camera.target.x,B.camera.target.y,B.camera.target.z,B.camera.fov,B.camera.near];
+    const place=(entry,x,z)=>{entry.gorilla.place(x,z,0);entry.tx=x;entry.tz=z;entry.wait=1000;entry.repick=false;entry.roaming.reset();entry.roaming.setDestination(x,z);};
+    const stage=()=>{Q.controls.reset();Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});B.advance(0.1,0.05);};
+    const count=node=>1+node.children.reduce((sum,child)=>sum+count(child),0),resources=()=>[B.input.targetCount,...P.list.map(entry=>count(entry.root)),count(P.effects.debug.group),count(P.cinematic.debug.foreground)];
+    for(const actor of B.crew.list)if(actor!==c)actor.root.visible=false;
+    place(P.list[0],-18,-12);place(P.list[1],18,-12);
+    Q.enterClose();Q.exitClose(false);if(Q.aiming)Q.modeAction("mode-toggle");
+    window.__pepiSamples={place,stage,gear,view,resources,initialResources:resources(),owner:c,before:gear(),messages:0,sendChat:BL.net.sendChat,targets:[],wall:null};
+    BL.net.sendChat=()=>{__pepiSamples.messages++;};stage();
+  })()`);
+  const stage=()=>b.evaluate('__pepiSamples.stage()');
+  const baseline={};
+  baseline.forward=await move();await stage();baseline.side=await move("side");await stage();baseline.sprint=await move("forward",0.35,true);await stage();baseline.flight=await flight();await stage();
+  for(let i=0;i<3;i++){await jump();await b.evaluate('__ooga.advance(0.05,0.05)');}
+  baseline.jumps=await b.evaluate('__ooga.pilot.player.jumps');await stage();
+  await b.evaluate(`__pepiSamples.forward=${JSON.stringify(baseline.forward)};__pepiSamples.baseline=${JSON.stringify(baseline)}`);
+  record(`Pepi samples ${mobile?"phone":"desktop"}: real controls establish walking, strafing, running, jumping and two ordinary airborne jumps`,baseline.forward.distance>0.1&&baseline.side.distance>0.1&&baseline.sprint.distance>baseline.forward.distance&&baseline.flight.peak>0&&baseline.flight.landed&&baseline.jumps===2,JSON.stringify(baseline));
+  for(const index of indices){
+    await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples;T.stage();__pepiClock.offset+=61000;const f=T.forward,d=f.distance;T.place(P.list[0],8+f.dx/d*4.3,f.dz/d*4.3);T.place(P.list[1],18,-12);P.beforeUpdate(0);T.entry=BL.pepiEffects.CATALOG[${index}];T.audioBefore=__pepiAudio.length;})()`);
+    await move("forward",1);
+    const approach=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi,c=__ooga.pilot.player;return{offer:P.phase==="offer"&&document.getElementById("pepi-modal").open,distance:Math.hypot(c.root.position.x-P.list[0].root.position.x,c.root.position.z-P.list[0].root.position.z),quiet:P.list.every(entry=>!BL.scenes.hub.debug.fx.speech(entry))};})()');
+    if(index===indices[0]){await press('[data-action="pepi-no"]');const left=await move("back",0.35);const declined=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return P.phase==="idle"&&P.held===-1&&!P.effects.active&&!__ooga.pilot.travelRefusal();})()');await b.evaluate('__pepiClock.offset+=9000');await move("forward",1.1);const reentered=await b.evaluate('BL.scenes.hub.debug.pepi.phase==="offer"&&BL.scenes.hub.debug.pepi.held===-1');record(`Pepi samples ${mobile?"phone":"desktop"}: No returns to real movement and leaving then approaching again offers only after its brief cooldown`,left.distance>0.1&&declined&&reentered,JSON.stringify({left,declined,reentered}));}
+    await press('[data-action="pepi-yes"]');await b.evaluate('__ooga.advance(0.6,0.05)');
+    if(mobile&&index===indices[0]){
+      const layouts=[];
+      for(const[width,height]of[[320,568],[568,320],[844,390],[320,390],[390,844]]){await b.send("Emulation.setDeviceMetricsOverride",{width,height,deviceScaleFactor:1,mobile:true});await b.evaluate('__ooga.advance(0.1,0.05)');layouts.push(await b.evaluate('(()=>{const d=document.getElementById("pepi-modal"),box=d.getBoundingClientRect(),cards=[...d.querySelectorAll(".pepi-choice")];return{width:innerWidth,height:innerHeight,open:d.open&&d.dataset.mode==="catalog",fits:box.left>=0&&box.right<=innerWidth+1&&box.top>=0&&box.bottom<=innerHeight+1,readable:cards.every(card=>{card.scrollIntoView({block:"center",behavior:"instant"});const r=card.getBoundingClientRect(),head=d.querySelector(".panel-head").getBoundingClientRect(),top=Math.max(box.top,head.bottom);return r.width>0&&r.left>=0&&r.right<=innerWidth+1&&r.top>=top-1&&r.bottom<=Math.min(box.bottom,innerHeight)+1&&[...card.children].every(node=>node.getBoundingClientRect().bottom<=r.bottom+1&&node.scrollHeight<=node.clientHeight+1);})};})()'));}
+      record(`Pepi samples phone: live portrait, narrow landscape and portrait return retain all twelve readable choices and the close control`,layouts.every(layout=>layout.open&&layout.fits&&layout.readable),JSON.stringify(layouts));
+    }
+    if(index===indices[0]){
+      if(mobile){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:2,y:2}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.key("Escape");
+      const closed=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return P.held===-1&&!P.effects.active&&!P.presentation&&!document.getElementById("pepi-modal").open&&!__ooga.pilot.travelRefusal();})()');
+      record(`Pepi samples ${mobile?"phone":"desktop"}: cancelling the unselected catalog returns clean controls without a sample`,closed);
+      if(mobile)await press("#act");else await pepiSpace(b);await press('[data-action="pepi-yes"]');await b.evaluate('__ooga.advance(0.6,0.05)');
+    }
+    const p=await point(`[data-action="pepi-claim-${index}"]`);
+    if(mobile){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[p]});await b.send("Input.dispatchTouchEvent",{type:"touchCancel",touchPoints:[]});}
+    else await b.send("Input.dispatchMouseEvent",{type:"mouseMoved",x:p.x,y:p.y});
+    const unselected=await b.evaluate('BL.scenes.hub.debug.pepi.held===-1&&!BL.scenes.hub.debug.pepi.effects.active');
+    if(!mobile&&index===0){
+      const actions=[];const tab=async reverse=>{await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:"Tab",code:"Tab",windowsVirtualKeyCode:9,modifiers:reverse?8:0});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:"Tab",code:"Tab",windowsVirtualKeyCode:9,modifiers:reverse?8:0});};
+      for(let step=0;step<30;step++){await tab(false);actions.push(await b.evaluate('(()=>{const d=document.getElementById("pepi-modal"),a=document.activeElement;return{action:a?.dataset.action||"",inside:a===document.body||d.contains(a)};})()'));}
+      for(let step=0;step<3;step++)await tab(true);
+      const reachable=Array.from({length:12},(_,i)=>actions.filter(row=>row.action===`pepi-claim-${i}`).length);
+      record("Pepi samples desktop: native Tab completes two catalog cycles, reverse Tab recovers and every sample remains deliberately selectable",actions.every(row=>row.inside)&&reachable.every(count=>count>=2)&&await b.evaluate('BL.scenes.hub.debug.pepi.held===-1'),JSON.stringify({reachable,actions}));
+      for(let step=0;step<15&&!await b.evaluate('document.activeElement?.dataset.action==="pepi-claim-0"');step++)await tab(false);
+      await b.send("Input.dispatchKeyEvent",{type:"keyDown",key:"Enter",code:"Enter",windowsVirtualKeyCode:13,text:"\r"});await b.send("Input.dispatchKeyEvent",{type:"keyUp",key:"Enter",code:"Enter",windowsVirtualKeyCode:13});
+    }else await press(`[data-action="pepi-claim-${index}"]`);
+    const claimed=await b.evaluate(`(()=>{const P=BL.scenes.hub.debug.pepi,T=__pepiSamples,c=__ooga.pilot.player,realClaimed=P.held===${index}&&P.phase==="idle";document.querySelector('[data-action="pepi-claim-${index}"]').click();document.querySelector('[data-action="pepi-claim-${(index+1)%12}"]').click();T.place(P.list[0],-18,-12);__ooga.advance(0.1,0.05);return realClaimed&&P.held===${index}&&P.phase==="idle"&&!P.effects.active&&T.gear()===T.before;})()`);
+    if(index===11)await b.evaluate('(()=>{const B=__ooga,T=__pepiSamples,c=B.pilot.player,r=c.bodyRadius||0.3,h=c.bodyHeight,point=[[14,0],[-14,0],[0,14],[0,-14]].find(([x,z])=>{const y=B.island.surfaceAt(x,z);return Number.isFinite(y)&&Math.hypot(x,z)<B.island.meadowRadius&&B.island.voxelSegmentClearAt(x,y+0.04,z,x,y+0.04,z,r,h)&&B.headquarters.solids.props.clearAt(x,y+0.04,z,r,h);});if(!point)throw Error("No clear far knockout fixture");B.pilot.navigate({position:{x:point[0],y:B.island.surfaceAt(...point),z:point[1]},yaw:0,pitch:0.4,dist:7});B.advance(0.1,0.05);T.farKnockout=Math.hypot(c.root.position.x,c.root.position.z)>10;})()');
+    if(mobile)await press("#act");else await pepiSpace(b);
+    const disclosed=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi,T=__pepiSamples;T.camera=T.view();T.hidden=[T.owner.parts.head,T.owner.parts.armL,T.owner.parts.armR,T.owner.parts.gun].map(part=>part.cameraHidden);return P.phase==="confirm"&&document.getElementById("pepi-name").textContent===T.entry.name&&document.getElementById("pepi-caution").textContent===T.entry.caution&&document.getElementById("pepi-duration").textContent.startsWith(T.entry.duration+" seconds");})()');
+    if(index===indices[0]){
+      if(mobile){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:2,y:2}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.key("Escape");
+      const kept=await b.evaluate(`(()=>{const P=BL.scenes.hub.debug.pepi,T=__pepiSamples;return P.held===${index}&&!P.cinematic.active&&!P.effects.active&&!document.getElementById("pepi-modal").open&&!__ooga.pilot.travelRefusal()&&T.view().every((value,i)=>typeof value==="string"?value===T.camera[i]:Math.abs(value-T.camera[i])<0.001);})()`);
+      record(`Pepi samples ${mobile?"phone":"desktop"}: cancelling confirmation keeps the same unconsumed sample and view`,kept);
+      if(mobile)await press("#act");else await pepiSpace(b);
+    }
+    await press('[data-action="pepi-confirm"]');
+    const pending=await b.evaluate(`(()=>{const P=BL.scenes.hub.debug.pepi,realStarted=P.cinematic.active&&P.held===${index};document.querySelector('[data-action="pepi-confirm"]').click();document.querySelector('[data-action="pepi-confirm"]').click();__ooga.advance(1.2,0.05);return realStarted&&P.cinematic.active&&P.held===${index}&&!P.effects.active&&P.cinematic.debug.foreground.visible;})()`);
+    const applied=await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples;let frames=0;while(P.cinematic.active&&frames++<120)B.advance(0.05,0.05);return{active:P.effects.active,index:P.effects.status.index,owner:P.effects.owner===T.owner,consumed:P.held===-1,phase:P.phase,remaining:P.effects.status.remaining,duration:P.effects.status.duration,camera:T.view().every((value,i)=>typeof value==="string"?value===T.camera[i]:Math.abs(value-T.camera[i])<0.001),hidden:JSON.stringify([T.owner.parts.head,T.owner.parts.armL,T.owner.parts.armR,T.owner.parts.gun].map(part=>part.cameraHidden))===JSON.stringify(T.hidden),gear:T.gear()===T.before,status:document.getElementById("pepi-status-text").textContent.includes(T.entry.name)};})()`);
+    let behavior={},works=false;
+    if([0,2,6].includes(index)){await stage();behavior.flight=await flight();works=behavior.flight.landed&&(index===0?behavior.flight.peak>baseline.flight.peak*1.2:index===2?behavior.flight.seconds>baseline.flight.seconds*1.4:behavior.flight.peak<baseline.flight.peak*0.7);}
+    else if([1,4,7,9].includes(index)){
+      await stage();behavior.forward=await move();await stage();behavior.side=await move("side");await stage();behavior.sprint=await move("forward",0.35,true);
+      works=index===4?behavior.side.distance>baseline.side.distance*1.25&&behavior.forward.distance<baseline.forward.distance*0.85:index===9?behavior.forward.distance<baseline.forward.distance*0.8&&behavior.sprint.distance<baseline.sprint.distance*0.8:behavior.forward.distance>baseline.forward.distance*(index===7?1.1:1.25)&&behavior.sprint.distance>baseline.sprint.distance*(index===7?1.1:1.25);
+      if(index===7){
+        behavior.audio=await b.evaluate('(()=>{const T=__pepiSamples,r=__pepiAudio.slice(T.audioBefore).find(record=>!record.closed&&record.oscillators===1);if(!r)return{exists:false};const scheduled=r.ramps;T.squeak=r;T.wasMuted=BL.sound.muted;BL.sound.setMuted(true);__ooga.advance(0.2,0.05);return{exists:true,scheduled,stationary:r.ramps===scheduled};})()');
+        await b.sleep(120);
+        behavior.audio.silent=await b.evaluate('(()=>{const T=__pepiSamples,silent=!!T.squeak&&BL.sound.output(T.squeak.context).gain.value<0.01;BL.sound.setMuted(T.wasMuted);return silent;})()');
+        await stage();const ramps=await b.evaluate('__pepiSamples.squeak?.ramps||0');await jump();await b.evaluate('__ooga.advance(0.15,0.05)');
+        behavior.audio.airborne=await b.evaluate(`__ooga.pilot.player.hop>0.01&&__pepiSamples.squeak?.ramps===${ramps}`);await stage();
+        works&&=behavior.audio.exists&&behavior.audio.scheduled>0&&behavior.audio.stationary&&behavior.audio.silent&&behavior.audio.airborne;
+      }
+    }else if(index===3){await stage();behavior.jumps=[];for(let n=0;n<4;n++){await jump();behavior.jumps.push(await b.evaluate('__ooga.pilot.player.jumps'));await b.evaluate('__ooga.advance(0.05,0.05)');}works=behavior.jumps.join() === "1,2,3,3";await stage();}
+    else if(index===5){behavior.visual=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,D=P.effects.debug;B.advance(0.1,0.05);const before={...D.echo.position};__pepiSamples.echoBefore=before;return{shown:D.group.visible&&D.echo.visible,count:D.echoes.length,own:D.echoes.every((part,i)=>part.geometry===P.effects.owner.parts[["torso","head","armR","armL","legR","legL"][i]].geometry),offset:Math.hypot(D.echo.position.x-P.effects.owner.root.position.x,D.echo.position.z-P.effects.owner.root.position.z)>0.2};})()');await stage();await move();behavior.follows=await b.evaluate('(()=>{const D=BL.scenes.hub.debug.pepi.effects.debug,p=__pepiSamples.echoBefore;return Math.hypot(D.echo.position.x-p.x,D.echo.position.z-p.z)>0.1;})()');works=behavior.visual.shown&&behavior.visual.count===6&&behavior.visual.own&&behavior.visual.offset&&behavior.follows;}
+    else if(index===8){behavior.visual=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi,D=P.effects.debug,c=P.effects.owner;__pepiSamples.drops=D.drops.map(drop=>drop.position.y);return{shown:D.group.visible&&D.cloud.visible,count:D.drops.length,above:D.cloud.position.y>c.root.position.y+c.bodyHeight*0.5};})()');await stage();await move();behavior.follows=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,D=P.effects.debug,c=P.effects.owner;B.advance(0.2,0.05);return Math.hypot(D.cloud.position.x-c.root.position.x,D.cloud.position.z-c.root.position.z)<0.01&&D.drops.some((drop,i)=>Math.abs(drop.position.y-__pepiSamples.drops[i])>0.01);})()');works=behavior.visual.shown&&behavior.visual.count===12&&behavior.visual.above&&behavior.follows;}
+    else if(index===10){
+      behavior.blocked=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples,S=BL.scene,c=T.owner,q=c.root.position;T.targets=B.crew.list.filter(actor=>actor!==c).slice(0,2).map(actor=>({actor,override:actor.override,position:{...actor.root.position},lastCommit:actor.contributor.lastCommitAt,lastContribution:actor.contributor.lastContributionAt,health:actor.health.value}));for(const state of T.targets){state.actor.contributor.lastCommitAt=state.actor.contributor.lastContributionAt=Date.now()-12*3600000;state.actor.override="chilling";}B.crew.refreshStates(true);for(const actor of B.crew.list)actor.root.visible=actor===c;const a=T.targets[0].actor;a.root.visible=true;Object.assign(a.root.position,{x:q.x+1.5,y:B.island.surfaceAt(q.x+1.5,q.z)+a.baseY,z:q.z});a.walk=null;a.act.kind="idle";a.act.until=Infinity;T.wall=S.createNode({geometry:BL.models.box({w:0.1,h:3,d:2,color:"#777777"}),position:{x:q.x+0.75,y:B.island.surfaceAt(q.x,q.z)+1.5,z:q.z}});S.addChild(BL.scenes.hub.root,T.wall);B.headquarters.solids.props.add(T.wall);S.updateWorld(BL.scenes.hub.root);B.headquarters.solids.props.sync();B.advance(0.3,0.05);return P.effects.crash.yells===0&&!BL.scenes.hub.debug.fx.speech(c)&&T.gear()===T.before&&T.messages===0;})()');
+      behavior.active=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples,c=T.owner,q=c.root.position;B.headquarters.solids.props.remove(T.wall);BL.scene.removeChild(BL.scenes.hub.root,T.wall);T.wall=null;T.targets[0].actor.root.visible=false;const a=T.targets[1].actor;a.root.visible=true;Object.assign(a.root.position,{x:q.x+5,y:B.island.surfaceAt(q.x+5,q.z)+a.baseY,z:q.z});a.walk=null;a.act.kind="idle";a.act.until=Infinity;const x=q.x,z=q.z;B.advance(1.7,0.05);return{moved:Math.hypot(q.x-x,q.z-z),yells:P.effects.crash.yells,bubble:!!BL.scenes.hub.debug.fx.speech(c),autonomous:P.effects.autonomous,spacing:Math.hypot(q.x-a.root.position.x,q.z-a.root.position.z),noChat:T.messages===0};})()');works=behavior.blocked&&behavior.active.moved>0.1&&behavior.active.yells>0&&behavior.active.bubble&&behavior.active.autonomous&&behavior.active.spacing>1.4&&behavior.active.noChat;
+    }else if(index===11){behavior.visual=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,D=P.effects.debug;__pepiSamples.lockPosition={...P.effects.owner.root.position};const angle=D.stars.rotation.y;B.advance(0.2,0.05);return{far:__pepiSamples.farKnockout,locked:P.effects.locked,shown:D.stars.visible,count:D.stars.children.length,animated:D.stars.rotation.y!==angle,tilt:Math.abs(P.effects.owner.parts.torso.rotation.z)>0.1};})()');await move("forward",0.3);await jump();behavior.still=await b.evaluate('(()=>{const c=__ooga.pilot.player,p=__pepiSamples.lockPosition;return Math.hypot(c.root.position.x-p.x,c.root.position.z-p.z)<0.01&&c.hop<0.001&&__pepiSamples.gear()===__pepiSamples.before;})()');works=behavior.visual.far&&behavior.visual.locked&&behavior.visual.shown&&behavior.visual.count===3&&behavior.visual.animated&&behavior.visual.tilt&&behavior.still;}
+    const expired=await b.evaluate(`(()=>{
+      const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples,D=P.effects.debug,before=P.effects.status.remaining;
+      if(before>0.05)P.effects.update(before-0.05);
+      const atBoundary=P.effects.status.remaining,alive=P.effects.active&&atBoundary>0;
+      P.effects.update(0.1);B.advance(0.05,0.05);
+      const p=T.owner.root.position,feet=p.y-T.owner.baseY,support=B.headquarters.solids.supportAt(p.x,p.z,feet,feet,T.owner);
+      const result={before,atBoundary,alive,remaining:P.effects.status.remaining,inactive:!P.effects.active&&!P.effects.locked&&!P.effects.autonomous,
+        empty:P.held===-1,visuals:!D.group.visible&&!D.echo.visible&&!D.cloud.visible&&!D.stars.visible&&D.echoes.every(part=>!part.geometry),
+        owner:B.pilot.player===T.owner,free:!B.pilot.travelRefusal(),gear:T.gear()===T.before,noChat:T.messages===0,audio:!T.squeak||T.squeak.closed,
+        targetHealth:T.targets.every(state=>state.actor.health.value===state.health),stable:JSON.stringify(T.resources())===JSON.stringify(T.initialResources),resources:T.resources(),
+        recovered:T.entry.code!=="OBL-12"||Math.hypot(p.x-T.lockPosition.x,p.z-T.lockPosition.z)>0.5,
+        supported:Number.isFinite(support)&&Math.abs(feet-support)<0.01,safe:Number.isFinite(p.x)&&Number.isFinite(p.y)&&Math.hypot(p.x,p.z)<B.island.meadowRadius};
+      for(const state of T.targets){state.actor.override=state.override;state.actor.contributor.lastCommitAt=state.lastCommit;state.actor.contributor.lastContributionAt=state.lastContribution;}
+      if(T.targets.length)B.crew.refreshStates(true);
+      for(const state of T.targets){Object.assign(state.actor.root.position,state.position);state.actor.root.visible=false;}T.targets=[];return result;
+    })()`);
+    if(index===7)expired.audio&&=await untilPage(b,'__pepiSamples.squeak?.context.state==="closed"',2000);
+    await stage();const restoredWalk=await move();await stage();let restoredJump=true;
+    if([0,2,3,6,9].includes(index)){const normal=await flight();restoredJump=normal.landed&&Math.abs(normal.peak-baseline.flight.peak)<baseline.flight.peak*0.08;await stage();}
+    record(`Pepi samples ${mobile?"phone":"desktop"} ${String(index+1).padStart(2,"0")}: full selection, one committed injection, actual effect, duration and cleanup`,approach.offer&&approach.distance>2.4&&approach.distance<2.9&&approach.quiet&&unselected&&claimed&&disclosed&&pending&&applied.active&&applied.index===index&&applied.owner&&applied.consumed&&applied.phase==="idle"&&applied.remaining>0&&applied.remaining<=applied.duration&&applied.camera&&applied.hidden&&applied.gear&&applied.status&&works&&Object.entries(expired).every(([name,value])=>name==="before"?value>0:name==="remaining"?value===0:value)&&Math.abs(restoredWalk.distance-baseline.forward.distance)<baseline.forward.distance*0.08&&restoredJump,JSON.stringify({approach,unselected,claimed,disclosed,pending,applied,behavior,expired,restoredWalk,restoredJump}));
+  }
+  // A second completed Echo injection exercises ownership loss separately from natural expiry. Each session
+  // already proved all six of its samples expire; cancelling this extra sample cannot mask a broken timer.
+  await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi,T=__pepiSamples;T.stage();__pepiClock.offset+=61000;const f=T.forward;T.place(P.list[0],8+f.dx/f.distance*4.3,f.dz/f.distance*4.3);P.beforeUpdate(0);})()');
+  await move("forward",1);await press('[data-action="pepi-yes"]');await b.evaluate('__ooga.advance(0.6,0.05)');await press('[data-action="pepi-claim-5"]');
+  await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;__pepiSamples.place(P.list[0],-18,-12);__ooga.advance(0.1,0.05);})()');
+  if(mobile)await press("#act");else await pepiSpace(b);await press('[data-action="pepi-confirm"]');
+  const lifecycleStarted=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi;let frames=0;while(P.cinematic.active&&frames++<120)B.advance(0.05,0.05);return P.effects.active&&P.effects.status.index===5&&P.effects.debug.echo.visible&&P.held===-1;})()');
+  if(mobile){
+    const reload=indices[0]===0,beforeLoss=await b.evaluate('__pepiSamples.gear()');
+    if(reload){const url=await b.evaluate('location.href');await b.open(url);await untilReady(b);await b.evaluate('BL.net.start()');await untilPage(b,'BL.net.state.me?.login==="portlandhodl"&&B.pilot.player?.traits.name==="portlandhodl"');}
+    else{await b.evaluate('__ooga.go("lab");__ooga.advance(0.6,0.05)');await untilPage(b,'B.scene==="lab"&&!B.transitioning');await b.evaluate('__ooga.go("hub");__ooga.advance(0.6,0.05)');await untilPage(b,'B.scene==="hub"&&!B.transitioning&&B.pilot.player?.traits.name==="portlandhodl"');}
+    const fresh=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;return{cleared:P.held===-1&&!P.effects.active&&!P.cinematic.active&&!P.busy,visuals:!P.effects.debug.group.visible&&P.effects.debug.echoes.every(part=>!part.geometry),pair:P.list.length===2,free:!B.pilot.travelRefusal(),gear:JSON.stringify([c.health.value,c.weapon.ammo,c.weapon.spareAmmo,B.game.state.inventory,B.game.state.bananas,B.game.state.arcade.tickets])};})()');
+    await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot;for(const actor of B.crew.list)if(actor!==Q.player)actor.root.visible=false;for(let i=0;i<2;i++){const entry=P.list[i],x=i?18:-18;entry.gorilla.place(x,-12,0);entry.tx=x;entry.tz=-12;entry.wait=1000;entry.roaming.reset();entry.roaming.setDestination(x,-12);}Q.enterClose();Q.exitClose(false);if(Q.aiming)Q.modeAction("mode-toggle");Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});B.advance(0.1,0.05);})()');
+    const normal=await move();
+    record(`Pepi samples phone: ${reload?"reloading the page":"leaving and returning to the Hub"} clears a completed active sample and restores an ordinary owner with one NPC pair`,lifecycleStarted&&fresh.cleared&&fresh.visuals&&fresh.pair&&fresh.free&&fresh.gear===beforeLoss&&Math.abs(normal.distance-baseline.forward.distance)<baseline.forward.distance*0.08,JSON.stringify({lifecycleStarted,fresh,normal}));
+    if(!reload)await b.evaluate('BL.net.sendChat=__pepiSamples.sendChat');return;
+  }
+  const logout=indices[0]===6;
+  if(logout){signIn(false);await b.evaluate('BL.net.state.resolved=false;BL.net.recheck()');await untilPage(b,'!BL.net.state.me');}
+  else await b.evaluate('__ooga.pilot.release(true)');
+  const invalidated=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples;B.advance(0.1,0.05);return{cleared:!P.effects.active&&!P.cinematic.active&&P.held===-1&&!P.busy,visuals:!P.effects.debug.group.visible&&P.effects.debug.echoes.every(part=>!part.geometry),gear:T.gear()===T.before,noChat:T.messages===0};})()');
+  if(logout){signIn(true);await b.evaluate('BL.net.state.resolved=false;BL.net.recheck()');await untilPage(b,'BL.net.state.me?.login==="portlandhodl"&&B.pilot.player?.traits.name==="portlandhodl"');}
+  else await b.evaluate('__ooga.pilot.possess(__pepiSamples.owner)');
+  await stage();const normalAfterLoss=await move();
+  record(`Pepi samples ${mobile?"phone":"desktop"}: ${logout?"real account logout":"releasing the owner"} cancels a completed active sample and returns ordinary movement after reacquisition`,lifecycleStarted&&Object.values(invalidated).every(Boolean)&&Math.abs(normalAfterLoss.distance-baseline.forward.distance)<baseline.forward.distance*0.08,JSON.stringify({lifecycleStarted,invalidated,normalAfterLoss}));
+  await b.evaluate('BL.net.sendChat=__pepiSamples.sendChat');
+}};
+for(const mobile of[false,true])for(const batch of[0,1])if(PICKED.includes("hub")&&(!ONLY||onlyMatches(pepiSamples.name)))tasks.push({name:`hub pepi samples ${batch?"7-12":"1-6"} ${mobile?"phone":"desktop"}`,scene:"hub",perf:false,exclusive:!mobile,run:async()=>{
+  let signedIn=true;const html=await readFile(join(root,"oogaboogaland.html")),server=createServer((req,res)=>{const account=req.url==="/api/me";res.setHeader("content-type",account?"application/json":"text/html; charset=utf-8");res.end(account?JSON.stringify({player:signedIn?{id:71,login:"portlandhodl",display:"Pepi fixture"}:null,donations:true}):html);});
+  await new Promise((resolve,reject)=>{server.once("error",reject);server.listen(0,"127.0.0.1",resolve);});
+  try{const wire=`(${signedInArrivalWire.toString()})("chilling",false);(${pepiAudioWire.toString()})();window.__pepiClock={offset:0};const pepiNow=Date.now.bind(Date);Date.now=()=>pepiNow()+__pepiClock.offset;`;
+    await fold(`http://127.0.0.1:${server.address().port}/?debug=1&nosim=1&character=portlandhodl&mempool=0&chain=0&oogatron=0&totems=0&halloween=0&hour=12&day=80`,[[pepiSamples.name,b=>pepiSamples.run(b,mobile,Array.from({length:6},(_,i)=>i+batch*6),on=>{signedIn=on;})]],{...(mobile?PHONE_SIZE:{motion:true}),initScript:wire});
+  }finally{await new Promise(resolve=>{server.close(resolve);server.closeAllConnections();});}
+}});
 // The hosted page as `npm run build:site` stages it: each `data-defer` group leaves the built page for its own same-origin
 // file, served here behind a switch (`refused`, path prefixes) that answers 503, as a deploy mid-flight can, and the page's
 // own script, jumbotron snapshot and stylesheet follow (`--page-assets`). The source and portable pages keep every group
@@ -22937,7 +23495,208 @@ const artifactUnitProof = () => {
   } finally { rmSync(dir, { recursive: true, force: true }); }
   return { parsed: true, rows };
 };
+// Rule: a quadruped needs visible hand and foot support. Read the rendered mesh through world transforms,
+// rather than treating a posture flag or a duplicated animation formula as evidence of ground contact.
+const pepiPostureProof = async () => {
+  const context = { window: {} };
+  for (const name of ["math", "scene", "models", "pepi-models"]) runInNewContext(await readFile(join(root, `src/js/${name}.js`), "utf8"), context);
+  const BL = context.window.BL, S = BL.scene, floor = 0.5, rows = [];
+  const lowest = (node) => {
+    let y = Infinity;
+    const visit = part => {
+      if (!part.visible) return;
+      const vertices = part.geometry?.verts, m = part.world;
+      if (vertices) for (let i = 0; i < vertices.length; i += 3) y = Math.min(y, m[1] * vertices[i] + m[5] * vertices[i + 1] + m[9] * vertices[i + 2] + m[13] - floor);
+      for (const child of part.children) visit(child);
+    };
+    visit(node); return y;
+  };
+  for (let variant = 0; variant < 2; variant++) {
+    const rig = BL.pepiModels.baboon({ groundAt: () => floor, variant }), coat = BL.pepiModels.decorate(rig, null, variant);
+    const origin = { ...rig.root.position }, limbs = [rig.parts.armR, rig.parts.armL, rig.parts.legR, rig.parts.legL], contacts = [0, 0, 0, 0];
+    let minimum = Infinity, maximumLift = 0, supported = true, natural = true, transitionSupported = true, maximumChange = 0;
+    const sample = () => { S.updateWorld(rig.root); return limbs.map(lowest); };
+    try {
+      for (let frame = 0; frame < 80; frame++) {
+        rig.pose(0.05, 0.8, 0, false); coat.reveal(0); const heights = sample();
+        minimum = Math.min(minimum, ...heights); maximumLift = Math.max(maximumLift, ...heights);
+        supported &&= heights.slice(0, 2).some(height => Math.abs(height) < 0.05) && heights.slice(2).some(height => Math.abs(height) < 0.05);
+        heights.forEach((height, index) => { if (Math.abs(height) < 0.05) contacts[index]++; });
+      }
+      const quadruped = rig.posture < 0.01;
+      let previous = rig.posture, intermediate = false;
+      for (let frame = 0; frame < 30; frame++) {
+        rig.pose(0.05, 0, 0, true); coat.reveal(0);
+        const heights=sample();transitionSupported&&=heights.every(height=>height>=-0.02)&&heights.slice(2).every(height=>Math.abs(height)<0.05);
+        natural &&= rig.posture >= previous && rig.posture <= 1; maximumChange = Math.max(maximumChange, Math.abs(rig.posture - previous));
+        intermediate ||= rig.posture > 0.05 && rig.posture < 0.95; previous = rig.posture;
+      }
+      coat.reveal(1); const standing = sample(), upright = rig.posture > 0.99;
+      for (let frame = 0; frame < 30; frame++) {
+        rig.pose(0.05, 0, 0, false); coat.reveal(0);
+        const heights=sample();transitionSupported&&=heights.every(height=>height>=-0.02)&&heights.slice(2).every(height=>Math.abs(height)<0.05);
+        natural &&= rig.posture <= previous && rig.posture >= 0; maximumChange = Math.max(maximumChange, Math.abs(rig.posture - previous)); previous = rig.posture;
+      }
+      const returned = sample();
+      rows.push({ variant, quadruped, supported, contacts, minimum, maximumLift, upright, standing, returned,
+        natural: natural && intermediate && maximumChange < 0.35, transitionSupported, maximumChange,
+        reverse: rig.posture < 0.01 && returned.slice(0, 2).every(height => Math.abs(height) < 0.05) && returned.slice(2).every(height => Math.abs(height) < 0.05),
+        stationary: Object.keys(origin).every(key => rig.root.position[key] === origin[key]) });
+    } finally { coat.dispose(); rig.dispose(); }
+  }
+  return rows;
+};
+// Regression: the dedicated visitors used to keep pushing into scenery forever. Run their actual navigator
+// against the same triangle collision registry used by the Hub, including an unreachable enclosure.
+const pepiRoamingProof = async () => {
+  const context = { window: {} };
+  for (const name of ["math", "scene", "models", "convex", "solid-props", "npc-paths", "pepi-roaming"]) runInNewContext(await readFile(join(root, `src/js/${name}.js`), "utf8"), context);
+  const BL = context.window.BL, S = BL.scene, solids = BL.solidProps.create(), group = S.createNode(), rows = {};
+  const wall = (x, z, w, d) => { const node = S.createNode({ geometry: BL.models.box({ w, h: 3, d, color: "#777777" }), position: { x, y: 1.5, z } }); S.addChild(group, node); solids.add(node); return node; };
+  const island = { surfaceAt: () => 0, isPath: () => false, path: { version: 0, centerlines: [], debug: { active: false, ringTrafficRadius: 0 } } };
+  const clear = (x, y, z, nx, ny, nz, radius, height) => solids.segmentClear(x, y + 0.04, z, nx, ny + 0.04, nz, radius, height);
+  const spotOk = (x, y, z, radius, height) => Math.abs(x) < 12 && Math.abs(z) < 12 && solids.clearAt(x, y + 0.04, z, radius, height);
+  const paths = BL.npcPaths.create({ island, walkable: (x, z, nx, nz, y) => clear(x, y, z, nx, 0, nz, 1.3, 2.6) });
+  const body = S.createNode({ position: { x: -4, y: 0, z: 0 } }); S.addChild(group, body);
+  let repicks = 0, poses = 0;
+  const nav = BL.pepiRoaming.create({ root: body, paths, groundAt: () => 0, clear, spotOk, radius: 1.3, height: 2.6,
+    pose: () => { poses++; }, onRepick: () => { repicks++; } });
+  const obstacles = [wall(0, 0, 0.6, 2.4)]; S.updateWorld(group); solids.sync();
+  const trace = seconds => {
+    let intersections = 0, maximumStep = 0, distance = 0, frames = 0;
+    for (; frames < seconds * 20 && nav.state.phase !== "arrived" && nav.state.phase !== "repick"; frames++) {
+      const x = body.position.x, z = body.position.z; nav.update(0.05); S.updateWorld(group);
+      const step = Math.hypot(body.position.x - x, body.position.z - z); maximumStep = Math.max(maximumStep, step); distance += step;
+      if (!clear(x, 0, z, body.position.x, 0, body.position.z, 1.3, 2.6)) intersections++;
+    }
+    return { phase: nav.state.phase, frames, intersections, maximumStep, distance, x: body.position.x, z: body.position.z,
+      replans: nav.state.replans, recoveries: nav.state.recoveries, expansions: nav.state.expansions };
+  };
+  try {
+    const accepted = nav.setDestination(4, 0), around = trace(35);
+    rows.obstacle = accepted && around.phase === "arrived" && Math.hypot(around.x - 4, around.z) < 0.25
+      && around.intersections === 0 && around.maximumStep < 0.1 && around.distance > 8 && around.recoveries > 0 && poses > 0 && !repicks;
+    rows.around = around;
+    nav.setDestination(-4, 0); const paused = { ...body.position }, age = nav.state.age;
+    for (let i = 0; i < 100; i++) nav.pause(0.05, Math.PI);
+    rows.pause = body.position.x === paused.x && body.position.z === paused.z && nav.state.age === age;
+    for (const node of obstacles) { solids.remove(node); S.removeChild(group, node); }
+    // The destination is valid open ground outside a sealed, walkable enclosure. A route cannot succeed;
+    // the bounded watchdog must explicitly hand destination selection back rather than jiggle forever.
+    obstacles.length = 0;
+    obstacles.push(wall(-2.6, 0, 0.4, 5.6), wall(2.6, 0, 0.4, 5.6), wall(0, -2.6, 5.6, 0.4), wall(0, 2.6, 5.6, 0.4));
+    Object.assign(body.position, { x: 0, y: 0, z: 0 }); nav.reset(); S.updateWorld(group); solids.sync();
+    const sealedAccepted = nav.setDestination(7, 0), sealed = trace(100), calls = repicks;
+    for (let i = 0; i < 100; i++) nav.update(0.05);
+    rows.sealed = sealedAccepted && sealed.phase === "repick" && calls === 1 && repicks === calls && sealed.intersections === 0
+      && sealed.maximumStep < 0.1 && Number.isFinite(nav.state.age) && Math.abs(body.position.x) < 1.2 && Math.abs(body.position.z) < 1.2;
+    rows.stopped = sealed;
+    // Removing a real wall and issuing a fresh destination recovers the same controller and its owned state.
+    for (const node of obstacles) { solids.remove(node); S.removeChild(group, node); }
+    S.updateWorld(group); solids.sync(); nav.reset(); nav.setDestination(4, 0); const released = trace(20);
+    rows.released = released.phase === "arrived" && Math.hypot(released.x - 4, released.z) < 0.25 && released.intersections === 0 && repicks === 1;
+    nav.dispose(); nav.dispose(); const end = { ...body.position }; nav.update(1);
+    rows.disposed = body.position.x === end.x && body.position.z === end.z;
+  } finally { nav.dispose(); solids.dispose(); }
+  return rows;
+};
+// Rule: exercise the effect controller's actual single-owner slot and borrowed movement adapter. This does not
+// duplicate movement formulae: the browser playthrough measures the real crew's jump before, during and after.
+const pepiEffectProof = async () => {
+  const context = { window: {}, navigator: { userActivation: { hasBeenActive: false } } };
+  for (const name of ["math", "scene", "models", "pepi-effects"]) runInNewContext(await readFile(join(root, `src/js/${name}.js`), "utf8"), context);
+  const BL = context.window.BL, group = BL.scene.createNode(), catalog = BL.pepiEffects.CATALOG, modifiers = new Map();
+  // Supply an ordinary walking adapter; Crash Out must steer it rather than assigning the owner's position.
+  BL.pilot = { WALK: { speed: 3 } };
+  const makeActor = (name) => ({ root: BL.scene.createNode({ position: { x: 0, y: 0.6, z: 0 } }), humanControlled: true, remoteControlled: false, state: "chilling",
+    health: { value: 100, stunned: false }, bedTravel: { mode: "", manual: false }, camp: { seat: null, rolling: false, burning: false },
+    ladder: null, jet: null, grabbedBy: null, traits: { height: 1, name }, baseY: 0.6, bodyHeight: 1.5, bodyRadius: 0.3, hop: 0, hopV: 0,
+    parts: Object.fromEntries(["torso", "head", "armR", "armL", "legR", "legL"].map(name => [name, BL.scene.createNode()])) });
+  const owner = makeActor("owner"), other = makeActor("other"), outside = makeActor("outside"), sleeping = makeActor("sleeping"), hidden = makeActor("hidden"), upper = makeActor("upper"), locks = [];
+  other.root.position.x = 4; outside.root.position.z = 1;
+  sleeping.root.position.x = 0.3; sleeping.state = "sleeping";
+  hidden.root.position.x = 0.4; hidden.root.visible = false;
+  upper.root.position.x = 0.5; upper.root.position.y = 4;
+  const remote = { id: "remote-hub", player: true, x: 8, y: 0, z: 0, radius: 0.3 };
+  const elsewhere = { id: "remote-other-zone", player: true, x: 0, y: 0, z: 0.2, radius: 0.3 };
+  const gorilla = { id: "remote-gorilla", player: false, x: 0.1, y: 0, z: 0, radius: 0.3 };
+  const yells = [], routes = [];
+  let allowed = true, recovered = null, recoveries = 0, steerX = 0, steerZ = 0, walkOpen = false, canShout = true, hushes = 0;
+  const crew = { player: owner, setMovementEffect: (cave, effect) => { modifiers.set(cave, effect); return true; },
+    steer(x, z) { steerX = x; steerZ = z; }, stopBurst() {}, stopReload() {}, releaseSwing() {},
+    damage() { throw new Error("Crash Out must not damage another Ooga"); }, fireWeapon() { throw new Error("Crash Out must not fire a weapon"); } }, pilot = { player: owner };
+  const effect = BL.pepiEffects.create({ root: group, crew, pilot, eligible: cave => allowed && cave === owner,
+    onLock: on => locks.push(on), onRecover: cave => { recovered = cave; recoveries++; },
+    crashOut: { actors: () => [owner, outside, sleeping, hidden, upper, other], remotes: () => [elsewhere, gorilla, remote],
+      zoneOf: actor => actor === outside || actor === elsewhere ? "factory" : actor === gorilla ? null : "hub",
+      canYell: () => canShout,
+      walkable: (x, z, nx, nz, feet, height, actor) => { routes.push({ x, z, nx, nz, feet, height, owner: actor === owner }); return walkOpen; },
+      yell: (actor, text) => yells.push({ owner: actor === owner, text }), hush: () => { hushes++; } } });
+  const rows = {};
+  rows.catalog = catalog.length === 12 && new Set(catalog.map(entry => entry.code)).size === 12
+    && catalog.every(entry => entry.code && entry.name && entry.description && entry.caution && entry.duration > 0) && catalog[10].name === "Crash Out";
+  rows.refusal = !effect.activate(0, other) && !effect.activate(-1) && !effect.activate(12) && !effect.active;
+  rows.applied = effect.activate(0) && effect.owner === owner && modifiers.get(owner) === catalog[0].movement;
+  rows.noStacking = !effect.activate(1) && effect.status.code === catalog[0].code;
+  effect.update(catalog[0].duration - 0.5);
+  rows.duration = effect.active && effect.status.remaining > 0 && effect.status.remaining < 1;
+  effect.update(1);
+  rows.expired = !effect.active && !modifiers.get(owner) && effect.status.index === -1;
+  effect.activate(0); allowed = false; effect.update(0);
+  rows.account = !effect.active && !modifiers.get(owner);
+  allowed = true; effect.activate(0); pilot.player = other; effect.update(0);
+  rows.handoff = !effect.active && !modifiers.get(owner);
+  pilot.player = owner; effect.activate(0); owner.health.stunned = true; effect.update(0);
+  rows.stun = !effect.active && !modifiers.get(owner); owner.health.stunned = false;
+  const original = JSON.stringify(Object.values(owner.parts).map(part => part.rotation));
+  effect.activate(11); effect.update(1);
+  rows.knockout = effect.locked && modifiers.get(owner).locked && JSON.stringify(Object.values(owner.parts).map(part => part.rotation)) !== original;
+  effect.update(catalog[11].duration);
+  rows.recovered = !effect.active && !effect.locked && recovered === owner && owner.health.value === 100
+    && JSON.stringify(Object.values(owner.parts).map(part => part.rotation)) === original && JSON.stringify(locks) === "[true,false]";
+  const health = JSON.stringify([owner.health, other.health, outside.health, sleeping.health, upper.health]);
+  other.root.position.x=1.5;canShout=false;walkOpen=true;effect.activate(10);effect.beforeUpdate(0.1);
+  rows.crashNearWall=effect.autonomous&&!effect.crash.target&&!effect.crash.yells&&!yells.length&&!steerX&&!steerZ;
+  effect.clear();other.root.position.x=4;canShout=true;walkOpen=false;
+  effect.activate(10); effect.beforeUpdate(0.1);
+  rows.crashBlocked = effect.autonomous && !effect.locked && !effect.crash.target && !steerX && !steerZ && !yells.length && routes.length > 0;
+  effect.clear(); walkOpen = true; effect.activate(10); effect.beforeUpdate(0.1);
+  rows.crashLocalZone = effect.crash.target === other && steerX > 0 && Math.abs(steerZ) < 1e-6 && owner.root.position.x === 0 && owner.root.position.z === 0;
+  rows.crashBoundedRoute = routes.every(route => route.owner && [route.x, route.z, route.nx, route.nz, route.feet, route.height].every(Number.isFinite) && Math.hypot(route.nx - route.x, route.nz - route.z) <= 10);
+  // Represent the ordinary crew completing the first approach, then a second one. The effect must only shout
+  // through its local callback, keep the targets untouched, and never inherit a recycled remote record's id.
+  owner.root.position.x = 3; effect.beforeUpdate(0.1); effect.update(0.1);
+  effect.beforeUpdate(2); effect.beforeUpdate(0.1);
+  rows.crashRemote = effect.crash.target === remote && effect.crash.targetId === "remote-hub" && steerX > 0;
+  owner.root.position.x = 7; effect.beforeUpdate(0.1); effect.update(0.1);
+  rows.crashYells = effect.crash.yells === 2 && yells.length === 2 && yells.every(yell => yell.owner && typeof yell.text === "string" && yell.text.length > 0)
+    && JSON.stringify([owner.health, other.health, outside.health, sleeping.health, upper.health]) === health && remote.x === 8 && other.root.position.x === 4;
+  effect.clear(); owner.root.position.x = 0; other.state = "sleeping";
+  effect.activate(10); effect.beforeUpdate(0.1); const remoteChosen = effect.crash.target === remote;
+  remote.id = "replacement"; effect.beforeUpdate(0.1);
+  rows.crashRecycled = remoteChosen && !effect.crash.target && !steerX && !steerZ && yells.length === 2;
+  effect.clear(); remote.id = "remote-hub"; other.state = "chilling";
+  effect.activate(10); effect.beforeUpdate(0.1); pilot.player = other; effect.beforeUpdate(0);
+  rows.crashHandoff = !effect.active && !effect.autonomous && !modifiers.get(owner) && !steerX && !steerZ && hushes > 0;
+  pilot.player = owner; effect.activate(10); effect.update(catalog[10].duration + 1);
+  rows.crashExpiry = !effect.active && !effect.autonomous && !effect.locked && !steerX && !steerZ && recoveries === 1;
+  const count = node => 1 + node.children.reduce((sum, child) => sum + count(child), 0), initial = count(group);
+  for (let i = 0; i < 8; i++) { effect.activate(0); effect.clear(); }
+  rows.bounded = count(group) === initial && !modifiers.get(owner);
+  effect.dispose(); effect.dispose();
+  rows.disposed = !group.children.length && !effect.active && !effect.activate(0);
+  return rows;
+};
 const unitChecks = async () => {
+  const pepiPosture = await pepiPostureProof();
+  record("Pepi posture: both clothed baboons walk with visible forehand and hindfoot contact, rise smoothly to supported stock browsing and settle back to all fours without moving their root",
+    pepiPosture.length===2&&pepiPosture.every(row=>row.quadruped&&row.supported&&row.contacts.every(count=>count>0)&&row.minimum>=-0.02&&row.maximumLift<0.25&&row.upright&&row.standing.slice(0,2).every(height=>height>0.2)&&row.standing.slice(2).every(height=>Math.abs(height)<0.05)&&row.natural&&row.transitionSupported&&row.reverse&&row.stationary),JSON.stringify(pepiPosture));
+  const pepiRoaming = await pepiRoamingProof();
+  record("Pepi roaming: real solid scenery is routed around without intersections or teleports, pause preserves the trip, unreachable ground repicks once, and a new trip recovers after the obstacle is removed",
+    ["obstacle", "pause", "sealed", "released", "disposed"].every(key => pepiRoaming[key]), JSON.stringify(pepiRoaming));
+  const pepiEffects = await pepiEffectProof();
+  record("Pepi effects: twelve disclosed choices, one owner, timed expiry, reversible knockout, local same-zone Crash Out targets and yells, blocked/recycled target rejection, cancellation and bounded disposal",
+    Object.values(pepiEffects).every(Boolean), JSON.stringify(pepiEffects));
   const artifact = artifactUnitProof();
   record("artifact workflow: tests the generated commit with the Actions-owned status and blocks rock on failed tests, status writes or concurrent pushes; a lost race passes only when rock has moved to a later CI-triggering commit, and the staging branch is always deleted", artifact.parsed && artifact.rows.every(row => row.ok), JSON.stringify(artifact));
   const previewRange=await studioPreviewRangeProof();

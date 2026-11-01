@@ -2361,6 +2361,7 @@
     };
     // Nearby actions consume a press; a ready jetpack leaves Space as throttle.
     const action = () => {
+      if (ctx.onHeldAction && ctx.onHeldAction()) return true;
       if (menuOpen) return true;
       if (player()?.grabbedBy) return true;
       if (ctx.onPlayerAction && ctx.onPlayerAction()) return true;
@@ -3911,7 +3912,7 @@
     };
     saveActiveLoginView = saveLoginView;
     turnActive = turnToward;
-    return { orbit, hooks, controls, cursor: carryCursor, cameraHandoff: handoff, captureControl, capturePose, restorePose, focusAim, setMenuOpen, setExternalControl,
+    return { orbit, hooks, controls, cursor: carryCursor, cameraHandoff: handoff, captureControl, capturePose, restorePose, resumeHeldPose: resumePose, focusAim, setMenuOpen, setExternalControl,
       // The first person's field of view at this canvas's shape (unaimed), for a view held from outside to match it.
       eyeFov: () => Math.min(MAX_FOV, Math.max(BASE_FOV, 2 * Math.atan(Math.tan(MIN_HFOV / 2) / (renderer.size.width / Math.max(1, renderer.size.height))))),
       loginViewRestored: !!loginView, loginContext: loginView?.context || null, get poseHeld() { return !!restoredPose; }, get aiming() { return armed(); },
