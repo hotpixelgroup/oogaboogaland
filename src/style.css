@@ -4315,6 +4315,14 @@ body.dsb-menu-open .rescue-equipment { visibility: hidden; pointer-events: none;
   }
 }
 
+/* A narrow touch screen lifts the action button to 112px, into the panel's foot; while the button shows, the panel
+   stands above it, where a phone held upright has the room. */
+@media (pointer: coarse) and (max-width: 720px) and (min-height: 480px) {
+  body:has(.bottom-hud > .act:not([hidden])) .greeter-menu {
+    bottom: calc(164px + var(--safe-bottom));
+  }
+}
+
 .greeter-chips {
   display: flex;
   flex-wrap: wrap;
