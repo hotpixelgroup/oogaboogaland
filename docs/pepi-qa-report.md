@@ -1,6 +1,6 @@
 # Pepi automated browser QA
 
-The latest expanded QA run is **not green: 429/437 checks passed in 1.6 minutes**. It ended with the repository's required STOP for `hub pepi samples` after two consecutive failing runs. No further fix or rerun of that stopped flow was attempted.
+The latest expanded QA run is **not green: 429/437 checks passed in 1.6 minutes**. It ran with two baboons; the navy companion has since been removed (2026-11-08, see the handoff), and the results below are kept as they were. It ended with the repository's required STOP for `hub pepi samples` after two consecutive failing runs. No further fix or rerun of that stopped flow was attempted.
 
 The initial expanded run ended at 401/409. Its gauntlets stopped on a generated-script syntax error involving negative coordinates. The one permitted fixture correction also supplied complete native Space events, waited for native input completion, and measured movement in a single synchronous game interval. The rerun progressed through all twelve emulated-mobile effects and desktop effects 1–6, exposing the remaining failures below. No check thresholds were lowered or removed.
 

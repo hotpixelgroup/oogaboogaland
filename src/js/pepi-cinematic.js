@@ -65,20 +65,20 @@
       throat.frequency.linearRampToValueAtTime(620, now + 0.85);
     };
     // Quiet comic babble under the readable bubble, rather than a second voice-chat or spoken-word stream.
-    // Both baboons share this one throat; replacing a cue cancels its remaining syllables first.
-    const mutter = (speaker = 0, count = 6, volume = 1) => {
+    // Replacing a cue cancels its remaining syllables first.
+    const mutter = (count = 6, volume = 1) => {
       if (!context || !level) return;
       stop();
-      const now = context.currentTime, syllables = clamp(count | 0, 4, 8), blue = speaker === 1;
-      const base = blue ? 111 : 79, loud = 0.028 * clamp(Number.isFinite(volume) ? volume : 0, 0, 1);
+      const now = context.currentTime, syllables = clamp(count | 0, 4, 8);
+      const base = 79, loud = 0.028 * clamp(Number.isFinite(volume) ? volume : 0, 0, 1);
       tone.frequency.cancelScheduledValues(now); throat.frequency.cancelScheduledValues(now);
       breath.gain.setValueAtTime(0.045, now);
       for (let i = 0; i < syllables; i++) {
-        const at = now + 0.025 + i * 0.2, pitch = base * (1 + Math.sin(i * 2.3 + speaker) * 0.07);
+        const at = now + 0.025 + i * 0.2, pitch = base * (1 + Math.sin(i * 2.3) * 0.07);
         const peak = loud * (0.8 + (i % 3) * 0.1), length = i % 2 ? 0.135 : 0.15;
         tone.frequency.setValueAtTime(pitch, at);
         tone.frequency.exponentialRampToValueAtTime(pitch * 0.86, at + length);
-        throat.frequency.setValueAtTime((blue ? 620 : 470) + (i % 3) * 125, at);
+        throat.frequency.setValueAtTime(470 + (i % 3) * 125, at);
         level.gain.setValueAtTime(0, at);
         level.gain.linearRampToValueAtTime(peak, at + 0.025);
         level.gain.linearRampToValueAtTime(peak * 0.55, at + 0.075);

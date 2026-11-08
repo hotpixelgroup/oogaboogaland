@@ -10278,10 +10278,10 @@ const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi 
     const P = BL.scenes.hub.debug.pepi;
     return { signedOut: !BL.net.state.me, count: P.list.length, offered: P.actionAvailable(), used: P.use(), open: document.getElementById("pepi-modal").open };
   })()`);
-  record("Pepi: signed-out visitors see two trench-coat NPCs but cannot take or inject a sample",
-    signedOut.signedOut && signedOut.count === 2 && !signedOut.offered && !signedOut.used && !signedOut.open, JSON.stringify(signedOut));
+  record("Pepi: signed-out visitors see the trench-coat NPC but cannot take or inject a sample",
+    signedOut.signedOut && signedOut.count === 1 && !signedOut.offered && !signedOut.used && !signedOut.open, JSON.stringify(signedOut));
   const speech = await b.evaluate(`(() => {
-    const B=__ooga,P=BL.scenes.hub.debug.pepi,fx=BL.scenes.hub.debug.fx,quotes=[BL.pepi.PEPI_QUOTES,BL.pepi.QUOTES],eye={...B.camera.position},seen=[],indices=[],speakers=[];
+    const B=__ooga,P=BL.scenes.hub.debug.pepi,fx=BL.scenes.hub.debug.fx,quotes=BL.pepi.PEPI_QUOTES,eye={...B.camera.position},seen=[],indices=[],speakers=[];
     const saved=P.list.map(entry=>({entry,position:{...entry.root.position},yaw:entry.gorilla.heading,visible:entry.root.visible}));
     const before=P.speech.spoken,send=BL.net.sendChat;let messages=0,bubbles=true,bounded=true;
     BL.net.sendChat=()=>{messages++;};
@@ -10289,38 +10289,40 @@ const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi 
       for(let i=0;i<P.list.length;i++){P.list[i].gorilla.place(8+i*6,8,0);P.list[i].root.visible=true;}
       Object.assign(B.camera.position,{x:11,y:B.island.surfaceAt(11,8)+3,z:14});
       // Controlled game time advances the actual controller and fx.say, without a two-minute wall-clock wait.
-      for(let i=0;i<20;i++){
+      for(let i=0;i<10;i++){
         P.update(P.speech.wait+0.1);const bubble=P.speechBubble,speaker=P.speech.speaker,entry=P.list[speaker];
-        speakers.push(speaker);indices.push(P.speech.indices[speaker]);seen.push(bubble?.beats.flat().join(" ")||"");
+        speakers.push(speaker);indices.push(P.speech.index);seen.push(bubble?.beats.flat().join(" ")||"");
         bubbles&&=!!entry&&!!bubble&&bubble.cave===entry&&bubble===fx.speech(entry)&&!!entry.parts.head;
         bounded&&=P.list.filter(actor=>!!fx.speech(actor)).length===1;
       }
       const spoken=P.speech.spoken-before;
+      // Alone, he still waits out the turn the second baboon used to take: nothing new 11 s after a line.
+      P.update(11);const spaced=P.speech.spoken-before===spoken;
       const quiet=()=>P.list.every(entry=>!fx.speech(entry));
       P.suspend();const cleared=quiet();P.update(30);const staysQuiet=quiet();
-      P.resume();P.update(P.speech.wait+0.1);const resumed=!!P.speechBubble&&P.speech.speaker!==speakers.at(-1);
-      const beforeTap=P.speech.spoken;P.tap(1);P.tap(1);
+      P.resume();P.update(P.speech.wait+0.1);const resumed=!!P.speechBubble&&P.speech.speaker===0;
+      const beforeTap=P.speech.spoken;P.tap(0);P.tap(0);
       for(let i=0;i<20;i++){P.beforeUpdate(0.05);P.update(0.05);}
-      const tapped=P.list[1].gorilla.posture>0.99&&P.list[0].gorilla.posture<0.01&&!P.busy&&P.phase==="idle"&&P.held===-1;
+      const tapped=P.list[0].gorilla.posture>0.99&&!P.busy&&P.phase==="idle"&&P.held===-1;
       for(let i=0;i<100;i++){P.beforeUpdate(0.05);P.update(0.05);}
-      const tapReturned=P.list[1].gorilla.posture<0.01,noTapSpam=P.speech.spoken===beforeTap;
+      const tapReturned=P.list[0].gorilla.posture<0.01,noTapSpam=P.speech.spoken===beforeTap;
       const recipe=document.getElementById("recipe");recipe.showModal();P.update(0);const dialogQuiet=quiet();recipe.close();
       for(const entry of P.list)entry.root.visible=false;P.update(0);const hiddenQuiet=quiet();
-      return {counts:quotes.map(lines=>lines.length),unique:new Set(quotes.flat()).size,spoken,all:seen.every((text,i)=>text===quotes[speakers[i]]?.[indices[i]]),
-        cycled:quotes.every((_,speaker)=>new Set(indices.filter((_,i)=>speakers[i]===speaker)).size===10),alternating:speakers.every((speaker,i)=>(speaker===0||speaker===1)&&(!i||speaker!==speakers[i-1])),
+      return {count:quotes.length,unique:new Set(quotes).size,spoken,all:seen.every((text,i)=>text===quotes[indices[i]]),
+        cycled:new Set(indices).size===10,single:speakers.every(speaker=>speaker===0),spaced,
         bubbles,bounded,cleared,staysQuiet,resumed,tapped,tapReturned,noTapSpam,dialogQuiet,hiddenQuiet,noChat:messages===0};
     } finally {BL.net.sendChat=send;Object.assign(B.camera.position,eye);for(const state of saved){state.entry.gorilla.place(state.position.x,state.position.z,state.yaw);state.entry.root.visible=state.visible;state.entry.roaming.reset();}P.resume();}
   })()`);
-  record("Pepi and his companion: twenty distinct doom lines alternate through one existing Ooga speech bubble, stay local and clear on suspension or hiding",
-    speech.counts.every(count=>count===10)&&speech.unique===20&&speech.spoken===20&&speech.all&&speech.cycled&&speech.alternating&&speech.bubbles&&speech.bounded&&speech.cleared&&speech.staysQuiet&&speech.resumed&&speech.tapped&&speech.tapReturned&&speech.noTapSpam&&speech.dialogQuiet&&speech.hiddenQuiet&&speech.noChat,JSON.stringify(speech));
+  record("Pepi: ten distinct doom lines come in turn through one existing Ooga speech bubble, spaced out, stay local and clear on suspension or hiding",
+    speech.count===10&&speech.unique===10&&speech.spoken===10&&speech.all&&speech.cycled&&speech.single&&speech.spaced&&speech.bubbles&&speech.bounded&&speech.cleared&&speech.staysQuiet&&speech.resumed&&speech.tapped&&speech.tapReturned&&speech.noTapSpam&&speech.dialogQuiet&&speech.hiddenQuiet&&speech.noChat,JSON.stringify(speech));
   signIn(true);
   await b.evaluate('BL.net.state.resolved = false; BL.net.recheck()');
   const selected = await untilPage(b, '__ooga.pilot.player?.traits.name === "portlandhodl" && BL.net.state.me?.login === "portlandhodl"');
   record("Pepi: the real account lookup selects the signed-in owner's Ooga", selected);
-  const meshTarget=await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot,S=BL.scene,owner=Q.player;window.__pepiMeshOwner=owner;Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});Q.release(true);owner.root.visible=false;for(let i=0;i<2;i++){const entry=P.list[i],x=i?8:-18,z=i?4:-12;entry.gorilla.place(x,z,0);entry.tx=x;entry.tz=z;entry.wait=1000;entry.roaming.reset();entry.roaming.setDestination(x,z);}S.updateWorld(BL.scenes.hub.root);const head=P.list[1].parts.head,w=head.world,center=S.boundsOf(head.geometry).center,o=Q.orbit;o.target.x=o.tx=w[12];o.target.y=o.ty=w[13]+0.2;o.target.z=o.tz=w[14];o.yaw=o.tYaw=0;o.pitch=o.tPitch=0.15;o.dist=o.tDist=6;B.advance(0.5,0.05);S.updateWorld(BL.scenes.hub.root);const point=BL.math.mat4.transformPoint(new Float64Array(3),head.world,center[0],center[1],center[2]),screen=B.project(point[0],point[1],point[2],{}),hit=screen&&B.input.pick(screen.x,screen.y);return{x:screen?.x??-1,y:screen?.y??-1,kind:hit?.owner.kind,index:hit?.owner.index,weapon:hit?.owner.weaponType};})()`);
+  const meshTarget=await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot,S=BL.scene,owner=Q.player;window.__pepiMeshOwner=owner;Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});Q.release(true);owner.root.visible=false;{const entry=P.list[0],x=8,z=4;entry.gorilla.place(x,z,0);entry.tx=x;entry.tz=z;entry.wait=1000;entry.roaming.reset();entry.roaming.setDestination(x,z);}S.updateWorld(BL.scenes.hub.root);const head=P.list[0].parts.head,w=head.world,center=S.boundsOf(head.geometry).center,o=Q.orbit;o.target.x=o.tx=w[12];o.target.y=o.ty=w[13]+0.2;o.target.z=o.tz=w[14];o.yaw=o.tYaw=0;o.pitch=o.tPitch=0.15;o.dist=o.tDist=6;B.advance(0.5,0.05);S.updateWorld(BL.scenes.hub.root);const point=BL.math.mat4.transformPoint(new Float64Array(3),head.world,center[0],center[1],center[2]),screen=B.project(point[0],point[1],point[2],{}),hit=screen&&B.input.pick(screen.x,screen.y);return{x:screen?.x??-1,y:screen?.y??-1,kind:hit?.owner.kind,index:hit?.owner.index,weapon:hit?.owner.weaponType};})()`);
   if(mobile){await b.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:meshTarget.x,y:meshTarget.y}]});await b.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});}else await b.click(meshTarget.x,meshTarget.y);
-  const meshInteraction=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi;B.advance(1,0.05);const stood=P.list[1].gorilla.posture>0.99,unpossessed=!B.pilot.player;B.advance(5,0.05);const down=P.list[1].gorilla.posture<0.01;__pepiMeshOwner.root.visible=true;B.pilot.possess(__pepiMeshOwner);return{stood,unpossessed,down,restored:B.pilot.player===__pepiMeshOwner};})()');
-  record("Pepi's companion: an actual visible head mesh is pickable and a real pointer or touch interaction stands him briefly without possessing him",meshTarget.kind==="pepi"&&meshTarget.index===1&&meshTarget.weapon==="none"&&Object.values(meshInteraction).every(Boolean),JSON.stringify({meshTarget,meshInteraction}));
+  const meshInteraction=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi;B.advance(1,0.05);const stood=P.list[0].gorilla.posture>0.99,unpossessed=!B.pilot.player;B.advance(5,0.05);const down=P.list[0].gorilla.posture<0.01;__pepiMeshOwner.root.visible=true;B.pilot.possess(__pepiMeshOwner);const e=P.list[0];e.gorilla.place(-18,-12,0);e.tx=-18;e.tz=-12;e.roaming.reset();e.roaming.setDestination(-18,-12);return{stood,unpossessed,down,restored:B.pilot.player===__pepiMeshOwner};})()');
+  record("Pepi: an actual visible head mesh is pickable and a real pointer or touch interaction stands him briefly without possessing him",meshTarget.kind==="pepi"&&meshTarget.index===0&&meshTarget.weapon==="none"&&Object.values(meshInteraction).every(Boolean),JSON.stringify({meshTarget,meshInteraction}));
   if(!mobile){
     const roaming=await b.evaluate(`(() => {
       const B=__ooga,P=BL.scenes.hub.debug.pepi,S=BL.scene,solids=B.headquarters.solids.props,cave=B.cavemen.get(__arrivalWire.otherAway),rows=[];
@@ -10370,8 +10372,8 @@ const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi 
         for(const state of saved){const entry=state.entry;entry.gorilla.place(state.position.x,state.position.z,state.yaw);entry.root.visible=state.visible;entry.tx=state.tx;entry.tz=state.tz;entry.wait=state.wait;entry.repick=state.repick;entry.roaming.reset();entry.roaming.setDestination(state.tx,state.tz);}
       }
     })()`);
-    record("Pepi roaming: both real visitors walk at half an awake Ooga's ordinary speed and reach the far side of registered Hub scenery with supported, collision-clear steps instead of stalling",
-      roaming.lane!==false&&roaming.normal>0.1&&roaming.rows.length===2&&roaming.rows.every(row=>row.quadruped&&row.ratio>0.45&&row.ratio<0.55&&row.arrived&&row.remaining<0.25&&row.intersections===0&&row.maximumStep<0.1&&row.distance>10),JSON.stringify(roaming));
+    record("Pepi roaming: the real visitor walks at half an awake Ooga's ordinary speed and reaches the far side of registered Hub scenery with supported, collision-clear steps instead of stalling",
+      roaming.lane!==false&&roaming.normal>0.1&&roaming.rows.length===1&&roaming.rows.every(row=>row.quadruped&&row.ratio>0.45&&row.ratio<0.55&&row.arrived&&row.remaining<0.25&&row.intersections===0&&row.maximumStep<0.1&&row.distance>10),JSON.stringify(roaming));
   }
   const point = async (selector) => b.evaluate(`(() => { const node = document.querySelector(${JSON.stringify(selector)}); node.scrollIntoView({ block: "nearest", behavior: "instant" }); const r = node.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,hit=document.elementFromPoint(x,y),P=BL.scenes.hub.debug.pepi,c=__ooga.pilot.player;window.__pepiLastPress={selector:${JSON.stringify(selector)},hit:hit?.outerHTML.slice(0,220),visible:r.width>0&&r.height>0,covered:!node.contains(hit),before:P.phase,held:P.held,hop:c?.hop,hopV:c?.hopV,stunned:c?.health.stunned,reloading:c?.weapon.reloading,refusal:__ooga.pilot.travelRefusal()};if(!__pepiLastPress.visible||__pepiLastPress.covered)throw Error("Pepi control is not available: "+JSON.stringify(__pepiLastPress));return {x,y}; })()`);
   const press = async (selector) => {
@@ -10402,13 +10404,13 @@ const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi 
     return { far, baselineJump, impulse, open: dialog.open && dialog.dataset.mode === "offer", question: document.getElementById("pepi-question").textContent,
       noFocused: document.activeElement?.dataset.action === "pepi-no", held: P.held, effect: P.effects.active,
       quiet:P.list.every(entry=>!BL.scenes.hub.debug.fx.speech(entry)),
-      standing:P.list[0].gorilla.posture>0,companionDown:P.list[1].gorilla.posture<0.01,
+      standing:P.list[0].gorilla.posture>0,
       closedCoat: Math.abs(P.list[0].coat.panel.rotation.y) < 0.01, distance: Math.hypot(c.root.position.x - P.list[0].root.position.x, c.root.position.z - P.list[0].root.position.z),
-      samples: P.list[0].coat.syringes.length, companion: P.list[1].coat.syringes.length };
+      samples: P.list[0].coat.syringes.length };
   })()`);
   record("Pepi: approach stops before crowding and asks Looking for some pep with No focused, a closed coat and no selected or applied sample",
-    reach.far && reach.baselineJump && reach.impulse > 0 && reach.open && reach.question === "Looking for some pep?" && reach.noFocused && reach.quiet && reach.standing && reach.companionDown
-      && reach.closedCoat && reach.held === -1 && !reach.effect && reach.distance > 2.6 && reach.samples === 12 && reach.companion === 0, JSON.stringify(reach));
+    reach.far && reach.baselineJump && reach.impulse > 0 && reach.open && reach.question === "Looking for some pep?" && reach.noFocused && reach.quiet && reach.standing
+      && reach.closedCoat && reach.held === -1 && !reach.effect && reach.distance > 2.6 && reach.samples === 12, JSON.stringify(reach));
   await b.send("Input.dispatchKeyEvent", { type: "keyDown", key: "w", code: "KeyW" });
   const offerStill=await b.evaluate('(()=>{__ooga.advance(0.2,0.05);const p=BL.scenes.hub.debug.pepi.list[0].root.position,q=__pepiProof.visitor;return Math.hypot(p.x-q.x,p.z-q.z)<0.001;})()');
   await press('[data-action="pepi-no"]');
@@ -10458,11 +10460,11 @@ const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi 
       fits: box.left >= 0 && box.right <= innerWidth + 1 && box.top >= 0 && box.bottom <= innerHeight + 1 && visibleChoices, textFits, focused: dialog.contains(document.activeElement),
       presented: P.presentation && P.list[0].coat.panel.rotation.y > 1, unselected: P.held === -1 && !P.effects.active, stationary:Math.hypot(P.list[0].root.position.x-__pepiProof.visitor.x,P.list[0].root.position.z-__pepiProof.visitor.z)<0.001,
       quiet:P.list.every(entry=>!BL.scenes.hub.debug.fx.speech(entry)),
-      upright:P.list[0].gorilla.posture>0.99,companionDown:P.list[1].gorilla.posture<0.01,
+      upright:P.list[0].gorilla.posture>0.99,
       viewAvailable: innerWidth <= 720 ? box.height <= innerHeight * 0.51 : box.left >= innerWidth * 0.5 };
   })()`);
   record("Pepi: Yes opens the coat and twelve disclosed, unselected free choices beside the desktop view or below the phone view",
-    catalogue.open && catalogue.title === "Pepi's Peptides" && catalogue.count === 12 && catalogue.codes === 12 && catalogue.disclosed && catalogue.fits && catalogue.textFits && catalogue.focused && catalogue.presented && catalogue.stationary && catalogue.quiet && catalogue.upright && catalogue.companionDown && catalogue.unselected && catalogue.viewAvailable, JSON.stringify(catalogue));
+    catalogue.open && catalogue.title === "Pepi's Peptides" && catalogue.count === 12 && catalogue.codes === 12 && catalogue.disclosed && catalogue.fits && catalogue.textFits && catalogue.focused && catalogue.presented && catalogue.stationary && catalogue.quiet && catalogue.upright && catalogue.unselected && catalogue.viewAvailable, JSON.stringify(catalogue));
   await press('[data-action="pepi-close"]');
   const returned = await b.evaluate(`(() => { const B=__ooga,P=BL.scenes.hub.debug.pepi,proof=__pepiProof; return {closed:!document.getElementById("pepi-modal").open,unselected:P.held===-1&&!P.effects.active,presentation:!P.presentation,visible:!B.pilot.player.root.cameraHidden,view:proof.view().every((value,i)=>Math.abs(value-proof.before[i])<0.001),free:!B.pilot.travelRefusal()};})()`);
   returned.onAllFours=await b.evaluate('(()=>{__ooga.advance(1.5,0.05);const P=BL.scenes.hub.debug.pepi;return P.list.every(entry=>entry.gorilla.posture<0.01)&&!document.getElementById("pepi-modal").open;})()');
@@ -10634,8 +10636,8 @@ const pepiPlaythrough = { name: "hub pepi playthrough", why: "playthrough: Pepi 
     await b.evaluate('(()=>{const P=__pepiProof.controller;return __ooga.scene==="lab"&&P.held===-1&&!P.cinematic.active&&!P.cinematic.debug.foreground.visible&&!P.effects.active&&!document.getElementById("pepi-modal").open;})()'));
   await b.evaluate('__ooga.go("hub");__ooga.advance(0.6,0.05)');
   await untilPage(b, '__ooga.scene === "hub"');
-  record("Pepi: returning to the Hub keeps one NPC pair and no stale item, effect or modal",
-    await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return P.list.length===2&&P.held===-1&&!P.effects.active&&!P.cinematic.active&&!document.getElementById("pepi-modal").open;})()'));
+  record("Pepi: returning to the Hub keeps the one visitor and no stale item, effect or modal",
+    await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return P.list.length===1&&P.held===-1&&!P.effects.active&&!P.cinematic.active&&!document.getElementById("pepi-modal").open;})()'));
 } };
 for (const mobile of [false, true]) if (PICKED.includes("hub") && (!ONLY || onlyMatches(pepiPlaythrough.name))) tasks.push({ name: `hub pepi ${mobile ? "phone" : "desktop"}`, scene: "hub", perf: false, exclusive: !mobile, run: async () => {
   const html = await readFile(join(root, "oogaboogaland.html")); let signedIn = false;
@@ -10701,7 +10703,7 @@ const pepiSamples={name:"hub pepi samples",why:"playthrough: every disclosed sam
     const stage=()=>{Q.controls.reset();Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});B.advance(0.1,0.05);};
     const count=node=>1+node.children.reduce((sum,child)=>sum+count(child),0),resources=()=>[B.input.targetCount,...P.list.map(entry=>count(entry.root)),count(P.effects.debug.group),count(P.cinematic.debug.foreground)];
     for(const actor of B.crew.list)if(actor!==c)actor.root.visible=false;
-    place(P.list[0],-18,-12);place(P.list[1],18,-12);
+    place(P.list[0],-18,-12);
     Q.enterClose();Q.exitClose(false);if(Q.aiming)Q.modeAction("mode-toggle");
     window.__pepiSamples={place,stage,gear,view,resources,initialResources:resources(),owner:c,before:gear(),messages:0,sendChat:BL.net.sendChat,targets:[],wall:null};
     BL.net.sendChat=()=>{__pepiSamples.messages++;};stage();
@@ -10714,7 +10716,7 @@ const pepiSamples={name:"hub pepi samples",why:"playthrough: every disclosed sam
   await b.evaluate(`__pepiSamples.forward=${JSON.stringify(baseline.forward)};__pepiSamples.baseline=${JSON.stringify(baseline)}`);
   record(`Pepi samples ${mobile?"phone":"desktop"}: real controls establish walking, strafing, running, jumping and two ordinary airborne jumps`,baseline.forward.distance>0.1&&baseline.side.distance>0.1&&baseline.sprint.distance>baseline.forward.distance&&baseline.flight.peak>0&&baseline.flight.landed&&baseline.jumps===2,JSON.stringify(baseline));
   for(const index of indices){
-    await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples;T.stage();__pepiClock.offset+=61000;const f=T.forward,d=f.distance;T.place(P.list[0],8+f.dx/d*4.2,f.dz/d*4.2);T.place(P.list[1],18,-12);P.beforeUpdate(0);T.entry=BL.pepiEffects.CATALOG[${index}];T.audioBefore=__pepiAudio.length;})()`);
+    await b.evaluate(`(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,T=__pepiSamples;T.stage();__pepiClock.offset+=61000;const f=T.forward,d=f.distance;T.place(P.list[0],8+f.dx/d*4.2,f.dz/d*4.2);P.beforeUpdate(0);T.entry=BL.pepiEffects.CATALOG[${index}];T.audioBefore=__pepiAudio.length;})()`);
     await move("forward",1);
     const approach=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi,c=__ooga.pilot.player;return{offer:P.phase==="offer"&&document.getElementById("pepi-modal").open,distance:Math.hypot(c.root.position.x-P.list[0].root.position.x,c.root.position.z-P.list[0].root.position.z),quiet:P.list.every(entry=>!BL.scenes.hub.debug.fx.speech(entry))};})()');
     if(index===indices[0]){await press('[data-action="pepi-no"]');const left=await move("back",0.35);const declined=await b.evaluate('(()=>{const P=BL.scenes.hub.debug.pepi;return P.phase==="idle"&&P.held===-1&&!P.effects.active&&!__ooga.pilot.travelRefusal();})()');await b.evaluate('__pepiClock.offset+=9000');await move("forward",1.1);const reentered=await b.evaluate('BL.scenes.hub.debug.pepi.phase==="offer"&&BL.scenes.hub.debug.pepi.held===-1');record(`Pepi samples ${mobile?"phone":"desktop"}: No returns to real movement and leaving then approaching again offers only after its brief cooldown`,left.distance>0.1&&declined&&reentered,JSON.stringify({left,declined,reentered}));}
@@ -10808,10 +10810,10 @@ const pepiSamples={name:"hub pepi samples",why:"playthrough: every disclosed sam
     const reload=indices[0]===0,beforeLoss=await b.evaluate('__pepiSamples.gear()');
     if(reload){const url=await b.evaluate('location.href');await b.open(url);await untilReady(b);await b.evaluate('BL.net.start()');await owned('BL.net.state.me?.login==="portlandhodl"&&B.pilot.player?.traits.name==="portlandhodl"',"after reloading");}
     else{await b.evaluate('__ooga.go("lab");__ooga.advance(0.6,0.05)');await untilPage(b,'B.scene==="lab"&&!B.transitioning');await b.evaluate('__ooga.go("hub");__ooga.advance(0.6,0.05)');await owned('B.scene==="hub"&&!B.transitioning&&B.pilot.player?.traits.name==="portlandhodl"',"after the lab round trip");}
-    const fresh=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;return{cleared:P.held===-1&&!P.effects.active&&!P.cinematic.active&&!P.busy,visuals:!P.effects.debug.group.visible&&P.effects.debug.echoes.every(part=>!part.geometry),pair:P.list.length===2,free:!B.pilot.travelRefusal(),gear:JSON.stringify([c.health.value,c.weapon.ammo,c.weapon.spareAmmo,B.game.state.inventory,B.game.state.bananas,B.game.state.arcade.tickets])};})()');
-    await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot;for(const actor of B.crew.list)if(actor!==Q.player)actor.root.visible=false;for(let i=0;i<2;i++){const entry=P.list[i],x=i?18:-18;entry.gorilla.place(x,-12,0);entry.tx=x;entry.tz=-12;entry.wait=1000;entry.roaming.reset();entry.roaming.setDestination(x,-12);}Q.enterClose();Q.exitClose(false);if(Q.aiming)Q.modeAction("mode-toggle");Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});B.advance(0.1,0.05);})()');
+    const fresh=await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,c=B.pilot.player;return{cleared:P.held===-1&&!P.effects.active&&!P.cinematic.active&&!P.busy,visuals:!P.effects.debug.group.visible&&P.effects.debug.echoes.every(part=>!part.geometry),single:P.list.length===1,free:!B.pilot.travelRefusal(),gear:JSON.stringify([c.health.value,c.weapon.ammo,c.weapon.spareAmmo,B.game.state.inventory,B.game.state.bananas,B.game.state.arcade.tickets])};})()');
+    await b.evaluate('(()=>{const B=__ooga,P=BL.scenes.hub.debug.pepi,Q=B.pilot;for(const actor of B.crew.list)if(actor!==Q.player)actor.root.visible=false;{const entry=P.list[0],x=-18;entry.gorilla.place(x,-12,0);entry.tx=x;entry.tz=-12;entry.wait=1000;entry.roaming.reset();entry.roaming.setDestination(x,-12);}Q.enterClose();Q.exitClose(false);if(Q.aiming)Q.modeAction("mode-toggle");Q.navigate({position:{x:8,y:B.island.surfaceAt(8,0),z:0},yaw:0,pitch:0.4,dist:7});B.advance(0.1,0.05);})()');
     const normal=await move();
-    record(`Pepi samples phone: ${reload?"reloading the page":"leaving and returning to the Hub"} clears a completed active sample and restores an ordinary owner with one NPC pair`,lifecycleStarted&&fresh.cleared&&fresh.visuals&&fresh.pair&&fresh.free&&fresh.gear===beforeLoss&&Math.abs(normal.distance-baseline.forward.distance)<baseline.forward.distance*0.08,JSON.stringify({lifecycleStarted,fresh,normal}));
+    record(`Pepi samples phone: ${reload?"reloading the page":"leaving and returning to the Hub"} clears a completed active sample and restores an ordinary owner with Pepi alone`,lifecycleStarted&&fresh.cleared&&fresh.visuals&&fresh.single&&fresh.free&&fresh.gear===beforeLoss&&Math.abs(normal.distance-baseline.forward.distance)<baseline.forward.distance*0.08,JSON.stringify({lifecycleStarted,fresh,normal}));
     if(!reload)await b.evaluate('BL.net.sendChat=__pepiSamples.sendChat');return;
   }
   const logout=indices[0]===6;
@@ -29211,8 +29213,8 @@ const pepiPostureProof = async () => {
     };
     visit(node); return y;
   };
-  for (let variant = 0; variant < 2; variant++) {
-    const rig = BL.pepiModels.baboon({ groundAt: () => floor, variant }), coat = BL.pepiModels.decorate(rig, null, variant);
+  {
+    const rig = BL.pepiModels.baboon({ groundAt: () => floor }), coat = BL.pepiModels.decorate(rig, null);
     const origin = { ...rig.root.position }, limbs = [rig.parts.armR, rig.parts.armL, rig.parts.legR, rig.parts.legL], contacts = [0, 0, 0, 0];
     let minimum = Infinity, maximumLift = 0, supported = true, natural = true, transitionSupported = true, maximumChange = 0;
     const sample = () => { S.updateWorld(rig.root); return limbs.map(lowest); };
@@ -29238,7 +29240,7 @@ const pepiPostureProof = async () => {
         natural &&= rig.posture <= previous && rig.posture >= 0; maximumChange = Math.max(maximumChange, Math.abs(rig.posture - previous)); previous = rig.posture;
       }
       const returned = sample();
-      rows.push({ variant, quadruped, supported, contacts, minimum, maximumLift, upright, standing, returned,
+      rows.push({ quadruped, supported, contacts, minimum, maximumLift, upright, standing, returned,
         natural: natural && intermediate && maximumChange < 0.35, transitionSupported, maximumChange,
         reverse: rig.posture < 0.01 && returned.slice(0, 2).every(height => Math.abs(height) < 0.05) && returned.slice(2).every(height => Math.abs(height) < 0.05),
         stationary: Object.keys(origin).every(key => rig.root.position[key] === origin[key]) });
@@ -29436,8 +29438,8 @@ const npcActivityRefreshProof = (BL) => {
 
 const unitChecks = async () => {
   const pepiPosture = await pepiPostureProof();
-  record("Pepi posture: both clothed baboons walk with visible forehand and hindfoot contact, rise smoothly to supported stock browsing and settle back to all fours without moving their root",
-    pepiPosture.length===2&&pepiPosture.every(row=>row.quadruped&&row.supported&&row.contacts.every(count=>count>0)&&row.minimum>=-0.02&&row.maximumLift<0.25&&row.upright&&row.standing.slice(0,2).every(height=>height>0.2)&&row.standing.slice(2).every(height=>Math.abs(height)<0.05)&&row.natural&&row.transitionSupported&&row.reverse&&row.stationary),JSON.stringify(pepiPosture));
+  record("Pepi posture: the clothed baboon walks with visible forehand and hindfoot contact, rises smoothly to supported stock browsing and settles back to all fours without moving his root",
+    pepiPosture.length===1&&pepiPosture.every(row=>row.quadruped&&row.supported&&row.contacts.every(count=>count>0)&&row.minimum>=-0.02&&row.maximumLift<0.25&&row.upright&&row.standing.slice(0,2).every(height=>height>0.2)&&row.standing.slice(2).every(height=>Math.abs(height)<0.05)&&row.natural&&row.transitionSupported&&row.reverse&&row.stationary),JSON.stringify(pepiPosture));
   const pepiRoaming = await pepiRoamingProof();
   record("Pepi roaming: real solid scenery is routed around without intersections or teleports, pause preserves the trip, unreachable ground repicks once, and a new trip recovers after the obstacle is removed",
     ["obstacle", "pause", "sealed", "released", "disposed"].every(key => pepiRoaming[key]), JSON.stringify(pepiRoaming));

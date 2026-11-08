@@ -1,11 +1,13 @@
-// Two independent, local baboon visitors roam without joining the contributor crew. Pepi offers
-// fictional, free samples; both mutter unsolicited comic doom between interactions.
+// Pepi, a local baboon visitor, roams without joining the contributor crew. He offers fictional, free samples and
+// mutters unsolicited comic doom between interactions.
 (() => {
   "use strict";
   const BL = window.BL = window.BL || {};
   const { createNode, addChild, removeChild } = BL.scene;
   const { CATALOG } = BL.pepiEffects;
   const REACH = 2.75, RELEASE_REACH = 3.35, DECLINE_SECONDS = 8, COOLDOWN = 60, RADIUS = 1.3, HEIGHT = 2.6;
+  // A 5.5 s bubble every 22 s within earshot, so his doom never crowds the screen.
+  const MUTTER_GAP = 22;
   const ACTION = { kind: "pepi" };
   const PEPI_QUOTES = Object.freeze([
     "The banks are doomed. My sock drawer is too big to fail.",
@@ -19,23 +21,11 @@
     "Cash is trash. Anyway, these samples are free.",
     "The future is bleak. My lunch is somehow bleaker."
   ]);
-  const QUOTES = Object.freeze([
-    "Civil society's collapsing. Will my loyalty points survive?",
-    "My nuclear forecast was merely chronologically ambitious.",
-    "The banks will fall! My mattress has declined to comment.",
-    "NPCs everywhere. I alone choose my predetermined route.",
-    "Everyone is stupider than me. Except the automatic doors.",
-    "The end is nigh! I have a coupon for the apocalypse.",
-    "I've escaped the system. I'm waiting for it to respawn.",
-    "Only sheep need evidence. I use extremely confident noises.",
-    "Financial Armageddon! Even my beans filed for bankruptcy.",
-    "Think for yourselves, NPCs! In the exact order I told you."
-  ]);
   const create = ({ root, pilot, crew, hud, camera, renderer, world, groundAt, clear, spotOk, paths, peers, viewClear, crashOut, speech: speechFx, eligible, busy, onRecover }) => {
     const group = createNode({ sightHidden: true });
     addChild(root, group);
     const rand = BL.math.mulberry32(0x70657069), list = [];
-    const speech = { index: -1, spoken: 0, wait: 3, speaker: -1, nextSpeaker: 0, indices: [-1, -1] };
+    const speech = { index: -1, spoken: 0, wait: 3, speaker: -1 };
     const muttering = BL.pepiCinematic.createVoice();
     const hushSpeech = () => {
       for (let i = 0; i < list.length; i++) speechFx.hush(list[i]);
@@ -46,14 +36,13 @@
       || document.activeElement?.matches("input, textarea, [contenteditable='true']");
     const inEarshot = (entry) => entry.root.visible && !entry.root.cameraHidden
       && Math.hypot(entry.root.position.x - camera.position.x, entry.root.position.y - camera.position.y, entry.root.position.z - camera.position.z) <= 24;
-    const sayNext = (index) => {
-      const lines = index ? QUOTES : PEPI_QUOTES;
-      const line = (speech.indices[index] + 1) % lines.length;
+    const sayNext = () => {
+      const line = (speech.index + 1) % PEPI_QUOTES.length;
       hushSpeech();
-      speech.indices[index] = speech.index = line; speech.speaker = index; speech.nextSpeaker = 1 - index; speech.spoken++; speech.wait = 11;
-      speechFx.say(list[index], lines[line], 5.5);
-      const p = list[index].root.position, eye = camera.position;
-      muttering.wake(); muttering.mutter(index, Math.min(8, Math.max(4, Math.round(lines[line].length / 8))),
+      speech.index = line; speech.speaker = 0; speech.spoken++; speech.wait = MUTTER_GAP;
+      speechFx.say(list[0], PEPI_QUOTES[line], 5.5);
+      const p = list[0].root.position, eye = camera.position;
+      muttering.wake(); muttering.mutter(Math.min(8, Math.max(4, Math.round(PEPI_QUOTES[line].length / 8))),
         Math.max(0, 1 - Math.hypot(p.x - eye.x, p.y - eye.y, p.z - eye.z) / 24));
     };
     let held = -1, heldFor = null, account = null, offered = false, near = false, suspended = false, locked = false;
@@ -158,22 +147,11 @@
         statusSecond = -1;
       }, onCancel: () => { statusSecond = -1; }
     });
-    // Use the Hub's swept body queries for both path lanes and local recovery. The other visitor is
-    // a moving cylinder too; an existing overlap may separate, but a new step never deepens it.
-    const stepClear = (actor, x, y, z, nx, ny, nz, radius = RADIUS, height = HEIGHT) => {
+    // Use the Hub's swept body queries for both path lanes and local recovery. Remote players are moving
+    // cylinders too; an existing overlap may separate, but a new step never deepens it.
+    const stepClear = (x, y, z, nx, ny, nz, radius = RADIUS, height = HEIGHT) => {
       if (!clear(x, y, z, nx, ny, nz, radius, height)) return false;
       const dx = nx - x, dz = nz - z, length = dx * dx + dz * dz;
-      for (let i = 0; i < list.length; i++) {
-        const other = list[i];
-        if (other.root === actor.root || !other.root.visible) continue;
-        const q = other.root.position;
-        if (Math.min(y, ny) >= q.y + HEIGHT || Math.max(y, ny) + height <= q.y) continue;
-        const ox = x - q.x, oz = z - q.z, width = radius + RADIUS;
-        const before = ox * ox + oz * oz, after = (nx - q.x) ** 2 + (nz - q.z) ** 2;
-        if (before < width * width && after > before && ox * dx + oz * dz >= 0) continue;
-        const t = length ? BL.math.clamp(-(ox * dx + oz * dz) / length, 0, 1) : 0;
-        if ((ox + dx * t) ** 2 + (oz + dz * t) ** 2 < width * width) return false;
-      }
       const visitors = peers();
       for (let i = 0; i < visitors.length; i++) {
         const q = visitors[i];
@@ -186,13 +164,13 @@
       }
       return true;
     };
-    const routePaths = paths((x, z, nx, nz, y, height, actor) => {
+    const routePaths = paths((x, z, nx, nz, y) => {
       const steps = Math.ceil(Math.hypot(nx - x, nz - z) / 0.2);
       if (steps > 320) return false;
       let px = x, py = y, pz = z;
       for (let n = 1; n <= Math.max(1, steps); n++) {
         const t = n / Math.max(1, steps), qx = x + (nx - x) * t, qz = z + (nz - z) * t, qy = groundAt(qx, qz);
-        if (!spotOk(qx, qy, qz, RADIUS, HEIGHT) || !stepClear(actor, px, py, pz, qx, qy, qz)) return false;
+        if (!spotOk(qx, qy, qz, RADIUS, HEIGHT) || !stepClear(px, py, pz, qx, qy, qz)) return false;
         px = qx; py = qy; pz = qz;
       }
       return true;
@@ -202,9 +180,6 @@
         const angle = rand() * Math.PI * 2, radius = 12 + rand() * 13;
         const x = Math.sin(angle) * radius, z = Math.cos(angle) * radius, y = groundAt(x, z);
         if (!Number.isFinite(y) || !spotOk(x, y, z, RADIUS, HEIGHT)) continue;
-        let occupied = false;
-        for (let i = 0; i < list.length; i++) if (list[i] !== entry && Math.hypot(x - list[i].root.position.x, z - list[i].root.position.z) < RADIUS * 2.2) occupied = true;
-        if (occupied) continue;
         entry.tx = x; entry.tz = z; entry.wait = 2 + rand() * 4; entry.repick = false;
         if (initial) entry.gorilla.place(x, z, angle);
         entry.roaming.setDestination(x, z);
@@ -213,15 +188,14 @@
       entry.wait = 2; entry.repick = true;
       return false;
     };
-    for (let i = 0; i < 2; i++) {
-      const rig = BL.pepiModels.baboon({ groundAt, variant: i });
+    {
+      const rig = BL.pepiModels.baboon({ groundAt });
       const entry = { root: rig.root, parts: rig.parts, gorilla: rig, coat: null, roaming: null,
-        index: i, tx: 0, tz: 0, wait: 0, repick: false, reveal: 0, standing: false, interaction: 0, replyCooldown: 0,
-        body: { id: `pepi-local-${i}`, x: 0, y: 0, z: 0, radius: RADIUS, height: HEIGHT, player: false } };
+        index: 0, tx: 0, tz: 0, wait: 0, repick: false, reveal: 0, standing: false, interaction: 0,
+        body: { id: "pepi-local-0", x: 0, y: 0, z: 0, radius: RADIUS, height: HEIGHT, player: false } };
       entry.root.sightHidden = true;
-      entry.coat = BL.pepiModels.decorate(rig, i === 0 ? CATALOG : null, i);
-      entry.roaming = BL.pepiRoaming.create({ root: entry.root, paths: routePaths, groundAt, spotOk,
-        clear: (x, y, z, nx, ny, nz, radius, height) => stepClear(entry, x, y, z, nx, ny, nz, radius, height),
+      entry.coat = BL.pepiModels.decorate(rig, CATALOG);
+      entry.roaming = BL.pepiRoaming.create({ root: entry.root, paths: routePaths, groundAt, spotOk, clear: stepClear,
         pose: (dt, speed, heading) => rig.pose(dt, speed, heading, entry.standing, reducedMotion.matches), radius: RADIUS, height: HEIGHT, speed: BL.crew.NPC_WALK_SPEED * 0.5,
         onRepick: () => { entry.repick = true; entry.wait = 0; } });
       addChild(group, entry.root);
@@ -291,15 +265,8 @@
       return false;
     };
     const tap = (index) => {
-      if (index < 0 || index >= list.length || quiet()) return;
-      const entry = list[index];
-      entry.interaction = 3;
-      if (index === 1) {
-        if (entry.replyCooldown <= 0 && !speechFx.read(list[0]) && !speechFx.read(list[1]) && inEarshot(entry)) {
-          sayNext(1); entry.replyCooldown = 12;
-        }
-        return;
-      }
+      if (index !== 0 || quiet()) return;
+      list[0].interaction = 3;
       if (!BL.net.state.me) hud.toast("Sign in and drive your own Ooga to browse Pepi's free samples");
       else if (!isNear(pilot.player)) hud.toast("Walk a little closer to talk to Pepi");
       else use();
@@ -329,7 +296,7 @@
       for (let i = 0; i < list.length; i++) {
         const entry = list[i], p = entry.root.position;
         if (!entry.root.visible) { if ((entry.wait -= dt) <= 0 && pickSpot(entry, true)) entry.root.visible = true; continue; }
-        entry.interaction = Math.max(0, entry.interaction - dt); entry.replyCooldown = Math.max(0, entry.replyCooldown - dt);
+        entry.interaction = Math.max(0, entry.interaction - dt);
         const presenting = i === 0 && (phase === "offer" || phase === "catalog");
         entry.standing = presenting || entry.interaction > 0;
         entry.reveal = BL.math.damp(entry.reveal, i === 0 && phase === "catalog" ? 1 : 0, 7, dt);
@@ -349,16 +316,14 @@
       if (suspended) return;
       cinematic.update(dt);
       conversationView(dt);
-      // Pepi's open coat can surround a nearby eye. Keep the borrowed close shot clear of these two local rigs.
+      // Pepi's open coat can surround a nearby eye. Keep the borrowed close shot clear of his local rig.
       for (let i = 0; i < list.length; i++) list[i].root.cameraHidden = cinematic.active;
       effects.update(dt);
       if (quiet()) hushSpeech();
       else {
         if (speech.speaker >= 0 && !inEarshot(list[speech.speaker])) hushSpeech();
         if ((speech.wait -= dt) <= 0) {
-          let index = speech.nextSpeaker;
-          if (!inEarshot(list[index])) index = 1 - index;
-          if (inEarshot(list[index])) sayNext(index);
+          if (inEarshot(list[0])) sayNext();
           else speech.wait = 3;
         }
       }
@@ -417,5 +382,5 @@
       get cooldown() { return cooldown(); }, get status() { return displayed; }
     };
   };
-  BL.pepi = { create, REACH, RELEASE_REACH, DECLINE_SECONDS, COOLDOWN, QUOTES, PEPI_QUOTES };
+  BL.pepi = { create, REACH, RELEASE_REACH, DECLINE_SECONDS, COOLDOWN, PEPI_QUOTES };
 })();

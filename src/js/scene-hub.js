@@ -5699,7 +5699,7 @@
     const o = hit.owner;
     switch (o.kind) {
       case "pepi":
-        return o.index === 0 ? "Pepi · talk about a free sample" : "A navy-coated baboon · doom enthusiast";
+        return "Pepi · talk about a free sample";
       case "tess":
         return COARSE ? `${BL.hubGuide.NAME} the guide · tap for a tour` : `${BL.hubGuide.NAME} the guide · click for a tour`;
       case "caveman":

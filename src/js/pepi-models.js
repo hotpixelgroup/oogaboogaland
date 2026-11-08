@@ -1,5 +1,5 @@
-// Pepi and his unnamed companion are elderly baboons in long, split trench coats. Their narrow rigs have long
-// muzzles, grey cheek whiskers, tails and an asymmetric bent-knee hobble. One coat leaf opens to show twelve
+// Pepi is an elderly baboon in a long, split trench coat. His narrow rig has a long muzzle, grey cheek whiskers, a
+// tail and an asymmetric bent-knee hobble. One coat leaf opens to show twelve
 // fictional OBL codes; all the body, cloth, label and syringe meshes are shared, only nodes move.
 (() => {
   "use strict";
@@ -7,24 +7,22 @@
   const { box, bevelBox, lathe, merge, cached, moved, turnedZ, along, characterGeometry } = BL.models;
   const { createNode, addChild, removeChild } = BL.scene;
   const { clamp } = BL.math;
-  const CLOTH = [
-    { body: "#9d754a", light: "#bd9668", dark: "#6a4b32", lining: "#322937" },
-    { body: "#263b5b", light: "#3a5578", dark: "#15253e", lining: "#192237" }
-  ];
+  const CLOTH = { body: "#9d754a", light: "#bd9668", dark: "#6a4b32", lining: "#322937" };
   const COLORS = ["#82c9ff", "#ff916e", "#d8bcff", "#a4e579", "#ffbc75", "#7de2d1",
     "#ed95c2", "#f6dd68", "#8da5cf", "#b8b4ad", "#c5e86c", "#ff6f79"];
   const DEFAULTS = COLORS.map((color, i) => ({ code: `OBL-${String(i + 1).padStart(2, "0")}`, color }));
   const EMPTY = { verts: [], faces: [], lines: [] };
-  const clothing = new Array(2), baboons = new Array(2), syringes = new Array(12);
+  const syringes = new Array(12);
+  let clothing = null, baboonGeo = null;
   const character = (geo) => {
     characterGeometry(geo);
     // The dedicated NPC navigation owns collision, including the open coat's full clearance.
     geo.collisionGeometry = EMPTY;
     return geo;
   };
-  const baboonGeometry = (variant) => {
-    if (baboons[variant]) return baboons[variant];
-    const fur = variant ? "#62656b" : "#71695c", shadow = variant ? "#454951" : "#514b43";
+  const baboonGeometry = () => {
+    if (baboonGeo) return baboonGeo;
+    const fur = "#71695c", shadow = "#514b43";
     const skin = "#8c6d61", muzzle = "#a07a69", grey = "#aaa89a", dark = "#302c2a";
     const torso = characterGeometry(merge(
       bevelBox({ w: 0.57, h: 0.9, d: 0.37, color: fur, bevel: 0.045, offset: { y: 0.45 } }),
@@ -72,13 +70,13 @@
       tailParts.push(along(lathe({ profile: [[0, 0], [0.052 - i * 0.005, 0], [0.047 - i * 0.005, len], [0, len]],
         segments: 6, color: i > 3 ? grey : fur }), a[0], a[1], a[2], dx, dy, dz));
     }
-    baboons[variant] = { torso, head: characterGeometry(merge(...headParts)), arm, forearm, hand: characterGeometry(merge(...handParts)), thigh, shin, foot, tail: characterGeometry(merge(...tailParts)) };
-    return baboons[variant];
+    baboonGeo = { torso, head: characterGeometry(merge(...headParts)), arm, forearm, hand: characterGeometry(merge(...handParts)), thigh, shin, foot, tail: characterGeometry(merge(...tailParts)) };
+    return baboonGeo;
   };
   // Navigation owns the root's supported world position and swept movement. This rig poses only: no jump, combat,
-  // gallop or Agent control state is borrowed by these two elderly characters.
-  const baboon = ({ groundAt, variant = 0, x = 0, z = 0, heading = 0 }) => {
-    const geo = baboonGeometry(variant), root = createNode({ position: { x, y: groundAt(x, z), z }, rotation: { x: 0, y: heading, z: 0 }, matrixNative: true });
+  // gallop or Agent control state is borrowed by this elderly character.
+  const baboon = ({ groundAt, x = 0, z = 0, heading = 0 }) => {
+    const geo = baboonGeometry(), root = createNode({ position: { x, y: groundAt(x, z), z }, rotation: { x: 0, y: heading, z: 0 }, matrixNative: true });
     const hips = createNode(), chest = createNode();
     const parts = {
       torso: createNode({ geometry: geo.torso }),
@@ -101,7 +99,7 @@
     addChild(parts.forearmR, parts.handR); addChild(parts.forearmL, parts.handL);
     addChild(chest, parts.torso, parts.head, parts.armR, parts.armL);
     addChild(hips, parts.legR, parts.legL, chest, tail); addChild(root, hips);
-    let phase = variant * 0.37, age = variant * 3, pace = 0, posture = 0, disposed = false;
+    let phase = 0, age = 0, pace = 0, posture = 0, disposed = false;
     // Solve each two-bone limb in the root's sagittal frame. The paw cancels both joint turns and stays flat on
     // its support. Unlike a rigid shoulder-to-fist swing, a forehand really bears weight at the ground plane.
     const reach = (upper, lower, paw, originY, originZ, parentPitch, length, targetY, targetZ, bend) => {
@@ -162,9 +160,9 @@
       contacts: [parts.handR, parts.handL, parts.footR, parts.footL],
       get posture() { return posture; }, get heading() { return root.rotation.y; } };
   };
-  const cloth = (variant) => {
-    if (clothing[variant]) return clothing[variant];
-    const C = CLOTH[variant];
+  const cloth = () => {
+    if (clothing) return clothing;
+    const C = CLOTH;
     const torso = character(merge(
       bevelBox({ w: 0.77, h: 1.05, d: 0.06, color: C.body, bevel: 0.015, offset: { y: 0.49, z: -0.245 } }),
       box({ w: 0.055, h: 1.03, d: 0.48, color: C.dark, offset: { x: -0.36, y: 0.48 } }),
@@ -194,8 +192,8 @@
       box({ w: 0.64, h: 1.39, d: 0.009, color: C.lining, offset: { x: -0.335, y: 0.25, z: -0.029 } }),
       box({ w: 0.65, h: 0.075, d: 0.018, color: C.dark, offset: { x: -0.335, y: 0.1, z: 0.028 } })
     ));
-    clothing[variant] = { torso, skirt, sleeve, foreSleeve, front, panel };
-    return clothing[variant];
+    clothing = { torso, skirt, sleeve, foreSleeve, front, panel };
+    return clothing;
   };
   // Solid carved glyphs stay readable on Canvas 2D too. Labels are not textures, DOM elements or external fonts.
   const codeLabel = (code) => {
@@ -252,8 +250,8 @@
     };
     return { root, node: root, plunger, liquid, label, setIndex, liveGeometry };
   };
-  const decorate = (actor, catalog = null, variant = 0) => {
-    const C = cloth(variant), P = actor.parts, attached = [], armZ = P.armL.position.z;
+  const decorate = (actor, catalog = null) => {
+    const C = cloth(), P = actor.parts, attached = [], armZ = P.armL.position.z;
     const mount = (parent, geometry) => {
       const node = createNode({ geometry }); addChild(parent, node); attached.push(node); return node;
     };
