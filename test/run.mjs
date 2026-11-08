@@ -6032,7 +6032,7 @@ const environmentSoundChecks = async () => {
   let saved = "off", writable = true;
   const param = () => ({ value: 0, calls: 0, setTargetAtTime(v) { this.value = v; this.calls++; },
     setValueAtTime(v) { this.value = v; this.calls++; }, exponentialRampToValueAtTime(v) { this.value = v; this.calls++; }, cancelScheduledValues() {} });
-  const node = () => ({ gain: param(), frequency: param(), connect() {}, disconnect() {}, start() {} });
+  const node = () => ({ gain: param(), frequency: param(), Q: param(), connect() {}, disconnect() {}, start() {} });
   class AudioContext {
     constructor() { this.state = "running"; this.currentTime = 0; this.sampleRate = 100; this.destination = {}; this.gains = []; this.events = new Map(); contexts.push(this); }
     createGain() { const n = node(); this.gains.push(n); return n; }
@@ -6046,7 +6046,7 @@ const environmentSoundChecks = async () => {
   }
   const context = { window: { addEventListener: (k, fn) => events.set(k, fn) }, AudioContext,
     navigator: { userActivation: { hasBeenActive: true } }, localStorage: { getItem: () => saved, setItem: (k, v) => { if (!writable) throw Error("blocked"); saved = v; } } };
-  for (const file of ["sound", "footsteps"]) runInNewContext(await readFile(join(root, `src/js/${file}.js`), "utf8"), context);
+  for (const file of ["math", "scene", "sound", "footsteps", "pet-reactions"]) runInNewContext(await readFile(join(root, `src/js/${file}.js`), "utf8"), context);
   const { sound, footsteps } = context.window.BL, feet = footsteps.create(), walker = { act: { phase: 0 }, hop: 0, ladder: null };
   feet.update(walker); walker.act.phase = Math.PI; feet.update(walker);
   const startsMuted = sound.muted && contexts.length === 0 && feet.steps === 1;
@@ -6068,6 +6068,32 @@ const environmentSoundChecks = async () => {
   record("environment sound: saved mute, live footsteps, new effects, storage failure, cross-tab changes and disposal share one gate",
     startsMuted && opened && quiet && countsQuiet && released && reused && blockedStorage && newMuted && crossTab && output.gain.calls === closedCalls,
     JSON.stringify({ startsMuted, opened, quiet, countsQuiet, released, reused, blockedStorage, newMuted, crossTab }));
+  const BL=context.window.BL,S=BL.scene,owner={root:S.createNode(),parts:{torso:S.createNode()},pet:{node:S.createNode(),mode:4,ride:{kind:2,yaw:0,stomach:{x:0,y:0,z:0}}}};
+  BL.crew={poseStomachRide(){}};
+  const near={root:S.createNode({position:{x:2,y:0,z:0}})},far={root:S.createNode({position:{x:3,y:0,z:0}})};
+  const actors=[{id:1},{id:2},{id:3}],bodies=new Map([[1,owner],[2,far],[3,near]]),pool={actors:()=>actors,body:id=>bodies.get(id)};
+  const reaction=BL.petReactions.create(),before=contexts.length;
+  reaction.update(owner,owner,pool,.1);const muteStart=reaction.target===near&&contexts.length===before;
+  sound.setMuted(false);context.navigator.userActivation.hasBeenActive=false;reaction.update(owner,null,pool,.1);
+  const locked=contexts.length===before;context.navigator.userActivation.hasBeenActive=true;reaction.update(owner,null,pool,.1);
+  const barkContext=contexts.at(-1),openedBark=reaction.barks===1&&contexts.length===before+1;
+  const local={root:S.createNode({position:{x:1,y:0,z:0}})};reaction.update(owner,local,pool,.1);const closestLocal=reaction.target===local;
+  local.root.visible=false;near.root.position.x=4;far.root.visible=false;reaction.update(owner,local,pool,.1);
+  const boundary=reaction.target===near;near.root.position.x=4.001;reaction.update(owner,local,pool,.1);
+  const outOfRange=!reaction.target&&barkContext.gains.slice(1).every(n=>n.gain.value===0);
+  near.root.position.x=2;reaction.update(owner,null,pool,.1);sound.setMuted(true);
+  const quietBark=barkContext.gains.slice(1).every(n=>n.gain.value===0),heard=reaction.barks;
+  for(let i=0;i<30;i++)reaction.update(owner,null,pool,.1);
+  const heldMute=reaction.barks===heard;sound.setMuted(false);reaction.update(owner,null,pool,.1);
+  const unmuted=reaction.barks===heard+1&&contexts.length===before+1;
+  owner.pet.mode=3;reaction.update(owner,null,pool,.1);const leapingQuiet=!reaction.target;
+  owner.pet.mode=4;owner.pet.ride.kind=1;reaction.update(owner,null,pool,.1);const hatQuiet=!reaction.target;
+  owner.pet.ride.kind=2;owner.root.visible=false;reaction.update(owner,null,pool,.1);const hiddenQuiet=!reaction.target;
+  owner.root.visible=true;actors.length=1;reaction.update(owner,null,pool,.1);const departedQuiet=!reaction.target;
+  reaction.dispose();const closed=barkContext.state==="closed";
+  record("pet yaps: the closest other live body inside four metres wins, including this viewer; hidden/departed bodies, flight and exits stop it; gesture, mute/unmute and disposal gate one reused voice",
+    muteStart&&locked&&openedBark&&closestLocal&&boundary&&outOfRange&&quietBark&&heldMute&&unmuted&&leapingQuiet&&hatQuiet&&hiddenQuiet&&departedQuiet&&closed,
+    JSON.stringify({muteStart,locked,openedBark,closestLocal,boundary,outOfRange,quietBark,heldMute,unmuted,leapingQuiet,hatQuiet,hiddenQuiet,departedQuiet,closed}));
 };
 // Single occupancy and direct suspension: exercise the real geometry and seat contracts.
 const hammockChecks = async () => {
@@ -8889,7 +8915,7 @@ const wallPerformance = async (b) => {
 const gamepadHoldProof = async () => {
   const events = new Map();
   const buttons = Array.from({ length: 12 }, () => ({ pressed: false, value: 0 }));
-  const hardware = { mapping: "standard", connected: true, axes: [0.6, -0.7, 0.5, -0.4], buttons };
+  const hardware = { id: "Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)", mapping: "standard", connected: true, axes: [0.6, -0.7, 0.5, -0.4], buttons };
   let reads = 0, connected = true;
   const context = { window: { addEventListener: (name, fn) => events.set(name, fn) }, navigator: { getGamepads: () => { reads++; return connected ? [hardware] : []; } } };
   runInNewContext(await readFile(join(root, "src/js/gamepad.js"), "utf8"), context);
@@ -8944,6 +8970,179 @@ const gamepadHoldProof = async () => {
   const reset = new Function("pad", `let padFrame = -1, padFire = true, padAds = true, mouseAds = true, ads = true; ${pilot.match(/const resetPad = [^\n]+/)[0]} resetPad(); return { padFrame, padFire, padAds, mouseAds, ads };`)(S);
   const pilotReset = reset.padFrame === S.frame && !reset.padFire && !reset.padAds && !reset.mouseAds && !reset.ads;
   return { initiallyLive: !!initiallyLive, synchronous, heldNeutral, noReplay, fresh, idempotent, betweenFrames, afterRelease, disconnected, reconnected, controlsResume, pilotReset };
+};
+// The real gamepad and controls modules against stub pads: what a button does comes from the bindings, so a remap
+// reaches a reader and survives a reload, the pad last pressed is the one read, a game's context delivers its keys,
+// menus take the pad from play, and a learned profile reads a pad the browser doesn't map.
+// The aiming views' own turn lines, read from pilot.js and clanker-play.js: a pad's look speed past 1 turns faster
+// there, while Q and E alone still turn at 1.
+const aimTurnProof = async () => {
+  const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+  const line = async (file, re) => (await readFile(join(root, `src/js/${file}`), "utf8")).match(re)[0];
+  const pilot = new Function("clamp", "a", `${await line("pilot.js", /const turnMax = Math\.max\(1, Math\.abs\(a\.yaw\)\), turn = [^;]+;/)} return turn;`);
+  const gorilla = new Function("clamp", "axes", "isCombat", `${await line("clanker-play.js", /const turnMax = Math\.max\(1, Math\.abs\(axes\.yaw\)\), turn = [^;]+;/)} return turn;`);
+  return pilot(clamp, { yaw: -2.5, orbitYaw: 0 }) === -2.5 && pilot(clamp, { yaw: 1, orbitYaw: 1 }) === 1
+    && gorilla(clamp, { yaw: 2.5, orbitYaw: 0 }, () => true) === 2.5 && gorilla(clamp, { yaw: -1, orbitYaw: -1 }, () => true) === -1;
+};
+const gamepadBindingsProof = async () => {
+  const pad = (index, id = "Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)") => ({ index, id, mapping: "standard", connected: true, axes: [0, 0, 0, 0], buttons: Array.from({ length: 18 }, () => ({ pressed: false, value: 0 })) });
+  const one = pad(0), two = pad(1);
+  let pads = [one];
+  const storage = new Map(), sent = [], verbs = [], scrolled = [];
+  let clock = 0;
+  const page = () => {
+    const events = new Map();
+    class KeyboardEvent { constructor(type, init) { Object.assign(this, init); this.type = type; } }
+    const context = { window: { addEventListener: (name, fn) => events.set(name, fn), removeEventListener: () => {} }, navigator: { getGamepads: () => pads },
+      localStorage: { getItem: (k) => storage.has(k) ? storage.get(k) : null, setItem: (k, v) => storage.set(k, String(v)) },
+      document: { body: { dispatchEvent: (e) => sent.push(`${e.type} ${e.key}${e.shiftKey ? " shift" : ""}${e.pad ? "" : " ?"}`) } }, KeyboardEvent, performance: { now: () => (clock += 16) } };
+    return { events, context };
+  };
+  const { events, context } = page();
+  for (const name of ["gamepad", "math", "controls"]) runInNewContext(await readFile(join(root, `src/js/${name}.js`), "utf8"), context);
+  const G = context.window.BL.gamepad, S = G.state, A = S.actions, ACT = G.ACTION;
+  events.get("gamepadconnected")({ gamepad: one });
+  const tap = (p, i) => { p.buttons[i].pressed = true; p.buttons[i].value = 1; G.poll(); const got = A.pressed; p.buttons[i].pressed = false; p.buttons[i].value = 0; G.poll(); return got; };
+  // Today's layout is the default: A acts, B both strikes and backs out of a lobby, RT fires, d-pad down descends and
+  // d-pad up is the jetpack's key, no bit.
+  const defaults = tap(one, 0) === ACT.act && tap(one, 1) === (ACT.bash | ACT.back) && tap(one, 7) === ACT.fire && tap(one, 12) === 0
+    && tap(one, 13) === ACT.descend && G.bindings("fire").join() === "rt" && G.family === "xbox";
+  one.buttons[12].pressed = true; G.poll();
+  const dpadRead = (S.held & G.BUTTON.up) !== 0; one.buttons[12].pressed = false; G.poll();
+  // On foot the extra buttons are keys a keyboard player presses: LB is T, up is J.
+  sent.length = 0; tap(one, 4); tap(one, 12);
+  const footKeys = sent.join() === "keydown t,keyup t,keydown j,keyup j";
+  // A remap moves the action: RT stops firing and RB fires.
+  G.bind("fire", ["rb"]);
+  const remapped = tap(one, 7) === 0 && tap(one, 5) === ACT.fire && G.bindings("fire").join() === "rb";
+  // Two buttons on one action: the second press is no new press, and the action holds until both let go.
+  G.bind("act", ["a", "rb"]);
+  one.buttons[0].pressed = true; G.poll(); const firstDown = (A.pressed & ACT.act) !== 0;
+  one.buttons[5].pressed = true; G.poll(); const secondQuiet = !(A.pressed & ACT.act) && (A.pressed & ACT.fire) !== 0;
+  one.buttons[0].pressed = false; G.poll(); const stillHeld = (A.held & ACT.act) !== 0 && !(A.released & ACT.act);
+  one.buttons[5].pressed = false; G.poll(); const letGo = (A.released & ACT.act) !== 0 && !A.held;
+  const shared = firstDown && secondQuiet && stillHeld && letGo;
+  // A reader follows the table: controls' Space handler fires on whatever button `act` is bound to.
+  G.bind("act", ["x"]);
+  let acted = 0;
+  const controls = context.window.BL.controls.create({ onAction: () => { acted++; return true; } });
+  one.buttons[0].pressed = true; G.poll(); controls.read(); one.buttons[0].pressed = false; G.poll(); controls.read();
+  const ignoresOld = acted === 0;
+  one.buttons[2].pressed = true; G.poll(); controls.read(); one.buttons[2].pressed = false; G.poll(); controls.read();
+  const readerFollows = ignoresOld && acted === 1;
+  controls.dispose();
+  // Home and the touchpad are the system's, Menu always pauses, sticks swap rather than rebind; unknown names are our own bug.
+  const throws = (fn) => { try { fn(); return false; } catch { return true; } };
+  const refused = throws(() => G.bind("fire", ["home"])) && throws(() => G.bind("fire", ["touchpad"])) && throws(() => G.bind("fly", ["a"]))
+    && throws(() => G.bind("fire", ["z"])) && throws(() => G.bind("fire", ["menu"])) && throws(() => G.bind("pause", ["b"]))
+    && throws(() => G.bind("move", ["a"])) && G.bindings("fire").join() === "rb";
+  // A remap survives a reload; a PlayStation pad keeps its own layout; a corrupt save falls back to the defaults.
+  const reload = async () => { const p = page(); for (const name of ["gamepad"]) runInNewContext(await readFile(join(root, `src/js/${name}.js`), "utf8"), p.context); return p.context.window.BL.gamepad; };
+  const again = await reload();
+  const survives = again.bindings("fire").join() === "rb" && again.bindings("act").join() === "x";
+  const sony = pad(0, "DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)");
+  pads = [sony]; tap(sony, 0);
+  const perFamily = G.family === "playstation" && G.glyph("a") === "✕" && G.bindings("fire").join() === "rt" && tap(sony, 7) === ACT.fire;
+  pads = [one]; tap(one, 3);
+  const backToXbox = G.family === "xbox" && G.bindings("fire").join() === "rb";
+  const saved = storage.get("ooga-pad-v1");
+  storage.set("ooga-pad-v1", JSON.stringify({ v: 1, family: "cube", feel: { dead: 9, invertY: "yes", look: 2 }, bindings: { xbox: { foot: { fire: ["home"], act: ["menu"], reload: ["lb"] }, nowhere: { x: ["a"] } } }, profiles: { bad: { map: [] } } }));
+  const fixed = await reload();
+  const corrupt = fixed.bindings("fire").join() === "rt" && fixed.bindings("act").join() === "a" && fixed.bindings("reload").join() === "lb"
+    && fixed.feel.dead === 0.18 && fixed.feel.invertY === false && fixed.feel.look === 2 && fixed.familyOverride === null;
+  storage.set("ooga-pad-v1", "{not json");
+  const unreadable = (await reload()).bindings("fire").join() === "rt";
+  storage.set("ooga-pad-v1", saved);
+  G.resetBindings();
+  const reset = G.bindings("fire").join() === "rt" && G.bindings("act").join() === "a" && tap(one, 7) === ACT.fire;
+  // A game's context delivers its keys, held while the button is: RT is W down then up in Ooga Rally, and no bit.
+  G.setContext("race");
+  sent.length = 0;
+  one.buttons[7].value = 1; G.poll(); const raceDown = sent.join() === "keydown w" && !A.held;
+  one.buttons[7].value = 0; G.poll(); const raceUp = sent.join() === "keydown w,keyup w";
+  // Leaving the context lets go of a key still down.
+  one.buttons[6].value = 1; G.poll(); G.setContext("foot"); G.poll();
+  const leftUp = sent.slice(-2).join() === "keydown s,keyup s";
+  one.buttons[6].value = 0; G.poll();
+  G.setContext("mine"); sent.length = 0; tap(one, 2);
+  const shifted = sent.join() === "keydown S shift,keyup S shift";
+  // The arcade games read arrows: the left stick presses them.
+  G.setContext("arcade"); sent.length = 0;
+  one.axes[0] = 0.9; G.poll(); one.axes[0] = 0.4; G.poll(); one.axes[0] = 0; G.poll();
+  const stickArrows = sent.join() === "keydown ArrowRight,keyup ArrowRight";
+  G.setContext("foot");
+  // An open menu takes the pad from play: A selects there and acts on nothing.
+  context.window.BL.padFocus = { verb: (v) => verbs.push(v), scroll: (dy) => scrolled.push(dy) };
+  let menu = true;
+  G.setMenu(() => menu);
+  sent.length = 0;
+  const menuA = tap(one, 0) === 0 && verbs.join() === "select" && !sent.length;
+  tap(one, 1); tap(one, 5);
+  menu = false;
+  // The right stick scrolls the open layer, down for a push down.
+  menu = true; one.axes[3] = 1; G.poll(); G.poll(); G.poll(); one.axes[3] = 0; G.poll(); menu = false;
+  const menuScroll = scrolled.length >= 2 && scrolled.every(dy => dy > 0);
+  const menuVerbs = verbs.join() === "select,back,next" && tap(one, 0) === ACT.act;
+  G.setMenu(null);
+  // Feel: inverted look and swapped sticks reach the published sticks.
+  G.setFeel("invertY", true); one.axes[3] = -1; G.poll();
+  const inverted = S.ry < 0;
+  G.setFeel("invertY", false); G.setFeel("swap", true); G.poll();
+  const swapped = S.ly > 0 && S.ry === 0;
+  G.setFeel("swap", false); one.axes[3] = 0; G.poll();
+  // Look speed raises the top turn rate: a full right-stick push at 2x turns twice as fast as the clamp allowed before.
+  const looker = context.window.BL.controls.create({});
+  G.setFeel("look", 2); one.axes[2] = 1; G.poll();
+  const fast = Math.abs(looker.read().yaw) > 1.9;
+  G.setFeel("look", 1); G.poll();
+  const normal = Math.abs(looker.read().yaw) <= 1;
+  one.axes[2] = 0; G.poll(); looker.dispose();
+  const lookSpeed = fast && normal;
+  // A pad the browser doesn't map is named, not read, until a profile is learned: then a hat d-pad and triggers that
+  // rest at -1 read as the standard places, diagonals as two directions.
+  const odd = { index: 0, id: "Generic USB Joystick (Vendor: 0079 Product: 0006)", mapping: "", connected: true, axes: [0, 0, 0, 0, -1, -1, 3.2857], buttons: Array.from({ length: 12 }, () => ({ pressed: false, value: 0 })) };
+  pads = [odd];
+  odd.buttons[2].pressed = true; G.poll();
+  const named = !S.connected && S.unknown === odd.id;
+  odd.buttons[2].pressed = false;
+  const map = Array(18).fill(null);
+  map[0] = { k: "b", i: 2 }; map[6] = { k: "a", i: 4, v: 1, rest: -1 }; map[7] = { k: "a", i: 5, v: 1, rest: -1 };
+  map[12] = { k: "h", i: 6, at: -1 }; map[13] = { k: "h", i: 6, at: 1 / 7 }; map[14] = { k: "h", i: 6, at: 5 / 7 }; map[15] = { k: "h", i: 6, at: -3 / 7 };
+  G.learn(odd.id, { map, axes: [{ i: 0, v: 1 }, { i: 1, v: 1 }, { i: 2, v: 1 }, { i: 3, v: 1 }] });
+  G.poll();
+  const learnedIdle = S.connected && !S.held && !S.unknown;
+  odd.axes[6] = -5 / 7; odd.axes[5] = 1; odd.buttons[2].pressed = true; G.poll();
+  const B = G.BUTTON;
+  const learned = learnedIdle && named && S.held === (B.up | B.right | B.rt | B.a) && (A.held & (ACT.fire | ACT.act)) === (ACT.fire | ACT.act);
+  odd.axes[6] = 3.2857; odd.axes[5] = -1; odd.buttons[2].pressed = false; G.poll();
+  // A second pad (Steam's idle twin, a friend's) never steals play until a button is pressed on it.
+  pads = [one, two]; events.get("gamepadconnected")({ gamepad: two });
+  two.axes[0] = 0.9; one.axes[0] = -0.9; G.poll();
+  const firstKept = S.lx < 0;
+  const switched = tap(two, 0) === ACT.act && S.lx > 0;
+  // Buttons held on both at once (two players, or Steam's twin mirroring the real pad) never trade places every read:
+  // each fresh press may take over once, then the last one pressed keeps play.
+  let swaps = 0;
+  const offSwap = G.subscribe((what) => { if (what === "device") swaps++; });
+  one.buttons[1].pressed = true; G.poll(); two.buttons[1].pressed = true; G.poll();
+  swaps = 0;
+  for (let i = 0; i < 6; i++) G.poll();
+  const steady = swaps === 0 && S.lx > 0;
+  one.buttons[1].pressed = two.buttons[1].pressed = false; G.poll();
+  // Steam's twin repeats each press of the real pad, in the same read or the next: the pad in play keeps it.
+  for (let i = 0; i < 5; i++) G.poll();
+  swaps = 0;
+  for (let k = 0; k < 3; k++) {
+    one.buttons[0].pressed = two.buttons[0].pressed = true; G.poll();
+    one.buttons[0].pressed = two.buttons[0].pressed = false; G.poll(); G.poll(); G.poll(); G.poll();
+    two.buttons[2].pressed = true; G.poll(); one.buttons[2].pressed = true; G.poll();
+    one.buttons[2].pressed = two.buttons[2].pressed = false; G.poll(); G.poll(); G.poll(); G.poll();
+  }
+  const mirrored = swaps === 0 && S.lx > 0;
+  offSwap();
+  one.axes[0] = 0; two.axes[0] = 0;
+  return { defaults, dpadRead, footKeys, remapped, shared, readerFollows, refused, survives, perFamily, backToXbox, corrupt, unreadable, reset,
+    raceDown, raceUp, leftUp, shifted, stickArrows, menuA, menuScroll, menuVerbs, inverted, swapped, lookSpeed, aimTurn: await aimTurnProof(), learned, firstKept, switched, steady, mirrored };
 };
 
 
@@ -9662,6 +9861,85 @@ const hubHammock = { name: "hub hammock", why: "rule: one face-up Ooga rests off
   await b.send("Input.dispatchKeyEvent", {type:"keyUp",key:"w",code:"KeyW"});
   const walking=await b.evaluate('({seat:!!__ooga.crew.player.camp.seat,q:!!__ooga.crew.player.root.quaternion})');
   record("hub hammock: movement also stands the occupant up",moved&&!walking.seat&&!walking.q,JSON.stringify(walking));
+} };
+// Bill's own file decides whether his dog rides: the wire records what the file says and only then opts him in for the
+// steps below. The opt-in check itself stays strict: this engine needs his character change landed first.
+const petOptInWire = () => {
+  const BL = window.BL = window.BL || {};
+  Object.defineProperty(BL, "characters", { configurable: true, set(api) {
+    Object.defineProperty(BL, "characters", { configurable: true, writable: true, value: api });
+    const add = api.add;
+    api.add = (character) => {
+      if (character.handle === "Bitcoin-Bill") { window.__billFileOptsIn = character.look.petRidesHat === true; character.look.petRidesHat = true; }
+      return add(character);
+    };
+  } });
+};
+const hubPetOptIn = { name: "hub pet opt-in", why: "regression: #523's checks set the flag themselves while Bill's own file lost it, so live Bill's dog never rode anything", run: async (b) => {
+  record("hub pets: Bitcoin-Bill's own character file opts his dog in to riding", await b.evaluate("window.__billFileOptsIn === true"));
+} };
+const hubPetRides = { name: "hub pet rides", why: "regression: a dog leaving a body at rest hopped to the lying body's heel spot, landed on the cloth and stood stuck at its edge, on the owner's page and every other", run: async (b) => {
+  const setup = `const B=__ooga,D=BL.scenes.hub.debug,H=D.hammock,s=H.seats[0],M=BL.math.mat4,bill=B.crew.player,pet=bill.pet,dog=pet.node;
+    const inverse=M.create(),point=new Float32Array(3);
+    const offStomach=(a)=>{BL.scene.updateWorld(a.root);M.invert(inverse,a.parts.torso.world);M.transformPoint(point,inverse,a.pet.node.position.x,a.pet.node.position.y,a.pet.node.position.z);const at=a.pet.ride.stomach;return Math.hypot(point[0]-at.x,point[1]-at.y,point[2]-at.z);};
+    const onStomach=(a)=>a.pet.mode===4&&a.pet.ride.kind===2&&a.pet.node.visible&&offStomach(a)<1e-4;
+    const onHat=(a)=>a.pet.mode===4&&a.pet.ride.kind===1&&a.pet.node.visible&&a.pet.node.position.y>a.root.position.y+0.5*a.bodyHeight;
+    const heel=(a)=>{const r=a.root,sh=Math.sin(r.rotation.y),ch=Math.cos(r.rotation.y),p=a.pet;return Math.hypot(r.position.x-sh*p.back+ch*p.side-p.x,r.position.z-ch*p.back-sh*p.side-p.z);};
+    const down=(a)=>a.pet.mode===0&&Math.abs(a.pet.feet-s.floor)<0.01&&a.pet.node.quaternion===null&&heel(a)<0.3;
+    const follows=(a)=>a.pet.mode===0&&a.pet.node.quaternion===null&&heel(a)<0.3&&!H.near(a.pet.x,a.pet.z,0.3)&&Math.abs(a.pet.feet-B.headquarters.solids.supportAt(a.pet.x,a.pet.z,a.pet.feet,a.pet.feet,a))<0.01;
+    const lie=(a)=>{const entered=H.enter(a,s,seat=>B.crew.sitPlayer(seat));B.advance(2,1/60);return entered;};`;
+  const ready = await b.evaluate(`(() => { const B=__ooga,H=BL.scenes.hub.debug.hammock,s=H.seats[0];
+    const selected=B.pilot.possess(B.cavemen.get("Bitcoin-Bill"));
+    B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:s.ry,pitch:.5,dist:6});B.advance(1,1/60);
+    return {selected,jet:!!B.crew.player.jet}; })()`);
+  // The jetpack through its real key: on the hat while worn, down beside him when it comes off.
+  if (!ready.jet) { await tapKey(b, "j"); await b.evaluate("__ooga.advance(1, 1/60)"); }
+  const up = await b.evaluate(`(() => { ${setup} return onHat(bill); })()`);
+  await tapKey(b, "j");
+  const off = await b.evaluate(`(() => { ${setup} B.advance(3,1/60); return down(bill); })()`);
+  await tapKey(b, "j");
+  // The hammock outranks the jetpack, then gives the dog back to the hat; the bare exit lands off the bed and follows.
+  const local = await b.evaluate(`(() => { ${setup}
+    B.advance(1,1/60);const hatAgain=onHat(bill),entered=lie(bill);
+    let error=0;for(let i=0;i<30;i++){B.advance(1/60,1/60);error=Math.max(error,offStomach(bill));}
+    const resting=onStomach(bill)&&!dog.cameraHidden;
+    B.crew.standPlayer(bill,true);B.advance(3,1/60);const backToHat=onHat(bill);
+    B.crew.removeJetpack(bill);B.advance(3,1/60);const jetOff=down(bill);
+    lie(bill);const bare=onStomach(bill);
+    B.crew.standPlayer(bill,true);B.advance(3,1/60);
+    const landed=down(bill),clearOfBed=H.plan.shell.low+H.plan.y-s.floor>pet.feet+0.3;
+    B.pilot.navigate({position:{x:s.walkAt.x+3,y:s.floor,z:s.walkAt.z+3},yaw:s.ry,pitch:.5,dist:6});B.advance(3,1/60);const followed=down(bill);
+    B.pilot.navigate({position:{x:s.walkAt.x,y:s.floor,z:s.walkAt.z},yaw:s.ry,pitch:.5,dist:6});B.advance(1,1/60);
+    lie(bill);const tipped=H.tip(bill,{x:s.walkAt.x,z:s.walkAt.z,y:s.floor+bill.baseY,floor:s.floor,ry:s.ry,side:H.plan.side},()=>B.crew.standPlayer(bill));
+    B.advance(4,1/60);const tipLanded=tipped&&down(bill);
+    return {hatAgain,entered,error,resting,backToHat,jetOff,bare,landed,clearOfBed,followed,tipLanded,feet:pet.feet,mode:pet.mode}; })()`);
+  // Another page's Bill, through the real pool, bed and ground: and the yap's target, the nearest live body and never an NPC.
+  const remote = await b.evaluate(`(() => { ${setup}
+    const rest=[0,2,255,0,0,0],npc=B.cavemen.get("Bitcoin-Bill");
+    const selected=B.pilot.possess(B.cavemen.get("portlandhodl"));
+    B.pilot.navigate({position:{x:s.walkAt.x+6,y:s.floor,z:s.walkAt.z+6},yaw:s.ry,pitch:.5,dist:6});
+    const rec={id:9901,login:"Bitclank-Bill",display:"Bill",body:"Bitcoin-Bill",zone:"outside",x:s.restX,y:s.restY,z:s.restZ,yaw:s.ry,jet:0,weapon:0,rest};
+    BL.net.remotes.set(rec.id,rec);B.advance(2,1/60);
+    const R=BL.remotePlayers.body(rec.id),rdog=R.pet.node,reactions=D.petReactions,resting=onStomach(R),hidden=rdog.sightHidden===true;
+    Object.assign(npc.root.position,{x:s.restX+1,y:s.floor+npc.baseY,z:s.restZ+1});npc.root.visible=true;B.advance(1/60,1/60);const npcIgnored=reactions.target===null;
+    const other={id:9902,login:"portlandhodl",body:"w-s-bitcoin",zone:"outside",x:s.walkAt.x+3,y:s.floor,z:s.walkAt.z,yaw:0,jet:0,weapon:0,rest:0};
+    BL.net.remotes.set(other.id,other);B.advance(0.5,1/60);const O=BL.remotePlayers.body(other.id),farther=reactions.target===O;
+    other.x=s.walkAt.x+1;B.advance(0.5,1/60);const nearest=reactions.target===O;
+    const me=B.crew.player;BL.net.state.me={id:1,login:"tester"};Object.assign(me.root.position,{x:s.walkAt.x,y:s.floor+me.baseY,z:s.walkAt.z});B.advance(1/60,1/60);const self=reactions.target===me;BL.net.state.me=null;
+    BL.net.remotes.delete(other.id);B.advance(0.1,1/60);other.x=99;const gone=reactions.target===null||reactions.target===B.crew.player;
+    B.pilot.navigate({position:{x:s.walkAt.x+6,y:s.floor,z:s.walkAt.z+6},yaw:s.ry,pitch:.5,dist:6});B.advance(0.1,1/60);
+    rec.rest=[0,3,0,0,0,0];B.advance(0.3,1/60);rec.rest=0;rec.x=s.walkAt.x;rec.y=s.floor;rec.z=s.walkAt.z;B.advance(3,1/60);
+    const remoteLanded=down(R);
+    for(let i=0;i<120;i++){rec.x+=.02;rec.z+=.02;B.advance(1/60,1/60);}
+    B.advance(1,1/60);const remoteFollowed=follows(R);
+    rec.jet=1;B.advance(1,1/60);const remoteHat=onHat(R);rec.jet=0;B.advance(3,1/60);const remoteOff=follows(R);
+    BL.net.remotes.delete(rec.id);B.advance(0.1,1/60);
+    return {selected,resting,hidden,npcIgnored,farther,nearest,self,gone,remoteLanded,remoteFollowed,remoteHat,remoteOff,removed:!rdog.parent,feet:R.pet.feet,mode:R.pet.mode}; })()`);
+  record("hub pets: the jetpack key puts Bill's dog on his hat and takes it down beside him", ready.selected && up && off, JSON.stringify({ ready, up, off }));
+  record("hub pets: Bill's dog rests on his swaying stomach ahead of the jetpack, returns to the hat, and leaving or tipping out lands it on the ground beyond the bed, following him",
+    local.hatAgain && local.entered && local.error < 1e-4 && local.resting && local.backToHat && local.jetOff && local.bare && local.landed && local.clearOfBed && local.followed && local.tipLanded, JSON.stringify(local));
+  record("hub pets: another page's Bill shows the same stomach, hat and landing from the room's pose alone, and his dog yaps at the nearest live body within reach, never an NPC",
+    Object.entries(remote).every(([k, v]) => ["feet", "mode"].includes(k) || v === true), JSON.stringify(remote));
 } };
 const hubHammockEntry = { name: "hub hammock entry", why: "regression: walking at the side must reach the cloth's edge and step onto its middle, and Space must reach the cloth from beside or above and ease into rest without snapping", run: async (b) => {
   const result = await b.evaluate(`(() => {
@@ -12288,7 +12566,7 @@ const hubTourInput = { name: "hub tour input", why: "regression: the right arrow
   const padTouring = await b.evaluate(TOUR_START);
   await b.evaluate(`(() => {
     const original = Object.getOwnPropertyDescriptor(navigator, "getGamepads");
-    const pad = { mapping: "standard", connected: true, index: 0, axes: [0.9, 0, 0, 0], buttons: Array.from({ length: 17 }, () => ({ pressed: false, value: 0 })) };
+    const pad = { id: "Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)", mapping: "standard", connected: true, index: 0, axes: [0.9, 0, 0, 0], buttons: Array.from({ length: 17 }, () => ({ pressed: false, value: 0 })) };
     const event = (type) => { const e = new Event(type); Object.defineProperty(e, "gamepad", { value: pad }); window.dispatchEvent(e); };
     Object.defineProperty(navigator, "getGamepads", { configurable: true, value: () => [pad] });
     event("gamepadconnected");
@@ -18892,7 +19170,7 @@ const hubEntryHold = { name: "hub entry hold", why: "regression: a released hub 
     held = await b.evaluate(`(() => {
       const S = __entryHold, map = document.getElementById("destination-hud"), mode = document.getElementById("mode-hud"), canvas = document.getElementById("scene");
       const originalPads = Object.getOwnPropertyDescriptor(navigator, "getGamepads");
-      S.pad = { mapping: "standard", connected: true, axes: [0.7, -0.6, 0.4, -0.5], buttons: Array.from({ length: 12 }, () => ({ pressed: false, value: 0 })) };
+      S.pad = { id: "Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 0b13)", mapping: "standard", connected: true, axes: [0.7, -0.6, 0.4, -0.5], buttons: Array.from({ length: 12 }, () => ({ pressed: false, value: 0 })) };
       for (const i of [0, 3, 8]) S.pad.buttons[i].pressed = true;
       S.pad.buttons[7].value = 0.8; S.padReads = 0;
       Object.defineProperty(navigator, "getGamepads", { configurable: true, value: () => { S.padReads++; return [S.pad]; } });
@@ -19139,6 +19417,7 @@ scene("hub", { label: "entry spinner", query: "hubcache=keep", steps: [{ name: "
 } }] });
 scene("hub", { query: "ooga=portlandhodl:clank:lab,obl,lf&ooga=w-s-bitcoin:clank:lab,obl,lf&ooga=bc1gui:clank:lab,obl,lf&ooga=DrNeski:clank:lab,obl,lf&ooga=2140data:clank:lab,obl,lf", steps: [{ name: "work movement cave trips", why: "regression: cave traffic aimed through obstacles, started backwards detours and got trapped behind players by short lane hints", run: workCaveTrips }] });
 scene("hub", { label: "hammock", query: "solo=1&character=portlandhodl&pos=0", steps: [hubHammockEntry, hubHammockGetUp, hubHammockRopes, hubHammockEnds, hubHammock, hubHammockCamera, hubHammockRemoval] });
+scene("hub", { label: "pet rides", opts: !ONLY || onlyMatches(hubPetRides.name) ? { initScript: `(${petOptInWire.toString()})()` } : {}, query: "character=Bitcoin-Bill&jetpack=1&pos=0", steps: [hubPetOptIn, hubPetRides] });
 scene("hub", { label: "hammock exit", query: "solo=1&character=portlandhodl&pos=0&hubcache=release", steps: [hubHammockExit, trip("hub")] });
 scene("hub", { label: "room sign", query: "pos=0", steps: [{ name: "room sign copies hash", why: "rule: tapping a room sign swings it and copies its displayed eight-character code with visible confirmation", run: async (b) => {
   const point = await b.evaluate(`(() => { const B = __ooga, sign = B.headquarters.roomSigns[0], n = sign.node; Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: (value) => { window.__roomHash = value; return Promise.resolve(); } } }); window.__roomSignBefore = sign.hits; B.pilot.release(true); B.pilot.navigate({ position: { x: n.position.x, y: n.position.y, z: n.position.z }, target: { x: n.position.x, y: n.position.y - 0.2, z: n.position.z }, yaw: n.rotation.y, pitch: 0, dist: 4 }); B.advance(0.6, 1 / 60); return B.project(n.position.x, n.position.y - 0.2, n.position.z, {}); })()`);
@@ -19247,143 +19526,6 @@ const tessCacheChecks = async BL => {
 };
 
 // Regression: one hub variant pinned every other index built by a later scene.
-// The Goldbug in the bushes: the loop that calls him and the coins he drops, measured through hub-goldbug.js itself.
-const goldbugChecks = BL => {
-  const G = BL.hubGoldbug, S = BL.scene;
-  // Each row is the bushes entered in turn (-1 between them: out of every bush), one a second unless timed.
-  const walk = (loop, entries, at = (i) => i) => { let fired = 0; entries.forEach((index, i) => { if (loop.step(index, at(i))) fired++; }); return fired; };
-  const out = (seq) => seq.flatMap((i) => [i, -1]);
-  const cases = {
-    forward: walk(G.loop(), out([0, 1, 2, 3, 0])) === 1,
-    backward: walk(G.loop(), out([2, 1, 0, 3, 2])) === 1,
-    anyStart: walk(G.loop(), out([3, 0, 1, 2, 3])) === 1,
-    short: walk(G.loop(), out([0, 1, 2, 3])) === 0,
-    wrongOrder: walk(G.loop(), out([0, 2, 1, 3, 0])) === 0 && walk(G.loop(), out([0, 1, 3, 2, 1, 0])) === 0,
-    // A wrong bush starts a new loop from itself; a step back reverses nothing, it restarts there.
-    restartsFromWrong: walk(G.loop(), out([0, 1, 3, 0, 1, 2, 3])) === 1,
-    reversal: walk(G.loop(), out([0, 1, 0, 3, 2, 1, 0])) === 1,
-    // Standing still in a bush, or stepping out and back into it, counts once.
-    reentry: walk(G.loop(), [0, 0, 0, -1, 0, 1, 1, -1, 1, 2, -1, 3, 3, -1, 0]) === 1,
-    timeout: walk(G.loop(), out([0, 1, 2, 3, 0]), (i) => i * 2.6) === 0,
-    withinWindow: walk(G.loop(), out([0, 1, 2, 3, 0]), (i) => i * 2.45) === 1,
-    timeoutRestarts: walk(G.loop(), out([0, 1, 2, 3, 0, 1, 2, 3, 0]), (i) => i < 9 ? i * 2.6 : 12 + i) === 1
-  };
-  {
-    // Cooldown: a second loop right after the first is ignored, the same loop after `cooldown` fires.
-    const loop = G.loop(), first = walk(loop, out([0, 1, 2, 3, 0]));
-    const soon = walk(loop, out([0, 1, 2, 3, 0]), (i) => 20 + i);
-    const later = walk(loop, out([0, 1, 2, 3, 0]), (i) => 10 + G.LOOP.cooldown + i);
-    cases.cooldown = first === 1 && soon === 0 && later === 1 && loop.fired === 2;
-    const custom = G.loop({ cooldown: 5 });
-    cases.customCooldown = walk(custom, out([0, 1, 2, 3, 0])) === 1 && walk(custom, out([0, 1, 2, 3, 0]), (i) => 9 + i) === 0 && walk(custom, out([0, 1, 2, 3, 0]), (i) => 60 + i) === 1;
-  }
-  record("goldbug loop: all four bushes in cyclic order either way round, back to the start within the window, fires once; wrong order, a short loop or a stale one never fires, and the cooldown holds", Object.values(cases).every(Boolean), JSON.stringify(cases));
-
-  const parent = S.createNode(), geometry = BL.models.particleGeometry("#f4d26a", 0.05, 0.3);
-  const pool = G.coinPool({ parent, geometry, capacity: 5, life: 1.5 });
-  const spawned = [];
-  for (let i = 0; i < 8; i++) spawned.push(!!pool.spawn(0, 0.5, 0, 0.4, 1.2, -0.3, 0.012));
-  const bounds = { nodes: parent.children.length === 5, accepted: spawned.filter(Boolean).length === 5, refused: pool.refused === 3, live: pool.live === 5 };
-  let lowest = Infinity, maxLive = 0;
-  for (let f = 0; f < 120; f++) {
-    pool.update(1 / 120);
-    for (const c of pool.coins) if (c.life > 0) lowest = Math.min(lowest, c.node.position.y);
-    maxLive = Math.max(maxLive, pool.live);
-  }
-  bounds.restsOnFloor = lowest >= 0.012 - 1e-9 && pool.coins.every((c) => c.node.position.y === 0.012 && !c.vy);
-  for (let f = 0; f < 120; f++) pool.update(1 / 120);
-  bounds.reclaimed = pool.live === 0 && pool.coins.every((c) => !c.node.visible && c.life === 0) && maxLive === 5;
-  for (let round = 0; round < 50; round++) { pool.spawn(0, 0.5, 0, 0, 1, 0, 0); pool.update(0.2); }
-  bounds.steady = parent.children.length === 5 && pool.live <= 5 && pool.live > 0;
-  pool.clear();
-  bounds.cleared = pool.live === 0 && pool.coins.every((c) => !c.node.visible);
-  record("goldbug coins: a fixed pool that refuses past capacity, lands coins on their floor, returns every one after its life and never adds nodes", Object.values(bounds).every(Boolean), JSON.stringify(bounds));
-
-  // The show through create's own update, driven by positions as a walking Ooga gives them: a loop fires it, it runs to
-  // the end within the coin pool and the scene's particle pool, and leaves the scene's children as they were.
-  // feet: the height the walker's feet stand at over the bushes (3 m is a jetpack's or a jump's).
-  const run = (calm, busyAt = Infinity, feet = 0) => {
-    const root = S.createNode(), mirrorNode = S.createNode({ position: { x: 0, y: 1.5, z: 0.5 } });
-    S.addChild(root, mirrorNode);
-    const tally = { puffs: 0, pulses: 0, rustles: 0, maxCoins: 0, phases: new Set(), frames: 0, lines: [] };
-    const bushes = [[-2, 8], [2, 8], [2, 12], [-2, 12]].map(([x, z]) => ({ x, z, footprint: 0.7, node: S.createNode({ position: { x, y: 0, z } }) }));
-    let busy = false;
-    const egg = G.create({
-      root, bushes, memory: {}, groundAt: () => 0, calm: () => calm, busy: () => busy, random: () => 0.5,
-      fx: { puff: () => { tally.puffs++; }, sayAt: (x, y, z, text) => { tally.lines.push(text); } },
-      mirror: { mouth: { x: 0, z: 0, ry: 0 }, node: mirrorNode, ripples: { pulse: () => { tally.pulses++; return true; } } },
-      rustle: () => { tally.rustles++; }
-    });
-    // Built with the visit, off the graph until a show.
-    const before = root.children.length, point = { x: 0, y: 0, z: 0 }, builtDetached = egg.debug.built && !egg.debug.attached;
-    for (const i of [0, 1, 2, 3, 0]) {
-      Object.assign(point, { x: 0, z: 10 }); egg.update(1, point, feet);
-      Object.assign(point, { x: bushes[i].x, z: bushes[i].z }); egg.update(1, point, feet);
-    }
-    const fired = egg.active;
-    for (let f = 0; f < 60 * 20 && egg.active; f++) {
-      tally.frames++;
-      if (tally.frames === busyAt) busy = true;
-      egg.update(1 / 60, point, feet);
-      tally.phases.add(egg.debug.phase);
-      tally.maxCoins = Math.max(tally.maxCoins, egg.debug.coins.live);
-    }
-    const rig = egg.debug.rig, ended = !egg.active && root.children.length === before;
-    const result = { fired, ended, phases: [...tally.phases].join(","), puffs: tally.puffs, pulses: tally.pulses, rustles: tally.rustles,
-      coins: egg.debug.coins, maxCoins: tally.maxCoins, aborted: egg.debug.aborted, golden: rig && rig.golden, seconds: +(tally.frames / 60).toFixed(2), builtDetached,
-      lines: tally.lines.join("|"), unarmed: !egg.debug.armed, heard: { ...egg.debug.heard } };
-    // A kept hub's suspend ends a show and keeps the nodes, which play again; a full leave lets them go.
-    egg.debug.fire(false); egg.update(1 / 60, point, feet);
-    egg.suspend();
-    result.suspendKeeps = !egg.active && egg.debug.built && root.children.length === before && egg.debug.fire(false) && egg.debug.attached;
-    egg.dispose();
-    result.disposed = !egg.debug.built && root.children.length === before;
-    return result;
-  };
-  const full = run(false), calm = run(true), cut = run(false, 90), flown = run(false, Infinity, 3), hopped = run(false, Infinity, G.FEET_REACH - 0.05);
-  // His suit's parts (sleeves, trousers, pockets) turn gold with his voxels and back again.
-  const suit = (() => {
-    const M = BL.goldbugModels, g = M.create(), parts = [];
-    const visit = (n) => { if (n.goldTwin) parts.push(n); n.children.forEach(visit); };
-    visit(g.root);
-    M.setGolden(g, true); const gold = parts.every((n) => n.geometry === n.goldTwin);
-    M.setGolden(g, false); const back = parts.every((n) => n.geometry === n.plainGeometry);
-    return { parts: parts.length, gold, back };
-  })();
-  const show = {
-    suit: suit.parts === 5 && suit.gold && suit.back,
-    builtOnce: full.builtDetached && full.suspendKeeps && full.disposed,
-    feetOnGround: !flown.fired && hopped.fired,
-    full: full.fired && full.ended && /run/.test(full.phases) && /look/.test(full.phases) && /melt/.test(full.phases) && /puddle/.test(full.phases)
-      && full.pulses === 1 && full.rustles === 1 && full.lines === "Wait, I'm..." && full.unarmed && full.puffs > 10
-      && full.heard.womp === 1 && full.heard.squeak === 0 && full.heard.rustle === 1 && full.heard.sizzle === 1 && full.heard.clink > 0 && full.heard.clink <= full.coins.spawned && full.coins.spawned > 0 && full.maxCoins <= G.COINS.capacity && !full.golden && full.seconds < 15,
-    calm: calm.fired && calm.ended && !/melt|run|puddle/.test(calm.phases) && /walk/.test(calm.phases) && /fade/.test(calm.phases)
-      && calm.puffs === 0 && calm.pulses === 0 && calm.lines === "" && calm.coins.spawned === 0
-      && calm.heard.squeak === 1 && calm.heard.womp === 0 && calm.heard.rustle === 1 && calm.heard.sizzle === 0 && calm.heard.clink === 0 && calm.seconds < 4,
-    busyCuts: cut.fired && cut.ended && cut.aborted === 1 && cut.seconds < 1.6
-  };
-  record("goldbug show: the loop calls him, walked with feet on the ground, never flown over; he runs unarmed in his suit (which turns gold with him), rustling out and clinking coins, starts his one line at the glass to a sad womp, double-takes, ripples the glass once and melts to nothing within the pools, sizzling; Calm only walks and fades; an island event ends him at once; his nodes are built once a visit and kept through a suspend", Object.values(show).every(Boolean), JSON.stringify({ show, suit, full, calm, cut, flown: flown.fired, hopped: hopped.fired }));
-
-  // The current island's bushes round the mirror cave's mouth (c1), as the hub's seeded scatter places them (read from the
-  // built hub once rock's ca6024d was merged in): the meadow's four in front of it, two more meadow bushes further out,
-  // and cliff bushes on ledges (y above 0), plus one hidden, one inactive and one behind the mouth. pickBushes must
-  // yield exactly the four, in loop order. Re-read it from the hub when the scatter moves.
-  const mouth = { x: 11, z: -19.052558883257653, ry: -Math.PI / 6 };
-  const bush = (x, y, z, footprint, extra = {}) => ({ prop: "bush", active: true, x, z, footprint, node: { visible: true, position: { x, y, z } }, ...extra });
-  const four = [[-1.49, -16.14], [2.68, -16.21], [4.61, -11.32], [2.15, -10.27]];
-  const scatter = [
-    bush(2.68, 0, -16.21, 0.7), bush(4.61, 0, -11.32, 0.7), bush(3.79, 2, -23.53, 0.5), bush(20.7, 6.75, -15.56, 0.5),
-    bush(2.15, 0, -10.27, 0.7), bush(-1.49, 0, -16.14, 0.7), bush(2.7, 0, -6.91, 0.7), bush(-2.48, 0, -11.03, 0.7), bush(-3.16, 2, -23.63, 0.5),
-    bush(13.39, 0, -2.21, 0.7), bush(6, 0, -14, 0.7, { active: false }), bush(5, 0, -15, 0.7, { node: { visible: false, position: { x: 5, y: 0, z: -15 } } }),
-    bush(14, 0, -24, 0.7), { prop: "flower", active: true, x: 4, z: -14, footprint: 0.35, node: { visible: true, position: { x: 4, y: 0, z: -14 } } }
-  ];
-  const picked = G.pickBushes(scatter, mouth), at = picked ? picked.map((b) => [b.x, b.z]) : [];
-  const key = (p) => p.join(","), ring = four.map(key), start = picked ? ring.indexOf(key(at[0])) : -1;
-  const forward = at.every((p, i) => key(p) === ring[(start + i) % 4]), backward = at.every((p, i) => key(p) === ring[(start - i + 8) % 4]);
-  const pick = { four: !!picked && picked.length === 4, theFour: at.every((p) => ring.includes(key(p))), loopOrder: start >= 0 && (forward || backward),
-    footprints: !!picked && picked.every((b) => b.footprint === 0.7), tooFew: G.pickBushes(scatter.slice(0, 3), mouth) === null };
-  record("goldbug bushes: the current island's scatter round the mirror cave yields exactly its four meadow bushes, in loop order, past cliff, hidden, inactive and far ones", Object.values(pick).every(Boolean), JSON.stringify({ pick, at }));
-};
 const variantCacheChecks = BL => {
   const M = BL.models, builds = new Map(), read = M.variants(i => ({ i, serial: builds.set(i, (builds.get(i) || 0) + 1).get(i) }));
   M.setScope("hub"); const hub = read();
@@ -24460,7 +24602,6 @@ const tessAnswerChecks = (BL) => {
   const H = BL.hubGuide, place = (id) => H.STOPS.findIndex((stop) => stop.id === id);
   const route = (q, last = null) => { const a = H.answer(q, last); return a === null ? "none" : a.tour ? "tour" : a.go !== null ? `trip:${H.STOPS[a.go].id}` : `say:${a.lines[0]}`; };
   const cases = [
-    ["Take me to the whitepaper", "trip:whitepaper"], ["where is the Library of Bitcoin?", "trip:whitepaper"],
     ["Take me to the games", "trip:arcade"], ["where's B.C.A.?", "trip:bca"], ["how do I get to the factory", "trip:factory"], ["hello, where is the arcade?", "trip:arcade"],
     ["What's the Mempool island?", "say:mempool"], ["tell me about ₿IFRÖST", "say:bifrost"], ["How do I donate?", "say:donate"], ["how do I move", "say:controls"],
     ["how do I sign in", "say:signIn"], ["what's new?", "say:newsIntro"], ["who are you?", "say:whoAmI"], ["hi tess", "say:hello"],
@@ -25518,22 +25659,49 @@ const petRideChecks = BL => {
   A.root.visible=true;run(60);const back=pet.mode===4&&onHat();
   record("pets: with petRidesHat the dog leaps onto the hat when the jetpack goes on, trots round it through turns, tilts, flight and landing without a jetpack of its own, reuses its ride state, and hops down to checked ground clear of walls when it comes off",
     heel&&leaping&&grounded&&trots&&flies&&landedUp&&hopping&&down&&walled&&hidden&&back,JSON.stringify({heel,leaping,grounded,trots,flies,landedUp,hopping,down,walled,hidden,back,mode:pet.mode}));
+  // Rest takes precedence over a worn jetpack, follows the current torso through sway, and remains in first person.
+  A.puppet=true;A.camp.seat={kind:"hammock"};A.root.quaternion=BL.math.quat.create();
+  BL.math.quat.fromEuler(A.root.quaternion,-Math.PI/2,0.7,0.2);run(60);
+  const onStomach=()=>{S.updateWorld(A.root);M.invert(inverse,A.parts.torso.world);M.transformPoint(local,inverse,dog.position.x,dog.position.y,dog.position.z);
+    return pet.mode===4&&ride.kind===2&&Math.hypot(local[0]-ride.stomach.x,local[1]-ride.stomach.y,local[2]-ride.stomach.z)<1e-5;};
+  const stomach=onStomach();A.parts.head.cameraHidden=true;A.jet=null;run(20);
+  BL.math.quat.fromEuler(A.root.quaternion,-Math.PI/2,0.7,-0.3);C.pets.update(A,0);
+  const sways=onStomach()&&!dog.cameraHidden&&!pet.pack.visible;
+  A.jet={power:0,thrust:false};A.camp.seat.exit={};A.root.quaternion=null;run(60);const restToHat=ride.kind===1&&onHat();
+  A.camp.seat=null;A.parts.head.cameraHidden=false;A.jet=null;run(180);const restDown=pet.mode===0;
+  record("pets: the hat opt-in also leaps onto the stomach at settled hammock rest, keeps to the current swaying torso in first person, and returns to hat or checked ground on exit",
+    stomach&&sways&&restToHat&&restDown,JSON.stringify({stomach,sways,restToHat,restDown}));
   C.dispose();
-  // Another player's Bill: the remote copy's dog, a child of the body at its heel, rides the hat while `jet` is on.
+  // Another player's Bill uses the same checked follower as the crew, independently on each viewer.
   const oldNet=BL.net,records=new Map(),sceneRoot=S.createNode();
   BL.net={serverNow:()=>Date.now(),sendSwing:()=>true,remotes:records,subscribeShots:()=>noop,subscribeSwings:()=>noop};
-  const pool=BL.remotePlayers.create({root:sceneRoot,crew:{cavemen:new Map(),player:null,refreshStates(){},showShot:noop},visible:()=>true});
+  const pool=BL.remotePlayers.create({root:sceneRoot,crew:{cavemen:new Map(),player:null,refreshStates(){},showShot:noop},visible:()=>true,posed:(cave,feet,rec)=>{
+    cave.hammockRest=!!rec.rest;
+    if(rec.rest){cave.root.quaternion ||= BL.math.quat.create();BL.math.quat.fromEuler(cave.root.quaternion,-Math.PI/2,0,0.2);}
+    else cave.root.quaternion=null;
+  }});
   records.set(81,{id:81,login:"Bitclank-Bill",display:"Bill",body:"Bitcoin-Bill",zone:"outside",x:0,y:0,z:0,yaw:0,jet:0,weapon:0});
   const tick=n=>{for(let i=0;i<n;i++)pool.update(1/60);};
   tick(5);const R=pool.body(81),rdog=R.parts.dog,home={...rdog.position};
-  const atHeel=()=>rdog.parent===R.root&&rdog.quaternion==null&&rdog.position.x===home.x&&rdog.position.y===home.y&&rdog.position.z===home.z;
-  const rOnHat=()=>{S.updateLocal(R.parts.head);M.invert(inverse,R.parts.head.local);M.transformPoint(local,inverse,rdog.position.x,rdog.position.y,rdog.position.z);
+  const atHeel=()=>rdog.parent===sceneRoot&&rdog.quaternion==null&&Math.hypot(rdog.position.x-R.root.position.x-home.x,rdog.position.z-R.root.position.z-home.z)<0.16&&Math.abs(R.pet.feet)<1e-6;
+  const rOnHat=()=>{S.updateWorld(R.root);M.invert(inverse,R.parts.head.world);M.transformPoint(local,inverse,rdog.position.x,rdog.position.y,rdog.position.z);
     const r=Math.hypot(local[0]-seat.cx,local[2]-seat.cz);return r<=Math.max(...seat.r)+1e-3&&local[1]>=Math.min(...seat.y)-1e-3;};
   const remoteHeel=atHeel();records.get(81).jet=1;tick(60);const remoteUp=rdog.quaternion!=null&&rOnHat();
   records.get(81).jet=5;records.get(81).y=4;tick(60);const remoteFlying=rOnHat();
-  records.get(81).jet=0;tick(60);const remoteDown=atHeel();
-  record("pets: another player's opted-in dog rides the hat while their jetpack is on and is back at the heel when it comes off, from the room's jet alone",
-    remoteHeel&&remoteUp&&remoteFlying&&remoteDown,JSON.stringify({remoteHeel,remoteUp,remoteFlying,remoteDown}));
+  records.get(81).jet=0;records.get(81).y=0;tick(180);const remoteDown=atHeel();
+  records.get(81).x=3;tick(1);const lag=rdog.position.x<R.root.position.x+home.x;
+  let remoteTrots=false;for(let i=0;i<30;i++){records.get(81).x+=0.04;tick(1);remoteTrots ||= R.pet.step>0&&rdog.rotation.z!==0;}
+  tick(90);const followed=atHeel();
+  records.get(81).x=40;tick(1);const snapped=atHeel();
+  records.get(81).rest=[0,2,255,0,0,0];tick(60);
+  S.updateWorld(R.root);M.invert(inverse,R.parts.torso.world);M.transformPoint(local,inverse,rdog.position.x,rdog.position.y,rdog.position.z);
+  const remoteRest=R.pet.ride.kind===2&&R.pet.mode===4&&Math.abs(local[2]-R.pet.ride.stomach.z)<1e-5;
+  records.get(81).rest=[0,3,0,0,0,0];tick(1);const remoteExit=R.pet.ride.kind===0;
+  records.get(81).rest=0;tick(180);
+  const remoteRestDown=atHeel();
+  records.delete(81);tick(1);const removed=!rdog.parent;
+  record("pets: a live player's dog trots after their shared movement, catches up, relocates and disposes cleanly, and rides the hat from the existing jet state",
+    remoteHeel&&remoteUp&&remoteFlying&&remoteDown&&lag&&remoteTrots&&followed&&snapped&&remoteRest&&remoteExit&&remoteRestDown&&removed,JSON.stringify({remoteHeel,remoteUp,remoteFlying,remoteDown,lag,remoteTrots,followed,snapped,remoteRest,remoteExit,remoteRestDown,removed}));
   pool.dispose();BL.net=oldNet;
   if(rides===undefined)delete look.petRidesHat;else look.petRidesHat=rides;
 };
@@ -27599,10 +27767,10 @@ const distributionAudioChecks = async () => {
     runInNewContext(own, ownArt);
     const files = [...`${bundle}\n${own}`.matchAll(/\/art\/[a-z-]+-[a-f0-9]{64}\.(jpg|png|webp)/g)].map(m => m[0]);
     const expected = [...PICTURE_MODULES.filter(src => !inPage.includes(src)), ...inPage].flatMap(src => [...blocks.get(src).matchAll(/data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/=]+)/g)]);
-    record("distribution pictures: the DSB rooms', the whitepaper poster's and Cloud Hopper's data URIs leave the deferred bundles and the page's own script as exact same-origin files, both still evaluate, and the page's policy pins its rewritten script",
+    record("distribution pictures: the DSB rooms' and Cloud Hopper's data URIs leave the deferred bundles and the page's own script as exact same-origin files, both still evaluate, and the page's policy pins its rewritten script",
       pictures.length > 0 && files.length === pictures.length && files.every((url, i) => readFileSync(join(out, url)).equals(Buffer.from(expected[i][2], "base64")))
       && !/data:image\//.test(bundle) && !/data:image\//.test(own) && art.window.BL.stackchainArt["article-0"].image.startsWith("/art/")
-      && art.window.BL.whitepaperPoster.poster.startsWith("/art/") && ownArt.window.BL.cloudHopperArt.intro.startsWith("/art/") && hosted.includes(`'sha256-${hash(own)}'`)
+      && ownArt.window.BL.cloudHopperArt.intro.startsWith("/art/") && hosted.includes(`'sha256-${hash(own)}'`)
       && hosted.includes(`window.BL.terrainWorker = ${JSON.stringify(terrainWorker)};`), "staged pictures/terrain descriptor mismatch");
     // The hosted page's own script, its jumbotron snapshot and its stylesheet leave every route page as hashed files.
     const jumbo = `// ---- js/jumbotron-data.js ----\n${readFileSync(join(root, "src/js/jumbotron-data.js"), "utf8").trim()}`;
@@ -29463,6 +29631,8 @@ const unitChecks = async () => {
   await canvasSurfaceCacheChecks();
   const heldPad = await gamepadHoldProof();
   record("gamepad entry hold: real pad polling stays neutral, preserves trigger hysteresis and requires a fresh button after release or reconnect", Object.values(heldPad).every(Boolean), JSON.stringify(heldPad));
+  const padBindings = await gamepadBindingsProof();
+  record("gamepad bindings: today's layout is the default, a remap reaches every reader and survives a reload per controller family, a corrupt save falls back, Home and Menu stay fixed, games get their keys, menus take the pad, a learned profile reads an unmapped pad and the pad last pressed drives play", Object.values(padBindings).every(Boolean), JSON.stringify(padBindings));
   const retention = await hubRetentionProof();
   record("scene keeps: Factory builders survive a hub return, ordinary departures release them and only kept hubs hand off island meshes", retention.cases === 8 && retention.failures === 0, JSON.stringify(retention));
   await gpuGeometryDiagnosticChecks();
@@ -29841,7 +30011,6 @@ record("character visibility source bakes: ownership wrappers share exact immuta
   }
   factoryChecks(BL);
   tessAnswerChecks(BL);
-  goldbugChecks(BL);
   const clearance = claimClearanceProof();
   record("hub footprint clearance: conservative rejection preserves circular boundaries, live reservations and exceptional numbers", clearance.failures === 0 && clearance.cases >= 4000, JSON.stringify(clearance));
   await cloudHopperFailureChecks(BL);
