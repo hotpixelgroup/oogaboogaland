@@ -25,7 +25,6 @@
   const COARSE = window.matchMedia("(pointer: coarse)").matches;
   const PITCH = [-0.2, 1.3], DIST = [3.5, 24];
   const FOLLOW = { y: 0.9, min: 3, max: 7, pitch: [0.25, 0.8] };
-  const FLY = { speed: 5, perDist: 0.4, climb: 3, yMax: HALL.wall - 1 };
   // The field's blue, for the ripples on every field and the mirror.
   const TINT = [0.3, 0.62, 1];
   const view = (x, y, z, yaw, pitch, dist) => ({ yaw, pitch, dist, target: { x, y, z } });
@@ -150,9 +149,11 @@
     const released = BL.net.state.released;
     const denied = mayPossess(avatar) || (released && released.name === avatar.traits.name ? "That Ooga is no longer yours to drive" : null);
     BL.net.state.released = null;
+    // Nobody walks the chamber without an Ooga: one no longer theirs goes back to the island, which hands them their own.
     if (denied && people.player === avatar) {
       pilot.release(true);
       hud.toast(denied);
+      leaveChamber();
     }
   };
   const targets = [];
@@ -353,14 +354,12 @@
   // Back out to the island's gate, as the same Ooga.
   const leaveChamber = () => {
     if (leaving) return;
-    world.pilotDetached = !pilot.player;
     world.pilot = pilot.player ? pilot.player.traits.name : null;
     leaving = go("hub");
   };
   // Through a window to its world, as the same Ooga, once a transition is free to start.
   const travel = (w) => {
     if (leaving) return;
-    world.pilotDetached = false;
     world.pilot = avatar.traits.name;
     if (!go(w.row.scene, null, !!w.row.instant)) return;
     leaving = true;
@@ -375,11 +374,11 @@
     pilot.setActive(true);
   };
   const onKey = (e) => {
-    if (e.key === "0" && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !leaving) return pilot.resetCamera();
-    if ((e.key === "x" || e.key === "X") && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !leaving) {
+    if (BL.controls.matches(e, "resetView") && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !leaving) return pilot.resetCamera();
+    if (BL.controls.matches(e, "view") && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !leaving) {
       if (pilot.modeAction("mode-toggle")) { e.preventDefault(); return true; }
     }
-    if (e.key === "Escape") {
+    if (BL.controls.matches(e, "escape")) {
       if (!pilot.escape()) leaveChamber();
       return true;
     }
@@ -644,8 +643,10 @@
       if (r > max) { p.x *= max / r; p.z *= max / r; }
     };
     pilot = pilotMod.create({
+      // The visitor's view, combat and weapon come in from the last scene and go on to the next (pilot.js `carried`).
+      carry: true,
       renderer, canvas, camera, hud, presets: PRESETS, landing: "entrance", pitch: PITCH, dist: DIST,
-      follow: FOLLOW, fly: FLY, clampTarget, clampCamera, ceilingAt: () => HALL.wall + 2, coarse: COARSE, mayPossess,
+      follow: FOLLOW, clampTarget, clampCamera, ceilingAt: () => HALL.wall + 2, coarse: COARSE, mayPossess,
       close: { eyeHeight: 1.1, eyeRatio: 0.95, eyeForward: 0.16, pitch: [-1.35, 1.35], trailingDist: 4, orbitDist: 5, maxStep: 0.6, groundAt: groundFor }
     });
     const tipFor = (hit) => {
@@ -666,7 +667,7 @@
         if (o.kind === "window") {
           const w = o.window;
           if (PRESETS[w.row.id]) pilot.goPreset(w.row.id);
-          return hud.toast(w.kind === "travel" && !avatar ? "Only an Ooga can cross. Walk one in from the island." : TIPS[w.kind][1]);
+          return hud.toast(TIPS[w.kind][1]);
         }
         if (o.kind === "core") {
           pilot.goPreset("core");
@@ -695,36 +696,42 @@
     dust = BL.dressing.motes({ count: 160, span: 14, low: 0.5, high: 9 });
     addChild(root, dust.node);
     scene = build(looks);
-    // The visitor's Ooga: `character=` on a page that opens here, else the one handed over, else a free view.
+    // The visitor's Ooga: `character=` on a page that opens here, else the one handed over, else their own or assigned
+    // one (`preferredCharacter`): there is no view without one.
     const asked = ctx.from === null ? new URLSearchParams(location.search).get("character")?.trim().toLowerCase() : null;
     const named = asked ? contributors.roster.find((c) => c.name.toLowerCase() === asked) : null;
-    const returningOwn = pilot.loginViewRestored && BL.net.ownCharacter();
-    const picked = returningOwn ? contributors.roster.find(c => c.name === returningOwn.handle)
-      : named || world.pilot && contributors.roster.find((c) => c.name === world.pilot) || null;
+    const assigned = BL.net.preferredCharacter();
+    const picked = named || world.pilot && contributors.roster.find((c) => c.name === world.pilot)
+      || assigned && contributors.roster.find((c) => c.name === assigned.handle) || null;
     const playerName = picked && !BL.net.mayDrive(picked.name) ? picked.name : null;
     world.pilot = null;
     if (playerName) {
-      playerWorld = { level: 0, weapons: new Map(), magazine: { owned: false, count: 0, ammo: 0, carrier: null } };
+      // The visitor's weapons and rounds are the page's (`world.weapons`), so none come back refilled at the door.
+      playerWorld = { level: 0, weapons: world.weapons, magazine: world.magazine };
       const shared = { root, input, hud, game, world: playerWorld, playerName, weaponsEnabled: true, fx, viewYaw: 0, outsideActors: () => remotes ? remotes.actors() : NO_ACTORS, outsideActorHeight: BL.remotePlayers.BODY_HEIGHT, groundAt: groundFor, walkable: walkableFor };
       people = shared.crew = BL.crew.create(shared);
+      world.weapons = playerWorld.weapons;
+      world.magazine = playerWorld.magazine;
       pilot.bind(shared);
       avatar = people.cavemen.get(playerName);
       Object.assign(avatar.root.position, { x: 0, y: avatar.baseY, z: HALL.r - 1.6 });
       avatar.root.rotation.y = Math.PI;
-      pilot.possess(avatar);
+      // In as it left the last scene: view and combat (pilot.js `arrive`). The chamber and its tunnel have no weapons, so
+      // what it came in with waits parked until it leaves.
+      pilot.arrive(avatar);
+      people.parkWeapons(avatar);
+      pilot.refreshCombat();
       scene.gate.phase.body.track(avatar.root, avatar.traits.height * 2, Math.max(avatar.headOpen.verts.length, avatar.headClosed.verts.length));
       for (const w of scene.windows) w.body.track(avatar.root, avatar.traits.height * 2, Math.max(avatar.headOpen.verts.length, avatar.headClosed.verts.length));
       // Back from a world, out of its window: standing in front of it, facing the mechanism. In from the island: through
       // the field at the tunnel's end.
       const from = scene.windows.find((w) => w.kind === "travel" && w.row.scene === ctx.from);
-      if (!pilot.loginViewRestored) {
-        if (from) standBefore(from, 2.8);
-        else if (ctx.from === "hub") pilot.navigate(GATE);
-      }
+      if (from) standBefore(from, 2.8);
+      else if (ctx.from === "hub") pilot.navigate(GATE);
     }
     unsubscribeAccount = BL.net.subscribe(accountChanged);
     // Other signed-in players in the chamber, as the Oogas they drive.
-    remotes = BL.remotePlayers.create({ root, crew: people, fx });
+    remotes = BL.remotePlayers.create({ root, crew: people, fx, unarmed: true });
     // The driven Ooga's own footsteps, heard by this page alone (footsteps.js).
     footsteps = BL.footsteps.create();
     lightUp(scene);
@@ -964,7 +971,7 @@
     BL.net.setBody(drivenHere ? drivenHere.traits.name : null);
     if (drivenHere) {
       const p = drivenHere.root.position;
-      BL.net.sendPose(p.x, p.y - drivenHere.baseY, p.z, drivenHere.root.rotation.y);
+      BL.net.sendPose(p.x, p.y - drivenHere.baseY, p.z, drivenHere.root.rotation.y, null, 0, BL.crew.weaponFlags(drivenHere), BL.crew.visualState(drivenHere));
       BL.net.setHealth(drivenHere.health.value, drivenHere.health.stunned);
     }
     remotes.update(dt);
@@ -1014,16 +1021,11 @@
       L[o + 4] = LANTERN_GLOW[0] * k; L[o + 5] = LANTERN_GLOW[1] * k; L[o + 6] = LANTERN_GLOW[2] * k;
     }
     dust.update(elapsed, pilot.orbit.target.x, pilot.orbit.target.z);
-    // Out through the field: walked into, or flown into with the free view.
-    if (!leaving) {
-      if (pilot.player) {
-        const p = pilot.player.root.position;
-        if (p.z > ENTRY.field && Math.abs(p.x) < ENTRY.halfW) leaveChamber();
-        else windowsFrame(previousX, previousY, previousZ);
-      } else if (!avatar) {
-        const a = pilot.controls.read(), p = camera.position;
-        if (Math.hypot(a.x, a.y) > 0.05 && p.z > ENTRY.field - 1.2 && Math.abs(p.x) < ENTRY.halfW) leaveChamber();
-      }
+    // Out through the field, walked into.
+    if (!leaving && pilot.player) {
+      const p = pilot.player.root.position;
+      if (p.z > ENTRY.field && Math.abs(p.x) < ENTRY.halfW) leaveChamber();
+      else windowsFrame(previousX, previousY, previousZ);
     }
     stepTweens(dt);
     fx.update(dt, elapsed);
@@ -1037,10 +1039,7 @@
     stopPictures();
     // Left by Back or Forward rather than by a way out of its own, the chamber hands the Ooga on, so the next scene
     // plays the same one; the way out to the island and a window have handed theirs over already.
-    if (!leaving) {
-      world.pilotDetached = !pilot.player;
-      world.pilot = pilot.player ? pilot.player.traits.name : null;
-    }
+    if (!leaving) world.pilot = pilot.player ? pilot.player.traits.name : null;
     unsubscribeAccount();
     unsubscribeAccount = null;
     BL.net.setBody(null);
@@ -1054,6 +1053,7 @@
     remotes = null;
     footsteps.dispose();
     footsteps = null;
+    if (avatar) people.unparkWeapons(avatar);
     if (people) people.dispose();
     fx.dispose();
     pilot.dispose();
@@ -1099,5 +1099,7 @@
     }
   };
   BL.scenes = BL.scenes || {};
+  bifrostScene.controlsHelp = touch => { const help = pilot.controlsHelp(touch); help.title = "₿IFRÖST · " + help.title; return help; };
+  bifrostScene.controlsHelpHold = on => { pilot.controls.reset(); pilot.setMenuOpen(on, false); };
   BL.scenes.bifrost = bifrostScene;
 })();

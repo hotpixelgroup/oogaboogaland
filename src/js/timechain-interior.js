@@ -230,7 +230,7 @@
     const view = { yaw: 0, pitch: 0.05, dist: 4, target: { x: L.arrival.x, y: 1.6, z: L.arrival.z } };
     const pilot = pilotMod.create({
       renderer, canvas, camera, hud, presets: { entrance: view }, landing: "entrance", pitch: [-0.2, 1.2], dist: [3, 8],
-      follow: { y: 0.9, min: 3, max: 6, pitch: [0.2, 0.7] }, fly: { speed: 4, perDist: 0.4, climb: 2, yMax: L.wall - 1 },
+      follow: { y: 0.9, min: 3, max: 6, pitch: [0.2, 0.7] },
       clampTarget, clampCamera, observeOrbit: keepCameraInside, ceilingAt: (x, z) => roof(x, z, 0), coarse: COARSE, mayPossess: (cave) => BL.net.mayDrive(cave.traits.name),
       jetpackStatus: () => NO_JETPACK,
       close: { eyeHeight: 1.1, eyeRatio: 0.95, eyeForward: 0.16, pitch: [-1.35, 1.35], trailingDist: 4, orbitDist: 5, maxStep: 0.6, groundAt }
@@ -328,10 +328,10 @@
     const NO_ACTORS = [], actors = [];
 
     // The visitor's Ooga: the one handed over, else the visit's, else `character=` on a page that opens here, else
-    // their own (signed in) or the roster's first they may drive.
+    // their own or assigned one (`preferredCharacter`), else the roster's first they may drive.
     const mayPick = (entry) => !BL.net.mayDrive(entry.name);
     const asked = ctx.from === null ? new URLSearchParams(location.search).get("character")?.trim().toLowerCase() : null;
-    const own = BL.net.ownCharacter();
+    const own = BL.net.preferredCharacter();
     const wanted = [visit.character, world.pilot, asked && contributors.roster.find((c) => c.name.toLowerCase() === asked)?.name, own && own.handle];
     let playerName = null;
     for (const name of wanted) {
@@ -428,7 +428,7 @@
       BL.net.setBody(avatar ? avatar.traits.name : null);
       if (avatar) {
         const p = avatar.root.position;
-        BL.net.sendPose(p.x, p.y - avatar.baseY, p.z, avatar.root.rotation.y);
+        BL.net.sendPose(p.x, p.y - avatar.baseY, p.z, avatar.root.rotation.y, null, 0, 0, BL.crew.visualState(avatar));
       }
       BL.net.setZone(room.zone);
       if (guide.stage) BL.net.passDoor(room.zone, "in");
@@ -455,7 +455,6 @@
       if (leaving) return;
       world.sphereExit = { ...exitNote(signedOut), pose };
       world.pilot = avatar ? avatar.traits.name : null;
-      world.pilotDetached = !avatar;
       BL.net.setBody(null);
       BL.net.setZone("none");
       leaving = go("hub", "timechain", !!pose && ctx.hubPolicy === "keep");
@@ -538,7 +537,7 @@
       else if (action.startsWith("mode-") && !guide.stage) pilot.modeAction(action);
     });
     const mode = document.getElementById("sphere-mode"), subtitle = document.getElementById("sphere-subtitle");
-    if (subtitle) subtitle.textContent = `Timechain Sphere · ${room.name}`;
+    if (subtitle) subtitle.textContent = `TCS · ${room.name}`;
     // The chip under the title: the room and its size, or that this is a solo copy; checked once a second.
     let modeWait = 0;
     const showMode = () => {
@@ -549,7 +548,7 @@
       if (mode.textContent !== text) mode.textContent = text;
     };
     showMode();
-    hud.hint(guide.stage ? `Entering ${room.name}` : COARSE ? "Stick walks · pinch changes view · EXIT by the doors leaves" : "W A S D walk · scroll changes view · X mouse-look · Space at Exit leaves", 5000);
+    if (guide.stage) hud.hint(`Entering ${room.name}`, 5000);
 
     // The guided walks, steered as a held stick would steer them; the view turns with the walk, its pitch easing to
     // `pitch` (level on the way out, so the island's view, hung level, lines up).
@@ -574,7 +573,6 @@
       guided = false;
       people.steer(0, 0, 0, 0, 0);
       pilot.setActive(true);
-      hud.hint(COARSE ? "Stick walks · pinch changes view · EXIT by the doors leaves" : "W A S D walk · scroll changes view · X mouse-look · Space at Exit leaves", 5000);
     };
     const runGuide = (dt) => {
       guide.t += dt;
@@ -651,7 +649,7 @@
         BL.net.setBody(driven ? driven.traits.name : null);
         if (driven) {
           const p = driven.root.position;
-          BL.net.sendPose(p.x, p.y - driven.baseY, p.z, driven.root.rotation.y);
+          BL.net.sendPose(p.x, p.y - driven.baseY, p.z, driven.root.rotation.y, null, 0, 0, BL.crew.visualState(driven));
           BL.net.setHealth(driven.health.value, driven.health.stunned);
         }
       }
@@ -676,12 +674,12 @@
     const drawExtra = (ctx2d, project) => { if (remotes) remotes.drawNames(ctx2d, project); };
     const overlay = (dt) => fx.drawOverlay(dt, drawExtra);
     const onKey = (e) => {
-      if (e.key === "0" && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !guide.stage) return pilot.resetCamera();
+      if (BL.controls.matches(e, "resetView") && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !guide.stage) return pilot.resetCamera();
       if (e.key.toLowerCase() === "x" && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey && !guide.stage) {
         e.preventDefault();
         return pilot.modeAction("mode-toggle");
       }
-      if (e.key === "Escape") {
+      if (BL.controls.matches(e, "escape")) {
         if (!guide.stage && !pilot.escape()) walkOut();
         return true;
       }
@@ -695,6 +693,18 @@
     reader.start();
     holdings.start();
 
+    shell.controlsHelp = touch => {
+      const help = pilot.controlsHelp(touch);
+      // The room intercepts these bindings before the pilot, including R/F in
+      // free-camera mode. Keep its reference under the same input policy.
+      help.rows = help.rows.flatMap(row => {
+        const keys = row.keys.filter(key => !WEAPON_KEYS.has(key));
+        return row.keys.length && !keys.length ? [] : [{ ...row, keys }];
+      });
+      help.title = "Timechain Sphere · " + help.title;
+      return help;
+    };
+    shell.controlsHelpHold = on => { pilot.controls.reset(); pilot.setMenuOpen(on, false); };
     shell.root = root;
     shell.camera = camera;
     shell.input = input;
@@ -711,7 +721,6 @@
     const leave = () => {
       // Left by Back or Forward rather than the doors, the Ooga still goes out by the passage if the island is next.
       if (!leaving) {
-        world.pilotDetached = !avatar;
         world.pilot = avatar ? avatar.traits.name : null;
         world.sphereExit = exitNote(!BL.net.state.me);
       }

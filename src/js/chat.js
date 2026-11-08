@@ -1,6 +1,6 @@
 // Ooga Chat, the sheet's last tab: one live conversation for every signed-in player on the island, on the
-// page the Worker serves (docs/auth-and-presence.md). The tab shows only where a backend answered; signed
-// out, the input is off and the panel offers the footer's sign-in. The room names each speaker and holds
+// page the Worker serves (docs/auth-and-presence.md). Like Online Oogas, the tab is hidden while signed
+// out. Contributor sign-in lives in the Contributing Oogas panel. The room names each speaker and holds
 // the last CHAT_KEEP lines in its memory alone, not persisted to the database: a reload fetches the room history, and a
 // room that slept forgets it; an open page keeps what it saw until reload or explicit logout.
 // Cost: a line heard while the panel is not showing only joins a capped array, and the rows are drawn in one
@@ -10,6 +10,10 @@
 // A refusal or disconnect keeps the draft and id, unless the player edits it into a different message.
 // Escape leaves the input with the sheet open. Keys typed in the sheet never reach a scene
 // (controls.js, director.js). On a phone the sheet rises above the keyboard while the input has focus.
+// Unread lines (#430): a line from someone else that this page had not had, heard while the visitor is not in the
+// panel, counts on the tab until they look at it (`sheet.watchViews`). The first lines the room hands over on arrival
+// do not count; on a rejoin (a reconnect, a tab back from the background), only lines newer than any this page had.
+// While the panel shows its private view (#188), the island's lines are out of sight and still count.
 // Exports account (fed `BL.net.state`), heard (fed the room's lines) and stats.
 (() => {
   "use strict";
@@ -28,9 +32,11 @@
   const announce = (text) => { if (announcement && announcement.textContent !== text) announcement.textContent = text; };
   const viewport = window.visualViewport, fine = window.matchMedia("(pointer: fine)");
   const lines = [];
-  const identity = $("chat-identity"), accountLogin = $("chat-account-login"), displayForm = $("chat-display-form"), displayInput = $("chat-display"), displaySave = $("chat-display-save"), displayStatus = $("chat-display-status");
+  const identity = $("chat-identity"), displayForm = $("chat-display-form"), displayInput = $("chat-display"), displaySave = $("chat-display-save"), displayStatus = $("chat-display-status");
   let identityId = "", identityDisplay = "", displaySaving = false, displayComposing = false;
   let showing = false, drawn = true, live = false, me = "", composing = false, pending = null, notice = "", revision = 0, logoutEpoch = 0, ackTimer = 0;
+  let unread = 0, newest = -1, synced = false;
+  const setUnread = (count) => { unread = count; BL.sheet.setBadge("chat", count); };
   const stopWaiting = () => { window.clearTimeout(ackTimer); ackTimer = 0; if (pending) pending.awaiting = false; };
 
   const row = (line) => {
@@ -95,11 +101,22 @@
       update();
       return;
     }
+    let fresh = 0;
     if (joined) {
       const seen = new Set(lines.map((line) => line.id));
-      for (const line of list) if (!seen.has(line.id)) lines.push(line);
+      for (const line of list) if (!seen.has(line.id)) {
+        lines.push(line);
+        if (synced && line.id > newest && line.login.toLowerCase() !== me) fresh++;
+      }
       lines.sort((a, b) => a.id - b.id);
-    } else for (const line of list) lines.push(line);
+      synced = true;
+    } else for (const line of list) {
+      lines.push(line);
+      if (line.id > newest && line.login.toLowerCase() !== me) fresh++;
+    }
+    for (const line of list) if (line.id > newest) newest = line.id;
+    // The panel's private view (private-chat.js) hides the island's lines, so they still count there.
+    if (fresh && (!BL.sheet.attending(panel) || panel.dataset.view === "private")) setUnread(unread + fresh);
     const over = Math.max(0, lines.length - CHAT_KEEP);
     if (over) lines.splice(0, over);
     if (!showing) {
@@ -125,28 +142,32 @@
   watch.observe(panel, { attributes: true, attributeFilter: ["hidden"] });
   watch.observe(sheet, { attributes: true, attributeFilter: ["data-open", "hidden"] });
 
-  // What is left of a line once sanitized as the room will.
+  // Validate exactly as the room will; only surrounding whitespace is trimmed.
   const update = () => {
-    const length = BL.donations.sanitize(input.value, Infinity).length;
-    const unsupported = /[^\w .,!'?@#:-]/.test(input.value);
-    const feedback = unsupported ? "Use letters A–Z, a–z, digits, spaces and _ . , ! ? ' @ # : - only. Remove unsupported characters before sending." : notice;
+    const policy = BL.chatPolicy, length = policy.text(input.value).length, problem = policy.error(input.value);
+    const unsupported = !problem && !net.state.chatUnicode && !policy.legacy(policy.text(input.value));
+    const feedback = problem === "controls" ? "Remove control characters, line breaks or directional formatting before sending."
+      : problem === "unicode" ? "This draft contains incomplete Unicode. Edit it before sending."
+      : problem === "length" ? "Message is over 160 UTF-16 units. Shorten it before sending."
+      : unsupported ? "This server does not yet support extended chat text. Keep the draft and reconnect after the server update."
+      : notice;
     left.textContent = String(CHAT_MAX - length);
     left.dataset.over = String(length > CHAT_MAX);
-    sendButton.disabled = !live || !!(pending && pending.awaiting) || !length || length > CHAT_MAX || unsupported;
+    sendButton.disabled = !live || !!(pending && pending.awaiting) || !!problem || unsupported;
     status.hidden = live && !feedback;
     if (live) statusText.textContent = feedback;
     announce(statusText.textContent);
   };
-  const account = ({ me: player, room, logoutEpoch: epoch = logoutEpoch }) => {
+  const account = ({ me: player, room, online = 0, logoutEpoch: epoch = logoutEpoch }) => {
     if (epoch !== logoutEpoch) {
       logoutEpoch = epoch;
       stopWaiting(); pending = null; notice = ""; revision++; input.value = "";
       lines.length = 0; log.replaceChildren(); drawn = true;
+      newest = -1; synced = false; setUnread(0);
       announce("Signed out. Local chat and draft cleared.");
     }
     if (identity) {
       identity.hidden = !player;
-      accountLogin.textContent = player ? "@" + player.login : "";
       const id = player ? String(player.id) : "", display = player ? player.display || player.login : "";
       if (id !== identityId || display !== identityDisplay) { displayInput.value = display; displayStatus.textContent = ""; }
       identityId = id; identityDisplay = display;
@@ -158,11 +179,11 @@
     input.disabled = !live;
     input.placeholder = live ? "Say something" : "";
     status.hidden = live;
-    const chip = live ? "Live" : !player ? "Signed out" : room === "connecting" ? "Joining" : room === "paused" ? "Paused" : "Offline";
+    const chip = live ? `${online} online` : "Offline";
     if (roomChip.textContent !== chip) {
       roomChip.textContent = chip;
-      roomChip.dataset.tone = live ? "live" : room === "connecting" ? "wait" : "idle";
     }
+    roomChip.dataset.tone = live ? "live" : "idle";
     statusText.textContent = room === "revoked" ? ROOM_WORDS.revoked : !player ? (logoutEpoch ? "Signed out. Local chat and draft cleared. Sign in to chat." : "Sign in to chat with everyone on the island.") : ROOM_WORDS[room] || "";
     update();
   };
@@ -170,7 +191,7 @@
   const submit = () => {
     if (composing || sendButton.disabled) return;
     const draft = input.value;
-    const text = BL.donations.sanitize(draft, Infinity);
+    const text = BL.chatPolicy.text(draft);
     if (!pending || pending.text !== text) pending = { clientId: window.crypto.randomUUID(), text };
     pending.draft = draft;
     pending.revision = revision;
@@ -243,13 +264,17 @@
     if (!keyboardSheet) return;
     keyboardSheet.style.removeProperty("--chat-keyboard");
     keyboardSheet.style.removeProperty("--chat-viewport");
+    delete keyboardSheet.dataset.keyboard;
     keyboardSheet = null;
   };
   const fit = () => {
     const owner = panel.closest(".sheet");
     if (keyboardSheet !== owner) { clearFit(); keyboardSheet = owner; }
     if (!owner) return;
-    owner.style.setProperty("--chat-keyboard", `${Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop))}px`);
+    const keyboard = Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop));
+    owner.style.setProperty("--chat-keyboard", `${keyboard}px`);
+    if (keyboard > 0) owner.dataset.keyboard = "true";
+    else delete owner.dataset.keyboard;
     owner.style.setProperty("--chat-viewport", `${Math.floor(viewport.height)}px`);
     // A short landscape viewport scrolls the panel rather than hiding the focused editor.
     const field = document.activeElement;
@@ -273,7 +298,11 @@
     if (viewport && (document.activeElement === input || document.activeElement === displayInput)) fit();
   });
 
+  BL.sheet.watchViews(panel, () => { if (unread && panel.dataset.view !== "private") setUnread(0); });
+  // Turning back from the private view to the island's lines, with the panel up, is looking at them.
+  new MutationObserver(() => { if (unread && panel.dataset.view !== "private" && BL.sheet.visible(panel)) setUnread(0); })
+    .observe(panel, { attributes: true, attributeFilter: ["data-view"] });
   net.subscribe(account);
   net.subscribeChat(heard);
-  BL.chat = { account, heard, get stats() { return { lines: lines.length, rows: log.childElementCount, showing, drawn, live }; } };
+  BL.chat = { account, heard, get stats() { return { lines: lines.length, rows: log.childElementCount, showing, drawn, live, unread }; } };
 })();

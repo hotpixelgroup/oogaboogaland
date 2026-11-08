@@ -51,11 +51,13 @@ export const createGitHub = (repo, token, fetcher = fetch) => {
     const result = await request("graphql", "POST", {
       query: "mutation($input: CreateCommitOnBranchInput!) { createCommitOnBranch(input: $input) { commit { oid } } }",
       variables: { input: { branch: { repositoryNameWithOwner: repo, branchName: branch }, expectedHeadOid: expected,
-        message: { headline: message }, fileChanges: {
+        message: { headline: message.split("\n")[0], ...(message.includes("\n") ? { body: message.slice(message.indexOf("\n") + 1).trim() } : {}) }, fileChanges: {
           additions: additions.map(({ path, source }) => ({ path, contents: Buffer.from(source).toString("base64") })),
           deletions: deletions.map((path) => ({ path })) } } }
     });
     return result.data.createCommitOnBranch.commit.oid;
   };
-  return { repo, api, list, tree, file, commit };
+  const account = (idOrLogin) => request(Number.isSafeInteger(idOrLogin)
+    ? `user/${idOrLogin}` : `users/${encodeURIComponent(idOrLogin)}`);
+  return { repo, api, list, tree, file, commit, account };
 };

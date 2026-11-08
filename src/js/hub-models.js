@@ -123,7 +123,8 @@
     "?": ["111", "001", "011", "000", "010"],
     "+": ["000", "010", "111", "010", "000"],
     "-": ["000", "000", "111", "000", "000"],
-    ".": ["000", "000", "000", "000", "010"]
+    ".": ["000", "000", "000", "000", "010"],
+    "'": ["010", "010", "000", "000", "000"]
   };
   // The carved headline has room for both diagonals; a three-cell M reads too much like H at bridge distance.
   const CARVED_M = ["10001", "11011", "10101", "10001", "10001"];
@@ -151,6 +152,8 @@
     chute: { ink: { "#": "#e0452b", "+": "#f2efe8", "L": "#f2efe8", "S": "#f5d142" }, rows: ["..###..", ".#+#+#.", "#+#+#+#", "L.....L", ".L...L.", "..LSL..", "...S..."] },
     rocket: { ink: { "#": "#f2efe8", "R": "#e0452b", "W": "#7fe0ff", "F": "#ffb02e" }, rows: ["...R...", "..RRR..", "..#W#..", "..###..", ".R###R.", "R.#F#.R", "...F..."] },
     cloud: { ink: { "#": "#f2efe8", "+": "#ffffff", "S": "#a9d7ef" }, rows: [".......", "..++...", ".++++..", "++##+++", "+######", ".SSSSS.", "......."] },
+    // Ghost Hunter: the hunt's white ghost, its eyes and mouth dark.
+    ghost: { ink: { "#": "#f2efe8", "+": "#ffffff", "*": "#1b1b1e" }, rows: ["..+++..", ".+####.", "+#*#*##", "+######", "+##*###", "+######", "#.#.#.#"] },
     // B.C.A.: a walnut abacus whose beads are bananas and ivory, on brass rods.
     abacus: { ink: { "W": "#8a5a32", "-": "#d9b45a", "Y": "#f5d142", "I": "#f2efe8" }, rows: ["WWWWWWW", "WYY--IW", "W-IY-YW", "WI--YYW", "WYI--IW", "WWWWWWW", "W.....W"] }
   };
@@ -1715,5 +1718,5 @@
       ...[-0.8, 0.8].map(brace)
     );
   });
-  BL.hubModels = { SIGN_GLYPHS, SIGN_ICONS, AMMO_BANANA, jetpack, jetFlame, caveMouthRim, mirrorPanel, matrixPrisonBars, sealedCaveFace, matrixLeverPlate, matrixLeverLights, matrixLeverHub, matrixLeverArm, matrixLeverGrip, matrixLeverLabels, matrixGlyph, caveSign, postSign, CAVE_SIGN_WIDTH, CAVE_SIGN_HEIGHT, gate, caveShelves, libraryNook, libraryLamp, LIBRARY_SHELF_Y, entropyLab, bedroll, tree, bush, rock, breakableRock, voxelRock, puff, clumped, leafy, pointedLeaf, flower, FLOWER_INKS, limb, padNormals, flatInto, canopySupport, withJungle, liana, sagPoints, sprig, garland, bamboo, lashing, log, thatch, altarSlab, altarBlock, woodCrate, barrel, flowerTuft, torch, grass, lawnTuft, firepit, butterfly, firefly, ember, vine, cloud, ladder, dock, TREE_HEIGHT };
+  BL.hubModels = { SIGN_GLYPHS, CARVED_M, SIGN_ICONS, AMMO_BANANA, jetpack, jetFlame, caveMouthRim, mirrorPanel, matrixPrisonBars, sealedCaveFace, matrixLeverPlate, matrixLeverLights, matrixLeverHub, matrixLeverArm, matrixLeverGrip, matrixLeverLabels, matrixGlyph, caveSign, postSign, CAVE_SIGN_WIDTH, CAVE_SIGN_HEIGHT, gate, caveShelves, libraryNook, libraryLamp, LIBRARY_SHELF_Y, entropyLab, bedroll, tree, bush, rock, breakableRock, voxelRock, puff, clumped, leafy, pointedLeaf, flower, FLOWER_INKS, limb, padNormals, flatInto, canopySupport, withJungle, liana, sagPoints, sprig, garland, bamboo, lashing, log, thatch, altarSlab, altarBlock, woodCrate, barrel, flowerTuft, torch, grass, lawnTuft, firepit, butterfly, firefly, ember, vine, cloud, ladder, dock, TREE_HEIGHT };
 })();

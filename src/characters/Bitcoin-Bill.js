@@ -55,7 +55,7 @@
   };
   BL.characters.add({
     handle: "Bitcoin-Bill",
-    github: "Bitcoin-Bill",
+    github: "Bitclank-Bill",
     display: "Bitclank Bill",
     joined: 1792943472,
     lastCommit: 1792943472,
@@ -65,7 +65,7 @@
       portrait: { min: [-1, -2, 0], max: [7, 6, 8] }
     },
     voice: {
-      poke: "Bitcoin the easy way!",
+      poke: "clank clank",
       idle: [
         "Roll the dice, make the seed.",
         "Not your keys, not your coconuts.",

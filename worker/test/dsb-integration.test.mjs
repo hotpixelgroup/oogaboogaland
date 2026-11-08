@@ -32,6 +32,7 @@ const roomClass = (extra = {}) => {
 };
 test("room broadcasts DSB zone changes, persists them and keeps ownership enforcement", () => {
   const Room = roomClass(), room = Object.create(Room.prototype), sent = [];
+  room.hockeyTables = [null, null, null];
   room.players = new Map(); room.chatBuckets = new Map(); room.voiceSig = new Map();
   let attachment;
   const ws = { deserializeAttachment: () => ({ id: 1 }), serializeAttachment: value => { attachment = value; }, send: text => sent.push(JSON.parse(text)) };
@@ -65,6 +66,118 @@ test("room broadcasts DSB zone changes, persists them and keeps ownership enforc
   assert.ok(sent.some(m => m.t === "release" && m.reason === "not-yours"));
   room.webSocketMessage(ws, JSON.stringify({ t: "zone", name: "scene-bifrost" }));
   assert.equal(room.view(player).zone, "scene-bifrost");
+});
+
+test("room passes DSB wallets to the pages in their zone, and hands the live ones to whoever walks in", () => {
+  const Room = roomClass(), room = Object.create(Room.prototype), now = Date.now();
+  room.hockeyTables = [null, null, null];
+  room.players = new Map(); room.chatBuckets = new Map(); room.voiceSig = new Map();
+  room.scheduleFlush = () => {};
+  const join = (id, login, zone) => {
+    const sent = [];
+    const ws = { deserializeAttachment: () => ({ id }), serializeAttachment() {}, send: text => sent.push(JSON.parse(text)) };
+    const p = room.record(ws, { id, login, display: login, contributor: true, body: login, x: 0, y: 0, z: 0, yaw: 0, zone });
+    room.players.set(id, p);
+    return { ws, p, sent };
+  };
+  const send = (who, msg) => { who.p.walletBucket = null; room.webSocketMessage(who.ws, JSON.stringify({ t: "wallet", ...msg })); };
+  const heard = (who) => who.sent.filter(m => m.t === "wallet" || m.t === "wallets");
+  const owner = join(1, "YellowBrokeIt", "dsb-outside"), near = join(2, "w-s-bitcoin", "dsb-outside"), hub = join(3, "NickDaGreek", "outside"), store = join(4, "bc1gui", "dsb-free-wallets");
+  send(owner, { k: "take", u: 7, l: 2, f: 21 });
+  const [taken] = heard(near);
+  assert.deepEqual(taken.w.slice(0, 4), [1, 7, 2, "c"], "a player in the same zone sees it carried");
+  assert.ok(Math.abs(taken.w[11] - (now + 21000)) < 1000, "and its fuse's end on the room's clock");
+  assert.equal(heard(hub).length + heard(owner).length, 0, "nobody else, and not the owner, hears it");
+  send(owner, { k: "throw", u: 7, f: 18, x: 1, y: 0, z: 2, vx: 1, vy: 2, vz: 3 });
+  assert.deepEqual(heard(near).at(-1).w.slice(3, 10), ["f", 1, 0, 2, 1, 2, 3]);
+  send(owner, { k: "take", u: 8, l: 0, f: 21 });
+  send(owner, { k: "take", u: 9, l: 0, f: 21 });
+  assert.equal(heard(near).at(-1).w[1], 8, "one carried at a time");
+  room.webSocketMessage(owner.ws, JSON.stringify({ t: "zone", name: "dsb-free-wallets" }));
+  assert.deepEqual(heard(store).at(-1).w.slice(1, 4), [8, 0, "c"], "the one carried walks into the store with its owner");
+  room.webSocketMessage(hub.ws, JSON.stringify({ t: "zone", name: "dsb-outside" }));
+  assert.deepEqual(heard(hub).at(-1).list.map(w => w.slice(1, 4)), [[7, 2, "f"]], "walking in shows the live ones there, not those carried elsewhere");
+  send(owner, { k: "blast", u: [7] });
+  assert.deepEqual(heard(near).at(-1), { t: "wallet", k: "blast", id: 1, u: [7] }, "a blast reaches the zone where the wallet lay");
+  assert.equal(heard(store).some(m => m.k === "blast"), false);
+  assert.deepEqual(Array.from(owner.p.wallets, w => w.u), [8], "and the room forgets it");
+  send(owner, { k: "down", u: 8, f: 15, x: 0, y: 0, z: 0 });
+  for (let u = 20; u < 30; u++) { send(owner, { k: "take", u, l: 0, f: 21 }); send(owner, { k: "down", u, f: 20, x: 0, y: 0, z: 0 }); }
+  assert.equal(owner.p.wallets.length, protocol.WALLET_CAP, "at most WALLET_CAP live at once");
+  const before = heard(store).length;
+  owner.p.walletBucket = null;
+  for (let i = 0; i < 20; i++) room.webSocketMessage(owner.ws, JSON.stringify({ t: "wallet", k: "up", u: 8, f: 10 }));
+  assert.equal(heard(store).length - before, protocol.WALLET_BURST, "a burst past the bucket is dropped");
+  room.webSocketMessage(owner.ws, JSON.stringify({ t: "body", name: "gorilla:YellowBrokeIt" }));
+  send(owner, { k: "up", u: 8, f: 9 });
+  room.webSocketMessage(near.ws, JSON.stringify({ t: "zone", name: "outside" }));
+  send(near, { k: "take", u: 1, l: 0, f: 21 });
+  assert.equal(heard(store).length - before, protocol.WALLET_BURST, "a gorilla, or a player out of DSB, sends none");
+});
+
+test("room carries an Ooga's jetpack to every page and drops it with the body", () => {
+  const Room = roomClass(), room = Object.create(Room.prototype), sent = [];
+  room.players = new Map(); room.chatBuckets = new Map(); room.voiceSig = new Map();
+  let attachment;
+  const ws = { deserializeAttachment: () => ({ id: 1 }), serializeAttachment: value => { attachment = value; }, send: text => sent.push(JSON.parse(text)) };
+  const player = room.record(ws, { id: 1, login: "YellowBrokeIt", display: "Yellow", body: "YellowBrokeIt", x: 0, y: 0, z: 0, yaw: 0 });
+  room.players.set(1, player);
+  room.scheduleFlush = () => {};
+  const state = () => sent.filter(m => m.t === "state").at(-1);
+  room.webSocketMessage(ws, JSON.stringify({ t: "pose", x: 1, y: 6, z: 1, yaw: 0, j: 5 }));
+  assert.equal(attachment.j, 5, "a room that sleeps wakes with the jetpack still on");
+  assert.equal(room.view(player).j, 5, "late joiners see it");
+  room.snapshot();
+  assert.deepEqual(state().ps, [1, 1, 6, 1, 0], "position records keep five fields");
+  assert.deepEqual(state().js, [1, 5]);
+  room.webSocketMessage(ws, JSON.stringify({ t: "pose", x: 1, y: 6, z: 1, yaw: 0 }));
+  assert.equal(player.j, 0, "a pose without one takes it off");
+  assert.ok(room.dirty, "taking it off without moving still schedules a snapshot");
+  room.snapshot();
+  assert.equal("js" in state(), false, "with nobody wearing one the snapshot carries none");
+  room.webSocketMessage(ws, JSON.stringify({ t: "pose", x: 1, y: 6, z: 1, yaw: 0, j: 3 }));
+  room.webSocketMessage(ws, JSON.stringify({ t: "body", name: "gorilla:YellowBrokeIt" }));
+  assert.equal(player.j, 0, "another body starts without it");
+  room.webSocketMessage(ws, JSON.stringify({ t: "pose", x: 1, y: 6, z: 1, yaw: 0, j: 3 }));
+  assert.equal(player.j, 0, "a gorilla never wears one");
+});
+
+test("room carries an Ooga's weapons and relays its shots and strikes to its own zone alone", () => {
+  const Room = roomClass(), room = Object.create(Room.prototype);
+  room.players = new Map(); room.chatBuckets = new Map(); room.voiceSig = new Map();
+  room.scheduleFlush = () => {};
+  const join = (id, login, zone) => {
+    const sent = [], store = {};
+    const ws = { deserializeAttachment: () => ({ id }), serializeAttachment: value => { store.a = value; }, send: text => sent.push(JSON.parse(text)) };
+    const p = room.record(ws, { id, login, display: login, body: login, x: 0, y: 0, z: 0, yaw: 0, zone });
+    room.players.set(id, p);
+    return { ws, p, sent, store };
+  };
+  const shooter = join(1, "YellowBrokeIt", "outside"), near = join(2, "w-s-bitcoin", "outside"), away = join(3, "NickDaGreek", "dsb-outside");
+  const w = 2 | 4 | 12 << 3;
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "pose", x: 1, y: 0, z: 1, yaw: 0, w }));
+  assert.equal(shooter.store.a.w, w, "a room that sleeps wakes with the weapon still in hand");
+  assert.equal(room.view(shooter.p).w, w, "late joiners see it");
+  room.snapshot();
+  assert.deepEqual(near.sent.filter(m => m.t === "state").at(-1).ws, [1, w]);
+  const a = [1, 1.5, 1, 20, 1, 5];
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "shot", a }));
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "swing" }));
+  assert.deepEqual(near.sent.filter(m => m.t === "shot" || m.t === "swing"), [{ t: "shot", id: 1, a }, { t: "swing", id: 1 }],
+    "a player in the same zone sees the shot and the strike");
+  assert.equal(away.sent.some(m => m.t === "shot" || m.t === "swing"), false, "another zone hears neither");
+  assert.equal(shooter.sent.some(m => m.t === "shot" || m.t === "swing"), false, "the shooter's own page already drew them");
+  for (let i = 0; i < 20; i++) room.webSocketMessage(shooter.ws, JSON.stringify({ t: "shot", a }));
+  assert.equal(near.sent.filter(m => m.t === "shot").length, 6, "a burst past the bucket is dropped");
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "body", name: "gorilla:YellowBrokeIt" }));
+  assert.equal(shooter.p.w, 0, "another body starts empty-handed");
+  const before = near.sent.length;
+  shooter.p.shotBucket = shooter.p.swingBucket = null;
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "shot", a }));
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "swing" }));
+  room.webSocketMessage(shooter.ws, JSON.stringify({ t: "pose", x: 1, y: 0, z: 1, yaw: 0, w }));
+  assert.equal(near.sent.slice(before).some(m => m.t === "shot" || m.t === "swing"), false, "a gorilla neither shoots nor swings for others");
+  assert.equal(shooter.p.w, 0, "nor holds a weapon");
 });
 
 test("voice lists survive the room sleeping and follow a microphone published again", () => {
@@ -125,6 +238,7 @@ test("SFU stays unavailable without secrets and uses bounded upstream calls with
 
 const studioRoom = () => {
   const Room = roomClass(), room = Object.create(Room.prototype);
+  room.hockeyTables = [null, null, null];
   room.players = new Map(); room.chatBuckets = new Map(); room.studio = studio.studioState(1000); room.env = { STUDIO_HOST_IDS: "1,3" }; room.cleanupJobs = [];
   room.doorQueue = []; room.doorActive = null; room.doorPasses = new Map(); room.sweepAt = 0;
   const pending = [], storage = new Map();
@@ -429,7 +543,7 @@ test("Studio wake migrates old snapshots, clamps catalogue edits and rechecks co
       { id: 2, login: "synthetic-attendee", contributor: true, zone: studio.STUDIO_ZONE, body: "synthetic-attendee", studioSeat: 0 }
     ];
     const sockets = attachments.map(a => ({ deserializeAttachment: () => a, serializeAttachment() {}, send() {} }));
-    const ctx = { setWebSocketAutoResponse() {}, getWebSockets: () => sockets, blockConcurrencyWhile: fn => pending.push(fn()), waitUntil: p => pending.push(p), storage: { get: async key => Array.isArray(key) ? new Map() : key === "studio" ? structuredClone(saved) : null, put: async () => {} } };
+    const ctx = { setWebSocketAutoResponse() {}, getWebSockets: () => sockets, blockConcurrencyWhile: fn => pending.push(fn()), waitUntil: p => pending.push(p), storage: { get: async key => Array.isArray(key) ? new Map() : key === "studio" ? structuredClone(saved) : undefined, put: async () => {} } };
     const room = new Room(ctx, { STUDIO_HOST_IDS: ids }); await Promise.all(pending); return room;
   };
   const legacy = { ...studio.studioState(1000), hostId: 1, mode: "presentation", source: "sample-quiet", position: 99, playing: false };
@@ -446,6 +560,7 @@ test("Studio wake migrates old snapshots, clamps catalogue edits and rechecks co
 // Regression: a table voice choice survives hibernation, but never a scene change.
 test("room scopes poker voice to Ember Den and clears it on departure", () => {
   const Room = roomClass(), room = Object.create(Room.prototype);
+  room.hockeyTables = [null, null, null];
   room.players = new Map(); room.chatBuckets = new Map(); room.sfu = {};
   let attachment;
   const ws = { deserializeAttachment: () => ({ id: 1 }), serializeAttachment: value => { attachment = value; }, send() {} };

@@ -6,7 +6,7 @@
   const THROW_CHARGE_TIME = 1, THROW_MIN_POWER = 1 / 3, THROW_RESULT_TIME = 0.35;
   const PITCH_LIMIT = Math.PI / 2 - 0.0001, ZOOM_PAUSE = 220;
   const create = ({ canvas, camera, renderer, pilot, hud, clankers, input = null, constrainCamera = null,
-    reticleTarget = null, sightClear = null, aimCeiling = null, groundAt = null, grabOoga = null, releaseOoga = null, mayPossess = null, combatOnly = null, birdsEyeMin = 5, maxDistance = 32 }) => {
+    reticleTarget = null, liveTarget = null, sightClear = null, aimCeiling = null, groundAt = null, grabOoga = null, releaseOoga = null, mayPossess = null, combatOnly = null, birdsEyeMin = 5, maxDistance = 32 }) => {
     const orbit = pilot.orbit, cameraHandoff = pilot.cameraHandoff, target = { x: 0, y: 0, z: 0 };
     const smashMin = clankers.smashPower(0, true), smashBase = clankers.smashPower(0, false);
     const smashMax = clankers.smashPower(1, false), smashRate = (smashMax - smashBase) / POUND_CHARGE_TIME;
@@ -38,7 +38,7 @@
     let overheadEntry = false;
     let targetWait = 0, rightAt = -Infinity, rightDownAt = -Infinity, rightTravel = 0;
     let carryRight = false, rightPointer = -1, rightX = 0, rightY = 0, rightLastX = 0, rightLastY = 0;
-    let combatTooltipEntry = null, combatTooltipText = "";
+    let combatTooltipEntry = null, combatTooltipText = "", combatTooltipNoDot = false;
     let zoomAt = -Infinity, zoomDirection = 0, zoomStopped = false, zoomGesture = null;
     const clearRight = () => { rightAt = rightDownAt = -Infinity; rightTravel = 0; carryRight = false; rightPointer = -1; };
     // Keep the selected mode as intent while asleep; it becomes usable on wake.
@@ -48,10 +48,14 @@
       headHidden = null;
     };
     const setCombatTooltip = (entry) => {
+      // A ghost gorilla (npc-ghosts.js) shows its online dot, as its roster row does; one turning ghost or solid under
+      // the crosshair changes the dot without the target changing.
+      const noDot = !!entry && !entry.ghostTrack;
       if (entry !== combatTooltipEntry) combatTooltipText = entry ? `🦍 ${entry.owner.traits.display}` : "";
-      else if (!entry || !hud.el.tooltip.hidden && hud.el.tooltipText.textContent === combatTooltipText) return;
+      else if (!entry || noDot === combatTooltipNoDot && !hud.el.tooltip.hidden && hud.el.tooltipText.textContent === combatTooltipText) return;
       combatTooltipEntry = entry;
-      if (entry) hud.tooltip.show(combatTooltipText, 0, 0, entry, true);
+      combatTooltipNoDot = noDot;
+      if (entry) hud.tooltip.show(combatTooltipText, 0, 0, entry, noDot);
       else hud.tooltip.hide();
     };
     const resetReticle = () => {
@@ -111,16 +115,22 @@
       targetWait = 0.05;
       viewRay();
       let type = "none";
-      let tooltipEntry = null;
+      let tooltipEntry = null, limit = 60;
       if (input && input.weaponTargets.ray(hit, ray.ox, ray.oy, ray.oz, ray.dx, ray.dy, ray.dz, 60, null, acceptTarget, true)) {
         const near = Math.max(0, hit.distance - 0.035);
+        limit = hit.distance;
         if (!sightClear || sightClear(ray.ox, ray.oy, ray.oz, ray.ox + ray.dx * near, ray.oy + ray.dy * near, ray.oz + ray.dz * near, hit.node, true)) {
           const kind = hit.owner.kind;
-          type = kind === "clanker" || kind === "agent" ? "friendly" : kind === "caveman" ? hit.type
+          // An NPC ghost track (npc-ghosts.js) is a roster NPC drawn while its player drives a separate body: never a target.
+          const ghost = (kind === "clanker" || kind === "caveman") && hit.owner.cave.ghostTrack;
+          type = ghost ? "none" : kind === "clanker" || kind === "agent" ? "friendly" : kind === "caveman" ? hit.type
             : kind === "crate" ? "object" : reticleTarget ? reticleTarget(hit) : "none";
           if (isCombat() && kind === "clanker") tooltipEntry = hit.owner.entry;
         }
       }
+      // A live remote player in front of what was found, or anywhere along the ray when nothing was (the scene's
+      // `liveTarget`, which never tests the visitor's own body), is a friend, and the name behind it goes.
+      if (liveTarget && liveTarget(ray.ox, ray.oy, ray.oz, ray.dx, ray.dy, ray.dz, limit) < limit) { type = "friendly"; tooltipEntry = null; }
       setCombatTooltip(tooltipEntry);
       if (reticle.dataset.target !== type) reticle.dataset.target = type;
     };
@@ -297,13 +307,15 @@
     };
     const possess = (entry, atBoot = false, transition = null) => {
       if (disposed || !entry || !entry.active || !entry.root.visible) return false;
-      if (entry === player) { requireCombat(); return true; }
+      // A separate body (clankers.js `separateBodies`) stands for its NPC: asking for that NPC keeps it.
+      if (entry === player || player && player.npc === entry) { requireCombat(); return true; }
       const refusal = mayPossess && mayPossess(entry);
       if (refusal) { hud.toast(refusal); return false; }
       const incoming = transition || captureControl(controlState);
       if (!player) savedNear = camera.near;
       if (player) { blurCombat(); restoreHead(); }
       if (!clankers.possess(entry)) return false;
+      entry = clankers.player;
       cameraHandoff.cancel();
       pilot.release(true);
       rebasePilot();
@@ -379,7 +391,6 @@
           updateSmashGauge();
         }
       } else if (name === "gorilla-beat") clankers.chestBeat();
-      else if (name === "mode-release") release();
       else if (name === "mode-toggle") {
         const required = !!combatOnly?.();
         if (required && combat) return true;
@@ -421,14 +432,15 @@
       else return false;
       return true;
     };
-    // Called after the scene and HUD have had a chance to close their UI.
+    // Called after the scene and HUD have had a chance to close their UI. It frees the cursor; it never lets go of the
+    // gorilla (T goes back to its Ooga).
     const escape = () => {
       if (!player) return false;
       if (focused || lockPending || document.pointerLockElement === canvas || performance.now() - unlockedAt < 100) {
         blurCombat();
         return true;
       }
-      return release();
+      return false;
     };
     const onKeyDown = (event) => {
       if (!player || event.metaKey || event.ctrlKey || event.altKey) return;
@@ -449,7 +461,7 @@
         consume(event);
         if (!jumpKey && !event.repeat) { jumpKey = true; beginJump(); }
       } else if (key === "shift" && event.code !== "ShiftRight" && event.location !== 2) { run = true; consume(event); }
-      else if (key === "g") {
+      else if (BL.controls.matches(event, "grab")) {
         if (!clankers.combatEnabled) return;
         consume(event);
         if (clankers.sleeping(player)) return;
@@ -460,16 +472,16 @@
           if (smashPointer < 0) grabActive = !!(grabOoga && grabOoga(player));
         }
       }
-      else if (key === "1") {
+      else if (BL.controls.matches(event, "smash")) {
         consume(event);
         if (!event.repeat) action("gorilla-smash");
-      } else if (key === "x") {
+      } else if (BL.controls.matches(event, "view")) {
         consume(event);
         if (!event.repeat) action("mode-toggle");
-      } else if (key === "n") {
+      } else if (BL.controls.matches(event, "north")) {
         consume(event);
         if (view === "birds-eye") { orbit.tYaw = orbit.yaw + Math.atan2(-Math.sin(orbit.yaw), Math.cos(orbit.yaw)); viewChanged = true; }
-      } else if (key === "c") {
+      } else if (BL.controls.matches(event, "chest")) {
         consume(event);
         if (!event.repeat) action("gorilla-beat");
       } else if (key === "v" || key === "j" || key.length === 1 && key >= "3" && key <= "9") consume(event);
@@ -482,7 +494,7 @@
         jumpKey = false; event.preventDefault();
       }
       else if (event.key === "Shift" && event.code !== "ShiftRight" && event.location !== 2) { run = false; event.preventDefault(); }
-      else if (event.key.toLowerCase() === "g") {
+      else if (BL.controls.matches(event, "grab")) {
         consume(event);
         grabHeld = grabSpent = false;
         const throwing = throwPointer;
@@ -1084,7 +1096,29 @@
       disposed = false;
       for (const [node, type, callback, options] of listeners) node.addEventListener(type, callback, options);
     };
-    return { possess, release, escape, respawn, travelRefusal, travel, freeCursor, resetCamera, captureControl, readInput, update, action, orbit: moveView, zoom, cancelInput, refreshCombat, resume, dispose,
+    const controlsHelp = touch => {
+      const H = BL.controlsHelp, rows = [touch ? H.row([], "Walk / climb", "Left stick") : H.movement("Walk / climb")];
+      rows.push(H.row(touch ? [] : [" "], clankers.sleeping(player) ? "Wake up" : "Jump / double jump", touch ? "Action button" : ""));
+      if (!touch) {
+        rows.push(H.row(["shiftleft"], "Run"), H.row(BL.controls.keysFor("yawLeft", "yawRight"), "Turn the view"));
+        if (!isCombat()) rows.push(H.row(BL.controls.keysFor("pitchDown", "pitchUp"), "Tilt the view"));
+        if (view === "birds-eye") rows.push(H.row(BL.controls.shortcutKeys("north"), "Face north"));
+        if (isCombat() && view === "shoulder") rows.push(H.row(["shiftright"], "Tap to swap shoulder · hold with A/D to peek"));
+        if (!combatOnly?.() && !clankers.sleeping(player)) rows.push(H.row(BL.controls.shortcutKeys("view"), "Toggle view control"));
+        rows.push(H.row(BL.controls.shortcutKeys("chest"), "Beat chest"), H.row(BL.controls.shortcutKeys("resetView"), "Reset camera"));
+      }
+      rows.push(H.row([], "Look around / change distance", touch ? "Drag / pinch" : "Drag / scroll"));
+      if (clankers.combatEnabled && !clankers.sleeping(player)) {
+        rows.push(H.row(touch ? [] : BL.controls.shortcutKeys("smash"), "Smash · hold and release the button to charge", touch ? "Smash button" : isCombat() ? "Smash button / left mouse" : "Smash button"));
+        if (!touch) rows.push(H.row(BL.controls.shortcutKeys("grab"), "Hold to grab a nearby Ooga · release to drop"), H.row(BL.controls.shortcutKeys("grab"), "Keep G held, then charge and release the mouse to throw", "Left mouse"));
+      }
+      if (!touch) {
+        if (isCombat()) rows.push(H.row(["tab"], "Release mouse cursor"));
+        rows.push(H.row(BL.controls.shortcutKeys("escape"), "Release cursor"));
+      }
+      return { title: "Island · Controlling a gorilla", rows };
+    };
+    return { controlsHelp, possess, release, escape, respawn, travelRefusal, travel, freeCursor, resetCamera, captureControl, readInput, update, action, orbit: moveView, zoom, cancelInput, refreshCombat, resume, dispose,
       get active() { return !!player; }, get player() { return player; }, get view() { return view; },
       get birdsEye() { return !!player && view === "birds-eye"; }, get birdsEyeMix() { return player ? camera.orthoMix || 0 : 0; },
       get firstPerson() { return !!player && view === "first-person"; },

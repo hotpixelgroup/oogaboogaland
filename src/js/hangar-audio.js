@@ -16,6 +16,16 @@
 // until they come to, a ringing in their ears over it. Everything passes a limiter, so the roar is loud and never
 // clips. `setVolume` sets the hangar's level (localStorage `ooga-hangar-volume`, 0..1).
 //
+// The engines acting up on their own (`hangar-anomaly.js`) play on the same voices: `misfire(M)` schedules a failed
+// start at once, an electrical hum rising, three tries at turning the engines over, each whining higher and dying in a
+// sputter, the last coughing a short burst, then a dead stop and the metal ticking as it cools; `revs(R)` the two
+// engines revving by turns, each with a voice of its own on its own side, as if they were talking; `zap(Z, from, to)`
+// lightning running over the Jet, a sizzle crackling from nose to tail over the hum, then a crack and silence; and
+// `blackout(B)` the power dying with a clunk, a low hum in the dark, and the banks clunking back on, the mains hum
+// coming back with them as `power(k)` says (0 off, 1 on); and `lowrider(L)` a sledgehammer's deep, heavy thud each
+// time the bouncing Jet's nose gear comes down; and `shuffle(S)` the Jet shifting in its bay, its brakes letting go,
+// its tyres scrubbing, its gear creaking and its engines' short bursts.
+//
 // Kortik's Sis has a voice of her own (`voice`): a buzz and a breath through three formants, a syllable for each run
 // of vowels in her line with the formants of its vowel, pauses at its punctuation, a stressed last syllable before a
 // "!" or a "?", and the censor's bleep over each grawlix; muttered, yelled, screamed or whispered, each line at its own
@@ -28,6 +38,14 @@
 // spinning up as it starts and running down as it stops, wavering as an old motor does, with the lamp's buzz; each
 // picture clunks into the gate (`clunk`); and from the screen the soundtrack's crackle and hiss while the film runs,
 // and the roller's ratchet as the screen unrolls or rolls back up (`roll`).
+//
+// The overhead crane at work (`hangar-crane.js`), heard from its trolley, whose state it reads live (`watchCrane`:
+// where it is and how fast its travel and its hoist run, each 0 to 1): the travel drive's whine climbing with its speed
+// over its gearbox's hum and the rumble of its wheels on the rails, and the hoist's higher whine and hum; and its cues
+// (`craneCue`): the brakes' clunk as a motion starts and stops (`brake`), the sling's chains clinking as it is hooked
+// on or off (`rattle`), the creak as the ropes take the crate's weight (`lift`), the thud of the crate set down on
+// its stand (`land`) and its warning horn (`horn`); and its travel alarm beeping while the bridge or the trolley moves
+// (the state's `alarm`).
 (() => {
   "use strict";
   const BL = window.BL = window.BL || {};
@@ -39,8 +57,8 @@
   const REF = { neon: 5, launch: 9, door: 5 };
 
   // How loud the test's voices peak: the siren, the whine and its whoosh, the whoomph, the roar's body, crackle and
-  // rumble, a clank, the alarm, the boom's sweep, its rumble and its crack, and the ringing.
-  const TEST = { siren: 0.2, whine: 0.2, whoosh: 0.16, whoomph: 0.8, roar: 0.9, crackle: 0.4, rumble: 0.6, clank: 0.5, alarm: 0.09, boom: 1, boomNoise: 0.9, crack: 0.7, ring: 0.05 };
+  // rumble, a clank, the alarm, the boom's sweep, its rumble and its crack, the ringing, and the anomalies' hum.
+  const TEST = { siren: 0.2, whine: 0.2, whoosh: 0.16, whoomph: 0.8, roar: 0.9, crackle: 0.4, rumble: 0.6, clank: 0.5, alarm: 0.09, boom: 1, boomNoise: 0.9, crack: 0.7, ring: 0.05, hum: 0.08, rev: 0.22, sizzle: 0.12, thump: 0.9, bang: 0.8 };
   // How far the blast muffles the presser's hearing, Hz.
   const MUFFLED = 320, CLEAR = 20000;
   // Kortik's Sis's ways of saying a line: her pitch, Hz; a syllable's length and the gap after it, s; how loud; how far
@@ -56,6 +74,8 @@
     kortik: { f0: 120, len: 0.12, gap: 0.035, level: 0.5, end: 1.12, buzz: 1, breath: 0.1, shake: 0, least: 0.12, formant: 0.82, tone: 700 }
   };
   const SIS_REF = 9, BOOT_REF = 5, BLEEP = 0.3;
+  // How much farther apart than they stand the two engines' revs are panned, so each is heard on its own side.
+  const REV_SPREAD = 2.5;
   // The forklift's button: how loud its click, its thunk and the denied buzz are, and the buzz's two pulses, [from, for,
   // Hz], the second lower, as a machine says no.
   const FORK = { click: 0.3, thunk: 0.5, buzz: 0.16 }, DENIED = [[0.06, 0.17, 150], [0.29, 0.24, 132]];
@@ -68,6 +88,16 @@
   const WORK = { whine: 420, swell: 1.8, pump: 34, hiss: 3 };
   // Its horn: how loud, its two notes (Hz) and how long a honk sounds (s).
   const HORN = { level: 0.13, notes: [415, 523], length: 0.42 };
+  // The crane: how loud its travel drive's whine, its gearbox's hum and its wheels' rumble are at full speed, its hoist's
+  // whine and hum, the brakes' clunk and click, a chain's clink, the load's creak and the crate's thud; how far its
+  // whines climb (Hz) from their idle pitch at full speed; and how far it carries, half at `ref` metres.
+  // Its travel alarm: how loud, its pitch (Hz), each beep's length and how often (s); and its horn: how loud, its two
+  // notes (Hz) and how long it sounds (s).
+  // The control room's fire: its roar and crackle at full, the extinguisher's hiss, the strike's crack and thump, the
+  // fire going out (a falling hiss), the extinguisher's clank on its bracket; how far it carries, half at `ref` metres.
+  const ROOM = { roar: 0.14, crackle: 0.22, spray: 0.11, crack: 0.55, thump: 0.5, out: 0.12, clank: 0.25, ref: 9 };
+  const CRANE = { whine: 0.05, hum: 0.07, rumble: 0.09, hoist: 0.05, hoistHum: 0.06, clunk: 0.4, click: 0.18, clink: 0.16, creak: 0.12, thud: 0.5, travelHz: [180, 520], hoistHz: [260, 760], ref: 10,
+    alarm: 0.05, alarmHz: 1250, beep: 0.22, every: 0.75, horn: 0.3, hornHz: [311, 392], hornLen: 0.7 };
   // The film show's levels at full: the projector's motor, its whir, the gate's clatter and the lamp's buzz, the
   // soundtrack's crackle and hiss, a picture's clunk and the roller's ratchet; and how far the projector and the screen
   // carry (half at that many metres), the hall being quiet enough to hear them across it.
@@ -77,8 +107,8 @@
   const FORMANTS = { 65: [850, 1220], 69: [610, 2330], 73: [430, 2480], 79: [590, 920], 85: [760, 1400], 89: [310, 2790] }, SCHWA = [640, 1500], F3 = 2900;
 
   // `spots`: the door's shield and the launch shield, { x, y, z } each, the tunnel's axis { y, z0, z1 }, the test's
-  // booth and the middle of the Jet's engines, the film show's projector and its picture, and the forklift, { x, y, z }
-  // each.
+  // booth and the middle of the Jet's engines (with `gap`, how far each stands to its side), its nose gear, the film
+  // show's projector and its picture, and the forklift, { x, y, z } each.
   const create = (spots) => {
     let ctx = null, master = null, mix = null, muffle = null, buffer = null, ready = false, muted = false, disposed = false, since = 0, volume = 1;
     muted = BL.sound.muted;
@@ -86,11 +116,17 @@
       const saved = localStorage.getItem(VOLUME_KEY), v = Number(saved);
       if (saved !== null && v >= 0 && v <= 1) volume = v;
     } catch {}
-    const bed = {}, test = {}, sis = {}, proj = {}, fork = {};
+    const bed = {}, test = {}, sis = {}, proj = {}, fork = {}, crane = {}, room = {};
+    // The crane's state, read live: { x, y, z, travel, hoist, alarm } (`watchCrane`).
+    let craneState = null;
+    // The control room's fire, read live: { x, y, z, level, spray } (`watchRoom`).
+    let roomState = null;
     // Whether the projector runs, so a context opened mid-show starts it running, and the same for the forklift.
     let projOn = false, liftOn = false, liftReady = 0, liftDrive = 0, liftPump = 0;
     // Her voice while she talks: where she stands (her node's position, read live), until when, and its least level.
     const sisVoice = { pos: null, until: 0, least: 0 };
+    // How much of the hall's electrical hum (the mains and the neon) has power, 0 to 1.
+    let power = 1;
     // Where the visitor hears from and the way the view faces on the ground, and where the last spot was placed.
     const ear = { x: 0, y: 0, z: 0, fx: 0, fz: -1 }, AT = { level: 0, pan: 0 };
 
@@ -182,6 +218,8 @@
       initTest();
       initProjector();
       initForklift();
+      initCrane();
+      initRoom();
       ready = true;
     };
 
@@ -217,6 +255,67 @@
       fork.hornGain = gain(0, fork.near);
       const horn = filter("bandpass", 900, 1.2, fork.hornGain);
       fork.horn = HORN.notes.map((hz) => osc("square", hz, horn));
+    };
+    // The crane, placed at its trolley: the travel drive (a saw's whine through a band, wavering a little, the gearbox's
+    // triangle hum and the wheels' rumble, low noise) and the hoist (its own whine and hum), each under its own level,
+    // which `update` sets from how fast it runs; and the cues' voices, placed apart where each cue is (`cuePan`, their
+    // levels set by the cue): the brakes' clunk (a falling sine) and click, a chain's clink (noise through a narrow ringing
+    // band), the load's creak (a slow saw through a band) and the thud.
+    // The control room's fire, placed there: its roar (low noise) and crackle (noise through a band, its level ticked by
+    // `update`) under their levels, the extinguisher's hiss (high noise); and the cues' voices, placed apart where each
+    // cue is (`cuePan`): the strike's crack (a bright noise burst) and thump, the fire's last falling hiss, and the
+    // bracket's clank.
+    const initRoom = () => {
+      room.pan = panner();
+      room.near = gain(0, room.pan);
+      room.roar = gain(0, room.near);
+      hissOf(filter("lowpass", 420, 0.8, room.roar));
+      room.crackle = gain(0, room.near);
+      hissOf(filter("bandpass", 2600, 1.4, room.crackle));
+      room.spray = gain(0, room.near);
+      hissOf(filter("highpass", 1800, 0.7, room.spray));
+      room.cuePan = panner();
+      room.crackGain = gain(0, room.cuePan);
+      hissOf(filter("highpass", 900, 0.7, room.crackGain));
+      room.thumpGain = gain(0, room.cuePan);
+      room.thump = osc("sine", 70, room.thumpGain);
+      room.outGain = gain(0, room.cuePan);
+      room.outFilter = filter("bandpass", 3000, 1.2, room.outGain);
+      hissOf(room.outFilter);
+      room.clankGain = gain(0, room.cuePan);
+      room.clank = osc("triangle", 420, filter("bandpass", 900, 6, room.clankGain));
+    };
+    const initCrane = () => {
+      crane.pan = panner();
+      crane.near = gain(0, crane.pan);
+      crane.travel = gain(0, crane.near);
+      crane.whine = osc("sawtooth", CRANE.travelHz[0], filter("bandpass", 700, 3, gain(CRANE.whine, crane.travel)));
+      crane.waver = wobble(crane.whine.frequency, 2.3, 3);
+      crane.hum = osc("triangle", 62, gain(CRANE.hum, crane.travel));
+      crane.rumble = hissOf(filter("lowpass", 180, 0.9, gain(CRANE.rumble, crane.travel)));
+      crane.hoist = gain(0, crane.near);
+      crane.hoistWhine = osc("sawtooth", CRANE.hoistHz[0], filter("bandpass", 1100, 4, gain(CRANE.hoist, crane.hoist)));
+      crane.hoistHum = osc("sine", 88, gain(CRANE.hoistHum, crane.hoist));
+      crane.cuePan = panner();
+      crane.clunkGain = gain(0, crane.cuePan);
+      crane.clunk = osc("sine", 120, crane.clunkGain);
+      crane.clickGain = gain(0, crane.cuePan);
+      crane.click = hissOf(filter("bandpass", 2400, 2, crane.clickGain));
+      crane.clinkGain = gain(0, crane.cuePan);
+      crane.clink = hissOf(filter("bandpass", 3600, 18, crane.clinkGain));
+      crane.creakGain = gain(0, crane.cuePan);
+      crane.creak = osc("sawtooth", 70, filter("bandpass", 520, 6, crane.creakGain));
+      crane.thudGain = gain(0, crane.cuePan);
+      crane.thud = osc("sine", 90, crane.thudGain);
+      crane.thudNoise = gain(0, crane.cuePan);
+      hissOf(filter("lowpass", 340, 0.8, crane.thudNoise));
+      // The travel alarm, placed at the trolley, its beeps scheduled ahead by `update`; and the horn's two notes.
+      crane.alarmGain = gain(0, crane.near);
+      crane.alarm = osc("square", CRANE.alarmHz, filter("bandpass", CRANE.alarmHz, 3, crane.alarmGain));
+      crane.nextBeep = 0;
+      crane.hornGain = gain(0, crane.cuePan);
+      const hornTone = filter("lowpass", 1500, 0.8, crane.hornGain);
+      crane.horn = CRANE.hornHz.map((hz) => osc("square", hz, hornTone));
     };
     // The projector's voices, all under its envelope, which `projector` opens and closes, and placed where it hangs; and
     // the screen's, placed where its picture falls.
@@ -298,6 +397,46 @@
       test.clank = hissOf(test.clankFilter);
       test.pingGain = gain(0, test.enginePan);
       test.ping = osc("triangle", 1700, test.pingGain);
+      // The anomalies' electrical hum at the engines: a mains buzz through a narrow band, and its fizz.
+      test.humGain = gain(0, test.enginePan);
+      test.hum = osc("sawtooth", 100, filter("bandpass", 380, 2.5, test.humGain));
+      test.humFizz = hissOf(filter("bandpass", 3600, 5, gain(0.35, test.humGain)));
+      // The lowrider's bang where the nose gear comes down, a sledgehammer's thud: the hit, a burst of low noise closing
+      // down fast, and a dull knock, panned to the gear; and, everywhere, the deep body under it, a sine dropping to a low
+      // note and its octave driven hard into the clip so its harmonics carry the low end even on small speakers, through
+      // a lowpass that keeps it round.
+      test.bangPan = panner();
+      test.bangHitGain = gain(0, test.bangPan);
+      test.bangHitBand = filter("lowpass", 900, 0.8, test.bangHitGain);
+      test.bangHit = hissOf(test.bangHitBand);
+      test.bangKnockGain = gain(0, test.bangPan);
+      test.bangKnock = osc("triangle", 170, filter("lowpass", 500, 0.7, test.bangKnockGain));
+      test.thumpGain = gain(0, mix);
+      const thumpClip = ctx.createWaveShaper();
+      thumpClip.curve = curve;
+      thumpClip.connect(filter("lowpass", 600, 0.7, test.thumpGain));
+      const thumpDrive = gain(4, thumpClip);
+      test.thump = osc("sine", 110, thumpDrive);
+      test.thump2 = osc("sine", 220, gain(0.35, thumpDrive));
+      // The anomalies' lightning: a sizzle, high noise through a band, panned to wherever it runs over the Jet.
+      test.sizzlePan = panner();
+      test.sizzleGain = gain(0, test.sizzlePan);
+      test.sizzle = hissOf(filter("bandpass", 4500, 1.5, test.sizzleGain));
+      // Each engine's own rev, on its own side, a jet spooling up and back: its roar, the noise through a band that
+      // opens as it spools, driven a little into the clip for grit; a rumble under it; the turbine's whine high over it;
+      // and a little of the exhaust's crackle.
+      test.revs = [0, 1].map(() => {
+        const pan = panner(), level = gain(0, pan), grit = ctx.createWaveShaper();
+        grit.curve = curve;
+        grit.connect(level);
+        const roarBand = filter("lowpass", 220, 0.8, grit);
+        return {
+          pan, level, roarBand, roar: hissOf(roarBand),
+          rumble: osc("sawtooth", 38, filter("lowpass", 110, 0.7, gain(0.9, level))),
+          whine: osc("sine", 700, gain(0.12, level)), whine2: osc("sine", 1050, gain(0.05, level)),
+          crackle: hissOf(filter("highpass", 1200, 0.7, gain(0.25, level)), crackle)
+        };
+      });
       // The blast: a falling sweep, its noise's rumble closing down, and the crack on top.
       test.boomGain = gain(0, mix);
       test.boom = osc("sine", 95, test.boomGain);
@@ -448,6 +587,216 @@
       T.ringGain.gain.linearRampToValueAtTime(0, at(AT.result + 0.8));
       return true;
     };
+    // A failed start from now, on its times `M` (seconds from its start, as `hangar-anomaly.js` runs it): the hum rising
+    // to the first try and wavering on; at each try the starter's relay, the whine and its whoosh climbing, higher and
+    // louder each try, then coughing, dropping out and catching as they fall away; the last try's burst (`burp`) a
+    // whoomph with the roar and the rumble for a moment; at the cut the hum dead with a thunk; then the metal ticking as
+    // it cools.
+    const TICKS = [[0.9, 2500], [1.5, 1900], [2.2, 2900], [2.9, 2200]];
+    const misfire = (M) => {
+      if (!ready || muted) return false;
+      const t0 = ctx.currentTime + 0.02, at = (s) => t0 + s, T = test, top = M.heat[M.heat.length - 1];
+      const clear = (param, value) => { param.cancelScheduledValues(t0); param.setValueAtTime(value, t0); };
+      for (const g of [T.humGain, T.whineGain, T.whooshGain, T.whoomphGain, T.roarGain, T.rumbleGain, T.clankGain, T.pingGain]) clear(g.gain, 0);
+      clear(T.whine.frequency, 140); clear(T.whine2.frequency, 210); clear(T.whineFilter.frequency, 300); clear(T.whooshFilter.frequency, 300);
+      clear(T.roarFilter.frequency, 900); clear(T.clankFilter.frequency, 900); clear(T.ping.frequency, 1700);
+      T.humGain.gain.linearRampToValueAtTime(TEST.hum, at(M.tries[0]));
+      for (let s = M.tries[0] + 0.3; s < M.cut - 0.1; s += 0.3 + Math.random() * 0.25) T.humGain.gain.linearRampToValueAtTime(TEST.hum * (0.7 + Math.random() * 0.6), at(s));
+      for (let i = 0; i < M.tries.length; i++) {
+        const s0 = M.tries[i], k = M.heat[i] / top, peak = s0 + M.spin, done = peak + M.sputter;
+        const whine = TEST.whine * (0.45 + 0.55 * k), whoosh = TEST.whoosh * (0.4 + 0.6 * k), high = 500 + 1600 * k;
+        T.clankFilter.frequency.setValueAtTime(700 + 300 * i, at(s0));
+        T.clankGain.gain.setValueAtTime(TEST.clank * 0.35, at(s0));
+        T.clankGain.gain.exponentialRampToValueAtTime(0.001, at(s0 + 0.14));
+        T.whine.frequency.setValueAtTime(140, at(s0)); T.whine.frequency.exponentialRampToValueAtTime(high, at(peak));
+        T.whine2.frequency.setValueAtTime(210, at(s0)); T.whine2.frequency.exponentialRampToValueAtTime(high * 1.5, at(peak));
+        T.whineFilter.frequency.setValueAtTime(300, at(s0)); T.whineFilter.frequency.exponentialRampToValueAtTime(700 + 2000 * k, at(peak));
+        T.whooshFilter.frequency.setValueAtTime(300, at(s0)); T.whooshFilter.frequency.exponentialRampToValueAtTime(600 + 2200 * k, at(peak));
+        T.whineGain.gain.setValueAtTime(0, at(s0)); T.whineGain.gain.linearRampToValueAtTime(whine, at(peak));
+        T.whooshGain.gain.setValueAtTime(0, at(s0)); T.whooshGain.gain.linearRampToValueAtTime(whoosh, at(peak));
+        for (let s = peak; s < done - 0.06; s += 0.07 + Math.random() * 0.07) {
+          const k2 = (Math.random() < 0.55 ? 1 : 0.12) * (1 - (s - peak) / M.sputter);
+          T.whineGain.gain.setValueAtTime(whine * k2, at(s));
+          T.whooshGain.gain.setValueAtTime(whoosh * k2, at(s));
+        }
+        T.whine.frequency.exponentialRampToValueAtTime(110, at(done));
+        T.whine2.frequency.exponentialRampToValueAtTime(165, at(done));
+        T.whineGain.gain.linearRampToValueAtTime(0, at(done));
+        T.whooshGain.gain.linearRampToValueAtTime(0, at(done));
+      }
+      const b = M.tries[M.tries.length - 1] + M.burp;
+      T.whoomphGain.gain.setValueAtTime(TEST.whoomph * 0.35, at(b));
+      T.whoomphGain.gain.exponentialRampToValueAtTime(0.001, at(b + 0.7));
+      T.roarGain.gain.setValueAtTime(0, at(b));
+      T.roarGain.gain.linearRampToValueAtTime(TEST.roar * 0.3, at(b + 0.04));
+      T.roarGain.gain.linearRampToValueAtTime(0, at(b + M.burpLen + 0.15));
+      T.rumbleGain.gain.setValueAtTime(0, at(b));
+      T.rumbleGain.gain.linearRampToValueAtTime(TEST.rumble * 0.4, at(b + 0.05));
+      T.rumbleGain.gain.linearRampToValueAtTime(0, at(b + M.burpLen + 0.4));
+      T.humGain.gain.linearRampToValueAtTime(TEST.hum, at(M.cut));
+      T.humGain.gain.linearRampToValueAtTime(0, at(M.cut + 0.08));
+      T.clankFilter.frequency.setValueAtTime(420, at(M.cut));
+      T.clankGain.gain.setValueAtTime(TEST.clank * 0.55, at(M.cut));
+      T.clankGain.gain.exponentialRampToValueAtTime(0.001, at(M.cut + 0.3));
+      for (const [s, f] of TICKS) {
+        T.ping.frequency.setValueAtTime(f, at(M.cut + s));
+        T.pingGain.gain.setValueAtTime(TEST.clank * 0.07, at(M.cut + s));
+        T.pingGain.gain.exponentialRampToValueAtTime(0.001, at(M.cut + s + 0.25));
+      }
+      return true;
+    };
+    // Phantom revs from now, on their script `R` (each [start, engine, length, how hard], s, the engine 0 the left and
+    // 1 the right, 0..1): each rev on its engine's own voice, spooling up over `REV_UP` of it, the roar's band opening,
+    // the rumble deepening and the whine climbing, harder revs higher and louder, and running back down.
+    const REV_UP = 0.45;
+    const revs = (R) => {
+      if (!ready || muted) return false;
+      const t0 = ctx.currentTime + 0.02, at = (s) => t0 + s;
+      for (const v of test.revs) {
+        for (const param of [v.level.gain, v.roarBand.frequency, v.rumble.frequency, v.whine.frequency, v.whine2.frequency]) param.cancelScheduledValues(t0);
+        v.level.gain.setValueAtTime(0, t0); v.roarBand.frequency.setValueAtTime(220, t0); v.rumble.frequency.setValueAtTime(38, t0);
+        v.whine.frequency.setValueAtTime(700, t0); v.whine2.frequency.setValueAtTime(1050, t0);
+      }
+      for (const [s, i, len, hard] of R) {
+        const v = test.revs[i], up = s + len * REV_UP, end = s + len, loud = TEST.rev * (0.5 + 0.5 * hard), whine = 700 + 2800 * hard;
+        v.roarBand.frequency.setValueAtTime(220, at(s)); v.roarBand.frequency.exponentialRampToValueAtTime(220 + 2400 * hard, at(up)); v.roarBand.frequency.exponentialRampToValueAtTime(200, at(end));
+        v.rumble.frequency.setValueAtTime(38, at(s)); v.rumble.frequency.exponentialRampToValueAtTime(38 + 45 * hard, at(up)); v.rumble.frequency.exponentialRampToValueAtTime(36, at(end));
+        v.whine.frequency.setValueAtTime(700, at(s)); v.whine.frequency.exponentialRampToValueAtTime(whine, at(up)); v.whine.frequency.exponentialRampToValueAtTime(600, at(end));
+        v.whine2.frequency.setValueAtTime(1050, at(s)); v.whine2.frequency.exponentialRampToValueAtTime(whine * 1.5, at(up)); v.whine2.frequency.exponentialRampToValueAtTime(900, at(end));
+        v.level.gain.setValueAtTime(0, at(s)); v.level.gain.linearRampToValueAtTime(loud, at(s + 0.15)); v.level.gain.setValueAtTime(loud, at(up)); v.level.gain.linearRampToValueAtTime(0, at(end));
+      }
+      return true;
+    };
+
+    // Lightning through the Jet from now, on its times `Z` (s from its start: its crawl from `from` to `to`, { x, y, z },
+    // nose to tail, and the crack): the hum rising; the sizzle crackling, panned along the Jet as the lightning runs from
+    // end to end; then the crack with a thump under it, and silence.
+    const zap = (Z, from, to) => {
+      if (!ready || muted) return false;
+      const t0 = ctx.currentTime + 0.02, at = (s) => t0 + s, T = test;
+      const clear = (param, value) => { param.cancelScheduledValues(t0); param.setValueAtTime(value, t0); };
+      for (const g of [T.humGain, T.sizzleGain, T.crackGain, T.boomNoiseGain]) clear(g.gain, 0);
+      place(from.x, from.y, from.z, 1);
+      clear(T.sizzlePan.pan, AT.pan); clear(T.boomFilter.frequency, 900);
+      T.humGain.gain.linearRampToValueAtTime(TEST.hum, at(Z.fade));
+      for (let s = 0.05; s < Z.crack; s += 0.04 + Math.random() * 0.06) {
+        const k = Math.min(1, s / Z.fade) * (Math.random() < 0.3 ? 0.25 : 0.6 + Math.random() * 0.4);
+        T.sizzleGain.gain.setValueAtTime(TEST.sizzle * k, at(s));
+      }
+      for (let n = 0; n <= 8; n++) {
+        const u = n / 8;
+        place(from.x + (to.x - from.x) * u, from.y + (to.y - from.y) * u, from.z + (to.z - from.z) * u, 1);
+        T.sizzlePan.pan.linearRampToValueAtTime(AT.pan, at(Z.start + Z.crawl * u));
+      }
+      T.humGain.gain.setValueAtTime(TEST.hum, at(Z.crack));
+      T.humGain.gain.linearRampToValueAtTime(0, at(Z.crack + 0.05));
+      T.sizzleGain.gain.setValueAtTime(TEST.sizzle, at(Z.crack));
+      T.sizzleGain.gain.exponentialRampToValueAtTime(0.001, at(Z.crack + 0.35));
+      T.crackGain.gain.setValueAtTime(TEST.crack * 0.8, at(Z.crack));
+      T.crackGain.gain.exponentialRampToValueAtTime(0.001, at(Z.crack + 0.18));
+      T.boomFilter.frequency.setValueAtTime(700, at(Z.crack));
+      T.boomFilter.frequency.exponentialRampToValueAtTime(60, at(Z.crack + 1.2));
+      T.boomNoiseGain.gain.setValueAtTime(TEST.boomNoise * 0.4, at(Z.crack));
+      T.boomNoiseGain.gain.exponentialRampToValueAtTime(0.001, at(Z.crack + 1.4));
+      return true;
+    };
+
+    // A blackout from now, on its times `B` (s from its start: the power killed at `kill`, the banks coming back on at
+    // `banks`, the end): a heavy relay's clunk as it dies; a low hum in the dark, wavering; a clunk as each bank comes
+    // back, the hum gone with the first. The mains and the neon follow `power`, which the anomaly sets.
+    const blackout = (B) => {
+      if (!ready || muted) return false;
+      const t0 = ctx.currentTime + 0.02, at = (s) => t0 + s, T = test, first = B.banks[0];
+      const clear = (param, value) => { param.cancelScheduledValues(t0); param.setValueAtTime(value, t0); };
+      for (const g of [T.humGain, T.clankGain]) clear(g.gain, 0);
+      clear(T.clankFilter.frequency, 300); clear(T.hum.frequency, 100);
+      T.clankGain.gain.setValueAtTime(TEST.clank * 0.7, at(B.kill));
+      T.clankGain.gain.exponentialRampToValueAtTime(0.001, at(B.kill + 0.35));
+      T.hum.frequency.setValueAtTime(55, at(B.kill));
+      T.humGain.gain.setValueAtTime(0, at(B.kill + 0.3));
+      T.humGain.gain.linearRampToValueAtTime(TEST.hum * 0.7, at(B.kill + 1.2));
+      for (let s = B.kill + 1.5; s < first - 0.2; s += 0.5 + Math.random() * 0.4) T.humGain.gain.linearRampToValueAtTime(TEST.hum * (0.5 + Math.random() * 0.4), at(s));
+      T.humGain.gain.linearRampToValueAtTime(0, at(first));
+      B.banks.forEach((s, i) => {
+        T.clankFilter.frequency.setValueAtTime(330 + i * 70, at(s));
+        T.clankGain.gain.setValueAtTime(TEST.clank * 0.5, at(s));
+        T.clankGain.gain.exponentialRampToValueAtTime(0.001, at(s + 0.25));
+      });
+      T.hum.frequency.setValueAtTime(100, at(B.end));
+      return true;
+    };
+    // The lowrider from now, on its times `L` (s from its start: the first beat, the beat, how many, how hard each, 0..1,
+    // and how far into a beat the nose gear comes down, `slam`): as the gear hits on each beat, a sledgehammer's thud
+    // (`BANG`): the hit (`hit` loud, its band closing from `close[0]` to `close[1]` Hz over `hitLen` s), a dull knock
+    // (`knock` loud, falling from `knockHz[0]` to `knockHz[1]` Hz over `knockLen` s, a little out of tune each time, by up
+    // to `detune`), and the deep body under it, dropping from `from` to `to` Hz over `drop` s, `body[0]` loud and gone by
+    // `body[1]` s.
+    const BANG = { hit: 1.2, close: [900, 110], hitLen: 0.13, knock: 0.6, knockHz: [170, 105], knockLen: 0.16, detune: 0.05, from: 95, to: 42, drop: 0.045, body: [1.1, 0.4] };
+    const lowrider = (L) => {
+      if (!ready || muted) return false;
+      const t0 = ctx.currentTime + 0.02, at = (s) => t0 + s, T = test;
+      const clear = (param, value) => { param.cancelScheduledValues(t0); param.setValueAtTime(value, t0); };
+      clear(T.thumpGain.gain, 0); clear(T.bangHitGain.gain, 0); clear(T.bangKnockGain.gain, 0);
+      clear(T.thump.frequency, BANG.from); clear(T.thump2.frequency, BANG.from * 2); clear(T.bangHitBand.frequency, BANG.close[0]); clear(T.bangKnock.frequency, BANG.knockHz[0]);
+      for (let n = 0; n < L.beats; n++) {
+        const s = L.start + (n + L.slam) * L.beat, k = L.hard(n), tune = 1 + (Math.random() - 0.5) * BANG.detune;
+        T.bangHitBand.frequency.setValueAtTime(BANG.close[0], at(s));
+        T.bangHitBand.frequency.exponentialRampToValueAtTime(BANG.close[1], at(s + BANG.hitLen));
+        T.bangHitGain.gain.setValueAtTime(0, at(s));
+        T.bangHitGain.gain.linearRampToValueAtTime(TEST.bang * BANG.hit * k, at(s + 0.002));
+        T.bangHitGain.gain.exponentialRampToValueAtTime(0.001, at(s + BANG.hitLen + 0.05));
+        T.bangKnock.frequency.setValueAtTime(BANG.knockHz[0] * tune, at(s));
+        T.bangKnock.frequency.exponentialRampToValueAtTime(BANG.knockHz[1] * tune, at(s + BANG.knockLen));
+        T.bangKnockGain.gain.setValueAtTime(0, at(s));
+        T.bangKnockGain.gain.linearRampToValueAtTime(TEST.bang * BANG.knock * k, at(s + 0.003));
+        T.bangKnockGain.gain.exponentialRampToValueAtTime(0.001, at(s + BANG.knockLen));
+        T.thump.frequency.setValueAtTime(BANG.from, at(s));
+        T.thump.frequency.exponentialRampToValueAtTime(BANG.to, at(s + BANG.drop));
+        T.thump2.frequency.setValueAtTime(BANG.from * 2, at(s));
+        T.thump2.frequency.exponentialRampToValueAtTime(BANG.to * 2, at(s + BANG.drop));
+        T.thumpGain.gain.setValueAtTime(0, at(s));
+        T.thumpGain.gain.linearRampToValueAtTime(TEST.thump * BANG.body[0] * k, at(s + 0.003));
+        T.thumpGain.gain.exponentialRampToValueAtTime(0.001, at(s + BANG.body[1]));
+      }
+      return true;
+    };
+    // The Jet shuffling in its bay from now, on its times `S` (s from its start): the brakes letting go with a clunk at
+    // `brake`; a tyre scrub at each of `scrubs`; a creak of loaded metal at each of `creaks`, the clank's ring gliding up;
+    // and the engines' short bursts, `bursts` [s, how hard], a whoomph and a cough of roar.
+    const shuffle = (S) => {
+      if (!ready || muted) return false;
+      const t0 = ctx.currentTime + 0.02, at = (s) => t0 + s, T = test;
+      const clear = (param, value) => { param.cancelScheduledValues(t0); param.setValueAtTime(value, t0); };
+      for (const g of [T.clankGain, T.whooshGain, T.whoomphGain, T.roarGain]) clear(g.gain, 0);
+      clear(T.clankFilter.frequency, 380); clear(T.whooshFilter.frequency, 700); clear(T.roarFilter.frequency, 900);
+      T.clankGain.gain.setValueAtTime(TEST.clank * 0.6, at(S.brake));
+      T.clankGain.gain.exponentialRampToValueAtTime(0.001, at(S.brake + 0.3));
+      for (const s of S.scrubs) {
+        T.whooshGain.gain.setValueAtTime(0, at(s));
+        T.whooshGain.gain.linearRampToValueAtTime(TEST.whoosh * 0.9, at(s + 0.04));
+        T.whooshGain.gain.exponentialRampToValueAtTime(0.001, at(s + 0.32));
+      }
+      for (const s of S.creaks) {
+        T.clankFilter.frequency.setValueAtTime(560 + Math.random() * 120, at(s));
+        T.clankFilter.frequency.linearRampToValueAtTime(820 + Math.random() * 160, at(s + 0.4));
+        T.clankGain.gain.setValueAtTime(0, at(s));
+        T.clankGain.gain.linearRampToValueAtTime(TEST.clank * 0.25, at(s + 0.08));
+        T.clankGain.gain.exponentialRampToValueAtTime(0.001, at(s + 0.45));
+      }
+      for (const [s, k] of S.bursts) {
+        T.whoomphGain.gain.setValueAtTime(TEST.whoomph * 0.25 * k, at(s));
+        T.whoomphGain.gain.exponentialRampToValueAtTime(0.001, at(s + 0.5));
+        T.roarGain.gain.setValueAtTime(0, at(s));
+        T.roarGain.gain.linearRampToValueAtTime(TEST.roar * 0.22 * k, at(s + 0.04));
+        T.roarGain.gain.linearRampToValueAtTime(0, at(s + 0.3));
+      }
+      return true;
+    };
+    // How much of the hall's electrical hum has power: the mains at once, the neon with the bed's next levelling.
+    const setPower = (k) => {
+      power = k;
+      if (ready && !muted) bed.mainsGain.gain.setTargetAtTime(LEVEL.mains * k, ctx.currentTime, 0.03);
+    };
 
     // Only from a gesture the browser has already counted, so nothing warns in the console; a gesture also wakes a
     // context the browser started suspended.
@@ -491,11 +840,11 @@
       if (since < 0.1 || muted) return;
       since = 0;
       const now = ctx.currentTime, T = spots.tunnel, L = spots.launch, D = spots.door;
-      set(bed.mainsGain.gain, LEVEL.mains, now);
+      set(bed.mainsGain.gain, LEVEL.mains * power, now);
       set(bed.droneGain.gain, LEVEL.drone, now);
       set(bed.airGain.gain, LEVEL.air + LEVEL.tunnelAir * clamp((T.z0 - ear.z) / 6, 0, 1), now);
       place(0, T.y, clamp(ear.z, T.z1, T.z0), REF.neon);
-      set(bed.neonGain.gain, LEVEL.neon * AT.level, now);
+      set(bed.neonGain.gain, LEVEL.neon * AT.level * power, now);
       set(bed.neonPan.pan, AT.pan * 0.4, now);
       place(L.x, L.y, L.z, REF.launch);
       set(bed.launch.gain.gain, LEVEL.launch * AT.level, now);
@@ -505,8 +854,18 @@
       set(bed.door.pan.pan, AT.pan, now);
       place(spots.booth.x, spots.booth.y, spots.booth.z, 1);
       set(test.boothPan.pan, AT.pan, now);
-      place(spots.engines.x, spots.engines.y, spots.engines.z, 1);
+      const E = spots.engines;
+      place(E.x, E.y, E.z, 1);
       set(test.enginePan.pan, AT.pan * 0.6, now);
+      place(spots.gear.x, spots.gear.y, spots.gear.z, 1);
+      set(test.bangPan.pan, AT.pan, now);
+      // Each engine's rev from where it stands, the two pushed farther apart than they are.
+      place(E.x - E.gap, E.y, E.z, 1);
+      const left = AT.pan;
+      place(E.x + E.gap, E.y, E.z, 1);
+      const right = AT.pan, mid = (left + right) / 2;
+      set(test.revs[0].pan.pan, clamp(mid + (left - mid) * REV_SPREAD, -1, 1), now);
+      set(test.revs[1].pan.pan, clamp(mid + (right - mid) * REV_SPREAD, -1, 1), now);
       if (sisVoice.until > now) placeSis(now, false);
       const Pj = spots.projector, Sc = spots.screen;
       place(Pj.x, Pj.y, Pj.z, FILM_REF.projector);
@@ -519,6 +878,46 @@
       place(Fk.x, Fk.y, Fk.z, LIFT.ref);
       set(fork.near.gain, AT.level, now);
       set(fork.runPan.pan, AT.pan, now);
+      if (craneState) {
+        const c = craneState;
+        place(c.x, c.y, c.z, CRANE.ref);
+        set(crane.near.gain, AT.level, now);
+        set(crane.pan.pan, AT.pan, now);
+        set(crane.travel.gain, Math.min(1, c.travel * 1.6), now);
+        set(crane.whine.frequency, CRANE.travelHz[0] + (CRANE.travelHz[1] - CRANE.travelHz[0]) * c.travel, now);
+        set(crane.hoist.gain, Math.min(1, c.hoist * 1.6), now);
+        set(crane.hoistWhine.frequency, CRANE.hoistHz[0] + (CRANE.hoistHz[1] - CRANE.hoistHz[0]) * c.hoist, now);
+        // The alarm's beeps a little ahead, while the bridge or the trolley moves.
+        if (c.alarm) {
+          const g = crane.alarmGain.gain;
+          if (crane.nextBeep < now) crane.nextBeep = now + 0.05;
+          for (; crane.nextBeep < now + 0.25; crane.nextBeep += CRANE.every) {
+            const at = crane.nextBeep;
+            g.setValueAtTime(0, at);
+            g.linearRampToValueAtTime(CRANE.alarm, at + 0.01);
+            g.setValueAtTime(CRANE.alarm, at + CRANE.beep - 0.02);
+            g.linearRampToValueAtTime(0, at + CRANE.beep);
+          }
+        }
+      }
+      if (roomState) {
+        const r = roomState;
+        place(r.x, r.y, r.z, ROOM.ref);
+        set(room.near.gain, AT.level, now);
+        set(room.pan.pan, AT.pan, now);
+        set(room.roar.gain, ROOM.roar * r.level, now);
+        set(room.spray.gain, r.spray ? ROOM.spray : 0, now);
+        // The crackle: a few sharp pops this tenth of a second, as many as the fire is big.
+        const g = room.crackle.gain;
+        g.cancelScheduledValues(now);
+        g.setValueAtTime(0, now);
+        for (let i = 0; i < 4; i++) {
+          if (Math.random() > r.level * 0.9) continue;
+          const at = now + Math.random() * 0.1, loud = ROOM.crackle * r.level * (0.4 + Math.random() * 0.6);
+          g.setValueAtTime(loud, at);
+          g.exponentialRampToValueAtTime(0.0001, at + 0.02 + Math.random() * 0.03);
+        }
+      }
       if (liftOn && now > liftReady) {
         set(fork.whine.frequency, 440 + WORK.whine * liftDrive, now);
         set(fork.whineGain.gain, LIFT.whine * (1 + WORK.swell * liftDrive), now);
@@ -795,6 +1194,90 @@
       proj.rollGain.gain.setValueAtTime(FILM.roll, now + seconds - 0.2);
       proj.rollGain.gain.linearRampToValueAtTime(0, now + seconds);
     };
+    // The crane's state to read from now on, { x, y, z, travel, hoist }, kept current by the crane.
+    const watchCrane = (state) => { craneState = state; };
+    // The control room's fire to read from now on, { x, y, z, level, spray }, kept current by `hangar-room-fire.js`.
+    const watchRoom = (state) => { roomState = state; };
+    // A cue from the control room at (x, y, z): `strike`, `out` or `clank`.
+    const roomCue = (name, x, y, z) => {
+      if (!ready || muted) return;
+      place(x, y, z, ROOM.ref);
+      const now = ctx.currentTime, k = AT.level;
+      room.cuePan.pan.cancelScheduledValues(now);
+      room.cuePan.pan.setValueAtTime(AT.pan, now);
+      if (name === "strike") {
+        const c = room.crackGain.gain, g = room.thumpGain.gain, f = room.thump.frequency;
+        for (const p of [c, g, f]) p.cancelScheduledValues(now);
+        c.setValueAtTime(ROOM.crack * k, now);
+        c.exponentialRampToValueAtTime(0.0001, now + 0.35);
+        f.setValueAtTime(120, now);
+        f.exponentialRampToValueAtTime(40, now + 0.4);
+        g.setValueAtTime(ROOM.thump * k, now);
+        g.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      } else if (name === "out") {
+        const g = room.outGain.gain, f = room.outFilter.frequency;
+        g.cancelScheduledValues(now); f.cancelScheduledValues(now);
+        f.setValueAtTime(3500, now);
+        f.exponentialRampToValueAtTime(700, now + 1.2);
+        g.setValueAtTime(ROOM.out * k, now);
+        g.linearRampToValueAtTime(0, now + 1.3);
+      } else if (name === "clank") {
+        const g = room.clankGain.gain;
+        g.cancelScheduledValues(now);
+        g.setValueAtTime(ROOM.clank * k, now);
+        g.exponentialRampToValueAtTime(0.0001, now + 0.25);
+      } else throw new Error(`hangarAudio: no room cue ${name}`);
+    };
+    // A crane cue at (x, y, z): `brake`, `rattle`, `lift`, `land` or `horn`.
+    const craneCue = (name, x, y, z) => {
+      if (!ready || muted) return;
+      place(x, y, z, CRANE.ref);
+      const now = ctx.currentTime, k = AT.level;
+      crane.cuePan.pan.cancelScheduledValues(now);
+      crane.cuePan.pan.setValueAtTime(AT.pan, now);
+      if (name === "brake") {
+        for (const param of [crane.clunkGain.gain, crane.clunk.frequency, crane.clickGain.gain]) param.cancelScheduledValues(now);
+        crane.clickGain.gain.setValueAtTime(CRANE.click * k, now);
+        crane.clickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.03);
+        crane.clunk.frequency.setValueAtTime(140, now);
+        crane.clunk.frequency.exponentialRampToValueAtTime(60, now + 0.12);
+        crane.clunkGain.gain.setValueAtTime(CRANE.clunk * k, now);
+        crane.clunkGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
+      } else if (name === "rattle") {
+        const g = crane.clinkGain.gain;
+        g.cancelScheduledValues(now);
+        g.setValueAtTime(0, now);
+        for (let i = 0, at = now; i < 7; i++) {
+          at += 0.06 + Math.random() * 0.14;
+          const loud = CRANE.clink * k * (0.5 + Math.random() * 0.5);
+          g.setValueAtTime(loud, at);
+          g.exponentialRampToValueAtTime(0.0001, at + 0.07);
+        }
+      } else if (name === "lift") {
+        const g = crane.creakGain.gain, f = crane.creak.frequency;
+        g.cancelScheduledValues(now); f.cancelScheduledValues(now);
+        f.setValueAtTime(55, now);
+        f.linearRampToValueAtTime(95, now + 0.7);
+        g.setValueAtTime(0, now);
+        g.linearRampToValueAtTime(CRANE.creak * k, now + 0.15);
+        g.linearRampToValueAtTime(0, now + 0.8);
+      } else if (name === "land") {
+        for (const param of [crane.thudGain.gain, crane.thud.frequency, crane.thudNoise.gain]) param.cancelScheduledValues(now);
+        crane.thud.frequency.setValueAtTime(110, now);
+        crane.thud.frequency.exponentialRampToValueAtTime(45, now + 0.2);
+        crane.thudGain.gain.setValueAtTime(CRANE.thud * k, now);
+        crane.thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.3);
+        crane.thudNoise.gain.setValueAtTime(CRANE.thud * 0.6 * k, now);
+        crane.thudNoise.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      } else if (name === "horn") {
+        const g = crane.hornGain.gain;
+        g.cancelScheduledValues(now);
+        g.setValueAtTime(0, now);
+        g.linearRampToValueAtTime(CRANE.horn * k, now + 0.03);
+        g.setValueAtTime(CRANE.horn * k, now + CRANE.hornLen - 0.08);
+        g.linearRampToValueAtTime(0, now + CRANE.hornLen);
+      } else throw new Error(`hangarAudio: no crane cue ${name}`);
+    };
     const setVolume = (value) => {
       volume = clamp(value, 0, 1);
       try {
@@ -818,11 +1301,15 @@
       for (const key of Object.keys(test)) test[key] = null;
       for (const key of Object.keys(sis)) sis[key] = null;
       for (const key of Object.keys(proj)) proj[key] = null;
+      for (const key of Object.keys(crane)) crane[key] = null;
+      craneState = null;
+      for (const key of Object.keys(room)) room[key] = null;
+      roomState = null;
       sisVoice.pos = null;
     };
 
     return {
-      listen, update, setMuted, setVolume, test: play, clang, voice, boot, poke, beep, denied, forklift, forkliftWork, horn, projector, clunk, roll, dispose,
+      listen, update, setMuted, setVolume, test: play, misfire, revs, zap, blackout, lowrider, shuffle, power: setPower, clang, voice, boot, poke, beep, denied, forklift, forkliftWork, horn, projector, clunk, roll, watchCrane, craneCue, watchRoom, roomCue, dispose,
       get muted() { return muted; },
       get volume() { return volume; },
       get ready() { return ready; },

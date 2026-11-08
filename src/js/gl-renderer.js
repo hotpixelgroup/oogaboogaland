@@ -31,7 +31,16 @@
   const INSTANCE_FLOATS = 20;
   const NO_OBJECT_CLIP = new Float32Array([0, 0, 0, -1]);
   const NO_OBJECT_SLAB = new Float32Array(4);
-  const NO_SPOT_LIGHT = new Float32Array(12);
+  // A glossy reflector's capture: its size against the tier's mirror size, and how many frames apart it refreshes.
+  const GLOSS_CAPTURE = { size: 0.5, every: 2 };
+  // Up to two cone lights (`renderOpts.spotLight`, 12 floats each); a scene that passes one has the second zeroed.
+  const NO_SPOT_LIGHT = new Float32Array(24), SPOT_SCRATCH = new Float32Array(24);
+  const spotUniform = (spot) => {
+    if (spot.length >= 24) return spot;
+    SPOT_SCRATCH.fill(0);
+    SPOT_SCRATCH.set(spot);
+    return SPOT_SCRATCH;
+  };
   // MAX_PIXELS caps the pixel ratio to bound buffer memory.
   const MAX_PIXELS = 2.6e6;
   const DEFAULT_LIGHT = { x: 0.45, y: 0.85, z: 0.3 };
@@ -430,10 +439,12 @@ uniform sampler2DShadow uShadow;
 uniform float uShadowTexel;
 uniform vec4 uLights[64];
 uniform int uLightCount;
-uniform vec4 uSpotLight[3];
+uniform vec4 uSpotLight[6];
 ${VIEW_DIRECTION_GLSL}
 uniform vec3 uFog;
 uniform vec2 uFogRange;
+// The share of the fog a geometry takes off itself (its fogPierce), so a glowing thing shows through haze.
+uniform float uFogPierce;
 // xyz follows the played character; w enables the room's fluorescence and visibility falloff.
 uniform vec4 uBlacklight;
 uniform vec4 uMatrixParams;
@@ -639,15 +650,16 @@ vec3 lightFactorAt(vec3 n) {
     else a *= a;
     factor += uLights[i * 2 + 1].rgb * a * max(dot(n, ld), 0.0) / max(dist, 0.0001);
   }
-  if (uSpotLight[0].w > 0.0) {
-    vec3 toSurface = vWorld - uSpotLight[0].xyz;
+  for (int s = 0; s < 6; s += 3) {
+    if (uSpotLight[s].w <= 0.0) continue;
+    vec3 toSurface = vWorld - uSpotLight[s].xyz;
     float dist = length(toSurface);
-    if (dist > 0.0001 && dist < uSpotLight[0].w) {
+    if (dist > 0.0001 && dist < uSpotLight[s].w) {
       vec3 direction = toSurface / dist;
-      float cone = smoothstep(uSpotLight[1].w, uSpotLight[2].w, dot(direction, uSpotLight[1].xyz));
-      float fade = 1.0 - dist / uSpotLight[0].w;
+      float cone = smoothstep(uSpotLight[s + 1].w, uSpotLight[s + 2].w, dot(direction, uSpotLight[s + 1].xyz));
+      float fade = 1.0 - dist / uSpotLight[s].w;
       float energy = cone * fade * fade / (1.0 + 0.005 * dist * dist);
-      factor += uSpotLight[2].rgb * energy * max(dot(n, -direction), 0.0);
+      factor += uSpotLight[s + 2].rgb * energy * max(dot(n, -direction), 0.0);
     }
   }
   return factor;
@@ -898,7 +910,7 @@ void main() {
   float cloud = step(3.5, vParams.z) * (1.0 - nativeMode);
 #ifdef PLAIN
   // No Matrix this frame and no special faces in the mesh: the plain variant compiles all of it away.
-  float fog = smoothstep(uFogRange.x, uFogRange.y, distance(vWorld, uEye));
+  float fog = smoothstep(uFogRange.x, uFogRange.y, distance(vWorld, uEye)) * (1.0 - uFogPierce);
   const float front = 0.0;
   const vec3 matrixColorResult = vec3(0.0), matrixBrightResult = vec3(0.0);
 #else
@@ -960,7 +972,7 @@ void main() {
     oBright = vec4(matrixGreen * (glow * 0.9 + tip * 0.85) * (1.0 - matrixFog), reveal);
     return;
   }
-  float fog = smoothstep(uFogRange.x, uFogRange.y, distance(vWorld, uEye));
+  float fog = smoothstep(uFogRange.x, uFogRange.y, distance(vWorld, uEye)) * (1.0 - uFogPierce);
   vec3 matrixColorResult = vec3(0.0);
   vec3 matrixBrightResult = vec3(0.0);
   if (front > 0.0) {
@@ -1115,7 +1127,7 @@ void main() {
   const ORDINARY_MESH_FS = derive(MESH_FS, ["flat in vec4 vVoxel;", "uniform vec4 uVoxel;"], [/\bvVoxel\b/g, "uVoxel"]);
   // The camera's depth pre-pass: the mesh shader's cuts and nothing else, the rest compiled away.
   const DEPTH_MESH_FS = ORDINARY_MESH_FS.slice(0, ORDINARY_MESH_FS.indexOf("void main() {")) + "void main() {\n  if (clipped()) discard;\n}";
-  const MESH_UNIFORMS = ["uRigCount", "uRigPass", "uRigMatrices", "uRigParams", "uRigVoxels", "uRigVisibility", "uViewProj", "uLightViewProj", "uEye", "uViewDirection", "uLightDir", "uSky", "uGround", "uSun", "uDirectStrength", "uAmbientFloor", "uDiffuseFloor", "uShadowStrength", "uShadowFloor", "uShadowBias", "uShadow", "uShadowTexel", "uLights", "uLightCount", "uSpotLight", "uFog", "uFogRange", "uBlacklight", "uMatrixParams", "uMatrixOrigin", "uMatrixGlyph", "uMatrixCave", "uMatrixCaves", "uMatrixCaveBounds", "uMatrixCaveNear", "uMatrixPermanentCave", "uMatrixPermanentPlane", "uMatrixPermanentAperture", "uMatrixLivingGlobal", "uMatrixGlyphTex", "uMatrixSamples", "uClipMinY", "uClipMaxY", "uObjectClip", "uObjectSlab", "uObjectSlab2", "uProjective", "uMatrixGlyphOpacity", "uGlassOpacity", "uVoxel", "uWindTime", "uSway", "uSwing", "uGlass", "uLightBeam", "uLakeWaveCount", "uLakeWaves", "uLakeSurface", "uLakeSuction", "uLakeFlowEnabled", "uLakeFlowU", "uLakeFlowV", "uLakeCharge", "uLakeChargeRise", "uLakeChargeCenter", "uLakeOcclude", "uLakeWaveEnd", "uLakeBodyShape", "uLakeBodyBend", "uDSBSurface", "uDSBDepth", "uDSBEnvironment", "uCanvasSurface", "uCanvasImage", "uCanvasRect", "uCanvasCurve", "uCanvasBackground", "uCanvasScale", "uCanvasAtlas", "uCanvasAtlasMin", "uCanvasAtlasMax"];
+  const MESH_UNIFORMS = ["uRigCount", "uRigPass", "uRigMatrices", "uRigParams", "uRigVoxels", "uRigVisibility", "uViewProj", "uLightViewProj", "uEye", "uViewDirection", "uLightDir", "uSky", "uGround", "uSun", "uDirectStrength", "uAmbientFloor", "uDiffuseFloor", "uShadowStrength", "uShadowFloor", "uShadowBias", "uShadow", "uShadowTexel", "uLights", "uLightCount", "uSpotLight", "uFog", "uFogRange", "uFogPierce", "uBlacklight", "uMatrixParams", "uMatrixOrigin", "uMatrixGlyph", "uMatrixCave", "uMatrixCaves", "uMatrixCaveBounds", "uMatrixCaveNear", "uMatrixPermanentCave", "uMatrixPermanentPlane", "uMatrixPermanentAperture", "uMatrixLivingGlobal", "uMatrixGlyphTex", "uMatrixSamples", "uClipMinY", "uClipMaxY", "uObjectClip", "uObjectSlab", "uObjectSlab2", "uProjective", "uMatrixGlyphOpacity", "uGlassOpacity", "uVoxel", "uWindTime", "uSway", "uSwing", "uGlass", "uLightBeam", "uLakeWaveCount", "uLakeWaves", "uLakeSurface", "uLakeSuction", "uLakeFlowEnabled", "uLakeFlowU", "uLakeFlowV", "uLakeCharge", "uLakeChargeRise", "uLakeChargeCenter", "uLakeOcclude", "uLakeWaveEnd", "uLakeBodyShape", "uLakeBodyBend", "uDSBSurface", "uDSBDepth", "uDSBEnvironment", "uCanvasSurface", "uCanvasImage", "uCanvasRect", "uCanvasCurve", "uCanvasBackground", "uCanvasScale", "uCanvasAtlas", "uCanvasAtlasMin", "uCanvasAtlasMax"];
   const ORDINARY_SHADOW_VS = derive(SHADOW_VS, [RIG_GLSL, ""], ["rigMatrix(mat4(aM0, aM1, aM2, aM3))", "mat4(aM0, aM1, aM2, aM3)"],
     ["layout(location=6) in vec4 aM3;\n\n", "layout(location=6) in vec4 aM3;\n"]);
   const LINE_VS = `#version 300 es
@@ -1304,6 +1316,8 @@ uniform sampler2D uReflection;
 uniform vec2 uReflectionScale;
 uniform sampler2D uMatrixGlyphTex;
 uniform vec3 uTint;
+// A glossy reflector (a polished floor): the eye's position and how strong its reflection is; w 0 for a mirror.
+uniform vec4 uGloss;
 uniform float uPortal;
 uniform float uReveal;
 uniform float uRippleOnly;
@@ -1340,7 +1354,9 @@ void main() {
   // The ratio cancels perspective interpolation, recovering the original
   // planar depth. Glass inside the near plane still closes the cave entrance.
   gl_FragDepth = clamp(0.5 * vClipDepth.x / vClipDepth.y + 0.5, 0.0, 1.0);
-  if (uRippleOnly < 0.5 && vPortalUv.y > 1.0 - uReveal) discard;
+  // The mirror's reveal drains its pane from the top; a glossy floor has no pane to drain, and its own axis runs far
+  // past the pane's height.
+  if (uGloss.w <= 0.0 && uRippleOnly < 0.5 && vPortalUv.y > 1.0 - uReveal) discard;
   if (vOpacity < 1.0) {
     ivec2 pixel = ivec2(gl_FragCoord.xy) & 3;
     int rank = ((pixel.x & 1) ^ (pixel.y & 1)) * 8 + (pixel.y & 1) * 4
@@ -1405,6 +1421,17 @@ void main() {
     vec2 projectedUv = (rippled.xy / rippled.w * 0.5 + 0.5) * uReflectionScale;
     vec2 uv = mix(projectedUv, vPortalUv, uPortal);
     vec3 reflected = texture(uReflection, uv).rgb;
+    if (uGloss.w > 0.0) {
+      // A polished surface: its own shading stays (this pass adds), with the reflection softened over a few texels
+      // and stronger the more grazing the view (Schlick's falloff from the floor's own share, uGloss.w).
+      vec2 texel = 1.5 / vec2(textureSize(uReflection, 0));
+      vec3 soft = (reflected * 2.0 + texture(uReflection, uv + vec2(texel.x, 0.0)).rgb + texture(uReflection, uv - vec2(texel.x, 0.0)).rgb
+        + texture(uReflection, uv + vec2(0.0, texel.y)).rgb + texture(uReflection, uv - vec2(0.0, texel.y)).rgb) / 6.0;
+      float facing = clamp(dot(normalize(uGloss.xyz - vWorld), vMirrorNormal), 0.0, 1.0);
+      oColor = vec4(soft * uGloss.w * (0.45 + 0.55 * pow(1.0 - facing, 4.0)), 1.0);
+      oBright = vec4(0.0);
+      return;
+    }
     float sheen = pow(max(0.0, 1.0 - abs(fract((vWorld.x + vWorld.y) * 0.22) - 0.5) * 7.0), 5.0) * 0.08;
     color = mix(reflected, uTint, 0.1) + sheen + ringLight;
   }
@@ -1492,6 +1519,8 @@ uniform float uHazeDrop;
 uniform float uClouds;
 uniform vec4 uSea;
 uniform vec2 uSeaEye;
+uniform vec2 uSeaFog;
+uniform vec3 uSeaFogColor;
 layout(location=0) out vec4 oColor;
 layout(location=1) out vec4 oBright;
 float hash(vec2 p) {
@@ -1565,8 +1594,11 @@ void main() {
   float sunDisc = pow(sd, 600.0) * (1.0 - uStars);
   vec3 sun = uSun * (sunDisc + pow(sd, 6.0) * 0.18 * (1.0 - uStars));
   float moonDot = dot(d, uMoonDir);
-  float moonEdge = max(fwidth(moonDot), 0.000005);
-  float moonDisc = smoothstep(0.9985 - moonEdge, 0.9985 + moonEdge, moonDot);
+  // Haze in front of the moon diffuses it rather than only tinting it: low in the haze bank, behind thin cloud,
+  // or washed out by daylight, its edge, its terminator and its markings all soften.
+  float moonHaze = clamp(max(1.0 - smoothstep(0.02, 0.4, uMoonDir.y + uHazeDrop), 0.5 * (1.0 - uStars)) + 0.5 * uClouds, 0.0, 1.0);
+  float moonEdge = max(fwidth(moonDot), 0.000005), moonSoft = moonHaze * 0.0011;
+  float moonDisc = smoothstep(0.9985 - moonEdge - moonSoft, 0.9985 + moonEdge + moonSoft * 0.35, moonDot);
   vec3 moon = vec3(0.0), moonBright = vec3(0.0);
   if (moonDisc > 0.0 && skyMask > 0.0) {
     float moonOpacity = moonDisc * mix(0.3, 1.0, uStars);
@@ -1576,12 +1608,13 @@ void main() {
     vec3 moonUp = abs(uMoonDir.y) < 0.98 ? vec3(0.0, 1.0, 0.0) : vec3(0.0, 0.0, 1.0);
     vec3 moonRight = normalize(cross(uMoonDir, moonUp));
     moonUp = cross(moonRight, uMoonDir);
-    float albedo = moonAlbedo(vec2(dot(moonOffset, moonRight), dot(moonOffset, moonUp)));
+    float albedo = mix(moonAlbedo(vec2(dot(moonOffset, moonRight), dot(moonOffset, moonUp))), 0.86, moonHaze * 0.6);
     float moonLight = dot(moonNormal, uMoonSunDir);
-    float moonLit = smoothstep(-0.015, 0.015, moonLight);
+    float moonLit = smoothstep(-0.015 - moonHaze * 0.12, 0.015 + moonHaze * 0.12, moonLight);
     vec3 moonDay = vec3(0.8, 0.79, 0.76) * albedo * (0.18 + 0.82 * sqrt(max(0.0, moonLight)));
     vec3 earthshine = vec3(0.1, 0.11, 0.14) * albedo * (0.85 + 0.15 * moonDepth);
-    vec3 moonSurface = mix(mix(col, earthshine, uStars), moonDay, moonLit);
+    // Earthshine fills the shadowed side at night; by day it still shows faintly, a dimmer disc behind the lit part.
+    vec3 moonSurface = mix(mix(col, earthshine, mix(0.45, 1.0, uStars)), moonDay, moonLit);
     // Keep the shadowed terrain visible and the lit terrain clear of bloom.
     moon = (moonSurface - col) * moonOpacity;
     moonBright = moonDay * moonLit * moonOpacity * 0.06;
@@ -1634,9 +1667,13 @@ void main() {
     // farther out as the eye climbs, retaining visible water below a high dive.
     float lift = max(0.0, uSea.z - uSea.y - 120.0);
     float haze = smoothstep(160.0 + lift * 1.2, 900.0 + lift * 2.5, t);
+    // A scene that asks for it (seaFog) hazes the sea into its own fog's colour at its own distances, so anything
+    // the fog swallows vanishes into the water behind it rather than standing out against the sky's colour there;
+    // its fog is the horizon's colour, so the horizon stays seamless.
+    if (uSeaFog.y > uSeaFog.x) col = mix(uSeaFogColor, water, 1.0 - smoothstep(uSeaFog.x, uSeaFog.y, t));
     // At sea level the distance haze may not finish before the ray cutoff;
     // fade water out there too so the horizon stays continuous at every height.
-    col = mix(col, water, (1.0 - haze) * smoothstep(0.0005, 0.01, -d.y));
+    else col = mix(col, water, (1.0 - haze) * smoothstep(0.0005, 0.01, -d.y));
   }
   // Painted cumulus on a plane over the world, drifting with time: lit toward the sun, grey underneath,
   // taking the horizon's colour at dusk and dimming to the night sky. They thin out toward the horizon.
@@ -1655,6 +1692,13 @@ void main() {
     moon *= 1.0 - cover;
     moonBright *= 1.0 - cover;
     stars *= 1.0 - cover;
+  }
+  // A sea fogged into its haze (seaFog) carries that haze up over the horizon, so the sky meets the sea in the
+  // fog's own colour with no line between them, clouds and all.
+  if (uSeaFog.y > uSeaFog.x && d.y > -0.0005) {
+    float veil = 1.0 - smoothstep(0.0, 0.32, d.y);
+    col = mix(col, uSeaFogColor, veil);
+    sun *= 1.0 - veil; moon *= 1.0 - veil; moonBright *= 1.0 - veil; stars *= 1.0 - veil;
   }
   oColor = vec4(col + (sun + moon + stars) * skyMask, 1.0);
   oBright = vec4((uSun * sunDisc * 0.6 + moonBright + stars * 0.35) * skyMask, 1.0);
@@ -1843,7 +1887,7 @@ void main() {
     // Stable records keep their own buffer, so a stationary prop never joins the per-frame copy.
     const instanceStream = { buffer: null, data: null, capacity: 0, slot: 0, trimFrame: -1, trimSince: -1 };
     const reflectorNodes = [], reflectorTargets = new Map();
-    let reflectorTurn = 0, reflectorPass = null, reflectorFrame = 0;
+    let reflectorTurn = 0, reflectorPass = null, reflectorFrame = 0, glossFrame = 0;
     let reducedCapture = false;
     // Glass (`geometry.glass`, its see-through alpha) draws after everything opaque and the sky, blended and leaving
     // the depth alone, back faces first so a tube shows its far wall through its near one. `glassPass` is set while it
@@ -1914,7 +1958,7 @@ void main() {
     };
     const ensureMirrorProgram = () => {
       if (!mirror.program) {
-        mirror.program = compile(MIRROR_VS, MIRROR_FS, ["uViewProj", "uReflectionViewProj", "uMirrorWorld", "uShard", "uReflection", "uReflectionScale", "uTint", "uPortal", "uReveal", "uRippleOnly", "uCrestTint", "uMatrixGlyphTex", "uRippleActive", "uRippleTime", "uRipples", "uBodyField", "uBodyBounds", "uBodyTexel", "uBodyContacts", "uBodyActive", "uBodyWaves", "uClipMaxY"]);
+        mirror.program = compile(MIRROR_VS, MIRROR_FS, ["uViewProj", "uReflectionViewProj", "uMirrorWorld", "uShard", "uReflection", "uReflectionScale", "uTint", "uPortal", "uReveal", "uRippleOnly", "uCrestTint", "uMatrixGlyphTex", "uRippleActive", "uRippleTime", "uRipples", "uBodyField", "uBodyBounds", "uBodyTexel", "uBodyContacts", "uBodyActive", "uBodyWaves", "uClipMaxY", "uGloss"]);
         mirrorDebug.resources++;
       }
       if (mirror.programReady) return true;
@@ -1936,7 +1980,7 @@ void main() {
         foliageShadow: compile(FOLIAGE_SHADOW_VS, FOLIAGE_SHADOW_FS, MESH_UNIFORMS),
         shadow: compile(ORDINARY_SHADOW_VS, SHADOW_FS, ["uRigCount", "uRigPass", "uRigMatrices", "uRigVisibility", "uLightViewProj", "uClipMinY", "uClipMaxY", "uObjectClip"]),
         line: compile(LINE_VS, LINE_FS, ["uViewProj", "uViewport", "uWidth", "uClipMaxY", "uObjectClip"]),
-        sky: compile(QUAD_VS, SKY_FS, ["uInvViewProj", "uHorizon", "uZenith", "uSun", "uSunDir", "uMoonDir", "uMoonSunDir", "uStarMatrix", "uStars", "uTime", "uHazeDrop", "uClouds", "uSea", "uSeaEye"]),
+        sky: compile(QUAD_VS, SKY_FS, ["uInvViewProj", "uHorizon", "uZenith", "uSun", "uSunDir", "uMoonDir", "uMoonSunDir", "uStarMatrix", "uStars", "uTime", "uHazeDrop", "uClouds", "uSea", "uSeaEye", "uSeaFog", "uSeaFogColor"]),
         blur: compile(QUAD_VS, BLUR_FS, ["uTex", "uDir"]),
         composite: compile(QUAD_VS, COMPOSITE_FS, ["uScene", "uBloom", "uBloomWide", "uBloomStrength", "uDepth", "uShaft", "uShaftColor"])
       };
@@ -3145,8 +3189,10 @@ void main() {
       const cropX = (left + right) * 0.5, cropY = (bottom + top) * 0.5;
       const halfX = (right - left) * 0.5, halfY = (top - bottom) * 0.5;
       const screenWidth = Math.max(1, halfX * width), screenHeight = Math.max(1, halfY * height);
-      const targetWidth = target.renderWidth = Math.max(1, Math.min(settings.mirror, Math.ceil(screenWidth * dpr)));
-      const targetHeight = target.renderHeight = Math.max(1, Math.min(settings.mirror, Math.ceil(screenHeight * dpr)));
+      // A glossy reflector's capture is softened anyway, so it takes half the tier's size.
+      const cap = node.geometry.gloss ? Math.ceil(settings.mirror * GLOSS_CAPTURE.size) : settings.mirror;
+      const targetWidth = target.renderWidth = Math.max(1, Math.min(cap, Math.ceil(screenWidth * dpr)));
+      const targetHeight = target.renderHeight = Math.max(1, Math.min(cap, Math.ceil(screenHeight * dpr)));
       if (own) {
         mirrorDebug.width = targetWidth;
         mirrorDebug.height = targetHeight;
@@ -3572,6 +3618,8 @@ void main() {
         // Only the camera pass (the culled one) shows the authored face; a capture never sees the mirror itself.
         if (excludeMirror && (rec === mirror.record && (!cull || mirror.portal || mirrorPaneReady()) || g.mirrorSource && (!cull || environment.ready && environment.tex))) continue;
         // Tiny first-use shards keep their authored material until a readable shard initializes the shared cube.
+        // A glossy reflector has no face of its own: it only adds its reflection (`drawReflectors`).
+        if (g.reflector && g.gloss) continue;
         if (g.reflector && (reflectorPass === null || rec === reflectorPass)) {
           // An uncaptured pane keeps its authored face until its first reflection arrives.
           const fallback = reflectorPass === null && qualityName !== "high" && !reflectorTargets.get(g)?.valid;
@@ -3583,6 +3631,11 @@ void main() {
         const stage = kind === "mesh" && meshPass ? g.matrixRevealBacking ? 1 : g.matrixGlyph ? 2 : g.glassOpacity ? 3 : 0 : 0;
         if (stage !== matrixStage) continue;
         applyCutaway(program, g);
+        const pierce = g.fogPierce || 0;
+        if (pierce !== program.fogPierce && program.u.uFogPierce) {
+          gl.uniform1f(program.u.uFogPierce, pierce);
+          program.fogPierce = pierce;
+        }
         if (glassPass) {
           const mesh = programs.mesh;
           if (g.glass !== mesh.glass) {
@@ -3834,7 +3887,7 @@ void main() {
       // The shader breaks on uLightCount, so lights past it are dead traffic.
       if (lightCount) gl.uniform4fv(pg.mesh.u.uLights, lights, 0, lightCount * 8);
       gl.uniform1i(pg.mesh.u.uLightCount, lightCount);
-      gl.uniform4fv(pg.mesh.u.uSpotLight, spotLight);
+      gl.uniform4fv(pg.mesh.u.uSpotLight, spotUniform(spotLight));
       gl.uniform3fv(pg.mesh.u.uFog, fog);
       gl.uniform2f(pg.mesh.u.uFogRange, fogNear, fogFar);
       gl.uniform4f(pg.mesh.u.uBlacklight, blacklight ? blacklight[0] : 0, blacklight ? blacklight[1] : 0, blacklight ? blacklight[2] : 0, blacklight ? blacklight[3] : 0);
@@ -3929,6 +3982,7 @@ void main() {
         gl.uniform1f(pg.u.uPortal, mirror.portal ? 1 : 0);
         gl.uniform1f(pg.u.uReveal, mirror.reveal);
         gl.uniform1f(pg.u.uRippleOnly, 0);
+        gl.uniform4f(pg.u.uGloss, 0, 0, 0, 0);
         const tint = mirror.node.rippleTint;
         gl.uniform3f(pg.u.uCrestTint, tint ? tint[0] : -1, tint ? tint[1] : 0, tint ? tint[2] : 0);
         const ripples = mirror.node.mirrorRipples, body = mirror.node.mirrorBody;
@@ -4032,6 +4086,10 @@ void main() {
         applyCutaway(pg, rec.geometry);
         gl.uniformMatrix4fv(pg.u.uReflectionViewProj, false, t.viewProj);
         gl.uniformMatrix4fv(pg.u.uMirrorWorld, false, w);
+        // A glossy one adds its reflection over what is already drawn there, writing no depth.
+        const gloss = rec.geometry.gloss || 0;
+        gl.uniform4f(pg.u.uGloss, camera.position.x, camera.position.y, camera.position.z, gloss);
+        if (gloss) { gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE); gl.depthMask(false); }
         gl.uniform2f(pg.u.uReflectionScale, t.renderWidth / t.size, t.renderHeight / t.size);
         const tint = node.rippleTint, ripples = node.mirrorRipples, body = node.mirrorBody;
         const bodyActive = body && (body.contacts || body.active);
@@ -4061,6 +4119,7 @@ void main() {
         gl.bindTexture(gl.TEXTURE_2D, t.tex);
         gl.bindVertexArray(rec.mesh.vao);
         drawPart(rec.mesh, 0, rec.mesh.count, rec.count);
+        if (gloss) { gl.disable(gl.BLEND); gl.depthMask(true); }
       }
       // The passes after this one bind their inputs to unit 0.
       gl.activeTexture(gl.TEXTURE0);
@@ -4085,6 +4144,7 @@ void main() {
           gl.uniform1f(pg.u.uPortal, 0);
           gl.uniform1f(pg.u.uReveal, 0);
           gl.uniform1f(pg.u.uRippleOnly, 1);
+          gl.uniform4f(pg.u.uGloss, 0, 0, 0, 0);
           bindMatrixTexture(pg);
           // The shared program's inactive samplers still need complete
           // bindings; this does not allocate or capture any reflection.
@@ -4254,6 +4314,8 @@ void main() {
         gl.uniform1f(pg.sky.u.uClouds, clouds);
         gl.uniform4f(pg.sky.u.uSea, sea === null ? 0 : 1, sea === null ? 0 : sea, camera.position.y, 0);
         gl.uniform2f(pg.sky.u.uSeaEye, camera.position.x, camera.position.z);
+        gl.uniform2f(pg.sky.u.uSeaFog, opts.seaFog && fog ? fogNear : FOG_OFF, opts.seaFog && fog ? fogFar : FOG_OFF + 1);
+        gl.uniform3fv(pg.sky.u.uSeaFogColor, opts.seaFog && fog ? fog : NO_FOG);
       }
       // Set the light back far enough to bracket the shadowed volume.
       const lightDist = shadowExtent * 1.8, lightDepth = shadowExtent * 1.5;
@@ -4401,15 +4463,20 @@ void main() {
         const due = qualityName === "high" || reflectorFrame++ % settings.mirrorCadence === 0;
         if (!due && best >= 0 && reflectorTargets.get(reflectorNodes[best].geometry).valid
           && (qualityName === "low" || bestArea * 25 < width * height)) best = -1;
+        // A glossy one, once it has a reflection, refreshes no more often than every `GLOSS_CAPTURE.every` frames on any
+        // tier, nor takes the other pass's turn meanwhile (`resting`).
+        let resting = -1;
+        if (best >= 0 && reflectorNodes[best].geometry.gloss && reflectorTargets.get(reflectorNodes[best].geometry).valid
+          && glossFrame++ % GLOSS_CAPTURE.every) { resting = best; best = -1; }
         // One just come into view with nothing captured yet goes first.
         let turn = -1;
         for (let i = 0; due && i < n && turn < 0; i++) {
           const t = reflectorTargets.get(reflectorNodes[i].geometry);
-          if (i !== best && t.area > 0 && !t.valid) turn = i;
+          if (i !== best && i !== resting && t.area > 0 && !t.valid) turn = i;
         }
         for (let k = 0; due && k < n && turn < 0; k++) {
           const i = (reflectorTurn + k) % n;
-          if (i !== best && reflectorTargets.get(reflectorNodes[i].geometry).area > 0) turn = i;
+          if (i !== best && i !== resting && reflectorTargets.get(reflectorNodes[i].geometry).area > 0) turn = i;
         }
         if (turn >= 0) reflectorTurn = turn + 1;
         for (let pass = 0; pass < 2; pass++) {
@@ -4478,7 +4545,7 @@ void main() {
         bindMatrixTexture(mp);
         if (nLights) gl.uniform4fv(mp.u.uLights, lights, 0, nLights * 8);
         gl.uniform1i(mp.u.uLightCount, nLights);
-        gl.uniform4fv(mp.u.uSpotLight, spotLight);
+        gl.uniform4fv(mp.u.uSpotLight, spotUniform(spotLight));
         gl.uniform3fv(mp.u.uFog, fogColor);
         gl.uniform2f(mp.u.uFogRange, fogA, fogB);
         gl.uniform4f(mp.u.uBlacklight, blacklight ? blacklight[0] : 0, blacklight ? blacklight[1] : 0, blacklight ? blacklight[2] : 0, blacklight ? blacklight[3] : 0);

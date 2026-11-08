@@ -7,7 +7,18 @@
     w: "forward", s: "back", a: "left", d: "right", q: "yawLeft", e: "yawRight", r: "pitchDown", f: "pitchUp",
     z: "up", " ": "up", x: "down", arrowup: "forward", arrowdown: "back", arrowleft: "left", arrowright: "right", shift: "sprint"
   };
+  // The help panel reads the same movement bindings as the input handler.
+  const keysFor = (...actions) => Object.keys(KEYS).filter(key => actions.includes(KEYS[key]));
+  // Discrete shortcuts shared by scene handlers and their reference rows.
+  const SHORTCUTS = { view: ["x"], resetView: ["0"], weapon: ["1", "2"], swapWeapon: ["g"], attack: ["v"], reload: ["r"], bash: ["f"], jetpack: ["j"], actor: ["t"], escape: ["escape"], start: ["enter"], item: ["e", "shift"], autopilot: ["g"], spacewalk: ["v"], mineView: ["v"], crack: ["c"], pause: ["p"], act: [" ", "enter"] };
+  const shortcutKeys = action => SHORTCUTS[action];
+  Object.assign(SHORTCUTS, { north: ["n"], twirl: ["n"], tint: ["c"], horn: ["h"], tomato: ["t"], throwWallet: ["y"], grab: ["g"], smash: ["1"], chest: ["c"] });
+  const matches = (e, action) => SHORTCUTS[action].includes(e.key.toLowerCase());
+  const resets = new Set();
+  const resetAll = () => { for (const reset of resets) reset(); };
   const KNOB = 18;
+  // How long after a press's pointer lifts its own click may still arrive (a phone sends it a beat later).
+  const CLICK_GRACE = 1000;
   const SHIFT_KEYS = ["ShiftLeft", "ShiftRight", "Shift"];
   const keyName = (e) => e.key === "Shift" && (e.code === "ShiftRight" || e.location === 2) ? "peek" : KEYS[e.key.toLowerCase()];
   const uiKey = (e) => e.target && (e.target.isContentEditable || e.target.closest
@@ -78,8 +89,9 @@
   const create = ({ move = null, look = null, boost = null, chord = null, onAction = null, pressActions = false, tabNavigation = false, shooter = () => false, canDescend = () => true } = {}) => {
     const held = { forward: 0, back: 0, left: 0, right: 0, yawLeft: 0, yawRight: 0, pitchDown: 0, pitchUp: 0, up: 0, space: 0, down: 0, boost: 0, chord: 0, sprint: 0, peek: 0 };
     const axes = { x: 0, y: 0, up: 0, yaw: 0, pitch: 0, keyPitch: 0, orbitYaw: 0, sprint: 0, peek: 0, shiftTap: 0 };
-    let pitchBorrowed = false;
-    let spaceDown = false, boostPointer = null, boostClick = false, shiftAt = 0, shiftUsed = false, shiftTap = 0;
+    // `moveTap`: a movement key pressed since the last `read`, so a tap between frames still counts for `moving`.
+    let pitchBorrowed = false, settled = false, moveTap = false;
+    let spaceDown = false, boostPointer = null, boostClick = false, boostLift = 0, shiftAt = 0, shiftUsed = false, shiftTap = 0;
     let padFrame = -1, padUp = 0, padSprint = 0;
     const downKeys = new Set(), blockedKeys = new Set();
     let tabConsumed = false;
@@ -134,6 +146,8 @@
       const name = pressActions && e.key === " " ? "space" : keyName(e);
       if (!name) return;
       if (e.key === " " || e.key.startsWith("Arrow")) e.preventDefault();
+      if (settled && e.repeat && !held[name]) return;
+      if (!e.repeat && (name === "forward" || name === "back" || name === "left" || name === "right")) moveTap = true;
       if (name === "peek" && !held.peek) {
         shiftAt = e.timeStamp;
         shiftUsed = !!(held.left || held.right);
@@ -155,7 +169,8 @@
       for (const name in held) held[name] = 0;
       spaceDown = false;
       boostPointer = null;
-      boostClick = false;
+      // A press that acted keeps its claim on its own click, which may never come now, for CLICK_GRACE from here.
+      if (boostClick) boostLift = Math.min(boostLift, performance.now());
       shiftAt = shiftTap = 0;
       shiftUsed = false;
       // A pad press not yet read is dropped too, so closing a menu never acts on the press made inside it.
@@ -173,33 +188,40 @@
     const moveStick = move ? joystick(move) : null;
     const lookStick = look ? joystick(look) : null;
     // A pointer press has the same action/thrust priority as Space.
-    // Consume its later click so a tap never acts twice or jumps on landing.
+    // Consume its later click so a tap never acts twice or jumps on landing: the press owns its click until it
+    // comes, through any reset of held input, whatever `detail` the browser gives it, and before any listener on the
+    // button (the HUD's acts on a click); a click with no press, a keyboard's or an assistive tap, still acts.
     const onBoostDown = (e) => {
       if (!pressActions) { held.boost = 1; return; }
       if (boostPointer !== null) return;
       boostPointer = e.pointerId;
-      const consumed = onAction && onAction();
-      // An action can release a scripted hold and reset these controls from
-      // inside the callback. Its physical click must still be consumed once.
       boostClick = !!onAction;
+      boostLift = Infinity;
+      // An action can release a scripted hold and reset these controls from inside the callback; held input then
+      // stays as that reset left it, and the reset keeps the click owned as above.
+      const consumed = onAction && onAction();
       if (boostPointer === e.pointerId) held.boost = consumed ? 0 : 1;
     };
     const onBoostUp = (e) => {
       if (!pressActions) { held.boost = 0; return; }
+      // The click follows the lift, so the grace runs from here, even after a reset of held input started it early.
+      if (boostClick) boostLift = performance.now();
       if (e.pointerId !== boostPointer) return;
       boostPointer = null;
       held.boost = 0;
     };
     const onBoostClick = (e) => {
-      if (boostClick && e.detail > 0) { e.preventDefault(); e.stopImmediatePropagation(); boost.blur(); }
+      if (!boostClick || !boost.contains(e.target)) return;
       boostClick = false;
+      if (performance.now() - boostLift > CLICK_GRACE) return;
+      e.preventDefault(); e.stopImmediatePropagation(); boost.blur();
     };
     if (boost) {
       boost.addEventListener("pointerdown", onBoostDown);
       boost.addEventListener("pointerup", onBoostUp);
       boost.addEventListener("pointercancel", onBoostUp);
       boost.addEventListener("pointerleave", onBoostUp);
-      if (pressActions) boost.addEventListener("click", onBoostClick, true);
+      if (pressActions) window.addEventListener("click", onBoostClick, true);
     }
     // Both mouse buttons down means forward (as W); a chorded press arrives as a move event.
     const onChord = (e) => {
@@ -229,6 +251,7 @@
     };
     // Sign convention: yaw positive is left, pitch positive is down.
     const read = () => {
+      moveTap = false;
       readPad();
       axes.x = clamp(held.right - held.left + (moveStick ? moveStick.x : 0) + pad.lx, -1, 1);
       axes.y = clamp(held.forward - held.back + (shooter() ? 0 : held.chord) + (moveStick ? moveStick.y : 0) + pad.ly, -1, 1);
@@ -245,8 +268,13 @@
       shiftTap = 0;
       return axes;
     };
+    // Whether any movement is held now (keys, the move stick, the pad's stick or A, the mouse chord, climb or jump),
+    // read without consuming a tap or a pad edge: what ends a look or a tour and goes to the Ooga instead.
+    const moving = () => !!(moveTap || held.forward || held.back || held.left || held.right || held.up || held.space
+      || held.chord || moveStick && (moveStick.x || moveStick.y) || pad.lx || pad.ly || pad.held & PAD.a);
     let listening = true;
     const dispose = () => {
+      resets.delete(reset);
       if (!listening) return;
       listening = false;
       window.removeEventListener("keydown", onKeyDown);
@@ -263,7 +291,7 @@
         boost.removeEventListener("pointerup", onBoostUp);
         boost.removeEventListener("pointercancel", onBoostUp);
         boost.removeEventListener("pointerleave", onBoostUp);
-        if (pressActions) boost.removeEventListener("click", onBoostClick, true);
+        if (pressActions) window.removeEventListener("click", onBoostClick, true);
       }
       if (chord) {
         chord.removeEventListener("pointerdown", onChord);
@@ -278,11 +306,14 @@
     const clearPointer = () => {
       held.chord = held.boost = 0;
       boostPointer = null;
-      boostClick = false;
     };
-    const reset = () => { onBlur(); if (moveStick) moveStick.reset(); if (lookStick) lookStick.reset(); };
+    // `settle` also drops the auto-repeats of keys held through the reset, so only a fresh press moves again (a tour
+    // that a movement ends must not end on the key that was held as it began).
+    const reset = (settle = false) => { onBlur(); settled = settle; moveTap = false; if (moveStick) moveStick.reset(); if (lookStick) lookStick.reset(); };
+    resets.add(reset);
     const borrowPitch = (on) => { pitchBorrowed = !!on; };
     const resume = () => {
+      resets.add(reset);
       if (listening) return;
       reset();
       listening = true;
@@ -299,7 +330,7 @@
         boost.addEventListener("pointerup", onBoostUp);
         boost.addEventListener("pointercancel", onBoostUp);
         boost.addEventListener("pointerleave", onBoostUp);
-        if (pressActions) boost.addEventListener("click", onBoostClick, true);
+        if (pressActions) window.addEventListener("click", onBoostClick, true);
       }
       if (chord) {
         chord.addEventListener("pointerdown", onChord);
@@ -310,7 +341,7 @@
       if (moveStick) moveStick.resume();
       if (lookStick) lookStick.resume();
     };
-    return { read, axes, clearPointer, reset, consumeTab, resume, borrowPitch, dispose, get rightShift() { return !!held.peek; } };
+    return { read, moving, axes, clearPointer, reset, consumeTab, resume, borrowPitch, dispose, get rightShift() { return !!held.peek; } };
   };
-  BL.controls = { create, uiKey };
+  BL.controls = { create, uiKey, keysFor, shortcutKeys, matches, resetAll };
 })();

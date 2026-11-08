@@ -14,7 +14,6 @@
   const ROOM_HALF = 10;
   const PITCH = [0.12, 1.1], DIST = [4.5, 9.2];
   const FOLLOW = { y: 0.9, min: 3, max: 7, pitch: [0.25, 0.8] };
-  const FLY = { speed: 4, perDist: 0.4, climb: 3, yMax: 3.5 };
   const WALL = ROOM_HALF - 0.6;
   const COARSE = window.matchMedia("(pointer: coarse)").matches;
   const yawParam = parseFloat(params.get("yaw"));
@@ -61,7 +60,7 @@
 
   // One visit's state: made in enter(), dropped in leave().
   let renderer, game, world, go, lootEnabled, testBananas, root, camera, lab, hud, hooks, input, pilot, fx, pile, crew, crates, pulseNodes, agent, agentPlay;
-  let stateTimer = 0, hintTimer = 0, unsubscribeActivity = null, dust = null, remotes = null, footsteps = null;
+  let stateTimer = 0, unsubscribeActivity = null, dust = null, remotes = null, footsteps = null;
   const NO_ACTORS = [];
   const propTargets = [];
   const addProp = (node, owner, opts) => {
@@ -302,7 +301,7 @@
     BL.net.setBody(drivenHere ? drivenHere.traits.name : null);
     if (drivenHere) {
       const p = drivenHere.root.position;
-      BL.net.sendPose(p.x, p.y - drivenHere.baseY, p.z, drivenHere.root.rotation.y);
+      BL.net.sendPose(p.x, p.y - drivenHere.baseY, p.z, drivenHere.root.rotation.y, null, 0, BL.crew.weaponFlags(drivenHere), BL.crew.visualState(drivenHere));
       BL.net.setHealth(drivenHere.health.value, drivenHere.health.stunned);
     }
     remotes.update(dt);
@@ -338,18 +337,18 @@
     location.reload();
   };
   const onKey = (e) => {
-    if (e.key === "0" && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey) { pilot.resetCamera(); return; }
-    if ((e.key === "x" || e.key === "X") && !e.repeat && pilot.modeAction("mode-toggle")) return;
-    if ((e.key === "1" || e.key === "2") && pilot.weaponMode(Number(e.key))) return;
-    if (e.key === "Escape") {
+    if (BL.controls.matches(e, "resetView") && !e.repeat && !e.metaKey && !e.ctrlKey && !e.altKey) { pilot.resetCamera(); return; }
+    if (BL.controls.matches(e, "view") && !e.repeat && pilot.modeAction("mode-toggle")) return;
+    if (BL.controls.matches(e, "weapon") && pilot.weaponMode(Number(e.key))) return;
+    if (BL.controls.matches(e, "escape")) {
       if (!pilot.escape()) go("hub");
       return;
     }
     // N spins a driven Ooga's nunchaku, C changes the colourway of one built with two.
-    if ((e.key === "n" || e.key === "N") && !e.repeat && crew.twirl()) return;
-    if ((e.key === "c" || e.key === "C") && !e.repeat && crew.toggleTint(crew.player)) return;
-    if (e.key === "g" || e.key === "G") pilot.weaponAction("weapon-toggle");
-    if (e.key === "v" || e.key === "V") pilot.weaponAction("weapon-fire");
+    if (BL.controls.matches(e, "twirl") && !e.repeat && crew.twirl()) return;
+    if (BL.controls.matches(e, "tint") && !e.repeat && crew.toggleTint(crew.player)) return;
+    if (BL.controls.matches(e, "swapWeapon")) pilot.weaponAction("weapon-toggle");
+    if (BL.controls.matches(e, "attack")) pilot.weaponAction("weapon-fire");
     if (e.key === "b" || e.key === "B") addTestBananas(testBananas);
     if (e.key === "l" || e.key === "L") demoTip(120000);
     if (e.key === "p" || e.key === "P") {
@@ -383,7 +382,7 @@
     hud.setAreaLabel("LAB");
     hooks = {};
     input = interactMod.create({ canvas: ctx.canvas, renderer, camera, hooks });
-    pilot = pilotMod.create({ renderer, canvas: ctx.canvas, camera, hud, presets: PRESETS, landing: "pile", pitch: PITCH, dist: DIST, follow: FOLLOW, fly: FLY, clampTarget, clampCamera, ceilingAt: () => 4.3, coarse: COARSE, mayPossess: (cave) => cave.contributor ? BL.net.mayDrive(cave.traits.name) : null, close: { eyeHeight: 1.1, eyeRatio: 0.95, eyeForward: 0.16, pitch: [-1.35, 1.35], trailingDist: 4, orbitDist: 5, maxStep: 0.6, groundAt: () => 0 } });
+    pilot = pilotMod.create({ renderer, canvas: ctx.canvas, camera, hud, presets: PRESETS, landing: "pile", pitch: PITCH, dist: DIST, follow: FOLLOW, clampTarget, clampCamera, ceilingAt: () => 4.3, coarse: COARSE, mayPossess: (cave) => cave.contributor ? BL.net.mayDrive(cave.traits.name) : null, close: { eyeHeight: 1.1, eyeRatio: 0.95, eyeForward: 0.16, pitch: [-1.35, 1.35], trailingDist: 4, orbitDist: 5, maxStep: 0.6, groundAt: () => 0 } });
     const shared = { root, input, hooks, hud, game, world, renderer, camera, overlay: ctx.overlay, tickerAt: TICKER_AT, buildSpots: BUILD_SPOTS.slice(), walkIn: WALK_IN, clampDrag, viewYaw: PRESETS.pile.yaw, bedrolls: lab.bedrolls, pileScale: 0.45, weaponsEnabled: true, onShown: (shown) => { lab.equipment.abacus.setValue(shown); }, walkable, reticleTarget: () => "object" };
     shared.onWeaponImpact = (source, hit, dx, dy, dz, power) => {
       if (hit.owner.kind === "caveman") crew.damage(hit.owner.cave, power, source === crew.player);
@@ -480,11 +479,7 @@
     pulseNodes = [lab.equipment.monitor, lab.equipment.tower, lab.equipment.abacus.node.children[0]];
     crew.refreshStates(true);
     syncRackLeds();
-    const returningOwn = pilot.loginViewRestored && BL.net.ownCharacter();
-    if (returningOwn) {
-      const cave = crew.cavemen.get(returningOwn.handle);
-      if (cave) pilot.possess(cave);
-    } else if (ctx.from === null && preloadedEquipment) {
+    if (ctx.from === null && preloadedEquipment) {
       const name = params.get("character")?.trim().toLowerCase();
       const contributor = params.has("character") ? contributors.activeRoster.find(entry => entry.name.toLowerCase() === name)
         : contributors.activeRoster.find(entry => crew.stateOf(crew.cavemen.get(entry.name)) === "working") || contributors.activeRoster[0];
@@ -495,6 +490,12 @@
         crew.configureWeapon(cave, preloadedWeapon, preloadedAmmo);
       }
     }
+    // Otherwise the Ooga walked in with, else the visitor's own or assigned one: there is no view without one.
+    if (!pilot.player) {
+      const name = world.pilot || BL.net.preferredCharacter()?.handle, cave = name && crew.cavemen.get(name);
+      if (cave) pilot.possess(cave);
+    }
+    world.pilot = null;
     unsubscribeActivity = contributors.subscribe(() => { crew.refreshStates(); syncRackLeds(); });
     stateTimer = window.setInterval(() => {
       crew.refreshStates();
@@ -508,8 +509,6 @@
     }
     hud.setStats(game.state);
     pile.syncPile(true);
-    if (window.matchMedia("(max-width: 720px), (max-height: 500px)").matches) hud.foldPanels();
-    hintTimer = window.setTimeout(() => hud.hint(COARSE ? "Drag to look · pinch to zoom · sticks to fly" : "Drag to orbit · scroll to zoom · WASD to fly"), 1200);
     // The lab has no Agent until Shift+A calls one in, so a lab visit holds no
     // Agent geometry of its own.
     Object.assign(labScene, { agentView: pilot.orbit, agentControls: pilot.controls, agentHandoff: () => pilot.release(true), summonAgent });
@@ -529,13 +528,11 @@
     mark("visibility");
   };
   const leave = () => {
-    world.pilotDetached = !pilot.player;
     world.pilot = pilot.player ? pilot.player.traits.name : null;
     BL.net.setBody(null);
     window.clearInterval(stateTimer);
     unsubscribeActivity();
     unsubscribeActivity = null;
-    window.clearTimeout(hintTimer);
     crates.dispose();
     pile.dispose();
     remotes.dispose();
@@ -579,5 +576,14 @@
     }
   };
   BL.scenes = BL.scenes || {};
+  labScene.controlsHelp = touch => {
+    const H = BL.controlsHelp, help = pilot.controlsHelp(touch, ["weapon", "attack", "swapWeapon"]), player = pilot.player;
+    if (!touch && player) {
+      if (!pilot.birdsEye && player.traits.nunchaku && player.state !== "sleeping" && !player.camp.burning && !player.camp.rolling) help.rows.push(H.row(BL.controls.shortcutKeys("twirl"), "Twirl nunchaku"));
+      if (player.tint) help.rows.push(H.row(BL.controls.shortcutKeys("tint"), "Change colourway"));
+    }
+    help.title = "Lab · " + help.title; return help;
+  };
+  labScene.controlsHelpHold = on => { pilot.controls.reset(); pilot.setMenuOpen(on, false); };
   BL.scenes.lab = labScene;
 })();
