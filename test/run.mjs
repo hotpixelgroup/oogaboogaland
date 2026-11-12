@@ -19671,11 +19671,12 @@ const hockeyHallSample = { name: "hockey hall sample", why: "rule: live table sn
     const collect=label=>new Promise(resolve=>{const values=[];let last=0,warm=20;const frame=t=>{if(last&&warm--<=0)values.push(t-last);last=t;if(values.length<120)requestAnimationFrame(frame);else{values.sort((a,b)=>a-b);rows.push({label,medianMs:values[60],p95Ms:values[114],maxMs:values[119],renderer:__ooga.renderer.kind,size:__ooga.renderer.size});resolve();}};requestAnimationFrame(frame);});
     await collect("idle hall");
     const host=B.arcadeGames.airHockey({node:B.scene.createNode(),aim:{x:0},best:0,onEnd:()=>{},burst:()=>{}});host.shared(true);host.multiplayer(true);host.start();
-    const names=B.contributors.activeRoster.map(r=>r.name).filter(n=>n!==B.net.state.body).slice(0,2);
+    const names=B.contributors.activeRoster.map(r=>r.name).filter(n=>n!==B.net.state.body).slice(0,2),tables=B.net.hockeyTables;
+    B.net.hockeyTables=[{s:"0123456789abcdef",ids:[901,902],phase:"play",e:0},null,null];
     for(let side=0;side<2;side++){const p=W.seat(0,side,0,{});B.net.remotes.set(901+side,{id:901+side,login:names[side],display:names[side],body:names[side],zone:W.ZONE,poseZone:W.ZONE,x:p.x,y:0,z:p.z,yaw:p.yaw,hp:100,ko:false,voice:false,muted:false,jet:0,weapon:0});}
     let running=true,last=performance.now(),sent=last,frames=0,bytes=0;
     const stream=t=>{if(!running)return;host.update(Math.min(.05,(t-last)/1000));last=t;if(t-sent>=100){sent=t;const a=host.capture();g.receive(a);frames++;bytes+=JSON.stringify(a).length;}requestAnimationFrame(stream);};requestAnimationFrame(stream);
-    await collect("one live table and two avatars");running=false;g.stop();host.stop();B.net.remotes.delete(901);B.net.remotes.delete(902);
+    await collect("one live table and two avatars");running=false;g.stop();host.stop();B.net.remotes.delete(901);B.net.remotes.delete(902);B.net.hockeyTables=tables;
     return {rows,frames,bytes};
   })()`);
   record("hockey hall sample: snapshots reached the actual hall nodes while rendered frames and avatars remained bounded",result.frames>0&&result.rows.length===2&&result.rows.every(r=>Number.isFinite(r.p95Ms)),JSON.stringify(result));
@@ -19789,14 +19790,79 @@ const hockeyPilot = { name: "hockey pilot", why: "rule: the real hockey physics 
     emit({k:"frame",i:0,s:"0123456789abcdef",q:1,a});const done=a.slice();done[9]=done[15]=7;done[16]=0;emit({k:"frame",i:0,s:"0123456789abcdef",q:2,a:done});emit({k:"frame",i:0,s:"0123456789abcdef",q:1,a:done});session.dispose();
     const lifecycle=starts===1&&ends===1&&side===1&&listeners.size===0&&sent.some(m=>m.k==="input"&&m.x===1000&&m.y===500)&&sent.at(-1).k==="leave";
     net.sendHockey=original.send;net.subscribeHockey=original.subscribe;net.sendPose=original.pose;net.state.selfId=original.id;net.state.room=original.room;
-    game.stop();remote.stop();
-    return {slowStrike,fastStrike,feedback,noReplay,invalid,frames,bytes,largest,physicsMs,positive,negative,halfway,final,mapped,geometry,seats,lifecycle,closed,watchers:__ooga.carnival.watchers,zone:net.state.zone};
+    // The real character rigs reach toward the displayed mallet, including local prediction and
+    // opposite ends. Releasing presentation must restore every joint before ordinary animation resumes.
+    const savedTables=net.hockeyTables, poseRoot=B.scene.createNode(), rigs=["portlandhodl","YellowBrokeIt"].map((name,i)=>B.models.caveman({...B.contributors.traitsFor(name),height:i?1.16:.92}));
+    const hips=rigs.map(r=>r.root.position.y);
+    for(const rig of rigs)B.scene.addChild(poseRoot,rig.root);
+    const poseNode=B.scene.createNode({position:{x:W.TABLES[0][0],y:0,z:W.TABLES[0][1]+.65+1.1*W.SCALE}});B.scene.addChild(poseRoot,poseNode);
+    const pointer={x:0,depth:0}, poseGame=B.arcadeGames.airHockey({node:poseNode,aim:pointer,best:0,onEnd(){},burst(){}});
+    poseGame.multiplayer(true,0);poseGame.start();
+    const table={s:"0123456789abcdef",ids:[101,102],phase:"play",e:0};net.hockeyTables=[table,null,null];
+    const presentation=B.hockeyPlayers.create({root:poseRoot,games:[poseGame],body:id=>rigs[id-101]});
+    const handles={x:0,y:0,z:0}, samples=[];
+    const pose=r=>JSON.stringify([r.root,...["torso","head","legL","legR","armL","armR"].map(k=>r.parts[k])].map(n=>[n.position,n.rotation,n.quaternion,n.scale,n.poseYaw,n.poseLean]));
+    let poseRestored=true, lastPose=null;
+    for(const end of [0,1])for(const px of [-1,-.5,0,.5,1])for(const depth of [0,.25,.5,.75,1]) {
+      presentation.restore();
+      if(lastPose)poseRestored&&=rigs.every((r,i)=>pose(r)===lastPose[i]);
+      table.e=end;poseGame.orientation(end);pointer.x=px;pointer.depth=depth;poseGame.peerInput(-px,depth);poseGame.update(1/60);
+      rigs.forEach((r,side)=>{const at=W.seat(0,side^end,0,{});r.root.position.x=at.x;r.root.position.z=at.z;r.root.rotation.y=at.yaw;});
+      lastPose=rigs.map(pose);
+      presentation.update(1/60);B.scene.updateWorld(poseRoot);
+      for(let side=0;side<2;side++){
+        poseGame.mallet(side,handles);const r=rigs[side],m=r.parts.armR.world,grip=r.parts.fingersR.position.y;
+        const error=Math.hypot(m[12]+m[4]*grip-handles.x,m[13]+m[5]*grip-handles.y,m[14]+m[6]*grip-handles.z);
+        const foot=r.root.world,leg=hips[side],fx=foot[12]-foot[4]*leg-W.TABLES[0][0],fz=foot[14]-foot[6]*leg-W.TABLES[0][1];
+        samples.push({end,px,depth,side,error,half:(side^end)?-fz:fz,outside:Math.abs(fx)>=B.arcadeModels.HOCKEY.d*W.SCALE/2||Math.abs(fz)>=B.arcadeModels.HOCKEY.w*W.SCALE/2,scale:r.parts.armR.scale.y,x:r.root.position.x,z:r.root.position.z});
+      }
+    }
+    let reversalStep=0,reversalError=0,previousFeet=null;
+    for(let frame=0;frame<24;frame++){
+      presentation.restore();table.e=0;poseGame.orientation(0);pointer.x=frame%2?.005:-.005;pointer.depth=0;poseGame.peerInput(-pointer.x,0);poseGame.update(1/60);
+      lastPose=rigs.map(pose);presentation.update(1/60);B.scene.updateWorld(poseRoot);
+      const feet=rigs.map((r,side)=>{
+        poseGame.mallet(side,handles);const m=r.parts.armR.world,grip=r.parts.fingersR.position.y;
+        reversalError=Math.max(reversalError,Math.hypot(m[12]+m[4]*grip-handles.x,m[13]+m[5]*grip-handles.y,m[14]+m[6]*grip-handles.z));
+        const foot=r.root.world,leg=hips[side];return [foot[12]-foot[4]*leg,foot[14]-foot[6]*leg];
+      });
+      if(previousFeet)for(let side=0;side<2;side++)reversalStep=Math.max(reversalStep,Math.hypot(feet[side][0]-previousFeet[side][0],feet[side][1]-previousFeet[side][1]));
+      previousFeet=feet;
+    }
+    if (${!!process.env.HOCKEY_SHOTS}) window.__hockeyCapture={poseRoot,rigs,poseGame,table};
+    presentation.dispose();
+    poseRestored&&=rigs.every((r,i)=>pose(r)===lastPose[i]);
+    net.hockeyTables=savedTables;poseGame.stop();game.stop();remote.stop();
+    return {samples,poseRestored,reversalStep,reversalError,slowStrike,fastStrike,feedback,noReplay,invalid,frames,bytes,largest,physicsMs,positive,negative,halfway,final,mapped,geometry,seats,lifecycle,closed,watchers:__ooga.carnival.watchers,zone:net.state.zone};
   })()`);
   record("hockey pilot: real two-human physics produces bounded compact frames and both directions of the far mallet", result.invalid===0&&result.frames>10&&result.largest<=256&&result.positive&&result.negative,JSON.stringify(result));
   record("hockey pilot: faster pointer strokes transfer more speed to the puck without a smash",result.slowStrike>0&&result.fastStrike>result.slowStrike&&result.fastStrike<=7501,JSON.stringify({slow:result.slowStrike,fast:result.fastStrike}));
+  record("hockey pilot: small and tall humans keep palm contact across both halves without arm stretch, stand outside their half and restore every joint",result.poseRestored&&result.samples.every(s=>s.error<.003&&s.half>=.17&&s.outside&&s.scale===1),JSON.stringify({restored:result.poseRestored,samples:result.samples}));
+  record("hockey pilot: rapid small reversals keep a continuous stance and immediate rigid palm contact",result.reversalStep<.05&&result.reversalError<.003,JSON.stringify({step:result.reversalStep,error:result.reversalError}));
   record("hockey pilot: spectators interpolate two frames without extrapolation; sessions deliver one start and finish and release subscriptions",result.halfway===200&&result.final===400&&result.lifecycle&&result.feedback&&result.noReplay,JSON.stringify(result));
   record("hockey pilot: all three rendered table transforms match the enlarged hall contract, real seats straddle them, no roster audience and Arcade audio zone remains",result.mapped&&result.geometry.length===3&&result.seats[0].z>-4.75&&result.seats[1].z< -4.75&&result.watchers===0&&result.zone==="arcade.hall",JSON.stringify(result));
-  console.log("HOCKEY_MEASURE "+JSON.stringify(result));
+  if (process.env.HOCKEY_SHOTS) {
+    mkdirSync(process.env.HOCKEY_SHOTS,{recursive:true});
+    await b.evaluate(`(() => {
+      const C=window.__hockeyCapture,B=BL,W=B.hockeyWire,S=B.scene,c=W.TABLES[0],model=B.arcadeModels.airHockey();
+      S.addChild(C.poseRoot,S.createNode({geometry:model.body,position:{x:c[0],y:0,z:c[1]},rotation:{x:0,y:Math.PI/2,z:0},scale:{x:W.SCALE,y:1,z:W.SCALE}}));
+      S.addChild(C.poseRoot,S.createNode({geometry:model.lit,position:{x:c[0],y:0,z:c[1]},rotation:{x:0,y:Math.PI/2,z:0},scale:{x:W.SCALE,y:1,z:W.SCALE}}));
+      C.tables=B.net.hockeyTables;B.net.hockeyTables=[C.table,null,null];C.table.e=0;
+      C.hidden=[document.querySelector('[data-intro="hockey"]'),document.getElementById("carnival")].map(n=>[n,n.style.visibility]);for(const [n] of C.hidden)n.style.visibility="hidden";
+      C.players=B.hockeyPlayers.create({root:C.poseRoot,games:[C.poseGame],body:id=>C.rigs[id-101]});
+      C.camera=S.createCamera({orthoMix:1,orthoHeight:4.5});Object.assign(C.camera.position,{x:c[0]+3.5,y:3.4,z:c[1]+3.5});Object.assign(C.camera.target,{x:c[0],y:.55,z:c[1]});
+      C.render=__ooga.renderer.render;__ooga.renderer.render=(_root,_camera,opts)=>C.render(C.poseRoot,C.camera,opts);
+    })()`);
+    try {
+      for(const [name,x,depth] of [["center",0,1],["corner",1,0],["opposite",-1,1]]) {
+        await b.evaluate(`(() => {const C=window.__hockeyCapture;C.players.restore();C.poseGame.receive([0,660,0,0,${x*480},${70+depth*960},${-x*480},${2130-depth*960},0,0,-1,0,-1000,-1000,0,0,1,0]);C.poseGame.orientation(0);C.poseGame.follow(.2);C.players.update(1/60);BL.scene.updateWorld(C.poseRoot);__ooga.renderer.render(C.poseRoot,C.camera,__ooga.renderOpts);})()`);
+        await b.screenshot(join(process.env.HOCKEY_SHOTS,`hockey-${name}.png`));
+      }
+    } finally {
+      await b.evaluate(`(() => {const C=window.__hockeyCapture;__ooga.renderer.render=C.render;BL.net.hockeyTables=C.tables;C.players.dispose();for(const [n,v] of C.hidden)n.style.visibility=v;delete window.__hockeyCapture;})()`);
+    }
+  }
+  console.log("HOCKEY_MEASURE "+JSON.stringify({...result,samples:undefined,poseSamples:result.samples.length,maxHandError:Math.max(...result.samples.map(s=>s.error))}));
 } };
 const carnivalPlay = (kind, step) => ({ name: `${kind} playthrough`, why: "playthrough: the carnival game runs from its title card through its rounds to results, and saves its best and the tickets it paid", run: async (b) => {
   const before = await b.evaluate("window.__ooga.game.state.arcade.tickets");
