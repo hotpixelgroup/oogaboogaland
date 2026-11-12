@@ -71,11 +71,12 @@ const handleVoice = async (request, env, url) => {
   if (!fromSite(request, env.SITE_ORIGIN)) return text("Forbidden", 403);
   const found = await getSessionFromRequest(request, env);
   if (!found) return text("Sign in first", 401);
-  if (!(await allowed(env.VOICE_LIMITER, String(found.player.id)))) return text("Too many voice requests", 429);
+  const op = url.pathname.slice("/api/voice/".length);
+  const limiter = op === "ice" ? env.VOICE_ICE_LIMITER : env.VOICE_LIMITER;
+  if (!(await allowed(limiter, String(found.player.id)))) return text("Too many voice requests", 429);
   // Read here, and bounded, so a huge body can never reach the island's only room.
   const body = await readBody(request, VOICE_BODY_MAX);
   if (body === null) return text("Too large", 413);
-  const op = url.pathname.slice("/api/voice/".length);
   const headers = new Headers({ "content-type": "application/json", "x-player-id": String(found.player.id) });
   headers.set("x-room-token", request.headers.get("x-room-token") || "");
   return env.ROOM.getByName(ROOM_NAME).fetch(new Request(new URL(`/voice/${op}`, url), { method: "POST", headers, body }));
