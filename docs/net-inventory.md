@@ -55,6 +55,8 @@ Caveats noted there: `webSocketClose` must not call `ws.close()` on its compatib
 
 The island's optional TURN fallback adds one same-origin route, `POST /api/voice/ice`. The Worker calls `https://rtc.live.cloudflare.com/v1/turn/keys/{id}/credentials/generate-ice-servers` with its own bearer token. The browser can then reach `turn.cloudflare.com:443` over TLS for WebRTC media. See [Voice](auth-and-presence.md#voice) for the gates and lifecycle.
 
+Shared Tess adds bounded `tess-guide` messages on the existing room socket, with no new network endpoint; see [Shared Tess](shared-tess.md).
+
 ## The campfire loop
 
 An `HTMLAudioElement` looping `audio/campfire.wav` (from `scripts/fetch-audio.sh`, licence unverified). Time-aligned: the room's persisted `audioStartedAt` goes out in `welcome`, clients play at `(serverNow − startedAt) mod duration` and re-seek past 250 ms of drift. Gain is 1 inside radius 120 and eases as (1−t)² to 0 at 461.
