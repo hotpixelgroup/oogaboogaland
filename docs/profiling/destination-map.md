@@ -1,5 +1,17 @@
 # Destination Map and optional coaching
 
+## Current readiness and hub-test audit (November 14, 2026)
+
+Updated against rock after #576, preserving the new Ooga bodies and shared Tess. The map now calls the repository island Merge Rock. Optional coaching works while shared Tess is idle and yields to her visible queue, and sits beneath draggable Oogatron windows so their controls remain tappable.
+
+The hub suite no longer forces `birdseye=1`. Retired hub cutaway, hidden-floor combat and overhead replay assertions are removed. Ooga and gorilla input, touch zoom, possession, sleep, player targeting and cloud checks use the ordinary orbit/shoulder/first-person modes. Shared projection, picking, culling and speech visibility remain covered, and the running Ghost Hunt now explicitly proves overhead rotation and its removal on exit. The cave seal, removed mainland totems/Agent/glyph room, decorative clouds and harmless hub combat retain their regression checks.
+
+Testing the normal shoulder-to-carry handoff exposed a real player-targeting bug: carry-exit cleanup replaced the newly solved pitch. Cleanup now runs before solving, so the selected player stays visible on desktop and phone without moving the Ooga. The sleeper fixture waits for the real one-second relocation cooldown left by its preceding wake before measuring possession. Startup fixtures use the map's preview/confirmation flow.
+
+Validation: build, changed JavaScript syntax and whitespace checks pass; **666/666 unit checks** pass. Focused browser checks pass for ordinary hub cameras (13), gorilla camera/possession (17), desktop/phone player targeting with both modelled Oogas (16), Ghost Hunt gear/camera (8), shared camera rendering (6), and the retained cave checks (6). Map accessibility/touch, shared Tess coaching, startup holds, decorative effects and desktop/phone Oogatron popups also pass. Fresh 320px and 390px map captures were visually reviewed. The full suite before this audit reported **2513/2530**, including one known-open check; corrected and retired cases were subsequently verified only in the affected lanes.
+
+Remaining full-suite failures are **not** waived: covered-wall performance, player stacking, chalkboard reach, Drop startup, Mine phone header taps, shoulder replay, gorilla population handoff, Factory lifecycle, and two DSB soak checks. Keep the PR draft pending their disposition. Physical phones/controllers, screen readers, actual browser zoom and staging entrance acceptance remain unverified. Earlier results below are historical.
+
 ## Integration with rock dc381fa8 (November 11, 2026)
 
 The atlas now includes upstream's Repo Island: its island footprint, stone bridge, named destination, View action and entrance bearing. All thirteen destinations use the existing scene guards. Navigation checks follow upstream's five supported Ooga modes; the removed normal overhead mode is not reintroduced.

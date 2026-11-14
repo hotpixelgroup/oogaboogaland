@@ -42,7 +42,7 @@ Click, shoot or club the restless ghost to open the ghost-hunt lobby. Its menu f
 - **Cursor:** both Oogas and gorillas in carry mode use the native cursor: left-drag to look and scroll to zoom. Combat captures mouse look. In combat shoulder or first person, the first right-click after freeing the cursor only resumes mouse look; it neither attacks nor starts a double-click. Once focused, hold right-click for Ooga precision aiming. Sleeping actors ignore right-click view changes; Space wakes them. These controls are the same signed in or out.
 - **Tab:** in combat, the first **Tab** or **Shift + Tab** frees captured mouse look and cancels held movement, aiming and actions, keeping the actor, mode and view. Release Tab, then press it again to navigate UI; holding it through the release does not advance focus. Carry, sleeping actors and focused UI controls use normal Tab/Shift + Tab navigation immediately. This is the same signed in or out; **T** remains the owned-pair switch.
 - **Scroll stops:** in combat, zooming between first person and bird's-eye stops at shoulder view for the whole scroll gesture, including momentum; in carry, zooming out of first person stops at the near orbit the same way, while zooming in from the orbit goes straight on into the eyes. Pause and start a new scroll to continue past the stop. A pinch needs a new touch gesture. Zooming outward from shoulder begins nearby and eases into the wider view.
-- **Island cutaway:** the island offers no bird's-eye for now (`?debug=1&birdseye=1` brings it back for checks); there, combat bird's-eye reveals the lower levels for both Oogas and gorillas, signed in or out. Returning to shoulder or first person keeps the cut during the descent, then restores the intact island once the camera has a clear view of the actor. Underground close cameras move inward when rock blocks their view. Switching to carry restores the cover immediately.
+- **Island camera:** the hub has carry orbit, shoulder and first-person views, with no bird's-eye or island cutaway. Underground close cameras move inward when rock blocks their view. Games such as Ghost Hunt can offer their own bird's-eye view.
 - **Hidden actors:** when scenery hides your Ooga or gorilla in carry/orbit or shoulder view, the same silhouette and nearby scenery outlines help you find them, signed in or out. First person and combat bird's-eye keep their existing visibility rules.
 - **Switching views with actors:** switching directly between controlled actors keeps carry/combat and the view type.
 - **Escape:** one step per press: close active UI, end a look, free captured mouse look, then leave an interior. Steps that do not apply are skipped. Escape never lets go of your Ooga or gorilla.
@@ -231,6 +231,8 @@ Public domain under [The Ooga Booga License](LICENSE), a caveman-speak dedicatio
 ## Contributing
 
 Read [AGENTS.md](AGENTS.md) first: the module layout, the engine patterns, how to add things, and the checks every change must pass.
+
+For a new project cave or independently hosted land, use the [connection contract](docs/cave-connections.md) and [submission template](docs/templates/cave-connection.md). The **Caves and lands** directory in ₿IFRÖST (also at `/bifrost`) lists the integrated caves and independent sites. External sites open in the same tab without transferring OBL account, inventory or voice data; browser Back returns to OBL.
 
 Open your PR as a **draft** and tell your AI assistant to keep it draft while the
 work is in progress. Finish the implementation and authorized local checks, then

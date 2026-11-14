@@ -10968,7 +10968,7 @@
     else if (returningCharacter && arcadeYard && pilot.player && arcadeMouth) arcadeMouth.entrance.standAt(arcadeYard.slot);
     else if (returningCharacter && arcadeCrossing && pilot.player && arcadeMouth) { arcadeMouth.entrance.arrive(arcadeCrossing); factoryWalk.still = 1; factoryWalk.hold = BL.factoryWindow.GLIDE.still; }
     else if (returningCharacter && ctx.from === "arcade" && pilot.player && arcadeMouth) arriveFromArcade();
-    else if (returningCharacter) navigate(ctx.from === "factory" || ctx.from === "bifrost" || ctx.from === "arcade" ? ctx.from : ctx.from === "timechain" ? "timechain" : "pile", false, false);
+    else if (returningCharacter) navigate(routedPlace || (ctx.from === "factory" || ctx.from === "bifrost" || ctx.from === "arcade" ? ctx.from : ctx.from === "timechain" ? "timechain" : "pile"), false, false);
     else navigate(routedPlace || (ctx.from === "bifrost" ? "bifrost" : "pile"), false, false);
     if (donate) hud.openFeed();
     clankers.sync(); clankerMeshes.sync();
@@ -12006,7 +12006,7 @@
     else if (returningCharacter && arcadeYard && pilot.player && arcadeMouth) arcadeMouth.entrance.standAt(arcadeYard.slot);
     else if (returningCharacter && arcadeCrossing && pilot.player && arcadeMouth) { arcadeMouth.entrance.arrive(arcadeCrossing); factoryWalk.still = 1; factoryWalk.hold = BL.factoryWindow.GLIDE.still; }
     else if (returningCharacter && ctx.from === "arcade" && pilot.player && arcadeMouth) arriveFromArcade();
-    else if (returningCharacter) navigate(ctx.from === "factory" || ctx.from === "bifrost" || ctx.from === "arcade" ? ctx.from : ctx.from === "timechain" ? "timechain" : "pile", false, false);
+    else if (returningCharacter) navigate(routedPlace || (ctx.from === "factory" || ctx.from === "bifrost" || ctx.from === "arcade" ? ctx.from : ctx.from === "timechain" ? "timechain" : "pile"), false, false);
     else if (ctx.from === "bifrost" && !routedPlace) navigate("bifrost", false, false);
     else if (!signedInArrival && !crew.sleeping && !initialGorilla && (routedPlace || preloadedView || initialCharacter || initialFirstPerson)) navigate(routedPlace || preloadedView || "pile", false, false);
     if (donate) hud.openFeed();
@@ -12603,7 +12603,7 @@
     return false;
   };
   hubScene.beginCoaching = () => islandGuide.escape();
-  Object.defineProperty(hubScene, "coachingReady", { get: () => islandGuide?.state.phase === "work" && !gameMode });
+  Object.defineProperty(hubScene, "coachingReady", { get: () => islandGuide?.coachingReady && !gameMode });
   Object.defineProperty(hubScene, "navigationReady", { get: () => !!islandGuide && !islandGuide.holding && !cloudHopper?.active && !factoryDeparting && !bifrostDeparting && !timechainIsland?.gate.busy });
   hubScene.controlsHelpHold = on => { clankerPlay?.cancelInput(); if (on) clankerPlay?.freeCursor(); cloudHopper?.controlsHelpHold(on); pilot.controls.reset(); pilot.setMenuOpen(on, false); };
   BL.scenes.hub = hubScene;

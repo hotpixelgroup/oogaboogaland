@@ -140,9 +140,10 @@
       }
       const glyph = SIGN_GLYPHS[ch];
       if (!glyph) throw new Error(`No cave-sign glyph for "${ch}"`);
+      const sx = 3 / glyph[0].length, pixel = 0.82 * sx;
       for (let row = 0; row < glyph.length; row++) {
         for (let col = 0; col < glyph[row].length; col++) {
-          if (glyph[row][col] === "1") d += `M${cursor + col} ${row}h.82v.82h-.82z`;
+          if (glyph[row][col] === "1") d += `M${cursor + col * sx} ${row}h${pixel}v.82h-${pixel}z`;
         }
       }
       cursor += 4;
@@ -897,7 +898,7 @@
       el.act.textContent = label;
     };
     let actionHandler = null;
-    const DETACHED_NAMES = { pile: "Pile", lab: "Lab", mirror: "Mirror", underground: "HQ", basement: "Basement", mempool: "Mempool", factory: "LN Factory", arcade: "Ooga Arcade", bca: "B.C.A.", gate: "North gate", bifrost: "₿IFRÖST", timechain: "TC Sphere", repos: "Repo Island" };
+    const DETACHED_NAMES = { pile: "Pile", lab: "Lab", mirror: "Mirror", underground: "HQ", basement: "Basement", mempool: "Mempool", factory: "LN Factory", arcade: "Ooga Arcade", bca: "B.C.A.", gate: "North gate", bifrost: "₿IFRÖST", timechain: "TC Sphere", repos: "Merge Rock" };
     let destinationLabels = DETACHED_NAMES;
     let destinationNames = [];
     let detachedPreset = "pile", detachedNameShown = false, detachedSelectionShown = false, areaLabel = "";
