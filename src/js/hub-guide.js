@@ -690,7 +690,7 @@
     // guide above; other visitors follow Tess's visible pose without touching their pilot or camera.
     const sharedUpdate = (dt, elapsed) => {
       if (!shared()) {
-        if (wasShared) { sharedToken = ""; queueShown = false; queueRoom = ""; show("work"); }
+        if (wasShared) { if (state.holding) release(); rig.hush(); sharedToken = ""; queueShown = false; queueRoom = ""; show("work"); }
         wasShared = false; return false;
       }
       if (!wasShared) { if (state.holding) release(); rig.hush(); show("work"); }
@@ -838,8 +838,9 @@
         poseAt = elapsed;
         sharedPose[0] = position.x; sharedPose[1] = position.y; sharedPose[2] = position.z; sharedPose[3] = rig.mode;
         sharedPose[4] = rig.aim.x; sharedPose[5] = rig.aim.y; sharedPose[6] = rig.aim.z;
-        sharedPose[7] = rig.watch.x; sharedPose[8] = rig.watch.y; sharedPose[9] = rig.watch.z;
-        sharedPose[10] = rig.watching ? 1 : 0; sharedPose[11] = rig.steady ? 1 : 0;
+        // Without a driven Ooga the local look target is the private camera. Observers keep a neutral look.
+        sharedPose[7] = actor ? rig.watch.x : position.x; sharedPose[8] = actor ? rig.watch.y : position.y; sharedPose[9] = actor ? rig.watch.z : position.z;
+        sharedPose[10] = actor && rig.watching ? 1 : 0; sharedPose[11] = rig.steady ? 1 : 0;
         // Millimetres keep even the farthest island pose below the room's 256-character frame limit.
         for (let i = 0; i < sharedPose.length; i++) sharedPose[i] = Math.round(sharedPose[i] * 1000) / 1000;
         net.sendTess({ op: "pose", token: sharedToken, a: sharedPose });

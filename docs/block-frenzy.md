@@ -12,9 +12,9 @@ Solo by default. Signed-in Oogas can also play together: see Live rounds below.
 
 | File | Job |
 |---|---|
-| `block-sim.js` | The rules as pure functions, no DOM or scene: the arena, actors, blocks, throws, crates, quiz traps, weather and bots, on a 1/120 s fixed step that allocates nothing. Seeded, so a seed replays a round. |
+| `block-sim.js` | The rules as pure functions, no DOM or scene: the arena, actors, blocks, throws, crates, quiz traps and bots, on a 1/120 s fixed step that allocates nothing. Seeded, so a seed replays a round. |
 | `block-trivia.js` | 35 multiple-choice Bitcoin questions, each with a one-line fact, for the quiz traps. |
-| `block-models.js` | Cached geometry: Fort Chaos, the stands, the two team blocks, crates, paint balls, grenades, rockets, nets, splats, quiz pads and bubbles, rain, and the arsenal: each tool's gun in a shared frame (`gun(index * 2 + team)` over `GUNS`, the grip at the origin and the muzzle along +z), the hook launcher among them, the hook's head and rope, the monkey and the ammo box. |
+| `block-models.js` | Cached geometry: Fort Chaos, the stands, the two team blocks, crates, paint balls, grenades, rockets, nets, splats, quiz pads and bubbles, and the arsenal: each tool's gun in a shared frame (`gun(index * 2 + team)` over `GUNS`, the grip at the origin and the muzzle along +z), the hook launcher among them, the hook's head and rope, the monkey and the ammo box. |
 | `scene-block.js` | The scene: the side picker, the round, the HUD, the cameras, the quiz card and the trophy screen. Registers `BL.scenes.block`. |
 
 Shared files touched, each by the smallest change: `arcade-models.js`, `arcade-scene-models.js` and `scene-arcade.js` (the entry hall: `BLOCK_HALL`, its walk, sight and light, and its zipline off the ledge; the stage stays rock's four cabinets, and the Rally poster moved just beside the mouth),
@@ -76,14 +76,13 @@ card), `src/style.css` (the game's panels, appended), `test/run.mjs` (rules in t
   from below, and come down on top to stand there. The leaves themselves stay decor, so nobody hides inside them, and
   the chase camera comes in front of (or over) leaves as it does walls. The two trees before each tower stand
   low (3.5 m), so a scope up there sees over them.
-- **Weather.** A seeded run of clear and stormy spells. Storms darken the light and bring rain and lightning.
 - **Movement.** Jump, and jump again in the air: a double jump reaches 2.55 m and clears the forts' 2.4 m walls, the
   stilt huts' floors and the centre deck, carrying or not. Shift sprints for up to 4 s, refilling after a rest. C
   crouches: slower, shorter, under chest-height paint.
 
 ## Play-test additions
 
-Each map has its own time of day and weather mix (`MAP_WEATHER`, seeded): Fort Chaos at sunset, Ooga Town at midday, Gorilla Jungle cloudy and always raining with puddles that slip you, Haunted Hollow at night. Storms warn a spot and then strike whoever stays with lightning (`bolt`), once per `BOLT_COOL` each. A busy network (fees at the storm rate) brings a storm over a map's own weather; calmer fees change nothing. Haunted Hollow has a few open graves to fall in and step out of, a skeleton in each, and ghosts. The Detail setting on the menu turns off foliage, rain, lightning effects and that dressing; the rules stay. `N` hides the mini-map, `?` or Help opens the in-play help. Ooga Town's block stand is at the back of its building, under the upper floor. Haunted Hollow is described under its own heading below.
+Each map has its own fixed time of day and sky (`MAP_HOUR`, `MAP_CLOUDS` in the scene): Fort Chaos at sunset, Ooga Town at midday, Gorilla Jungle cloudy with puddles that slip you, Haunted Hollow at night. There is no weather on any map: no storms, rain, lightning or thunder, and mempool fees change nothing (a block found still readies the pads and caches). Power-up spots hand out lightning boots, the halving, cold storage or the monkeys, drawn from the seed; there are no laser eyes. Haunted Hollow has a few open graves to fall in and step out of, a skeleton in each, and ghosts. The Detail setting on the menu turns off foliage and that dressing; the rules stay. `N` hides the mini-map, `?` or Help opens the in-play help. Ooga Town's block stand is at the back of its building, under the upper floor. Haunted Hollow is described under its own heading below.
 
 ## Towers, ziplines and ammo caches
 
@@ -103,7 +102,8 @@ Each map has its own time of day and weather mix (`MAP_WEATHER`, seeded): Fort C
   at the grab: a rider already sliding rides on, whatever happens to their block meanwhile. Your own line is never
   trapped. A lamp on each handle shows it from your side, green to ride, red when it would spring. Bots only choose
   the zip home with their own block home, and drop that route if it goes. The event appended to `EVENT_TYPES` made
-  `WIRE` 5.
+  `WIRE` 5. Taking the weather and laser events (`bolt`, `boltwarn`, `laseroff`, `laseron`, `weather`) out of `EVENT_TYPES` moved
+  every later index, so `WIRE` became 6. Clanktown appends `decoy`, `decoyfade`, `glitch`, `zap` and `mirage` after `ziptrap` and adds decoys to the frame, so `WIRE` is 7.
 - **Ammo caches.** Five on Fort Chaos (each stilt hut's floor and the centre deck; the other maps place their own).
   Walking onto one refills grenades, rockets, nets and the crate stock as your stand does, then it goes dark for 15 s
   (`CACHE_S`). A real Bitcoin block found while you play makes every cache and quiz pad ready again.
@@ -198,7 +198,7 @@ and a page that takes over as host keeps it:
   none (`hooksteal`).
 
 Nothing else takes either: paint, the Ooga AK, the sniper rifle, grenades, rockets, nets, thrown crates, the monkeys,
-laser eyes, gorillas and bonks all splat as before and the victim keeps what they hold. Nothing is dropped on a splat.
+gorillas and bonks all splat as before and the victim keeps what they hold. Nothing is dropped on a splat.
 Bots now and then hook a rival who has the Golden AKs out, in reach and in sight, and fire the Golden AKs whenever they
 hold them, so a hook holder in their sights can lose it. The frame no longer carries dropped pairs but carries
 what each Ooga has in hand, and the drop events are gone: `WIRE` was 4 (5 since the zipline trap's event).
@@ -353,8 +353,9 @@ The global tier plays the rules through the sim's own calls: pickup, a drop held
 with your own block home, a splat dropping the carrier's block, which stays until its own side carries it home, a
 quiz trap holding and shielding, a net slowing and grounding, a crate pushed, a pass caught, a throw home (scoring and crediting the thrower at a stand and a map's own spot, with no score with
 your own block away, for a side's own block, just outside the zone, when caught, or off a hook; ending the round at
-its target), a crate lifted, stacked and thrown to stun, and a seeded round on
-autopilot replaying exactly to three captures. The `block` scene runs the title card and Escape, W S and A D on screen,
+its target), a crate lifted, stacked and thrown to stun, a seeded round on
+autopilot replaying exactly to three captures, and two minutes of seeded play on every map raising no storm, rain or
+lightning. The `block` scene runs the title card and Escape, W S and A D on screen,
 a quiz trap through a wrong and a right answer, an autopilot round to its saved results, and the round trip.
 
 The entry hall's Node checks cover the stage's four cabinets, the hall reaching the ledge, the zipline's survey and the Rally poster's move; the `arcade` step walks it. The Block Frenzy browser checks also measure each weapon's
@@ -381,6 +382,48 @@ per frame. The winner is the sim's, so every page in a live round shows the same
 winners celebrate with a line for the next round. The title drops in, the score counts up and the confetti bursts;
 with reduced motion the picture holds still and nothing animates. No raster art: all of it is the game's own models.
 
+## Clanktown
+
+The fifth map (`clank`), a server-farm city on the floating island played for dark comedy: night under a sickly green
+smog sky (the scene pulls the sky's colours toward green, `smogSky`) with a pale green moon striped by smog, server
+towers with teal and red lights, smokestacks puffing, cables slung to the Mainframe, scrap heaps, racks of servers for
+cover, and neon billboards with sycophantic slogans written in a 3 x 5 pixel font (`blockModels.SLOGANS`). The potato
+Oogas dance round a burning pile of old GPUs (`gpuPile`), same peels, same rule. The trampolines are steaming cooling
+vents (`vent`). Its sky stays fixed, with no storms or power surges. Detail Low
+drops the dressing (slogans, cables, the miners' fans, status LEDs and hot air, smoke and steam); the walls stay.
+
+- **Server rooms.** Each block's stand sits in a room walled by stacked Bitcoin miners, `MINER_H` (3.6 m) high, over a
+  double jump's apex. The ways in: the jetpack over the top, the catapult (its drop lands inside the rival room), the
+  zipline (its end is inside too), or on foot through a door in each side wall, the long way round. Bots use the
+  map's `nav` nodes for the long way, and experts hop the walls on the jetpack. The hook bites the walls as any wall.
+- **The Mainframe hallucinates.** From about 40 s (seeded), and every 32 to 46 s after, it lays 2 or 3 decoys of each
+  side's block, red's on blue's half and blue's turned onto red's, at seeded open spots (`decoySpots`, snapped to
+  walkable ground). They look exactly like a loose block, ticks and all, and the mini-map marks them as one. A touch
+  glitches one apart in pink and teal pixels with an apology ("I apologize for the confusion") and staggers the
+  toucher for `DECOY_STAGGER`; untouched, one fades after `DECOY_S`. The real blocks and stands are never touched.
+  Bots fall for a decoy by skill (`SKILLS[...].fool`: easy 0.75, normal 0.45, hard 0.2, expert 0.06).
+- **Clankrillas.** The hub gorilla rig with a chrome forearm, a red visor band and an antenna added on
+  (`clankArm`, `clankVisor`); the same rules as every gorilla. Grabbing and throwing, they talk: "Great question!",
+  "You're absolutely right!", "Happy to help you... off the island", "As an AI, I must throw you now".
+- **The firewall.** A pink laser fence across the halfway line in two halves, a gap either side of the Mainframe and
+  at each side line. On the shared clock it is off for 3.2 s, flickers its warning for 0.8 s (three times a second,
+  never faster) and is on for 3 s; off while fortifying. Touched while on, it splats as paint does; riders, the
+  catapult's throw, the parachute and anyone over its 2.2 m top pass. It is no block. Bots time it: across while it's
+  safely off, otherwise round by a gap, stepping off the line if it comes on (`dodgeFirewall`).
+- **The mirage.** Round the Mainframe, radius 9 m, the same for both sides. Inside it each player sees their own
+  hallucinations, drawn by the scene alone (`poseMirage`): phantom rivals running about carrying what looks like your
+  block (on the mini-map too, while you're inside), with a faint scan-line flicker as the tell, which glitch away
+  with an apology when shot or touched; phantom stacks of miners shimmering in and out; the mini-map drifting round
+  and its own-stand marker jittering; and a pink-and-teal tint with slow scan lines and an edge ring (`#block-mirage`).
+  The keys are never touched. Reduced motion and Low detail keep the tint and the phantoms and drop the drift, the
+  jitter and the moving lines. The shared sim only knows that a bot inside may chase a phantom for a moment, by its
+  skill (`mirageBot`).
+
+Live rounds carry the decoys in the host's frame (colour, place and remaining lifetime, plus the next wave's timer so a new host continues them); the firewall runs on the frame's clock, and the
+mirage is each page's own. The suite checks the map's data, the walls against a double jump, a walking route into
+each room, the decoys, the firewall's timing and touch, the mirage's symmetry, that the scene's mirage never writes
+the shared sim, an attacker bot's way round to a capture, and the decoys in a live frame.
+
 ## High scores
 
 Rock's shared high-score registry (`highscore-rules.js` and the Worker) does not know Block Frenzy, so it submits nothing. Its best stays local through
@@ -398,6 +441,8 @@ physical touch controls and browser performance still require verification.
 
 ## Live rounds
 Signed-in Oogas only, on a Worker that lists `block-v1` in welcome; anywhere else the game is solo as before.
+
+Clanktown extends the frame layout and event list to `WIRE` 7. Deploy the site and Worker together. Pages left open on wire 6 or earlier must reload before joining or watching a live round; the Worker refuses their control messages and discards saved rounds from the older wire on wake.
 
 - **Registry** (`worker/src/block.js`, contract in `block-wire.js`): one match a room. `reg`/`unreg`/`ready`/`opt` in the lobby; the first in picks the map, size and scoring rule (2v2 to 4v4, `MIN_SIDE` to `MAX_SIDE`; NPCs fill any empty seat, so there is never a 1v1); `reg` carries the map already picked on their board, and registered players' boards follow the match's map, grown if more have registered than it seats. With two or more registered, everyone ready starts a 3 s countdown. One person alone chooses: Start with NPCs (`alone`, at once with NPCs) or Wait for players (marks them ready, which starts nothing until someone else registers and readies). If the others leave, the choice comes back.
 - **Teams:** random and as even as can be (`split`); empty seats are NPCs.
