@@ -7315,6 +7315,43 @@ const gameRulesChecks = async () => {
     for (let i = 0; i < 1200; i++) S.tick(one, S.CONFIG.STEP, still());
     const solo = (t) => { const s = S.create({ team: "blue", seed: 77, size: 3, map: "town", prep: 1 }); if (t) s.inputs = null; for (let i = 0; i < 1800; i++) S.tick(s, S.CONFIG.STEP, still()); return s.actors.map(a => a.x + a.z).join(","); };
     record("block live: there is no 1v1 (a size of one runs two a side), and a solo round is unchanged", one.size === 2 && one.actors.length === 4 && one.time > 9 && solo(false) === solo(true));
+    // No weather on any map: two minutes of a seeded round on each (no bots steering, so it stays cheap; the old
+    // weather drew a spell every 24 to 42 s whatever the Oogas did) raise no storm, rain or lightning, and the rules hold no sky.
+    const skies = W.MAPS.map((map) => {
+      const s = S.create({ team: "blue", seed: 31, size: 1, map, prep: 0 }), seen = new Set();
+      for (const o of s.actors) o.bot = false;
+      for (let i = 0; i < 120 * 120; i++) { S.tick(s, S.CONFIG.STEP, still()); for (let e = 0; e < s.eventCount; e++) seen.add(s.events[e].type); s.eventCount = 0; }
+      return { map, time: Math.round(s.time), sky: ["weather", "bolt", "boltwarn", "rain", "storm"].filter((t) => seen.has(t) || L.EVENT_TYPES.includes(t)), held: s.weather !== undefined || s.live !== undefined || "boltCool" in s.actors[0] };
+    });
+    record("block frenzy: no map has weather; two minutes of seeded play on each raises no storm, rain or lightning bolt",
+      skies.every((r) => r.time >= 119 && !r.sky.length && !r.held) && S.setLive === undefined && !Object.keys(S.CONFIG).some((k) => /^(WEATHER|BOLT)/.test(k)), JSON.stringify(skies));
+    // Four power-ups, no laser eyes: every spot on every map starts and redraws one of them from the seed, a taken one
+    // gives its own, and the host's kinds reach a guest through the live frame.
+    const drawn = new Set(), given = new Set();
+    let powersOk = S.POWERS.join() === "boots,halving,cold,monkeys" && !Object.keys(S.CONFIG).some((k) => /^(LASER|BEAM)/.test(k));
+    for (const map of W.MAPS) {
+      const s = S.create({ team: "blue", seed: 8, size: 1, map, prep: 0 }), me = s.actors[0];
+      for (const o of s.actors) o.bot = false;
+      powersOk &&= s.powers.length > 0 && s.powers.every((p) => S.POWERS[p.kind]) && !("laser" in me) && !("beam" in me);
+      for (let n = 0; n < 12; n++) for (const p of s.powers) {
+        p.dark = 0; Object.assign(me, { x: p.x, z: p.z, y: 0, vx: 0, vz: 0, grounded: true, splat: 0, trapped: 0, grabbed: 0 });
+        S.tick(s, S.CONFIG.STEP, still());
+        for (let e = 0; e < s.eventCount; e++) if (s.events[e].type === "power") given.add(S.POWERS[s.events[e].y]);
+        s.eventCount = 0; drawn.add(S.POWERS[p.kind]);
+      }
+    }
+    const ph = S.create({ team: "blue", seed: 8, size: 1, map: "fort", prep: 0 }), pg = S.create({ team: "blue", seed: 9, size: 1, map: "fort", prep: 0 }), pm = L.seatMap(1, 0);
+    ph.powers.forEach((p, i) => { p.kind = i % S.POWERS.length; });
+    L.decode(new DataView(buf.buffer.slice(0, L.encode(ph, pm, 7, 1, 1, buf))), pg, pm, new Float32Array(8));
+    const wired = pg.powers.every((p, i) => p.kind === ph.powers[i].kind);
+    const powerFrame = new Uint8Array(buf.buffer.slice(0, L.encode(ph, pm, 7, 1, 1, buf, [], 0)));
+    const powerAt = powerFrame.length - 1 - ph.powers.length * 2;
+    const invalidPowers = [S.POWERS.length, 255].map(kind => { const c = powerFrame.slice(); c[powerAt + 1] = kind; return new DataView(c.buffer); });
+    record("block live: all four power kinds validate, while removed and unknown kinds and a truncated power list are refused",
+      L.validFrame(new DataView(powerFrame.buffer), pg, pm) && invalidPowers.every(v => !L.validFrame(v, pg, pm))
+        && !L.validFrame(new DataView(powerFrame.buffer.slice(0, powerAt + 1)), pg, pm));
+    record("block frenzy power-ups: four kinds without laser eyes, each spot drawing one from the seed and giving its own, and the host's reach a guest",
+      powersOk && drawn.size === 4 && given.size === 4 && [...drawn, ...given].every((k) => k) && wired && !L.EVENT_TYPES.some((t) => t.startsWith("laser")), JSON.stringify({ powersOk, drawn: [...drawn], given: [...given], wired }));
     // Paint and the AKs go where they are aimed.
     const flat = ["paint", "ak", "gold"].map((kind) => { const T = S.TOOLS[kind], d = 20, t = d / T.speed, p = S.flatPitch(d, T), y = (T.lift + Math.sin(p) * T.speed) * t - 0.5 * T.gravity * t * t; return Math.abs(y) < 0.1 && T.speed * T.life >= 25 && T.gravity <= 1.5; });
     record("block shots: paint and the AKs arrive within 10 cm of the aim at 20 m with about their old reach", flat.every(Boolean), JSON.stringify(flat));
@@ -7373,12 +7410,12 @@ const gameRulesChecks = async () => {
     const shotAt = (kind, wield = "hook", setup = () => {}) => { const d = duel((s, a, b) => { a.gold = true; hold(s, b); b.wield = wield; setup(s, a, b); }); S.fire(d.s, 0, Math.PI, S.flatPitch(6, S.TOOLS[kind]), kind); quiet(d.s, 1); return d; };
     const goldIn = shotAt("gold"), goldAway = shotAt("gold", "paint"), goldInUse = shotAt("gold", "paint", (s, a, b) => { b.hk = 4; }), goldOwn = shotAt("gold", "hook", (s, a) => hold(s, a, 1)), akIn = shotAt("ak");
     const splatBy = (kind) => { const d = duel((s, a, b) => { a.gold = true; hold(s, b); b.wield = "hook"; }); S.splat(d.s, d.b, kind === "bonk", kind === "bonk" ? null : { kind, owner: 0, team: "blue", ox: d.a.x, oz: d.a.z }); return d.b.hook === 1 && d.a.hook === 0; };
-    const goldSplat = (() => { const d = duel((s, a, b) => { b.gold = true; b.wield = "gold"; hold(s, a); }); for (const k of ["paint", "ak", "sniper", "rocket", "grenade", "net", "crate", "homer", "laser"]) { d.b.splat = 0; S.splat(d.s, d.b, false, { kind: k, owner: 0, team: "blue", ox: 0, oz: 0 }); } S.splat(d.s, d.b, true); return d.b.gold && !d.a.gold; })();
+    const goldSplat = (() => { const d = duel((s, a, b) => { b.gold = true; b.wield = "gold"; hold(s, a); }); for (const k of ["paint", "ak", "sniper", "rocket", "grenade", "net", "crate", "homer"]) { d.b.splat = 0; S.splat(d.s, d.b, false, { kind: k, owner: 0, team: "blue", ox: 0, oz: 0 }); } S.splat(d.s, d.b, true); return d.b.gold && !d.a.gold; })();
     const steals = { hookTakes: hookIn.a.gold && !hookIn.b.gold && hookIn.a.hook === 1, hookAway: !hookAway.a.gold && hookAway.b.gold, botFired: hookBotFired.a.gold && !hookBotFired.b.gold, hookArmed: hookArmed.a.gold && hookArmed.b.gold,
       goldTakes: goldIn.a.hook === 1 && goldIn.b.hook === 0 && goldIn.s.hooks[0].holder === 0 && goldIn.b.splats === 1, goldAway: goldAway.b.hook === 1 && goldAway.a.hook === 0 && goldAway.b.splats === 1, inUse: goldInUse.a.hook === 1 && goldInUse.b.hook === 0,
       ownHook: goldOwn.a.hook === 2 && goldOwn.b.hook === 1, akKeeps: akIn.b.hook === 1 && akIn.a.hook === 0 && akIn.b.splats === 1,
-      othersKeep: ["paint", "ak", "sniper", "rocket", "grenade", "net", "crate", "homer", "laser", "bonk"].every(splatBy), goldKept: goldSplat, pairs: [hookIn, goldIn].every((d) => d.s.goldLeft + d.s.actors.filter((q) => q.gold).length === 2) };
-    record("block special-weapon steals: a hook takes a rival's Golden AKs only while they're in hand (a bot's last fired counts), to a thrower with none; Golden AK fire takes a rival's hook only while it's in hand or out, to a shooter with none; the Ooga AK, paint, the sniper, rockets, grenades, nets, crates, monkeys, laser eyes and bonks take neither",
+      othersKeep: ["paint", "ak", "sniper", "rocket", "grenade", "net", "crate", "homer", "bonk"].every(splatBy), goldKept: goldSplat, pairs: [hookIn, goldIn].every((d) => d.s.goldLeft + d.s.actors.filter((q) => q.gold).length === 2) };
+    record("block special-weapon steals: a hook takes a rival's Golden AKs only while they're in hand (a bot's last fired counts), to a thrower with none; Golden AK fire takes a rival's hook only while it's in hand or out, to a shooter with none; the Ooga AK, paint, the sniper, rockets, grenades, nets, crates, monkeys and bonks take neither",
       Object.values(steals).every(Boolean), JSON.stringify(steals));
     // A guest's tool is the host's word through `wield`: a guest who puts the AKs away keeps them from a hook, one who
     // holds the hook out loses it to Golden AK fire; a tool they don't own is refused. The frame carries the result.
@@ -7390,8 +7427,8 @@ const gameRulesChecks = async () => {
     outGuest.gorillas.length = 0;
     const framedOut = L.validFrame(outFrame, outGuest, L.seatMap(2, 0)) && !L.validFrame(new DataView(outBuf.buffer.slice(0, outLen + 1)), outGuest, L.seatMap(2, 0)); L.decode(outFrame, outGuest, L.seatMap(2, 0), new Float32Array(16));
     const guests = { away: guestAway.r && guestAway.g.gold && !guestAway.h.gold, out: guestOut.r && guestOut.h.hook === 1 && guestOut.g.hook === 0, refused, framed: framedOut, agrees: outGuest.actors[0].hook === 1 && outGuest.actors[2].hook === 0 && outGuest.hooks[0].holder === 0,
-      events: ["goldhook", "hooksteal", "goldsteal", "gold"].every((t) => L.EVENT_TYPES.includes(t)) && !["golddrop", "goldget", "goldback", "hookdrop", "hookback"].some((t) => L.EVENT_TYPES.includes(t)), wire: W.WIRE === 5 };
-    record("block steals live: a guest's wield on the host decides what a hook or Golden AK fire can take, an unowned tool is refused, the frame carries the result to a guest exactly, and the drop events are gone (WIRE 5)",
+      events: ["goldhook", "hooksteal", "goldsteal", "gold"].every((t) => L.EVENT_TYPES.includes(t)) && !["golddrop", "goldget", "goldback", "hookdrop", "hookback"].some((t) => L.EVENT_TYPES.includes(t)), wire: W.WIRE === 7 };
+    record("block steals live: a guest's wield on the host decides what a hook or Golden AK fire can take, an unowned tool is refused, the frame carries the result to a guest exactly, and the drop events are gone (WIRE 7)",
       Object.values(guests).every(Boolean), JSON.stringify(guests));
     // Shots through the sim itself: bots meet a crouched, a higher and a lower target; no round passes a thin wall.
     // The pair stand on the first open lane of Ooga Town with nothing built on or across it.
@@ -7457,7 +7494,8 @@ const gameRulesChecks = async () => {
         const row = { map, low: 0, mid: 0, high: 0, own: 0 };
         for (const [key, aimY] of [["low", 0.3], ["mid", 0.9], ["high", 1.5], ["own", 0.5]]) for (let k = 0; k < 8; k++) {
           const s = S.create({ team: "blue", seed: 4, size: 2, map, prep: 0 }), a = s.actors[0], f = s.flags[key === "own" ? "blue" : "red"], d = 6, ang = k / 8 * Math.PI * 2;
-          for (const q of s.actors) { q.bot = false; q.guard = 0; if (q !== a) { q.x = 300; q.z = 300; } } s.gorillas.length = 0;
+          // The round's starting crates are put away: Clanktown stands two by each room's door, on a low hook's line.
+          for (const q of s.actors) { q.bot = false; q.guard = 0; if (q !== a) { q.x = 300; q.z = 300; } } s.gorillas.length = 0; for (const c of s.crates) c.live = false;
           a.x = f.x + Math.sin(ang) * d; a.z = f.z + Math.cos(ang) * d; a.y = 0; a.hook = 1; s.hooks[0].state = 1; s.hooks[0].holder = 0;
           S.grapple(s, 0, Math.atan2(f.x - a.x, f.z - a.z), Math.atan2(aimY - S.CONFIG.SHOT_Y, d));
           let took = false, bit = false;
@@ -7567,11 +7605,11 @@ const gameRulesChecks = async () => {
         JSON.stringify({ fresh, out, owned, settled, slots: slots.map((m) => m[1]), named }));
     }
     // The session over a fake room: a guest's input moves its actor on the host, a leaver becomes an NPC, the host hands over.
-    const session = (selfId) => {
+    const session = (selfId, arena = "fort") => {
       const subs = new Set(), frames_ = new Set(), sent = [], bins = [];
       const net = { state: { selfId }, serverNow: () => context.clock + (context.skew || 0), subscribeBf: f => { subs.add(f); return () => subs.delete(f); }, subscribeBfFrame: f => { frames_.add(f); return () => frames_.delete(f); }, sendBf: m => { sent.push(m); return true; }, sendBfInput: m => { sent.push({ ...m, a: m.a && m.a.slice() }); return true; }, sendBfFrame: b => { bins.push(b.slice().buffer); } };
       const seen = { sim: null, started: 0 }, live = L.create({ net, now: () => context.clock, resolveBody: () => {}, onMatch: () => {}, onHost: () => { seen.tookOver = true; },
-        onStart: (m, role, map) => { seen.started++; seen.role = role; const s = S.create({ team: map.team, seed: m.seed, size: m.size, map: "fort", prep: 0 }); seen.sim = s; s.anyTime = W.RULES[m.rule] === "any"; S.reset(s, m.seed); live.bind(s); } });
+        onStart: (m, role, map) => { seen.started++; seen.role = role; const s = S.create({ team: map.team, seed: m.seed, size: m.size, map: arena, prep: 0 }); seen.sim = s; s.anyTime = W.RULES[m.rule] === "any"; S.reset(s, m.seed); live.bind(s); } });
       return { live, sent, bins, seen, tell: m => { for (const f of subs) f({ k: "match", ...m }); }, input: m => { for (const f of subs) f({ k: "input", ...m }); }, frame: b => { for (const f of frames_) f(b); } };
     };
     { const a = session(1); a.live.register(1); record("block live: registering sends the map picked on the board", a.sent.length === 1 && a.sent[0].k === "reg" && a.sent[0].m === 1, JSON.stringify(a.sent)); a.live.dispose?.(); }
@@ -7698,7 +7736,7 @@ const gameRulesChecks = async () => {
       const good = new Uint8Array(LH.bins.at(-1)), corrupt = (fn) => { const c = good.slice(); fn(c); return new DataView(c.buffer); };
       const viewSim = S.create({ team: "blue", seed: 1, size: 2, map: "fort", prep: 0 });
       record("block live: a valid frame passes the hostile-frame check", L.validFrame(new DataView(good.buffer), viewSim, sameMap));
-      const bad = [corrupt(() => {}).buffer.slice(0, good.length - 3), corrupt(c => { c[W.FRAME_HEADER + 10] = 99; }).buffer, corrupt(c => { c[W.FRAME_HEADER + 21] = 200; }).buffer, corrupt(c => { c[good.length - 1] = 255; c[good.length - 11] = 200; }).buffer];
+      const bad = [corrupt(() => {}).buffer.slice(0, good.length - 3), corrupt(c => { c[W.FRAME_HEADER + 8] = 99; }).buffer, corrupt(c => { c[W.FRAME_HEADER + 14] = 200; }).buffer, corrupt(c => { c[good.length - 1] = 255; c[good.length - 11] = 200; }).buffer];
       record("block live: truncated frames, bad enums and bad counts are refused", bad.every(b => !L.validFrame(new DataView(b), viewSim, sameMap)));
       const before = viewSim.score.blue;
       record("block live: a refused frame leaves the sim untouched", viewSim.score.blue === before && viewSim.eventCount === 0);
@@ -7729,6 +7767,128 @@ const gameRulesChecks = async () => {
       record("regression: the zoom keys work from the chairs, ahead of the check that ends key handling outside play", scene.indexOf('if (onDeck()) { if (e.key === "+"') > 0 && scene.indexOf('if (onDeck()) { if (e.key === "+"') < scene.indexOf('if (phase !== "play" || e.repeat'));
       record("regression: the last frame's winning capture is heard before the reset, and a thrown event can't leave the queue full", /renderLive = \(m\) => \{[\s\S]{0,200}hearCaptures\(\)/.test(scene) && scene.includes("} finally { sim.eventCount = 0; }"));
       record("regression: chairs-full clears out of play and a no-room visit has no dead Register button", scene.includes("if (!play) chairsFull = false;") && scene.includes("el.watchReg.hidden = !round;"));
+    }
+    {
+      // Clanktown: its data, the miner walls, the Mainframe's decoys, the firewall's timing, the mirage and the bots' way round.
+      const CK = S.ARENAS.clank, C2 = S.CONFIG, step = C2.STEP, calm = (r) => { for (const g of r.gorillas) { g.state = 3; g.t = 1e9; } return r; };
+      const fresh = (opts = {}) => calm(S.create({ map: "clank", seed: 7, prep: 0, ...opts }));
+      const key = (b) => b.slice(0, 6).map((v) => v.toFixed(2)).join(), keys = new Set(CK.BLOCKS.map(key));
+      const mirrored = CK.BLOCKS.every((b) => keys.has(key([-b[1], -b[0], -b[3], -b[2], b[4], b[5]])));
+      const room = (t) => t === "blue" ? [-6.5, 6.5, 22.5, 33.5] : [-6.5, 6.5, -33.5, -22.5], inside = ([x0, x1, z0, z1], x, z, m = 0) => x > x0 - m && x < x1 + m && z > z0 - m && z < z1 + m;
+      const miners = CK.BLOCKS.filter((b) => (b[5] || 0) === 0 && Math.abs(b[4] - S.MINER_H) < 0.01);
+      const apex = 2 * C2.JUMP * C2.JUMP / (2 * C2.FALL);
+      record("clanktown map: listed in the rules, the wire and the board; mirrored; each block's stand inside its miner-walled server room",
+        S.MAPS.includes("clank") && W.MAPS[4] === "clank" && CK.name === "Clanktown" && mirrored && miners.length >= 12
+        && S.TEAMS.every((t) => inside(room(t), CK.stands[t].x, CK.stands[t].z)) && miners.every((b) => S.TEAMS.some((t) => inside(room(t), (b[0] + b[1]) / 2, (b[2] + b[3]) / 2, 0.1))),
+        JSON.stringify({ mirrored, miners: miners.length }));
+      // A double jump at the front wall, from a standing start right up against it, never gets over.
+      const jr = fresh(), ja = jr.actors[0];
+      for (const c of jr.crates) c.live = false;
+      for (const o of jr.actors) o.bot = false;
+      ja.x = 0; ja.z = 21.9; ja.y = 0;
+      let peak = 0;
+      S.tick(jr, step, { ...still(), z: 1, jump: 1 });
+      for (let t = 0; t < 1.6; t += step) { S.tick(jr, step, { ...still(), z: 1, jump: ja.vy < 0.5 && ja.jumps > 0 ? 1 : 0 }); peak = Math.max(peak, ja.y); }
+      record("clanktown miners: walls too tall for a double jump (the apex " + apex.toFixed(2) + " m under " + S.MINER_H + " m); a double jump against one stays outside",
+        S.MINER_H > apex + 0.6 && ja.z < 22.5 && peak < S.MINER_H, JSON.stringify({ peak: +peak.toFixed(2), z: +ja.z.toFixed(2) }));
+      // On foot there is always a way in: the rest flood from the side's start reaches the far stand's room, round
+      // through a side door; the zipline's end and the catapult's drop land inside the rival room; the walls keep
+      // clear of the stands, towers and ladders.
+      fresh();
+      const walk = (x, z) => { const p = S.restSpot(x, z); return Math.abs(p.x - x) < 0.3 && Math.abs(p.z - z) < 0.3; };
+      const routes = { blueRoom: walk(0, 25.5), blueDoor: walk(-7.6, 29.4), redRoom: walk(0, -25.5), redDoor: walk(7.6, -29.4), field: walk(0, 12) };
+      const zip = CK.zips.blue, drop = CK.drops.blue;
+      const shortcuts = inside(room("red"), zip.bx, zip.bz, 1) && inside(room("red"), drop[0], drop[1]);
+      const clear = miners.every((b) => S.TEAMS.every((t) => { const st = CK.stands[t], [x0, x1, z0, z1] = CK.towers[t]; return Math.hypot(Math.max(b[0], Math.min(st.x, b[1])) - st.x, Math.max(b[2], Math.min(st.z, b[3])) - st.z) > C2.STAND_R + 1 && (b[0] >= x1 || b[1] <= x0 || b[2] >= z1 || b[3] <= z0); }));
+      record("clanktown miners: a walking route into each server room by its side doors; the zipline and catapult land inside the rival room; the walls stay clear of stands and towers",
+        Object.values(routes).every(Boolean) && shortcuts && clear, JSON.stringify({ routes, shortcuts, clear }));
+      // The firewall: off while fortifying, then off 3.2 s, flickering 0.8 s, on 3 s, on the shared clock; never a block.
+      const fr = fresh(), seq = [];
+      for (let t = 0; t < 7; t += 0.25) { fr.time = t; seq.push(S.firewallState(fr)); }
+      const cycleOk = seq.join("") === "0000000000000111222222222222".slice(0, seq.length);
+      const prepped = S.create({ map: "clank", seed: 7 });
+      prepped.time = 5;
+      const offInPrep = S.firewallState(prepped) === 0;
+      const halves = CK.firewall.halves, gapAtMainframe = halves.every(([x0, x1]) => Math.min(Math.abs(x0), Math.abs(x1)) >= 1.6 + C2.BODY_R * 2) && halves[0][0] === -halves[1][1];
+      const notSolid = !S.solidAt(8, 1, 0) && !S.solidAt(-8, 1, 0);
+      record("clanktown firewall: on the clock, off while fortifying, a gap either side of the Mainframe, mirrored, and never a solid block", cycleOk && offInPrep && gapAtMainframe && notSolid, seq.join(""));
+      const zapAt = (fix) => { const r = fresh(); for (const o of r.actors) o.bot = false; const a = r.actors[0]; a.x = 8; a.z = 0.3; a.y = 0; a.guard = 0; fix(r, a); S.tick(r, step, still()); return a.splat > 0; };
+      const zap = { on: zapAt((r) => { r.time = 5.5; }), off: !zapAt((r) => { r.time = 1; }), over: !zapAt((r, a) => { r.time = 5.5; a.y = 2.6; a.grounded = false; }), riding: !zapAt((r, a) => { r.time = 5.5; a.flight = 2; a.y = 1; }), gap: !zapAt((r, a) => { r.time = 5.5; a.x = 2.2; }) };
+      record("clanktown firewall: touched while on it splats as paint does; off, over its top, under a parachute or in the gap it doesn't", Object.values(zap).every(Boolean), JSON.stringify(zap));
+      // The decoys: 2 or 3 of each colour, turned pairs, on walkable ground, never at a stand; a touch glitches one and
+      // staggers the toucher, the real blocks untouched; untouched ones fade.
+      const dr = fresh(), real0 = JSON.stringify(dr.flags);
+      for (const o of dr.actors) { o.bot = false; o.x = 0; o.z = 0.6; }
+      dr.halluT = step / 2; dr.actors[0].x = 30; dr.actors[0].z = 0;
+      S.tick(dr, step, still());
+      const live = dr.decoys.filter((d) => d.live), red = live.filter((d) => d.team === "red"), blue = live.filter((d) => d.team === "blue");
+      const pairs = red.length >= 2 && red.length <= 3 && blue.length === red.length && red.every((d) => blue.some((b) => Math.abs(b.x + d.x) < 0.6 && Math.abs(b.z + d.z) < 0.6));
+      const placed = live.every((d) => S.TEAMS.every((t) => Math.hypot(d.x - CK.stands[t].x, d.z - CK.stands[t].z) > C2.STAND_R + 2) && walk(d.x, d.z));
+      const d0 = red[0], toucher = dr.actors[0];
+      toucher.x = d0.x; toucher.z = d0.z; toucher.y = 0; toucher.grounded = true;
+      dr.eventCount = 0; S.tick(dr, step, still());
+      let glitched = false;
+      for (let i = 0; i < dr.eventCount; i++) if (dr.events[i].type === "glitch") glitched = true;
+      const touched = glitched && !d0.live && toucher.knock > 0 && !toucher.carrying && JSON.stringify(dr.flags) === real0;
+      for (let t = 0; t < C2.DECOY_S + 0.5; t += step) S.tick(dr, step, still());
+      const faded = dr.decoys.every((d) => !d.live) && JSON.stringify(dr.flags) === real0;
+      record("clanktown decoys: 2 or 3 of each side's block in turned pairs on open ground, away from the stands; a touch glitches one and staggers, the real blocks untouched; the rest fade",
+        pairs && placed && touched && faded, JSON.stringify({ red: red.length, blue: blue.length, pairs, placed, touched, faded }));
+      // Bots fall for decoys by skill: easy ones often, experts rarely.
+      const fooledBy = (skill) => { let n = 0, of = 0; for (let seed = 1; seed <= 30; seed++) { const r = calm(S.create({ map: "clank", seed, prep: 0, skill, size: 3 })); r.halluT = step / 2; S.tick(r, step, still()); for (const a of r.actors) if (a.bot) { of++; if (a.fooled >= 0) n++; } } return n / of; };
+      const rates = { easy: fooledBy("easy"), expert: fooledBy("expert") };
+      record("clanktown decoys: bots fall for them by skill, easy ones far more often than experts", rates.easy > 0.5 && rates.expert < 0.2 && rates.easy > rates.expert * 3, JSON.stringify(rates));
+      // The mirage: round the middle, the same for both sides; a bot taken in only changes where it runs.
+      const mirror = [[0, 4], [3, -7], [8.5, 1], [-12, 0], [5, 9]].every(([x, z]) => S.inMirage(x, z, CK) === S.inMirage(-x, -z, CK)) && S.inMirage(0, 3, CK) && !S.inMirage(0, 12, CK) && !S.inMirage(0, 3, S.ARENAS.fort);
+      const mr = calm(S.create({ map: "clank", seed: 4, prep: 0, skill: "easy" })), bot = mr.actors[1], real1 = JSON.stringify(mr.flags);
+      let taken = 0;
+      for (let k = 0; k < 40; k++) { bot.x = 0; bot.z = 3.5; bot.inMirage = false; bot.mirageCool = 0; bot.mirageT = 0; mr.time = 1; S.tick(mr, step, still()); if (bot.mirageT > 0) taken++; }
+      record("clanktown mirage: round the Mainframe, mirrored, none on other maps; an easy bot is taken in by phantoms there without touching a real block",
+        mirror && taken > 10 && JSON.stringify(mr.flags) === real1, JSON.stringify({ mirror, taken }));
+      // The phantoms are the page's own: the scene never writes the shared sim from the mirage.
+      const sceneSrc = await readFile(new URL("../src/js/scene-block.js", import.meta.url), "utf8"), mir = sceneSrc.slice(sceneSrc.indexOf("const poseMirage = "), sceneSrc.indexOf("// The gorillas follow the sim"));
+      record("clanktown mirage: phantoms and the drift live in the scene alone, gated on being inside the zone, and never write the shared sim",
+        mir.length > 500 && /SIM\.inMirage\(me\.x, me\.z\)/.test(mir) && !/\bsim\.[a-zA-Z]+(\[[^\]]+\])?(\.[a-zA-Z]+)?\s*=[^=]/.test(mir) && !/SIM\.(fire|drop|pass|tick|step|grab|escape)\(/.test(mir));
+      // The bots find the way: an attacker alone walks from its room, round the rival room to a side door, takes the
+      // block and brings it home, timing the firewall.
+      // (There is no 1v1: the smallest round is two a side, so its teammate and both rivals stand aside.)
+      const br = fresh({ size: 2 }), att = br.actors[0], aside = () => { for (const q of br.actors) if (q !== att) { q.x = 20 + q.id * 2; q.z = -36; q.vx = q.vz = 0; } };
+      att.bot = "auto"; for (const q of br.actors) if (q !== att) q.bot = false; aside();
+      let zaps = 0;
+      for (let t = 0; t < 150 && !br.score.blue; t += step) { S.tick(br, step, still()); aside(); for (let i = 0; i < br.eventCount; i++) if (br.events[i].type === "zap") zaps++; br.eventCount = 0; }
+      record("clanktown bots: an attacker walks round to the rival room's door, takes the block, brings it home and scores, timing the firewall", br.score.blue === 1 && zaps <= 1, JSON.stringify({ score: br.score, t: Math.round(br.time), zaps }));
+      // Live: the decoys ride the frame.
+      const lh = fresh({ size: 2 }), lm = L.seatMap(2, 0), buf = new DataView(new ArrayBuffer(W.FRAME_MAX));
+      Object.assign(lh.decoys[0], { live: true, team: "red", x: 5, z: 7 }); Object.assign(lh.decoys[4], { live: true, team: "blue", x: -5, z: -7 });
+      const fr2 = new DataView(buf.buffer.slice(0, L.encode(lh, lm, 1, 1, 1, buf))), guest = fresh({ size: 2 }), next = new Float64Array(16);
+      const okFrame = L.validFrame(fr2, guest, lm);
+      L.decode(fr2, guest, lm, next);
+      record("clanktown live: the decoys ride the host's frame, colour and place", okFrame && guest.decoys[0].live && guest.decoys[0].team === "red" && Math.abs(guest.decoys[0].x - 5) < 0.05 && guest.decoys[4].team === "blue" && !guest.decoys[1].live);
+      const tail = lh.hooks.length * 8 + lh.traps.length + lh.caches.length + lh.peels.length + lh.puddles.length + lh.powers.length * 2 + 1;
+      const waveAt = fr2.byteLength - tail - lh.decoys.length * 8 - 1;
+      const malformed = [[waveAt, 255], [waveAt + 1, 3], [waveAt + 8, 255]].map(([at, value]) => {
+        const bad = new DataView(fr2.buffer.slice(0)); bad.setUint8(at, value); return !L.validFrame(bad, guest, lm);
+      });
+      record("clanktown live: malformed wave timers, decoy teams and lifetimes are refused before decode", malformed.every(Boolean));
+      // A real client handover must keep live decoys and the next wave's timer, rather than expiring them on the first tick.
+      const ch = session(10, "clank"), cg = session(20, "clank"), cm = { ...match, map: W.MAPS.indexOf("clank"), tag: 701 };
+      ch.tell(cm); cg.tell(cm);
+      const hs = ch.seen.sim; hs.halluT = 12.5;
+      Object.assign(hs.decoys[0], { live: true, team: "red", x: 5, y: 0, z: 7, t: 4.2 });
+      ch.live.after(.2, still()); cg.frame(ch.bins.at(-1));
+      cg.tell({ ...cm, host: 20, epoch: 2 });
+      const gs = cg.seen.sim;
+      for (const a of gs.actors) a.bot = false;
+      for (const g of gs.gorillas) { g.state = 3; g.t = 100; }
+      const continued = cg.live.role === "host" && gs.decoys[0].live && gs.decoys[0].t === 4.2 && gs.halluT === 12.5;
+      S.tick(gs, step, still());
+      const held = gs.decoys[0].live && gs.decoys[0].t > 4.1 && gs.halluT > 12.4;
+      for (let t = 0; t < 4.3; t += step) S.tick(gs, step, still());
+      record("regression: Clanktown host migration preserves decoy lifetimes and the next wave, then expires them on schedule",
+        continued && held && !gs.decoys[0].live && gs.halluT > 8, JSON.stringify({continued, held, live:gs.decoys[0].live, next:gs.halluT}));
+      ch.live.dispose(); cg.live.dispose();
+      // Leave the rules pointed at Fort Chaos again, as the checks after this read `S.ARENA` before making their own round.
+      S.create({ map: "fort" });
     }
     const wentTo = []; L.openWatchDeck((scene, place) => wentTo.push(scene, place));
     const idle = session(50); idle.tell({ phase: "empty" }); idle.live.after(0.2, still());
@@ -7817,7 +7977,6 @@ const gameRulesChecks = async () => {
     const sim = S.create({ map: "fort", team: "blue", seed: 7, prep: 0 });
     for (const a of sim.actors) if (a.id) a.bot = false;
     // Still air, so nothing drifts.
-    Object.assign(sim.weather, { left: 1e9 });
     const me = sim.actors[0], put = (a, x, z) => { a.x = x; a.z = z; S.tick(sim, S.CONFIG.STEP, still); };
     const theirs = A.stands.red, mine = A.stands.blue;
     put(me, theirs.x, theirs.z);
@@ -7874,7 +8033,6 @@ const gameRulesChecks = async () => {
     // A pass: the carrier throws the block ahead and a teammate down the line catches it.
     const mate = sim.actors[1];
     S.reset(sim); sim.prep = 0;
-    Object.assign(sim.weather, { left: 1e9 });
     put(me, theirs.x, theirs.z);
     me.x = -16.5; me.z = 14; me.y = 0; mate.x = -16.5; mate.z = 24; mate.y = 0;
     const threw = S.pass(sim, 0, 0) && sim.flags.red.state === "flying";
@@ -8019,7 +8177,6 @@ const gameRulesChecks = async () => {
       for (const map of S.MAPS) {
         const r = S.create({ team: "blue", seed: 7, prep: 0, map });
         for (const a of r.actors) a.bot = false;
-        Object.assign(r.weather, { left: 1e9 });
         for (const g of r.gorillas) { g.state = 3; g.t = 1e9; }
         S.tick(r, S.CONFIG.STEP, still);
         const M = S.ARENA, f = r.flags.red, body = r.actors[0], count = roofStats[map] = { slabs: 0, caves: 0, under: 0, high: 0, fetch: 0 };
@@ -8132,7 +8289,6 @@ const gameRulesChecks = async () => {
       const r = S.create({ map: "fort", skill: "expert", prep: 0 }), bot = r.actors[1];
       for (const actor of r.actors) { actor.bot = false; actor.x = 18; actor.z = -35; }
       Object.assign(bot, { x: 0, z: 20, y: 0, bot: true });
-      Object.assign(r.weather, { left: 1e9 });
       const lifted = S.grab(r, bot.id, 0);
       Object.assign(r.flags.blue, { state: "dropped", x: 0, z: 20, y: 0, carrier: null });
       const advance = (seconds) => { for (let n = 0; n < Math.round(seconds / S.CONFIG.STEP); n++) S.tick(r, S.CONFIG.STEP, { ...still }); };
@@ -8147,7 +8303,6 @@ const gameRulesChecks = async () => {
       // still stands on the ground; both measured through the sim's own ticks.
       const jungle = S.create({ team: "blue", seed: 7, prep: 0, map: "jungle" });
       for (const a of jungle.actors) if (a.id) a.bot = false;
-      Object.assign(jungle.weather, { left: 1e9 });
       const tree = S.ARENA.decor.find((d) => d.kind === "canopy" && !d.middle), j = jungle.actors[0];
       for (const a of jungle.actors) if (a.id) { a.x = 20; a.z = a.team === "blue" ? 34 : -34; }
       Object.assign(j, { x: tree.x + 0.9, z: tree.z + 0.4, y: tree.y + S.LEAF_TOP + 3, vx: 0, vz: 0, vy: 0, grounded: false });
@@ -8167,7 +8322,7 @@ const gameRulesChecks = async () => {
       // the temple gate is walked through under the stone head, which is somewhere to stand; and the map keeps the
       // other maps' size, its four gorillas and a mirrored layout.
       const J = S.ARENAS.jungle, F = S.ARENAS.fort, idle = { x: 0, z: 0, sprint: 0, jump: 0, jet: 0, crouch: 0, face: 0 }, out = {};
-      const make = () => { const r = S.create({ seed: 5, prep: 0, map: "jungle" }); for (const o of r.actors) o.bot = false; Object.assign(r.weather, { left: 1e9 }); for (const g of r.gorillas) { g.x = g.wx = g.hx = 100; g.z = g.wz = g.hz = 100; g.state = 3; g.t = 1e9; } for (const k of r.crates) k.live = false; for (const t of r.traps) t.dark = 1e9; return r; };
+      const make = () => { const r = S.create({ seed: 5, prep: 0, map: "jungle" }); for (const o of r.actors) o.bot = false; for (const g of r.gorillas) { g.x = g.wx = g.hx = 100; g.z = g.wz = g.hz = 100; g.state = 3; g.t = 1e9; } for (const k of r.crates) k.live = false; for (const t of r.traps) t.dark = 1e9; return r; };
       const go = (r, secs, input = idle, until = () => false) => { for (let t = 0; t < secs && !until(); t += S.CONFIG.STEP) { S.tick(r, S.CONFIG.STEP, input); r.eventCount = 0; } };
       const high = J.caches[0][1];
       S.create({ map: "jungle" });
@@ -8261,7 +8416,6 @@ const gameRulesChecks = async () => {
     const piggy = () => {
       const r = S.create({ map: "fort", team: "blue", seed: 2, prep: 0, size: 3 });
       for (const b of r.actors) { b.x = 18; b.z = -35; b.bot = false; }
-      Object.assign(r.weather, { left: 1e9 });
       const run = (s, input = still) => { for (let n = 0; n < Math.round(s / S.CONFIG.STEP); n++) S.tick(r, S.CONFIG.STEP, { ...input }); };
       return { r, me: r.actors[0], b1: r.actors[1], b2: r.actors[2], run };
     };
@@ -8318,7 +8472,7 @@ const gameRulesChecks = async () => {
       // The floating island: its edges are open, an Ooga walking off falls, and one fallen all the way is back in its
       // own block zone; a block carried over the edge drops at the edge and goes home by itself; under the rim the
       // island's rock holds a body out, and the jetpack brings a thrown Ooga back over the edge, the visitor's or a bot's.
-      const fresh = (map = "fort") => { const r = S.create({ seed: 5, prep: 0, map }); for (const o of r.actors) o.bot = false; Object.assign(r.weather, { left: 1e9 }); for (const g of r.gorillas) { g.state = 3; g.t = 1e9; } return r; };
+      const fresh = (map = "fort") => { const r = S.create({ seed: 5, prep: 0, map }); for (const o of r.actors) o.bot = false; for (const g of r.gorillas) { g.state = 3; g.t = 1e9; } return r; };
       const run = (r, secs, input = still, until = () => false) => { for (let t = 0; t < secs && !until(); t += S.CONFIG.STEP) S.tick(r, S.CONFIG.STEP, input); };
       const rows = {};
       for (const map of S.MAPS) {
@@ -8467,7 +8621,7 @@ const gameRulesChecks = async () => {
         // Ooga Town: no building is a dead end. Each bank's front doors, back door and the hole in its side wall, and
         // each shop's front, back and side doors are open at walking height on both sides, with wall beside them;
         // every box of the town is named for the models; and a catapult's Ooga comes down on the hall's floor.
-        const fresh = () => { const r = S.create({ seed: 5, prep: 0, map: "town" }); for (const o of r.actors) o.bot = false; Object.assign(r.weather, { left: 1e9 }); for (const g of r.gorillas) { g.state = 3; g.t = 1e9; } for (const k of r.crates) k.live = false; return r; };
+        const fresh = () => { const r = S.create({ seed: 5, prep: 0, map: "town" }); for (const o of r.actors) o.bot = false; for (const g of r.gorillas) { g.state = 3; g.t = 1e9; } for (const k of r.crates) k.live = false; return r; };
         fresh();
         const T = S.ARENAS.town, open = (x, z) => !S.solidAt(x, 0.4, z) && !S.solidAt(x, 1.6, z);
         const town = { doors: true, walls: true };
@@ -8509,7 +8663,6 @@ const gameRulesChecks = async () => {
       const fresh = (map = "fort", seed = 5) => {
         const r = S.create({ seed, prep: 0, map });
         for (const o of r.actors) o.bot = false;
-        Object.assign(r.weather, { left: 1e9 });
         for (const g of r.gorillas) { g.x = g.wx = g.hx = 100; g.z = g.wz = g.hz = 100; g.state = 3; g.t = 1e9; }
         return r;
       };
@@ -8615,21 +8768,15 @@ const gameRulesChecks = async () => {
         ru.y = S.CONFIG.FALL_FLOOR - 1; ru.x = 40; ru.grounded = false; run(rg, S.CONFIG.STEP * 2);
         rows.spawnGuard = ru.guard > 0 && ru.guard <= 0.5;
       }
-      // Storm lightning warns a spot, then strikes whoever stays; a jungle puddle slips without dropping the block.
+      // A jungle puddle slips without dropping the block.
       {
-        const m = fresh(), u = m.actors[0], w = m.weather;
-        for (const k of m.crates) k.live = false;
-        Object.assign(u, { x: -17, z: 12 });
-        w.kind = "storm"; w.boltWarn = 0.5; w.boltX = u.x; w.boltZ = u.z;
-        run(m, 0.6);
-        rows.bolt = u.splat > 0 && u.boltCool > 0;
         const j = fresh("jungle"), ju = j.actors[0];
         for (const k of j.crates) k.live = false;
         const pu = j.puddles[0];
         Object.assign(ju, { x: pu.x, z: pu.z, y: 0, carrying: "red", grounded: true }); Object.assign(j.flags.red, { state: "carried", carrier: 0 });
         run(j, 0.1);
         rows.puddle = ju.slip > 0 && ju.carrying === "red" && pu.dark > 0;
-        rows.weatherMix = S.ARENAS.jungle.puddles.length >= 6;
+        rows.puddles = S.ARENAS.jungle.puddles.length >= 6;
       }
       // Regressions: a block behind solid can't be hooked (thin fence), and cover reached during the warning stops the yank.
       {
@@ -8650,19 +8797,12 @@ const gameRulesChecks = async () => {
         Object.assign(c2, { x: -18.8, z: 25.4 });
         run(f2, 0.5);
         rows.reachedCover = latched && c2.carrying === "blue" && f2.flags.blue.state === "carried";
-        // Live fees: only storm overrides a map's weather.
-        const fees = fresh(), liveTry = (v) => { S.setLive(fees, v); return fees.live; };
-        rows.feeClear = liveTry("clear") === null;
-        rows.feeCalm = liveTry("clear") === null;
-        // No wind: a body in the air over a storm drifts nowhere, and only clear and storm ever come up.
+        // No wind: a body in the air drifts nowhere.
         const calm = fresh(), cu = calm.actors[0];
         for (const k of calm.crates) k.live = false;
-        Object.assign(calm.weather, { kind: "storm", strength: 1 });
         Object.assign(cu, { x: 3, z: 3, y: 8, vx: 0, vz: 0, vy: 0, grounded: false, guard: 9 });
         run(calm, 0.4, still);
-        const kinds = new Set();
-        for (let n = 0; n < 40; n++) { calm.weather.left = 0; S.tick(calm, S.CONFIG.STEP, still); calm.eventCount = 0; kinds.add(calm.weather.kind); }
-        rows.noWind = cu.x === 3 && cu.z === 3 && S.CONFIG.WIND === undefined && [...kinds].every((k) => k === "clear" || k === "storm") && kinds.size === 2;
+        rows.noWind = cu.x === 3 && cu.z === 3 && S.CONFIG.WIND === undefined;
         // Haunted Hollow's graveyard gate is walked through under its arch, the iron fence either side of it is solid, and
         // the block zones are at the back; the map is the size of the others.
         const hg = fresh("haunted"), hu = hg.actors[0], hI = S.ARENAS.haunted;
@@ -8676,8 +8816,6 @@ const gameRulesChecks = async () => {
         const twn = S.ARENAS.town, frt = S.ARENAS.fort;
         rows.blockZones = twn.stands.blue.z === 32.2 && twn.stands.red.z === -32.2 && hI.goals.blue.z === 36 && hI.goals.red.z === -36;
         rows.hauntedSize = hI.fieldW === frt.fieldW && hI.fieldL === frt.fieldL && hI.W === frt.W && hI.L === frt.L;
-        rows.feeStorm = liveTry("storm") === "storm" && (() => { fees.weather.left = 0; S.tick(fees, S.CONFIG.STEP, still); return fees.weather.kind === "storm"; })();
-        rows.feeNone = liveTry(null) === null;
         // An open grave: fall in, one jump can't clear the rim, a double jump does, a block can't rest inside, and a
         // bot knocked in gets out on its own.
         const g = fresh("haunted"), gu = g.actors[0], I = S.ARENAS.haunted, [gx0, gx1, gz0, gz1] = I.graves[0], cx = (gx0 + gx1) / 2, cz = (gz0 + gz1) / 2;
@@ -8867,7 +9005,7 @@ const gameRulesChecks = async () => {
         // An expert carrying their block by the rivals' tower takes the zip home only with its own block home, and
         // drops that route the moment its block goes.
         const botAt = (ownAway) => {
-          const r = S.create({ seed: 5, prep: 0, map: "fort", skill: "expert" }); Object.assign(r.weather, { left: 1e9 }); for (const g of r.gorillas) { g.state = 3; g.t = 1e9; }
+          const r = S.create({ seed: 5, prep: 0, map: "fort", skill: "expert" }); for (const g of r.gorillas) { g.state = 3; g.t = 1e9; }
           for (const o of r.actors) if (o.id !== 1) { o.bot = false; o.y = -100; }
           const b = r.actors[1], L = S.ARENA.ladders.red; b.bot = true;
           Object.assign(b, { x: (L.zone[0] + L.zone[1]) / 2 - L.dx * 3, z: (L.zone[2] + L.zone[3]) / 2, y: 0, grounded: true, carrying: "red", guard: 99 }); Object.assign(r.flags.red, { state: "carried", carrier: 1 });
@@ -8885,7 +9023,7 @@ const gameRulesChecks = async () => {
         botLog = run(br, 6, still, () => bb.riding);
         zr.botDrops = chose && bb.route !== "zipHome" && !bb.riding && !botLog.ziptrap;
         // The event crosses the wire, an Ooga's own.
-        zr.wire = BL.blockLive.EVENT_TYPES.at(-1) === "ziptrap" && BL.blockLive.ACTOR_EVENTS.includes("ziptrap") && BL.blockWire.WIRE === 5;
+        zr.wire = BL.blockLive.EVENT_TYPES.includes("ziptrap") && BL.blockLive.ACTOR_EVENTS.includes("ziptrap") && BL.blockWire.WIRE === 7;
         record("block frenzy zipline trap: the rivals' line carries a rider whose own block is home and throws one whose block isn't off the island, a carried block going home with a fall; a rider already sliding rides on, your own line never springs, and expert bots only take the zip home with their block home",
           Object.values(zr).every(Boolean), JSON.stringify(zr));
       }
@@ -9002,7 +9140,7 @@ const gameRulesChecks = async () => {
       each("carrying", () => { me.carrying = sim.rival; }, () => { me.carrying = null; });
       each("holding", () => { me.holding = true; }, () => { me.holding = false; });
       each("splatted", () => { me.splat = 1; }, () => { me.splat = 0; });
-      for (const k of ["boots", "laser", "monkeys"]) each(k, () => { me[k] = 2.5; }, () => { me[k] = 0; });
+      for (const k of ["boots", "monkeys"]) each(k, () => { me[k] = 2.5; }, () => { me[k] = 0; });
       for (const k of ["halving", "cold"]) each(k, () => { sim[k][sim.team] = 3; }, () => { sim[k][sim.team] = 0; });
       me.boots = 2.5; changed(); me.boots = 2.1; const powerSecond = !changed(); me.boots = 1.9; const powerTick = changed(); me.boots = 0; changed();
       // Their power-ups are not on the visitor's strip.
@@ -9122,8 +9260,45 @@ const gameRulesChecks = async () => {
     // The jackpot wheel, from arcade-models.js and its scene half on the builders they load with: the house wins slowly, and every
     // wedge, from a turn at rest and one far round after many spins, stops under the clapper wherever in it the spin
     // aims, after its whole turns and less than one more.
-    for (const name of ["scene", "models", "blaze", "contributor-identities", "activity-repos", "jumbotron", "hub-models", "hockey-wire", "arcade-models", "haunt-models", "arcade-scene-models", "zipline-models", "zipline"]) runInNewContext(await readFile(new URL(`../src/js/${name}.js`, import.meta.url), "utf8"), context);
+    for (const name of ["scene", "models", "blaze", "contributor-identities", "activity-repos", "jumbotron", "hub-models", "hockey-wire", "arcade-models", "haunt-models", "ooga-portal-models", "ooga-portal", "arcade-block-watch", "arcade-scene-models", "zipline-models", "zipline"]) runInNewContext(await readFile(new URL(`../src/js/${name}.js`, import.meta.url), "utf8"), context);
     runInNewContext(await readFile(new URL("../src/js/arcade-games.js", import.meta.url), "utf8"), context);
+    // The Block Frenzy watch door: signed-in only, it opens Block Frenzy's watch deck, the real portal is crossed from the
+    // hall's side within the opening, and the door opens no new way out of the hall.
+    {
+      const W = BL.arcadeBlockWatch, D = W.DOOR, H = BL.arcadeModels.BLOCK_HALL;
+      const opened = [], sentGo = (id, place) => opened.push(id, place), savedLive = BL.blockLive; BL.blockLive = { openWatchDeck: (g) => { g("block", "watch-deck"); return true; } };
+      const left = W.goToWatchDeck(sentGo); BL.blockLive = savedLive;
+      const sb = await readFile(new URL("../src/js/scene-block.js", import.meta.url), "utf8");
+      const wayBack = sb.includes('go(home, doorVisit ? WIRE.DOOR_PLACE : undefined)') && sb.includes("go(home, WIRE.DOOR_FULL_PLACE)") && /watchVisit = ctx\.place === WIRE\.WATCH_DECK_PLACE;\s+if \(watchVisit\) showDeck\(\);/.test(sb) && W.PLACE === "block-watch" && W.PLACE_FULL === "block-watch-full";
+      const menu = { querySelector: () => ({}), addEventListener() {}, removeEventListener() {} };
+      context.document = context.document || { getElementById: () => menu }; context.matchMedia = context.matchMedia || (() => ({ matches: true }));
+      const gate = BL.oogaPortal.create({ radius: 1.6, outerRadius: 1.8, aperture: W.APERTURE, position: { x: D.plane, y: D.y + D.h / 2, z: D.z }, rotation: { x: Math.PI / 2, y: -Math.PI / 2, z: 0 }, receiving: true, reducedMotion: true, now: () => 0 });
+      gate.update();
+      const shown = gate.state === "ACTIVE" && gate.horizon.visible, trigger = W.atPortal(D.plane, D.z, D.y) && W.atPortal(D.plane + 0.02, D.z, D.y + 0.3) && !W.atPortal(D.plane - 0.2, D.z, D.y) && !W.atPortal(D.plane, D.z0 - 0.1, D.y) && !W.atPortal(D.plane, D.z, D.y + 1);
+      const R = 0.4, sees = (x, z, feet = D.y) => W.doorDepth(x, z, R, feet) < 0;
+      const reach = D.reach - R, rock = !sees(reach + 0.05, D.z), crosses = reach > D.plane && sees(reach - 0.01, D.z), onlyOpening = !sees(D.plane, D.z0 + R - 0.05) && !sees(D.plane, D.z1 - R + 0.05);
+      let seamless = true; for (let x = H.x1 - 2; x <= reach; x += 0.01) if (!sees(x, D.z)) seamless = false;
+      const levels = !sees(D.plane - 0.5, D.z, D.y - 1.5) && !sees(D.plane - 0.5, D.z, D.y + D.h + 0.1);
+      const clearDoor = D.z0 - 0.38 > BL.arcadeModels.BLOCK_HALL.pictures[3][0] + 0.91 && D.z1 + 0.38 < H.torches[3][1] - 0.07;
+      const back = W.ARRIVAL.x > H.x0 && W.ARRIVAL.x < D.plane - 1 && W.ARRIVAL.z === D.z;
+      record("arcade watch door: signed-in only, sends the viewer to the chairs and back in front of the door, the portal zone is the opening only, no new way out",
+        !W.mayWatch(null, false) && !!W.mayWatch({ id: 1 }, false) && !!W.mayWatch(null, true) && left === true && opened.join() === "block,watch-deck" && wayBack
+        && shown && trigger && rock && crosses && seamless && onlyOpening && levels && clearDoor && back,
+        JSON.stringify({ left, opened, wayBack, shown, trigger, rock, crosses, seamless, onlyOpening, levels, clearDoor, back }));
+      // The scene's own full-chairs answer and update bounce, run with a director that refuses `go` while the arrival fades in.
+      const fullAnswer = sb.match(/onChairsFull: (\(\) => \{.*\}) \}\);/)?.[1], bounceLine = sb.match(/^ {4}if \(chairsBounce\b.*$/m)?.[0];
+      if (!fullAnswer || !bounceLine) throw Error("block chairs bounce anchors missing");
+      let busy = true; const goes = [];
+      const visit = new Function("go", "WIRE", `let chairsFull = false, doorVisit = true, chairsBounce = false; const home = "arcade", round = null, onDeck = () => true, showBoard = () => {}, renderLive = () => {};
+        const onChairsFull = ${fullAnswer}; const update = () => { ${bounceLine} return "frame"; };
+        return { onChairsFull, update, pending: () => chairsBounce };`)((id, place) => { goes.push(id, place); return !busy; }, BL.blockWire);
+      visit.onChairsFull();
+      const refused = visit.update() === "frame" && visit.update() === "frame" && visit.pending() && goes.length === 4;
+      busy = false;
+      const bounced = visit.update() === undefined && !visit.pending() && goes.slice(-2).join() === "arcade,block-watch-full", once = visit.update() === "frame" && goes.length === 6;
+      record("regression: full chairs answered while the arrival still fades in keep the bounce pending until the director takes `go`, then send the viewer back to the door once",
+        refused && bounced && once, JSON.stringify({ refused, bounced, once, goes }));
+    }
     // Solo smash assistance must never send an out-of-bounds authoritative frame at a rail.
     const soloAim={x:1}, solo=BL.arcadeGames.airHockey({node:BL.scene.createNode(),aim:soloAim,onEnd(){},burst(){}});
     solo.shared(true);solo.multiplayer(false);solo.start();let soloInvalid=0,soloEdge=false;
@@ -12934,7 +13109,7 @@ const blockWalk = { name: "block walk", why: "rule: W A S D move the visitor's O
   const rows = {};
   for (const k of "wsadqe") {
     // The map's own gorillas, trap and peels stand round this spot: they would drag or trip the Ooga being measured.
-    await b.evaluate(`(() => { const B = window.__ooga, s = B.block.sim, a = s.actors[0]; s.prep = 0; a.flight = 0; a.y = 0; a.vy = 0; a.grounded = true; Object.assign(s.weather, { left: 1e9 }); a.x = -14; a.z = 2; a.vx = a.vz = 0; for (const o of s.actors) if (o.id) { o.x = 20; o.z = o.team === s.team ? 30 : -30; } for (const g of s.gorillas) { g.x = g.wx = g.hx = 34; g.z = g.wz = g.hz = 34; g.holding = -1; } for (const h of [...s.peels, ...s.traps]) { h.walkX ??= h.x; h.walkZ ??= h.z; h.x = h.z = 999; } B.advance(0.6, 1 / 60); const c = B.camera, vx = c.target.x - c.position.x, vz = c.target.z - c.position.z, l = Math.hypot(vx, vz); window.__walk = { fx: vx / l, fz: vz / l, x0: a.x, z0: a.z }; })()`);
+    await b.evaluate(`(() => { const B = window.__ooga, s = B.block.sim, a = s.actors[0]; s.prep = 0; a.flight = 0; a.y = 0; a.vy = 0; a.grounded = true; a.x = -14; a.z = 2; a.vx = a.vz = 0; for (const o of s.actors) if (o.id) { o.x = 20; o.z = o.team === s.team ? 30 : -30; } for (const g of s.gorillas) { g.x = g.wx = g.hx = 34; g.z = g.wz = g.hz = 34; g.holding = -1; } for (const h of [...s.peels, ...s.traps]) { h.walkX ??= h.x; h.walkZ ??= h.z; h.x = h.z = 999; } B.advance(0.6, 1 / 60); const c = B.camera, vx = c.target.x - c.position.x, vz = c.target.z - c.position.z, l = Math.hypot(vx, vz); window.__walk = { fx: vx / l, fz: vz / l, x0: a.x, z0: a.z }; })()`);
     await holdKey(b, k, 0.5);
     rows[k] = await b.evaluate(`(() => { const q = window.__walk, a = window.__ooga.block.sim.actors[0], c = window.__ooga.camera, dx = a.x - q.x0, dz = a.z - q.z0, vx = c.target.x - c.position.x, vz = c.target.z - c.position.z, l = Math.hypot(vx, vz); return { fwd: +(dx * q.fx + dz * q.fz).toFixed(2), side: +(dx * -q.fz + dz * q.fx).toFixed(2), turn: +((vx / l) * -q.fz + (vz / l) * q.fx).toFixed(2) }; })()`);
   }
@@ -12974,6 +13149,34 @@ const blockQuiz = { name: "block quiz", why: "rule: a quiz trap holds the visito
 const blockRun = `(() => { const B = window.__ooga, D = B.block; D.start(); for (let i = 0; i < 80 && D.phase === "play"; i++) D.simulate(15, true); B.advance(0.3, 1 / 30); const save = B.game.state.block, card = document.getElementById("block-results"), w = D.sim.winner;
   const trophy = card.dataset.team === w && document.getElementById("block-result-title").textContent === (w === "blue" ? "Blue" : "Red") + " wins!" && document.querySelectorAll("#block-side-blue li, #block-side-red li").length === D.sim.actors.length && card.querySelector('[data-team="' + w + '"].won') !== null;
   return { ok: D.phase === "results" && !card.hidden && trophy && save.games === 1 && save.wins === (D.result.won ? 1 : 0), phase: D.phase, result: D.result, save, trophy }; })()`;
+const blockMirage = { name: "block clank mirage", why: "regression: phantom carriers copied a rival's firing pose and held a block above the modelled hands", run: async b => {
+  if (await b.evaluate(`!document.querySelector('[data-intro="block"]').hidden`)) await b.key(" ");
+  const proof = await b.evaluate(`(() => {
+    const D = __ooga.block, S = BL.scenes.block, update = S.update;
+    S.update = () => {};
+    try {
+      D.showBoard(); document.querySelector('#block-board [data-map="clank"]').click(); D.start(567); D.sim.prep = 0;
+      for (const a of D.sim.actors) { a.bot = false; a.guard = 30; }
+      for (const g of D.sim.gorillas) { g.state = 3; g.t = 100; }
+      Object.assign(D.sim.actors[0], { x: 5, z: 2, y: 0, flight: 0, grounded: true }); D.sim.time = 1;
+      update(0, 1); BL.scene.updateWorld(S.root);
+      const rivals = D.actors.filter((a, i) => D.sim.actors[i].team !== D.sim.team);
+      const overlay = !document.getElementById("block-mirage").hidden;
+      const phantoms = D.clank.phantoms.map((p, k) => {
+        const a = rivals[k % rivals.length], hands = p.list.filter(n => n.geometry === a.cave.parts.fingersR.geometry || n.geometry === a.cave.parts.fingersL.geometry), visible = [];
+        BL.scene.traverseVisible(p.root, n => visible.push(n));
+        return { hands: hands.length, gap: hands.length ? Math.abs(p.block.world[13] - .48 - hands.reduce((v, n) => v + n.world[13], 0) / hands.length) : 99,
+          gun: visible.some(n => n.geometry === a.gun.geometry || n.geometry === a.gunL.geometry) };
+      });
+      Object.assign(D.sim.actors[0], { x: 20, z: 4 }); update(0, 2);
+      const cleared = document.getElementById("block-mirage").hidden && D.clank.phantoms.every(p => !p.root.visible);
+      D.showBoard(); document.querySelector('#block-board [data-map="town"]').click(); update(0, 3);
+      return { overlay, phantoms, cleared, switched: D.sim.map === "town" && !D.clank && document.getElementById("block-mirage").hidden };
+    } finally { S.update = update; D.showBoard(); }
+  })()`);
+  record("block mirage: phantom carriers hold the block on both modelled fists without a gun, and the effect clears outside the zone and on another map",
+    proof.overlay && proof.phantoms.length === 3 && proof.phantoms.every(p => p.hands === 2 && p.gap < .03 && !p.gun) && proof.cleared && proof.switched, JSON.stringify(proof));
+} };
 const blockPoses = { name: "block modelled poses", why: "regression: old straight-arm weapon offsets missed the modelled fists and the trophy block floated above slim Oogas", run: async b => {
   const rows = await b.evaluate(`(() => {
     const B = __ooga, D = B.block, S = BL.scenes.block, rows = [], update = S.update;
@@ -13033,7 +13236,7 @@ const blockThrowScore = { name: "block throw scoring controls", why: "rule: keyb
         const D = __ooga.block, S = BL.blockSim;
         D.showBoard(); document.querySelector('#block-board [data-map="town"]').click(); D.selection.rule = "home"; D.chooseTeam(${JSON.stringify(name === "tiffanyvarty" ? "red" : "blue")}); D.chooseOoga(${JSON.stringify(name)}); D.chooseOoga(${JSON.stringify(name)}); D.start(583);
         const sim = D.sim, a = sim.actors[0], stand = S.ARENA.stands[a.team], sign = a.team === "blue" ? 1 : -1, other = S.other(a.team);
-        sim.prep = 0; sim.anyTime = ${mode === "any"}; sim.weather.left = 1e9;
+        sim.prep = 0; sim.anyTime = ${mode === "any"};
         for (const p of sim.actors) Object.assign(p, { bot: false, flight: 0, x: 18, z: p.id * 3, y: 0, grounded: true, guard: 60 });
         for (const g of sim.gorillas) { g.state = 3; g.t = 1e9; }
         Object.assign(a, { x: stand.x, z: stand.z - sign * 13.7, vx: 0, vz: 0, y: 0, vy: 0, carrying: other });
@@ -13066,7 +13269,6 @@ const blockRoofs = { name: "block roof presentation", why: "regression: a loose 
         D.showBoard(); document.querySelector('#block-board [data-map="' + map + '"]').click(); D.chooseTeam("blue"); D.chooseOoga(name); D.chooseOoga(name); D.start(602); D.sim.prep = 0;
         const sim = D.sim, body = sim.actors[0], f = sim.flags.red;
         for (const a of sim.actors) Object.assign(a, { bot: false, flight: 0, x: 0.25 + a.id, z: S.ARENA.spawnZ, y: 0, grounded: true, guard: 60 });
-        sim.weather.left = 1e9;
         for (const g of sim.gorillas) { g.state = 3; g.t = 1e9; }
         const roof = S.ARENA.BLOCKS.find(b => surface === "cave"
           ? S.ARENA.rockKind.get(b) === "cave" && b[5] > 0 && b[1] - b[0] >= 1 && b[3] - b[2] >= 1 && S.groundAt((b[0] + b[1]) / 2,(b[2] + b[3]) / 2, 99, 0.2) === b[4]
@@ -14219,6 +14421,59 @@ const TOUR_ENDED = `(() => {
   B.advance(0.5, 1 / 60);
   return { ended, walked: +Math.hypot(body.root.position.x - f.x, body.root.position.z - f.z).toFixed(3) };
 })()`;
+const hubSharedGuide = { name: "hub shared guide", why: "rule: visitors opt into Tess's queue, accept their turn, keep conversations private and retain their own camera while another visitor uses the guide", run: async b => {
+  const result = await b.evaluate(`(() => {
+    const N=BL.net,G=BL.scenes.hub.debug.tess,s=G.state,camera=__ooga.camera;
+    const saved={me:N.state.me,room:N.state.room,connectionToken:N.state.connectionToken,tessShared:N.state.tessShared,tessGuide:N.state.tessGuide},send=N.sendTess,calls=[];
+    const visitKey="ooga-tess-visits",savedVisits=localStorage.getItem(visitKey);
+    let elapsed=0;const step=(n=1)=>{for(let i=0;i<n;i++){elapsed+=1/30;G.update(1/30,elapsed);}};
+    const receive=(phase,position=0,token="")=>{N.state.tessGuide={phase,position,token,count:position?2:0,until:N.serverNow()+60000,busy:phase==="wait"||phase==="active",pose:null};step();};
+    const view=()=>JSON.stringify([camera.position,camera.target]);
+    try {
+      localStorage.setItem(visitKey,"{}");
+      N.sendTess=m=>{calls.push(JSON.parse(JSON.stringify(m)));return true;};
+      Object.assign(N.state,{me:{id:901,login:"queue-fixture"},room:"live",connectionToken:"queue-fixture",tessShared:true,tessGuide:null});
+      receive("none");G.tap();step();
+      const panel=document.querySelector(".greeter-menu"),go=panel.querySelector(".greeter-row button:first-child"),skip=panel.querySelector(".greeter-row button:last-child");
+      const optIn=!panel.hidden&&go.textContent==="Join queue"&&!calls.some(m=>m.op==="join");
+      const fits=()=>{const r=panel.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth+1&&r.top>=0&&r.bottom<=innerHeight+1;};
+      let contained=fits();
+      N.state.tessGuide={...N.state.tessGuide,count:32};step();
+      const full=go.disabled&&panel.textContent.includes("queue is full");
+      const announced=panel.querySelector(".greeter-menu-help").getAttribute("aria-live")==="polite";
+      receive("none");
+      go.click();const joined=calls.at(-1).op==="join";
+      receive("wait",2,"mine");const before=view();
+      N.state.tessGuide.pose=[3,2,4,1,0,0,0,0,0,0,0,0];step(60);
+      const observer=before===view()&&!s.holding&&go.hidden&&panel.textContent.includes("2 of 2")&&Math.hypot(G.root.position.x-3,G.root.position.y-2,G.root.position.z-4)<.01;
+      receive("ready",1,"mine");contained&&=fits();const ready=go.textContent==="Talk to Tess"&&!go.hidden&&!s.holding;
+      go.click();const accepted=calls.at(-1).op==="accept"&&calls.at(-1).token==="mine";
+      receive("active",1,"mine");for(let i=0;i<450&&s.phase!=="offer";i++)step();
+      contained&&=fits();const offered=s.phase==="offer"&&!panel.querySelector("form").hidden;
+      const unreadNews=s.kind==="news"&&s.newest.line===BL.hubGuide.NEWS[0].line&&s.legs.length>0&&!JSON.parse(localStorage.getItem(visitKey))["queue-fixture"];
+      const field=panel.querySelector("input");field.value="How do I donate?";panel.querySelector("form").requestSubmit();step();
+      const privateReply=String(JSON.stringify(G.speech?.beats)).includes("Feed the Oogas")&&calls.every(m=>!["question","say","answer"].some(k=>k in m));
+      const boundedWire=calls.filter(m=>m.op==="pose").length>0&&calls.every(m=>JSON.stringify({t:"tess-guide",...m}).length<=256);
+      go.click();step();const touring=s.holding;
+      const newsRecorded=JSON.parse(localStorage.getItem(visitKey))["queue-fixture"]?.line===BL.hubGuide.NEWS[0].line;
+      N.state.room="connecting";N.state.tessGuide=null;step();
+      const disconnected=!s.holding&&!G.speech&&go.disabled&&panel.textContent.includes("15 seconds");
+      N.state.room="live";N.state.connectionToken="reconnected";receive("wait",2,"mine");skip.click();
+      const cancelled=calls.at(-1).op==="cancel"&&panel.hidden;
+      // Leaving the shared feature during a tour must return the pilot, not leave a hidden guide holding it.
+      let availabilityReleased=true;
+      for(const reason of ["signout","feature"]){
+        N.state.me={id:901,login:"queue-fixture"};N.state.tessShared=true;
+        receive("active",1,reason);for(let i=0;i<450&&s.phase!=="offer";i++)step();
+        go.click();step();const held=s.holding;
+        if(reason==="signout")N.state.me=null;else N.state.tessShared=false;
+        step();availabilityReleased&&=held&&!s.holding&&!G.speech&&!document.body.classList.contains("tess-touring");
+      }
+      return {optIn,full,announced,contained,joined,observer,ready,accepted,offered,unreadNews,newsRecorded,privateReply,boundedWire,touring,disconnected,cancelled,availabilityReleased};
+    } finally {if(savedVisits===null)localStorage.removeItem(visitKey);else localStorage.setItem(visitKey,savedVisits);Object.assign(N.state,saved);N.sendTess=send;step();}
+  })()`);
+  record("hub shared guide: explicit join/accept, queue position, private answers, observer camera independence, disconnect release and cancellation",Object.values(result).every(Boolean),JSON.stringify(result));
+} };
 const hubGuide = { name: "hub guide", why: "regression: Tess's offer showed only its first speech bubble, she stopped shots aimed past her, an Ooga walking or flying as her tour began went on through it, and T before or during her tour let the gorilla and tour share control", run: async (b) => {
   const guide = await b.evaluate(`(() => {
     const B = __ooga, P = B.pilot, a = B.cavemen.get("portlandhodl"), G = BL.scenes.hub.debug.tess, s = G.state;
@@ -20233,6 +20488,16 @@ const arcadeBlockHall = { name: "arcade block hall", why: "rule: an Ooga walks t
     return { ok, z, past, wall: B.arcade.walkable(H.x, -28, H.x0 - 0.3, -28, H.y, actor.bodyHeight, actor) };
   })()`);
   record("arcade block hall: walkable from the deck to the ledge, held by its railing and walls", r.ok && !r.past && !r.wall, JSON.stringify(r));
+  const doorway = await b.evaluate(`(() => {
+    const B = __ooga, W = BL.arcadeBlockWatch, D = W.DOOR;
+    return ['w-s-bitcoin', 'tiffanyvarty', 'portlandhodl'].map(name => {
+      const a = BL.models.caveman(BL.contributors.traitsFor(name)); a.bodyHeight = BL.crew.bodyHeightOf(a); a.bodyRadius = BL.crew.bodyRadiusOf(a); let x = W.ARRIVAL.x, clear = true;
+      while (x < D.plane) { const nx = Math.min(D.plane, x + .025); clear = clear && B.arcade.walkable(x, D.z, nx, D.z, D.y, a.bodyHeight, a); x = nx; }
+      return { name, clear, floor: B.arcade.supportAt(x, D.z, D.y) === D.y, bounded: !B.arcade.walkable(x, D.z, D.reach + .5, D.z, D.y, a.bodyHeight, a), entered: W.atPortal(x, D.z, D.y), height: a.bodyHeight, aperture: D.h };
+    });
+  })()`);
+  record("arcade watch doorway: regular, slim and broad modelled Oogas reach the portal on its floor while the wall beyond remains solid",
+    doorway.every(r => r.clear && r.bounded && r.entered && r.floor && r.height < r.aperture), JSON.stringify(doorway));
 } };
 const arcadeStage = { name: "arcade stage approaches", why: "regression: oversized decorative root collision boxes blocked walking onto the central stage from its sides and back", run: async (b) => {
   const r = await b.evaluate(`(() => {
@@ -24911,7 +25176,8 @@ scene("race", { label:"optional rig link fallback",url:hubPage(src, "scene=hub")
 }}]});
 scene("race", { query: "rain=0&draw=0", steps: [raceStart, raceOwn, raceBench, { name: "race tracks", why: "regression: the 12-slot grid spawned a free banana on Banana Bay", run: async (b) => { await b.evaluate(`window.__ooga.race.toGarage()`); await raceTracks[1](b); } }, raceRigs, raceRigContext, racePause, play("race", "a whole cup under the autopilot: one drawn field of fifteen runs every race and finishes in order, the cup medal and every track's best are saved", cupRun), raceMirror, raceAgain, trip("race")] });
 scene("drop", { steps: [dropStart, dropSteering, play("drop", "a jump lands on the target, scores its own medal and is saved as the best", dropRun), dropCrash, trip("drop"), dropOwn] });
-scene("block", { steps: [blockStart, blockWalk, blockQuiz, play("block", "a round on autopilot reaches three captures, shows its results and saves the round", blockRun), blockPoses, blockRoofs, blockThrowScore, blockZipline, trip("block")] });
+
+scene("block", { steps: [blockStart, blockWalk, blockQuiz, play("block", "a round on autopilot reaches three captures, shows its results and saves the round", blockRun), blockPoses, blockMirage, blockRoofs, blockThrowScore, blockZipline, trip("block")] });
 scene("orbit", { steps: [{ name: "orbit flow", why: "regression: the spacewalk air bonus was missing from the flight log", run: orbitFlow }, orbitSteering, orbitMissed, orbitEscape, trip("orbit"), orbitOwn] });
 scene("mine", { steps: [mineResume, trip("mine"), mineControls, mineOwn] });
 // ---- The Lightning Jet Hangar ----
@@ -25396,7 +25662,8 @@ scene("poker", { opts: PHONE_SIZE, steps: [phone("poker", { card: '[data-intro="
 scene("hub", { label: "gorilla population restoration", query: "status=clankin", exclusive: true, opts: { motion: true }, steps: [hubGorillaPopulation] });
 scene("hub", { label: "weapons", query: "ooga=portlandhodl:clank:lab,obl,lf&character=portlandhodl&weapon=2&mag=1&ammo=6&jetpack=1&gorillarage=1", steps: [hubCombatGate, ...[hubAk, hubMelee, hubJetpack].map(gameCombat)] });
 // Her greeting comes once a page, to a fresh landing nothing has moved, so the guide has its own page.
-scene("hub", { label: "guide", query: "ooga=portlandhodl:clank:lab,obl,lf&character=portlandhodl&jetpack=1", steps: [hubGuide, hubAsk, hubTourInput] });
+scene("hub", { label: "guide", query: "ooga=portlandhodl:clank:lab,obl,lf&character=portlandhodl&jetpack=1", steps: [hubGuide, hubAsk, hubTourInput, hubSharedGuide] });
+scene("hub", { label: "shared guide phone", opts: { w: 390, h: 844, mobile: true }, query: "ooga=portlandhodl:clank:lab,obl,lf&character=portlandhodl&jetpack=1", steps: [hubSharedGuide] });
 // Native pointer-lock assertions need sole focus; another browser lane can
 // steal capture and spend this long scenario's deadline waiting for it back.
 scene("hub", { label: "birds-eye combat", query: "solo=1&character=portlandhodl&weapon=1&mode=shoulder&combat=1&birdseye=1", exclusive: true, steps: [hubBirdsEye] });
@@ -26025,7 +26292,7 @@ scene("block", { label: "block phone", opts: PHONE_SIZE, steps: [phone("block", 
   name: "block phone actions and results", why: "regression: Throw overlapped Jump and the sticks, and small results cards clipped names and action labels", run: async b => {
     if (await b.evaluate(`!document.querySelector('[data-intro="block"]').hidden`)) await b.key(" ");
     const rows = [];
-    for (const [map, flightX, flightZ] of [["town", 0, 6], ["jungle", 18, 0], ["haunted", 20, 0]]) for (const [width, height] of [[390,844],[844,390],[320,568]]) {
+    for (const [map, flightX, flightZ] of [["town", 0, 6], ["jungle", 18, 0], ["haunted", 20, 0], ["clank", 20, 0]]) for (const [width, height] of [[390,844],[844,390],[320,568]]) {
       await b.send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: true });
       await b.sleep(100);
       await b.evaluate(`__ooga.block.showBoard();document.querySelector('#block-board [data-map="${map}"]').click();new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))`);
@@ -26059,7 +26326,7 @@ scene("block", { label: "block phone", opts: PHONE_SIZE, steps: [phone("block", 
     }
     record("block phone: portrait, landscape and narrow screens keep the controls reachable, real Throw taps fire, held Jump climbs with flame and fuel use, release/cancel cuts thrust, and the results names and actions fit", rows.every(r => r.bad ? !r.bad.length : r.fired), JSON.stringify(rows));
   }
-}, blockThrowScore] });
+}, blockThrowScore, blockMirage] });
 scene("orbit", { query: "pos=0", opts: PHONE_SIZE, steps: [phone("orbit", { card: '[data-intro="orbit"]', play: "window.__ooga.orbit.launch()", required: ["#joy-move", "#act", "#leave-hud"] })] });
 scene("mine", { query: "pos=0", opts: PHONE_SIZE, steps: [phone("mine", { card: "#mine-intro", required: ["#joy-move", "#joy-look", "#act", "#mine-view-btn", "#mine-pause-btn", "#environment-sound", "#leave-hud"] })] });
 scene("factory", { query: "pos=0&character=portlandhodl", opts: PHONE_SIZE, steps: [phone("factory", { required: ["#joy-move", "#joy-look", "#leave-hud"] }), factoryGreeter] });
@@ -27032,6 +27299,43 @@ const tessAnswerChecks = (BL) => {
   const lines = cases.flatMap(([q]) => (H.answer(q) || { lines: [] }).lines).every((id) => typeof H.LINES[id] === "string");
   record("tess answers: the page sends a typed question to a trip, an answer, the tour or nothing, follows \"take me there\" to the last place, leaves other follow-ups and Bitcoin questions that name a place's idea to the Worker, and answers every suggestion",
     !wrong.length && there === "trip:lab" && followUp === "none" && suggested && lines, JSON.stringify({ wrong, there, followUp, suggested, lines }));
+};
+// Shared Tess (#466) in Node: the real island guide under a stubbed room, its queue turns handed over as the Room
+// sends them. Under the shared guide her greeting offers Join queue, so news must come with the granted turn.
+const sharedTessNewsChecks = (BL) => {
+  const H = BL.hubGuide, N = BL.net, store = new Map(), visitKey = "ooga-tess-visits";
+  const savedStorage = globalThis.localStorage, savedState = { me: N.state.me, room: N.state.room, connectionToken: N.state.connectionToken, tessShared: N.state.tessShared, tessGuide: N.state.tessGuide }, savedSend = N.sendTess;
+  globalThis.localStorage = { getItem: (k) => store.has(k) ? store.get(k) : null, setItem: (k, v) => store.set(k, String(v)), removeItem: (k) => store.delete(k) };
+  const size = { innerWidth: globalThis.innerWidth, innerHeight: globalThis.innerHeight };
+  Object.assign(globalThis, { innerWidth: 1280, innerHeight: 800 });
+  const calls = [], seen = () => JSON.parse(store.get(visitKey) || "{}")["news-fixture"] || null;
+  N.sendTess = (m) => { calls.push({ ...m, a: m.a?.slice() }); return true; };
+  const v = (x, y, z) => ({ x, y, z });
+  const guide = H.create({ parent: BL.scene.createNode(), input: { add() {}, remove() {} }, fx: new Proxy({}, { get: () => () => {} }), camera: { position: v(0, 4, -12), target: v(0, 2, 0), fov: 1 },
+    pilot: { controls: { moving: () => false } }, visitor: () => null, world: {}, hud: {}, busy: () => false, coarse: false, quality: () => 1, landing: true });
+  const s = guide.state, turn = (token) => { N.state.tessGuide = { phase: "active", position: 0, token, count: 1, until: N.serverNow() + 60000, busy: true, pose: null }; guide.update(0.016, 1); };
+  try {
+    Object.assign(N.state, { me: { id: 902, login: "news-fixture", display: "News Fixture" }, room: "live", connectionToken: "news-fixture", tessShared: true, tessGuide: null });
+    // Before a turn her greeting only offers Join queue and reads no news as seen.
+    for (let i = 0; i < 400; i++) guide.update(0.016, i * 0.016);
+    const waitingUnread = s.kind !== "news" && seen() === null;
+    // A granted turn with unread news offers that news first, from the newest entry, and still leaves it unread.
+    turn("turn-1");
+    const offered = s.kind === "news" && s.newest?.line === H.NEWS[0].line && s.legs.length > 0 && s.login === "news-fixture" && /^Welcome back, News Fixture!/.test(s.welcome || "") && s.phase === "approach" && seen() === null;
+    // Not now on that offer records it as seen.
+    s.phase = "offer"; guide.escape();
+    const recorded = seen()?.line === H.NEWS[0].line && calls.some(m => m.op === "cancel");
+    // The next granted turn, nothing new: the island tour with no welcome.
+    turn("turn-2");
+    const toured = s.kind === "island" && s.welcome === null && s.login === null && s.phase === "approach";
+    record("shared Tess news (#466): a signed-in visitor's granted turn offers unread island news first and Not now records it as seen; waiting reads nothing, and with nothing new the turn offers the island tour",
+      waitingUnread && offered && recorded && toured, JSON.stringify({ waitingUnread, offered, recorded, toured, kind: s.kind, phase: s.phase }));
+    const poses = calls.filter(m => m.op === "pose");
+    record("shared Tess privacy: without a driven Ooga, the visual pose does not publish the private camera as a look target",
+      poses.length > 0 && poses.every(m => m.a[10] === 0 && m.a.slice(7, 10).some((n, i) => n !== [0, 4, -12][i])), JSON.stringify(poses));
+  } finally {
+    guide.dispose(); globalThis.localStorage = savedStorage; Object.assign(N.state, savedState); N.sendTess = savedSend; Object.assign(globalThis, size);
+  }
 };
 // The Lightning Factory in Node: the feed's two contracts, the demo node that stands in for a real one, and the
 // walkable floor of the hall, each through the module's own functions.
@@ -32079,10 +32383,10 @@ const studioCatalogueProof = async () => {
 // Exercise the shipped voice lifecycle with deferred permissions/signaling and no real devices/network.
 const studioVoiceLifecycleProof = async () => {
   const source=await readFile(join(root,"src/js/voice.js"),"utf8");
-  const fixture=(gathering="complete",candidate=true,failFirstPeer=false)=>{
+  const fixture=(gathering="complete",candidate=true,failFirstPeer=false,voiceTurn=false)=>{
     const calls=[],streams=[],peers=[],elements=[],timers=new Map();let timerId=0,gum=0,permission=null,publishResponse=null,deferred=null,peerAttempts=0;
     class Peer {
-      constructor(){if(++peerAttempts===1&&failFirstPeer)throw Error("probe construction failed");peers.push(this);this.connectionState="connected";this.iceGatheringState=gathering;this.localDescription=null;this.handlers=new Map();}
+      constructor(config){this.config=config;if(++peerAttempts===1&&failFirstPeer)throw Error("probe construction failed");peers.push(this);this.connectionState="connected";this.iceGatheringState=gathering;this.localDescription=null;this.handlers=new Map();}
       addEventListener(k,fn){this.handlers.set(k,fn);}
       removeEventListener(k){this.handlers.delete(k);}
       addTransceiver(track){this.track=track;return {mid:"0"};}
@@ -32090,11 +32394,12 @@ const studioVoiceLifecycleProof = async () => {
       setLocalDescription(d){this.localDescription=d;return Promise.resolve();}
       setRemoteDescription(){return Promise.resolve();}
       getTransceivers(){return [];}
+      setConfiguration(config){this.config=config;}
       close(){this.connectionState="closed";}
     }
     class Sound {constructor(){this.pending=[];elements.push(this);}play(){return new Promise((resolve,reject)=>this.pending.push({resolve,reject}));}pause(){this.pauses=(this.pauses||0)+1;}}
     const makeStream=()=>{const track={enabled:true,stops:0,stop(){this.stops++;}},stream={track,getTracks:()=>[track],getAudioTracks:()=>[track]};streams.push(stream);return stream;};
-    const win={BL:{net:{state:{connectionToken:"synthetic",me:{id:900,login:"listener"}},remotes:new Map(),voiceLink:()=>"none",subscribe:()=>()=>{},setMuted:on=>calls.push({op:"mute",on})}},setTimeout:fn=>{timers.set(++timerId,fn);return timerId;},clearTimeout:id=>timers.delete(id),setInterval:fn=>{timers.set(++timerId,fn);return timerId;},clearInterval:id=>timers.delete(id)};
+    const win={BL:{net:{state:{voiceTurn,connectionToken:"synthetic",me:{id:900,login:"listener"}},remotes:new Map(),voiceLink:()=>"none",subscribe:()=>()=>{},setMuted:on=>calls.push({op:"mute",on})}},setTimeout:(fn,delay)=>{timers.set(++timerId,{fn,delay});return timerId;},clearTimeout:id=>timers.delete(id),setInterval:fn=>{timers.set(++timerId,fn);return timerId;},clearInterval:id=>timers.delete(id)};
     const context={window:win,document:{createElement:()=>({})},localStorage:{getItem:()=>null,setItem(){}},AbortController,RTCPeerConnection:Peer,Audio:Sound,MediaStream:class {constructor(tracks){this.tracks=tracks;}getTracks(){return this.tracks;}},navigator:{mediaDevices:{enumerateDevices:async()=>[{kind:"audioinput",deviceId:"synthetic-mic",label:"Synthetic mic"},{kind:"videoinput",deviceId:"camera",label:"Camera"}],getUserMedia:constraints=>{gum++;calls.push({op:"capture",constraints});return permission||Promise.resolve(makeStream());}}},
       fetch:async(url,options)=>{const op=url.split("/").at(-1);calls.push({op,body:JSON.parse(options.body)});if(deferred?.op===op)return deferred.promise;if(op==="publish"&&publishResponse)return publishResponse;if(op==="pull")return {ok:true,json:async()=>({tracks:JSON.parse(options.body).ids.map(id=>({id,mid:String(id)}))})};return {ok:true,json:async()=>({sessionDescription:{type:"answer",sdp:"synthetic"}})};}};
     runInNewContext(source,context);
@@ -32103,7 +32408,7 @@ const studioVoiceLifecycleProof = async () => {
   const drain=async()=>{for(let i=0;i<40;i++)await Promise.resolve();};
   // A gather timeout is inconclusive; only a completed empty gather may refuse the listener.
   const slow=fixture("gathering",false),slowJoin=slow.voice.listen();await drain();
-  for(const fn of [...slow.timers.values()])fn();await slowJoin;await drain();
+  for(const task of [...slow.timers.values()])(typeof task === "function" ? task : task.fn)();await slowJoin;await drain();
   const slowGatherJoins=slow.voice.stats.enabled&&slow.calls.some(c=>c.op==="session")&&slow.peers[0].connectionState==="closed";
   slow.voice.dispose();await drain();
   const blocked=fixture("complete",false);await blocked.voice.listen();
@@ -32160,7 +32465,43 @@ const studioVoiceLifecycleProof = async () => {
   const latePlaybackStaysOff=!leaving.voice.stats.enabled&&!leaving.voice.stats.hearing;leaving.voice.dispose();await drain();
   const restarting=fixture();await restarting.voice.listen();const finishRestart=restarting.defer("leave");const restart=restarting.voice.restart();await drain();restarting.voice.stop();finishRestart({ok:true});await restart;await drain();
   const leaveCancelsRestart=!restarting.voice.stats.enabled&&restarting.calls.filter(c=>c.op==="session").length===1;restarting.voice.dispose();await drain();
-  return {slowGatherJoins,emptyGatherRefuses,unavailableProbeJoins,publicationReplaced,leaveStopsAudio,latePlaybackStaysOff,leaveCancelsRestart,receiveOnly,receiveOnlyAudience,audienceKeepsMute,lastListenerLeaves,listenerReturns,invalidAudience,audienceClearedOnStop,permissionCancelled,explicitUnmute,restartMute,publishCancelled,stopCancelled,localPreview,previewReleased,latePreviewReleased,previewCancelCannotStopPublication,receiveLevel,aggregateBlocked,retryClears,stalePlaybackIgnored,deniedPreviewKeepsReceiver,deniedPublishKeepsReceiver,timersReleased:[slow,blocked,unavailable,listener,audience,late,rejoin,stale,stopped,preview,autoplay,denied,replaced,leaving,restarting].every(f=>f.timers.size===0)};
+  const relay = fixture("complete",true,false,true), tls = "turns:turn.cloudflare.com:443?transport=tcp";
+  const ice = (username) => ({ ttl: 120, iceServers: [{ urls: tls, username, credential: "fixture" }] });
+  const finishIce = relay.defer("ice"), relayJoin = relay.voice.enable();
+  await drain(); finishIce(ice("initial")); await relayJoin; await drain();
+  const hasRelay = (peer, name) => peer.config.iceServers.some(s => s.urls === tls && s.username === name)
+    && peer.config.iceServers.some(s => s.urls === "stun:stun.cloudflare.com:3478");
+  const turnShared = relay.voice.stats.enabled && relay.peers.length === 2
+    && relay.calls.filter(c => c.op === "ice").length === 1 && relay.peers.every(pc => hasRelay(pc, "initial"));
+  const refreshIce = relay.defer("ice"), refreshTimer = [...relay.timers].find(([, task]) => task.delay === 60000);
+  let refreshing;
+  if (refreshTimer) { relay.timers.delete(refreshTimer[0]); refreshing = refreshTimer[1].fn(); }
+  // Keep the existing call while minting credentials; only the subsequent rebuild interrupts it.
+  await drain(); const turnPrefetched = relay.peers.length === 2 && relay.peers.every(pc => pc.connectionState === "connected");
+  refreshIce(ice("fresh")); await refreshing; await drain();
+  const turnRefreshed = !!refreshTimer && relay.peers.length === 4 && relay.peers.slice(0, 2).every(pc => pc.connectionState === "closed")
+    && relay.peers.slice(2).every(pc => hasRelay(pc, "fresh")) && relay.voice.stats.enabled;
+  relay.voice.setPeers([71],[1]); await drain();
+  relay.peers.findLast(pc => pc.connectionState === "connected" && pc.handlers.has("track")).handlers.get("track")({transceiver:{mid:"71"},track:{id:71,stop(){}}});
+  const renewal = relay.voice.inspect().relayRenewals.at(-1);
+  const turnMeasured = renewal.status === "rebuilt" && renewal.credentialsMs >= 0 && renewal.rebuildMs >= 0 && renewal.firstTrackMs >= 0
+    && !JSON.stringify(renewal).includes("fixture") && !JSON.stringify(renewal).includes("turn.cloudflare");
+  const failedIce = relay.defer("ice"), failedTimer = [...relay.timers].find(([, task]) => task.delay === 60000);
+  relay.timers.delete(failedTimer[0]); const failedRefresh = failedTimer[1].fn(); await drain(); failedIce({}); await failedRefresh;
+  const turnFailureKeepsCall = relay.peers.length === 4 && relay.peers.slice(2).every(pc => pc.connectionState === "connected")
+    && relay.voice.inspect().relayRenewals.at(-1).status === "credentials-unavailable";
+  // A stopped call must not return when a pending prefetch eventually resolves.
+  const stopIce = relay.defer("ice"), stopTimer = [...relay.timers].find(([, task]) => task.delay === 60000);
+  relay.timers.delete(stopTimer[0]); const stoppingRefresh = stopTimer[1].fn(); await drain();
+  relay.voice.stop(); stopIce(ice("too-late")); await stoppingRefresh; await drain();
+  const turnStopped = relay.timers.size === 0 && relay.peers.length === 4 && turnFailureKeepsCall && !relay.voice.stats.enabled;
+  const cancelled = fixture("complete",true,false,true), lateIce = cancelled.defer("ice"), cancelledJoin = cancelled.voice.enable();
+  await drain();
+  const iceWasPending = cancelled.calls.some(c => c.op === "ice");
+  cancelled.voice.dropMic();
+  lateIce(ice("stale")); await cancelledJoin; await drain();
+  const turnCancelled = iceWasPending && cancelled.timers.size === 0 && cancelled.peers.length === 0;
+  return {slowGatherJoins,emptyGatherRefuses,unavailableProbeJoins,turnShared,turnRefreshed,turnPrefetched,turnMeasured,turnStopped,turnCancelled,publicationReplaced,leaveStopsAudio,latePlaybackStaysOff,leaveCancelsRestart,receiveOnly,receiveOnlyAudience,audienceKeepsMute,lastListenerLeaves,listenerReturns,invalidAudience,audienceClearedOnStop,permissionCancelled,explicitUnmute,restartMute,publishCancelled,stopCancelled,localPreview,previewReleased,latePreviewReleased,previewCancelCannotStopPublication,receiveLevel,aggregateBlocked,retryClears,stalePlaybackIgnored,deniedPreviewKeepsReceiver,deniedPublishKeepsReceiver,timersReleased:[slow,blocked,unavailable,listener,audience,late,rejoin,stale,stopped,preview,autoplay,denied,replaced,leaving,restarting].every(f=>f.timers.size===0)};
 };
 
 // The real controller runs against a bounded DOM/media double: no permission prompts or SFU.
@@ -33044,6 +33385,7 @@ record("character visibility source bakes: ownership wrappers share exact immuta
   }
   factoryChecks(BL);
   tessAnswerChecks(BL);
+  sharedTessNewsChecks(BL);
   const clearance = claimClearanceProof();
   record("hub footprint clearance: conservative rejection preserves circular boundaries, live reservations and exceptional numbers", clearance.failures === 0 && clearance.cases >= 4000, JSON.stringify(clearance));
   await cloudHopperFailureChecks(BL);
