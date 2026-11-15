@@ -7,6 +7,8 @@ const spend = (b, count, now) => { b.tokens = available(b, now) - count; b.at = 
 export const hockeyLimits = {
   async load(room) {
     const saved = await room.ctx.storage.get(KEY);
+    // Marked malformed, the room's restore deletes the key (room.js `malformed`); a failed read is left alone.
+    if (saved !== undefined && (!saved || typeof saved !== "object")) throw Object.assign(new TypeError(KEY + " is not an object"), { malformed: true });
     room.hockeyLimits = saved || { admission: bucket(2, 2), replay: bucket(8, 8), nextCreate: [0, 0, 0], proofs: [null, null, null], accounts: [] };
     room.hockeyLimits.proofs ||= [null, null, null];
     room.hockeyLimitsFailed = false;

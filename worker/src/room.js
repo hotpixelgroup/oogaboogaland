@@ -51,6 +51,9 @@ import { STUDIO_TRANSPORT, STUDIO_ZONE, studioState, studioHostAllowed, studioCa
 import CAST_ROWS from "./characters.gen.json";
 
 const CAST = castIndex(CAST_ROWS);
+// A stored value the room read but cannot use: the one restore failure that deletes its key (`restoring`). Anything else a
+// restore step throws, a failed read or write among it, says nothing about the value, which stays in storage.
+const malformed = (key, why) => Object.assign(new TypeError(key + " " + why), { malformed: true });
 // A retired SFU session cannot own usable tracks. Other 410 responses are not proof of session expiry.
 const sfuSessionGone = err => err.status === 404 || (err.status === 410 && err.code === "session_error");
 
@@ -115,7 +118,7 @@ export class Room extends DurableObject {
       await this.restoring("tessQueue", () => tessQueue.restore(this), () => { this.tessQueue = { entries: [], pose: null }; });
       await this.restoring("studio", async () => {
         const studio = await ctx.storage.get("studio");
-        if (studio !== undefined && (!studio || typeof studio !== "object")) throw new TypeError("studio is not an object");
+        if (studio !== undefined && (!studio || typeof studio !== "object")) throw malformed("studio", "is not an object");
         this.studio = studio || studioState();
         if (!studioSource(this.studio.source)) { this.studio.source = studioState().source; this.studio.position = 0; this.studio.playing = false; this.studio.at = Date.now(); this.studio.revision++; this.studio.playbackRevision = (this.studio.playbackRevision || 0) + 1; await ctx.storage.put("studio", this.studio); }
         this.studio.position = studioPosition(this.studio, this.studio.at);
@@ -125,7 +128,7 @@ export class Room extends DurableObject {
       }, () => { this.studio = studioState(); });
       await this.restoring("voiceCleanup", async () => {
         const jobs = await ctx.storage.get("voiceCleanup");
-        if (jobs !== undefined && !Array.isArray(jobs)) throw new TypeError("voiceCleanup is not a list");
+        if (jobs !== undefined && !Array.isArray(jobs)) throw malformed("voiceCleanup", "is not a list");
         this.cleanupJobs = jobs || [];
       });
       // Ooga Chat's speakers the island's open outdoor grants hear (#666), as the Audience last sent them.
@@ -154,7 +157,7 @@ export class Room extends DurableObject {
       for (const key of ["loopEpoch", "sweepAt"]) {
         await this.restoring(key, async () => {
           const value = await ctx.storage.get(key);
-          if (value !== undefined && !Number.isFinite(value)) throw new TypeError(key + " is not a number");
+          if (value !== undefined && !Number.isFinite(value)) throw malformed(key, "is not a number");
           this[key] = value || (key === "loopEpoch" ? Date.now() : Date.now() + SWEEP_MS);
           if (!value) await ctx.storage.put(key, this[key]);
         }, () => { this[key] = key === "loopEpoch" ? Date.now() : Date.now() + SWEEP_MS; });
@@ -202,14 +205,15 @@ export class Room extends DurableObject {
     return { ws, voice: { pub: null, sub: null, track: null, gen: 0, mids: {}, pubMid: null }, muted: false, hand: false, handTone: 0, handEmoji: "", hp: 100, ko: false, g: null, j: 0, w: 0, v: null, va: 0, sent: null, zone: OUTSIDE, pokerVoice: null, inHub: false, visible: true, joinedAt: Date.now(), door: null, passes: [], roomLock: null, blendTo: null, blendK: 0, pm: { inv: [], open: 0, blocked: [] }, savedAt: 0, posePending: false, ...a, bucket: { tokens: MOVE_HZ, at: Date.now() }, npcBucket: { tokens: NPC_HZ, at: Date.now() }, hpBucket: { tokens: HP_HZ, at: Date.now() }, blendBucket: { tokens: BLEND_HZ, at: Date.now() }, doorBucket: { tokens: DOOR_BURST, at: Date.now() }, chatBucket: this.chatBucketFor(a.id, Date.now()), seenAt: a.joinedAt || Date.now() };
   }
 
-  // One restore step, alone: whatever it throws is logged and never leaves the constructor's block. A stored value that
-  // cannot be restored is deleted and the step run again from its default; a key whose read fails is left in storage,
-  // since the value may be good. `reset` puts back a default when the step could not finish either way.
+  // One restore step, alone: whatever it throws is logged and never leaves the constructor's block. A stored value the step
+  // proved malformed (`malformed`) is deleted and the step run again from its default; after any other failure, a read or
+  // write that failed among them, the key is left in storage, since the value may be good. `reset` puts back a default
+  // when the step could not finish either way.
   async restoring(key, step, reset = null) {
     try { await step(); return; } catch (error) {
-      const readable = key ? await this.ctx.storage.get(key).then(() => true, () => false) : false;
-      this.failed("restore", null, error, { key: key || "", dropped: readable });
-      if (readable) {
+      const bad = !!key && !!error && error.malformed === true;
+      this.failed("restore", null, error, { key: key || "", dropped: bad });
+      if (bad) {
         try { await this.ctx.storage.delete(key); await step(); return; } catch (again) { this.failed("restore", null, again, { key, dropped: false }); }
       }
       if (reset) reset();
