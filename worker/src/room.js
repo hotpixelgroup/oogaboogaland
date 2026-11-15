@@ -609,7 +609,8 @@ export class Room extends DurableObject {
         if (this.players.get(p.id) === p) this.players.delete(p.id);
       }
     }
-    try { ws.serializeAttachment(null); ws.close(CLOSE_ERROR, "server error"); } catch { /* already closed */ }
+    try { ws.serializeAttachment(null); } catch { /* the attachment may be what failed */ }
+    try { ws.close(CLOSE_ERROR, "server error"); } catch { /* already closed */ }
   }
 
   handleMessage(ws, message) {
