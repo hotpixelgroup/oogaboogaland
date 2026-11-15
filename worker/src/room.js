@@ -627,7 +627,7 @@ export class Room extends DurableObject {
         this.sockets.delete(ws);
       }
     }
-    try { ws.serializeAttachment(null); } catch { /* the attachment is what failed */ }
+    try { ws.serializeAttachment(null); } catch { /* the attachment may be what failed */ }
     try { ws.close(CLOSE_ERROR, "server error"); } catch { /* already closed */ }
   }
 

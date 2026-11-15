@@ -105,6 +105,17 @@ test("a handler whose promise rejects closes only its socket", async () => {
   assert.ok(!r.players.has(1) && r.players.has(2));
 });
 
+test("a socket whose attachment cannot be saved is still closed", async () => {
+  const h = host(), r = h.room();
+  await h.restored();
+  const a = await h.join(r, 1, "a"), b = await h.join(r, 2, "b");
+  a.serializeAttachment = () => { throw new Error("attachment broke"); };
+  assert.doesNotThrow(() => r.webSocketMessage(a, JSON.stringify({ t: "zone", name: "factory" })));
+  assert.equal(a.closed.code, protocol.CLOSE_ERROR);
+  assert.ok(!r.players.has(1) && r.players.has(2));
+  assert.equal(b.closed, null);
+});
+
 test("a binary frame whose handler throws closes only its socket", async () => {
   const h = host(), r = h.room();
   await h.restored();
