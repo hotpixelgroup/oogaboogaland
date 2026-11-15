@@ -11,7 +11,7 @@ import { getPlayer } from "../src/db.js";
 
 const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
 
-const host = ({ stored: seed = {}, unreadable = [] } = {}) => {
+const host = ({ stored: seed = {}, unreadable = [], flaky = {}, unwritable = [] } = {}) => {
   let now = 100000;
   const accepted = [], logged = [], reports = [];
   const socket = () => ({
@@ -50,9 +50,10 @@ const host = ({ stored: seed = {}, unreadable = [] } = {}) => {
     storage: {
       get: async (key) => {
         if ([key].flat().some((k) => unreadable.includes(k))) throw new Error("storage unavailable");
+        for (const k of [key].flat()) if (flaky[k] > 0) { flaky[k]--; throw new Error("storage unavailable"); }
         return Array.isArray(key) ? new Map(key.filter((k) => stored.has(k)).map((k) => [k, stored.get(k)])) : stored.get(key);
       },
-      put: async (key, value) => { stored.set(key, value); }, delete: async (key) => { deleted.push(key); stored.delete(key); },
+      put: async (key, value) => { if (unwritable.includes(key)) throw new Error("storage unavailable"); stored.set(key, value); }, delete: async (key) => { deleted.push(key); stored.delete(key); },
       getAlarm: async () => null, setAlarm: async () => {},
     },
   };
@@ -159,4 +160,19 @@ test("a stored key that cannot be read is logged and left in storage", async () 
   assert.equal(h.logged.length, 1);
   const a = await h.join(r, 1, "a");
   assert.equal(a.sent[0].t, "welcome");
+});
+
+test("a read that fails once and then succeeds deletes nothing, and the next wake restores the value", async () => {
+  const links = [[5, [6]]];
+  const h = host({ stored: { voiceLinks: links }, flaky: { voiceLinks: 1 }, unwritable: ["sweepAt"] });
+  const r = h.room();
+  await h.restored();
+  assert.deepEqual(h.deleted, [], "neither the failed read nor the failed write deleted a key");
+  assert.deepEqual(h.stored.get("voiceLinks"), links, "the stored value is untouched");
+  assert.ok(!r.links.has(5), "this wake goes without it");
+  assert.ok(Number.isFinite(r.sweepAt), "a write that failed still leaves a default");
+  assert.equal(h.logged.length, 2);
+  const woken = h.room();
+  await h.restored();
+  assert.ok(woken.links.get(5).has(6), "the next wake reads it again");
 });
