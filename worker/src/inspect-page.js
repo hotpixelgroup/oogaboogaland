@@ -247,7 +247,8 @@ function describe(e) {
     case "wake-lost": return ["system", "system", f.deployed ? obj + " restarted for a new version · " + f.lost + " connections lost"
       : obj + " woke with " + f.lost + " fewer connections (closed while it slept, or it was reset) · " + f.kept + " kept"];
     case "dropped": return ["system", "system", obj + " · " + f.lines + " log lines dropped in a burst"];
-    case "error": return ["drop", "error", f.where === "restore" ? obj + " · stored " + f.key + (f.dropped ? " dropped" : " kept") + " · " + f.name
+    case "error": return ["drop", "error", f.where === "restore" ? obj + " · stored " + f.key + (f.dropped ? " dropped" : f.kept === "unread" ? " unread, room restarted" : f.kept === "retried" ? " read again" : f.kept ? " kept as " + f.kept : " kept") + " · " + f.name
+      : f.where === "drop" ? who + " · leaving: " + f.t + " threw " + f.name
       : who + " · " + f.t + (f.where === "save" ? " save threw " : " message threw ") + f.name + " · socket closed"];
     default: return ["zone", e.kind, who];
   }

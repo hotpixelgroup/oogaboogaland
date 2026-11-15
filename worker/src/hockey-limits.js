@@ -4,11 +4,18 @@ const KEY = "hockeyLimitsV1", KEEP_MS = 60000, MAX_ACCOUNTS = 64;
 const bucket = (rate, burst) => ({ at: Date.now(), tokens: burst, rate, burst });
 const available = (b, now) => Math.min(b.burst, b.tokens + Math.max(0, now - b.at) * b.rate / 1000);
 const spend = (b, count, now) => { b.tokens = available(b, now) - count; b.at = now; };
+// What load accepts: the limits as admit, replay and the room's restore read them, or the key is deleted.
+const isBucket = b => !!b && typeof b === "object" && [b.at, b.tokens, b.rate, b.burst].every(Number.isFinite);
+const isProof = p => p === null || !!p && typeof p === "object" && Array.isArray(p.ids) && Array.isArray(p.tokens);
+const shaped = l => !!l && typeof l === "object" && isBucket(l.admission) && isBucket(l.replay)
+  && Array.isArray(l.nextCreate) && l.nextCreate.length === 3 && l.nextCreate.every(Number.isFinite)
+  && (l.proofs === undefined || Array.isArray(l.proofs) && l.proofs.length === 3 && l.proofs.every(isProof))
+  && Array.isArray(l.accounts) && l.accounts.every(a => !!a && typeof a === "object" && Number.isSafeInteger(a.id) && Number.isFinite(a.until) && Number.isFinite(a.nextSeat) && isBucket(a.replay));
 export const hockeyLimits = {
   async load(room) {
     const saved = await room.ctx.storage.get(KEY);
     // Marked malformed, the room's restore deletes the key (room.js `malformed`); a failed read is left alone.
-    if (saved !== undefined && (!saved || typeof saved !== "object")) throw Object.assign(new TypeError(KEY + " is not an object"), { malformed: true });
+    if (saved !== undefined && !shaped(saved)) throw Object.assign(new TypeError(KEY + " is not the limits' shape"), { malformed: true });
     room.hockeyLimits = saved || { admission: bucket(2, 2), replay: bucket(8, 8), nextCreate: [0, 0, 0], proofs: [null, null, null], accounts: [] };
     room.hockeyLimits.proofs ||= [null, null, null];
     room.hockeyLimitsFailed = false;

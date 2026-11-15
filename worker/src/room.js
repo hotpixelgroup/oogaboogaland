@@ -54,6 +54,12 @@ const CAST = castIndex(CAST_ROWS);
 // A stored value the room read but cannot use: the one restore failure that deletes its key (`restoring`). Anything else a
 // restore step throws, a failed read or write among it, says nothing about the value, which stays in storage.
 const malformed = (key, why) => Object.assign(new TypeError(key + " " + why), { malformed: true });
+// A stored voice cleanup job as queueClose writes it.
+const cleanupJob = (job) => !!job && typeof job === "object" && typeof job.session === "string" && job.session.length > 0
+  && Array.isArray(job.mids) && job.mids.every((mid) => typeof mid === "string")
+  && (job.midVersions === undefined || (!!job.midVersions && typeof job.midVersions === "object" && !Array.isArray(job.midVersions)))
+  && (job.at == null || Number.isFinite(job.at)) && (job.revision === undefined || Number.isFinite(job.revision))
+  && (job.inspectUntil === undefined || Number.isFinite(job.inspectUntil));
 // A retired SFU session cannot own usable tracks. Other 410 responses are not proof of session expiry.
 const sfuSessionGone = err => err.status === 404 || (err.status === 410 && err.code === "session_error");
 
@@ -129,7 +135,9 @@ export class Room extends DurableObject {
       await this.restoring("voiceCleanup", async () => {
         const jobs = await ctx.storage.get("voiceCleanup");
         if (jobs !== undefined && !Array.isArray(jobs)) throw malformed("voiceCleanup", "is not a list");
-        this.cleanupJobs = jobs || [];
+        // A job of the wrong shape could never run; the rest are kept, and the next save drops it from storage.
+        this.cleanupJobs = (jobs || []).filter(cleanupJob);
+        if (jobs && this.cleanupJobs.length < jobs.length) this.failed("restore", null, malformed("voiceCleanup", "had a job of the wrong shape"), { key: "voiceCleanup", dropped: true });
       });
       // Ooga Chat's speakers the island's open outdoor grants hear (#666), as the Audience last sent them.
       await this.restoring("chatSources", async () => { this.chatSources = audienceRoom.cleanSources(await ctx.storage.get("chatSources")); },
@@ -210,14 +218,35 @@ export class Room extends DurableObject {
   // write that failed among them, the key is left in storage, since the value may be good. `reset` puts back a default
   // when the step could not finish either way.
   async restoring(key, step, reset = null) {
-    try { await step(); return; } catch (error) {
-      const bad = !!key && !!error && error.malformed === true;
-      this.failed("restore", null, error, { key: key || "", dropped: bad });
-      if (bad) {
-        try { await this.ctx.storage.delete(key); await step(); return; } catch (again) { this.failed("restore", null, again, { key, dropped: false }); }
-      }
+    let error;
+    try { await step(); return; } catch (e) { error = e; }
+    if (!key) {
+      this.failed("restore", null, error, { key: "" });
       if (reset) reset();
+      return;
     }
+    // Storage that cannot read the key now is left to throw: the object resets and the next request tries again, as it
+    // always has. Running on a default instead would write it over the stored value at the next save.
+    let value;
+    try { value = await this.ctx.storage.get(key); } catch (unread) {
+      this.failed("restore", null, unread, { key, kept: "unread" });
+      throw unread;
+    }
+    if (!(error && error.malformed === true)) {
+      // It reads now, so the first failure may have been a read that failed once.
+      this.failed("restore", null, error, { key, kept: "retried" });
+      try { await step(); return; } catch (again) { error = again; }
+    }
+    if (error && error.malformed === true) {
+      this.failed("restore", null, error, { key, dropped: true });
+      try { await this.ctx.storage.delete(key); await step(); return; } catch (again) { this.failed("restore", null, again, { key, dropped: false }); }
+    } else if (value !== undefined) {
+      // A fault in the restore code says nothing about the value, which the default this wake runs on will be saved over:
+      // a copy is kept beside it.
+      this.failed("restore", null, error, { key, kept: key + ".bad" });
+      try { await this.ctx.storage.put(key + ".bad", value); } catch (lost) { this.failed("restore", null, lost, { key: key + ".bad" }); }
+    }
+    if (reset) reset();
   }
 
   // A fault, counted and on the inspector each time, and in the Worker's log once per kind of fault for the object's life.
@@ -231,7 +260,7 @@ export class Room extends DurableObject {
     if (this.logged.has(kind) || this.logged.size >= 64) return;
     this.logged.add(kind);
     const frames = String((error && error.stack) || "").split("\n").slice(1, 5).map((line) => line.trim()).join(" | ");
-    console.error("room: " + kind + (fields.dropped ? " (stored value dropped)" : "") + " at " + frames);
+    console.error("room: " + kind + (fields.dropped ? " (stored value dropped)" : fields.kept ? " (" + fields.kept + ")" : "") + " at " + frames);
   }
 
   // Retain account debt across socket records, only while awake. Reclaim fully replenished
@@ -258,9 +287,12 @@ export class Room extends DurableObject {
 
   // Every message the room sends goes through here, players' and Ooga Chat members' alike, so the inspector's `out` and
   // `outBytes` are the room's whole outbound traffic (text counted by its length, a binary frame by its bytes).
+  // The one place the room writes to a socket (a test scans the room's files for any other), so the inspector's `out`
+  // and `outBytes` count every message sent.
   send(ws, msg) {
-    const data = typeof msg === "string" || msg instanceof ArrayBuffer ? msg : JSON.stringify(msg);
+    let data;
     try {
+      data = typeof msg === "string" || msg instanceof ArrayBuffer ? msg : JSON.stringify(msg);
       ws.send(data);
     } catch {
       // A socket closing under us is dropped by its close event.
@@ -614,19 +646,13 @@ export class Room extends DurableObject {
     try { p = this.byWs(ws); member = !p && commonsRoom.closed(this, ws); } catch { /* an attachment that cannot be read */ }
     if (typeof message === "string") try { const msg = parseClientMessage(message); if (msg && msg.t) t = msg.t; } catch { /* named "text" */ }
     this.failed("message", p, error, { t, member });
-    this.endFailed("message", ws, p);
+    this.endFailed(ws, p);
   }
 
-  // A socket a fault left in an unknown state: its player dropped as `failed` (the record goes even if the drop throws) and
-  // the socket closed with 1011, so its page reconnects.
-  endFailed(where, ws, p) {
-    if (p) {
-      try { this.drop(p, "failed", { code: CLOSE_ERROR }); } catch (again) {
-        this.failed(where, p, again, { t: "drop" });
-        if (this.players.get(p.id) === p) this.players.delete(p.id);
-        this.sockets.delete(ws);
-      }
-    }
+  // A socket a fault left in an unknown state: its player dropped as `failed` and the socket closed with 1011, so its page
+  // reconnects.
+  endFailed(ws, p) {
+    if (p) this.drop(p, "failed", { code: CLOSE_ERROR });
     try { ws.serializeAttachment(null); } catch { /* the attachment may be what failed */ }
     try { ws.close(CLOSE_ERROR, "server error"); } catch { /* already closed */ }
   }
@@ -873,7 +899,7 @@ export class Room extends DurableObject {
       p.posePending = false;
       try { p.ws.serializeAttachment(this.attachment(p)); p.savedAt = now; } catch (error) {
         this.failed("save", p, error, { t: "pose" });
-        this.endFailed("save", p.ws, p);
+        this.endFailed(p.ws, p);
       }
     }
   }
@@ -931,29 +957,35 @@ export class Room extends DurableObject {
   }
 
   // `detail`: what the close said, for the inspector's line (a close code, its reason, whether it was clean).
+  // Each step of a departure runs alone (`step`): one that throws is counted and logged and the rest still run, so the
+  // record always goes and the others always hear it, a new NPC host and their voice lists. A message whose handler
+  // failed ends here too, often in the same helper that failed it.
   drop(p, reason, detail = null) {
     if (this.players.get(p.id) !== p) return;
-    if (this.inspect.on) this.inspect.event("leave", p, { reason, ...detail, zone: p.zone, on: Date.now() - p.joinedAt, heard: Date.now() - this.heardAt(p), voice: inVoice(p) });
-    this.releaseCabinet(p);
-    hockey.leave(this, p.id);
-    block.leave(this, p.id);
-    this.cancelDoor(p);
-    this.clearPasses(p);
-    this.leaveStudio(p);
-    this.chalkLetGo(p);
-    this.background(this.clearVoice(p));
-    this.privateLeave(p);
+    const step = (t, fn) => { try { fn(); } catch (error) { this.failed("drop", p, error, { t }); } };
+    if (this.inspect.on) step("inspect", () => this.inspect.event("leave", p, { reason, ...detail, zone: p.zone, on: Date.now() - p.joinedAt, heard: Date.now() - this.heardAt(p), voice: inVoice(p) }));
+    step("cabinet", () => this.releaseCabinet(p));
+    step("hockey", () => hockey.leave(this, p.id));
+    step("block", () => block.leave(this, p.id));
+    step("door", () => this.cancelDoor(p));
+    step("passes", () => this.clearPasses(p));
+    step("studio", () => this.leaveStudio(p));
+    step("chalk", () => this.chalkLetGo(p));
+    step("voice", () => this.background(this.clearVoice(p)));
+    step("pm", () => this.privateLeave(p));
     this.players.delete(p.id);
     this.sockets.delete(p.ws);
-    audienceRoom.leave(this, p);
-    tessQueue.presence(this, p, true, reason === "revoked");
+    step("audience", () => audienceRoom.leave(this, p));
+    step("tess", () => tessQueue.presence(this, p, true, reason === "revoked"));
     // A dropped socket can come straight back in; the last one out frees the room.
-    const lockedIn = this.roomOf(p.zone), held = this.roomLocks.get(lockedIn);
-    if (held) held.passes.set(p.id, Date.now() + PIN_PASS_MS);
-    this.freeEmptyRoom(lockedIn);
-    this.broadcast({ t: "leave", id: p.id, reason });
-    this.electHost();
-    this.updateVoice();
+    step("lock", () => {
+      const lockedIn = this.roomOf(p.zone), held = this.roomLocks.get(lockedIn);
+      if (held) held.passes.set(p.id, Date.now() + PIN_PASS_MS);
+      this.freeEmptyRoom(lockedIn);
+    });
+    step("leave", () => this.broadcast({ t: "leave", id: p.id, reason }));
+    step("host", () => this.electHost());
+    step("voices", () => this.updateVoice());
     if (!this.players.size && this.flushTimer) {
       clearTimeout(this.flushTimer);
       this.flushTimer = 0;
