@@ -614,14 +614,21 @@ export class Room extends DurableObject {
     try { p = this.byWs(ws); member = !p && commonsRoom.closed(this, ws); } catch { /* an attachment that cannot be read */ }
     if (typeof message === "string") try { const msg = parseClientMessage(message); if (msg && msg.t) t = msg.t; } catch { /* named "text" */ }
     this.failed("message", p, error, { t, member });
+    this.endFailed("message", ws, p);
+  }
+
+  // A socket a fault left in an unknown state: its player dropped as `failed` (the record goes even if the drop throws) and
+  // the socket closed with 1011, so its page reconnects.
+  endFailed(where, ws, p) {
     if (p) {
       try { this.drop(p, "failed", { code: CLOSE_ERROR }); } catch (again) {
-        this.failed("message", p, again, { t: "drop" });
+        this.failed(where, p, again, { t: "drop" });
         if (this.players.get(p.id) === p) this.players.delete(p.id);
         this.sockets.delete(ws);
       }
     }
-    try { ws.serializeAttachment(null); ws.close(CLOSE_ERROR, "server error"); } catch { /* already closed */ }
+    try { ws.serializeAttachment(null); } catch { /* the attachment is what failed */ }
+    try { ws.close(CLOSE_ERROR, "server error"); } catch { /* already closed */ }
   }
 
   handleMessage(ws, message) {
@@ -860,11 +867,14 @@ export class Room extends DurableObject {
   savePoses() {
     this.poseTimer = 0;
     const now = Date.now();
+    // Each save alone, as each message is: one that throws ends that player and the rest are still saved.
     for (const p of this.players.values()) {
       if (!p.posePending) continue;
-      p.ws.serializeAttachment(this.attachment(p));
-      p.savedAt = now;
       p.posePending = false;
+      try { p.ws.serializeAttachment(this.attachment(p)); p.savedAt = now; } catch (error) {
+        this.failed("save", p, error, { t: "pose" });
+        this.endFailed("save", p.ws, p);
+      }
     }
   }
 

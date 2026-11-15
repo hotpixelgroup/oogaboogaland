@@ -122,3 +122,16 @@ test("a replaced or evicted socket finds no player", async () => {
   h.send(r, fresh, { t: "zone", name: "outside" });
   assert.ok(!r.players.has(1), "a closed socket brings nobody back");
 });
+
+test("a timer save that throws ends that player alone, and the others are still saved", async () => {
+  const h = host(), r = h.room();
+  const a = await h.join(r, 1, "a"), b = await h.join(r, 2, "b");
+  h.send(r, a, { t: "body", name: "a" }); h.send(r, b, { t: "body", name: "b" });
+  h.advance(100); h.send(r, a, { t: "pose", x: 7, y: 0, z: 0, yaw: 0 }); h.send(r, b, { t: "pose", x: 8, y: 0, z: 0, yaw: 0 });
+  a.serializeAttachment = () => { throw new Error("save broke"); };
+  assert.doesNotThrow(() => h.advance(1000));
+  assert.equal(b.store.x, 8, "the next player's pose was saved");
+  assert.ok(!r.players.get(2).posePending);
+  assert.equal(a.closed.code, protocol.CLOSE_ERROR, "the one whose save threw is closed");
+  assert.ok(!r.players.has(1) && r.players.has(2));
+});

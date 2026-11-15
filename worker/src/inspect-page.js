@@ -248,7 +248,7 @@ function describe(e) {
       : obj + " woke with " + f.lost + " fewer connections (closed while it slept, or it was reset) · " + f.kept + " kept"];
     case "dropped": return ["system", "system", obj + " · " + f.lines + " log lines dropped in a burst"];
     case "error": return ["drop", "error", f.where === "restore" ? obj + " · stored " + f.key + (f.dropped ? " dropped" : " kept") + " · " + f.name
-      : who + " · " + f.t + " message threw " + f.name + " · socket closed"];
+      : who + " · " + f.t + (f.where === "save" ? " save threw " : " message threw ") + f.name + " · socket closed"];
     default: return ["zone", e.kind, who];
   }
 }
