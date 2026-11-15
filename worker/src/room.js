@@ -283,9 +283,12 @@ export class Room extends DurableObject {
 
   // Every message the room sends goes through here, players' and Ooga Chat members' alike, so the inspector's `out` and
   // `outBytes` are the room's whole outbound traffic (text counted by its length, a binary frame by its bytes).
+  // The one place the room writes to a socket (a test scans the room's files for any other), so the inspector's `out`
+  // and `outBytes` count every message sent.
   send(ws, msg) {
-    const data = typeof msg === "string" || msg instanceof ArrayBuffer ? msg : JSON.stringify(msg);
+    let data;
     try {
+      data = typeof msg === "string" || msg instanceof ArrayBuffer ? msg : JSON.stringify(msg);
       ws.send(data);
     } catch {
       // A socket closing under us is dropped by its close event.
